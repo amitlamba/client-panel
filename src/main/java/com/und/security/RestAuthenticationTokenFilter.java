@@ -41,7 +41,7 @@ public class RestAuthenticationTokenFilter extends OncePerRequestFilter {
         // String authToken = header.substring(7);
         //String username = restTokenUtil.getUsernameFromToken(authToken);
 
-        logger.info("checking authentication für user " + usernameFromToken);
+        logger.info("checking authentication for user " + usernameFromToken);
 
         if (usernameFromToken != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 

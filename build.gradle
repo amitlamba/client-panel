@@ -1,0 +1,114 @@
+buildscript {
+    ext.kotlin_version = '1.1.4' // Required for Kotlin integration
+    ext.spring_boot_version = '1.5.6.RELEASE'
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version" // Required for Kotlin integration
+        classpath "org.jetbrains.kotlin:kotlin-allopen:$kotlin_version" // See https://kotlinlang.org/docs/reference/compiler-plugins.html#kotlin-spring-compiler-plugin
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:$spring_boot_version"
+    }
+}
+
+
+apply plugin: 'scala'
+apply plugin: 'java'
+apply plugin: 'maven'
+apply plugin: 'kotlin' // Required for Kotlin integration
+apply plugin: "kotlin-spring" // See https://kotlinlang.org/docs/reference/compiler-plugins.html#kotlin-spring-compiler-plugin
+apply plugin: 'org.springframework.boot'
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
+sourceSets {
+    main {
+        scala {
+            srcDirs = ['src/main/scala', 'src/main/java']
+        }
+        java {
+            srcDirs = []
+        }
+    }
+}
+
+ext.kotlinVersion = '1.1.4'
+ext.springBootVersion = '1.5.6.RELEASE'
+ext.scalaVersion = '2.12.3'
+ext.jacksonScalaVersion = '2.9.0'
+ext.jtwigVersion = '3.1.1'
+ext.casbahVersion = '3.1.1'
+ext.scalaLoggingVersion = '3.7.2'
+ext.aspectjVersion = '1.8.7'
+ext.scalaTestVersion = '2.2.5'
+ext.jsonPathVersion = '2.1.0'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+    maven { url 'https://repo.spring.io/libs-snapshot' }
+    maven { url "https://repo.spring.io/snapshot" }
+    maven { url "https://repo.spring.io/milestone" }
+    jcenter()
+}
+
+
+jar {
+    group = 'com.und'
+    baseName = 'clientpanel'
+    version = '0.1.0'
+}
+
+
+
+dependencies {
+    testCompile(
+            'org.scalatest:scalatest_2.12:3.2.0-SNAP9',
+            'junit:junit:4.12',
+            'org.springframework.security:spring-security-test:4.2.3.RELEASE',
+            "com.jayway.jsonpath:json-path:$jsonPathVersion"
+    )
+    testCompile "org.mockito:mockito-core:1.+"
+    testCompile(group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: '1.5.4.RELEASE') {
+        exclude(module: 'commons-logging')
+    }
+    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion" // Required for Kotlin integration
+    compile(
+            'org.springframework.boot:spring-boot-starter-data-jpa:1.5.5.RELEASE',
+            'org.springframework.boot:spring-boot-starter-data-rest:1.5.5.RELEASE',
+            'org.springframework.boot:spring-boot-starter-mobile:1.5.5.RELEASE',
+            'org.springframework.boot:spring-boot-starter-security:1.5.5.RELEASE',
+            'org.springframework.boot:spring-boot-starter-data-mongodb:1.5.5.RELEASE',
+            'org.springframework.boot:spring-boot-actuator:1.5.5.RELEASE',
+            'org.scala-lang:scala-library:2.12.3',
+            "com.fasterxml.jackson.module:jackson-module-scala_2.12:${jacksonScalaVersion}",
+            //"com.typesafe.scala-logging:scala-logging-slf4j_2.12:$scalaLoggingVersion",
+            "com.lyncode:jtwig-spring:$jtwigVersion",
+            "org.mongodb:casbah-core_2.12:$casbahVersion",
+            "org.aspectj:aspectjrt:$aspectjVersion",
+            "org.aspectj:aspectjweaver:$aspectjVersion",
+            'org.postgresql:postgresql:9.4-1206-jdbc42',
+            'io.jsonwebtoken:jjwt:0.7.0',
+            'io.springfox:springfox-swagger2:2.7.0',
+            'io.springfox:springfox-swagger-ui:2.7.0',
+            'com.google.guava:guava:19.0',
+            'org.apache.commons:commons-lang3:3.5',
+            'org.flywaydb:flyway-core:3.2.1',
+            'javax.servlet:jstl:1.2',
+            'jstl:jstl:1.2',
+            'taglibs:standard:1.1.2',
+            'javax.el:el-api:2.2.1-b04'
+    )
+
+    compile("org.mongodb:casbah-commons_2.12:$casbahVersion"
+
+    ) {
+        exclude(module: 'mongo-java-driver')
+    }
+}
+
+

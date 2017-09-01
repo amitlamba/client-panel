@@ -8,9 +8,9 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import com.und.model.security.User;
 
-public final class RestUserFactory {
+public final class RestUserFactory4 {
 
-    private RestUserFactory() {
+    private RestUserFactory4() {
     }
 
     public static UndUserDetails create(User user) {

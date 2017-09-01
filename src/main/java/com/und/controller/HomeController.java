@@ -21,7 +21,6 @@ public class HomeController {
     @RequestMapping(method = RequestMethod.GET, value = "/hello")
     public String renderHelloWorld(Model model, @RequestParam(value="name", required=false, defaultValue="World") String name) {
         model.addAttribute("name", name);
-
         return "hello";
     }
 }
