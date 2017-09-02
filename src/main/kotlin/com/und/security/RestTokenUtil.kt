@@ -80,13 +80,11 @@ class RestTokenUtil : Serializable {
     }
 
     private fun generateAudience(device: Device): String {
-        var audience = AUDIENCE_UNKNOWN
-        if (device.isNormal) {
-            audience = AUDIENCE_WEB
-        } else if (device.isTablet) {
-            audience = AUDIENCE_TABLET
-        } else if (device.isMobile) {
-            audience = AUDIENCE_MOBILE
+       val audience = when {
+            device.isNormal -> AUDIENCE_WEB
+            device.isMobile -> AUDIENCE_MOBILE
+            device.isTablet -> AUDIENCE_TABLET
+            else -> AUDIENCE_UNKNOWN
         }
         return audience
     }
@@ -97,17 +95,14 @@ class RestTokenUtil : Serializable {
         return AUDIENCE_TABLET == audience || AUDIENCE_MOBILE == audience
     }
 
-    fun generateToken(userDetails: UndUserDetails?, device: Device): String? {
+    fun generateToken(userDetails: UndUserDetails, device: Device): String {
         val claims = HashMap<String, Any>()
-        if(userDetails != null) {
             claims.put(CLAIM_KEY_USERNAME, userDetails.username)
             claims.put(CLAIM_KEY_AUDIENCE, generateAudience(device))
 
             val createdDate = dateUtils.now()
             claims.put(CLAIM_KEY_CREATED, createdDate)
             return doGenerateToken(claims, userDetails.secret)
-        }
-        return null;
     }
 
     private fun doGenerateToken(claims: Map<String, Any>, secret: String): String {
@@ -128,8 +123,8 @@ class RestTokenUtil : Serializable {
         return !isCreatedBeforeLastPasswordReset(created, lastPasswordReset) && (!isTokenExpired(token, secret) || ignoreTokenExpiration(token, secret))
     }
 
-    fun refreshToken(token: String, secret: String): String? {
-        val refreshedToken: String?
+    fun refreshToken(token: String, secret: String): String {
+        val refreshedToken: String
         val claims = getClaimsFromToken(token, secret)
         claims!!.put(CLAIM_KEY_CREATED, dateUtils.now())
         refreshedToken = doGenerateToken(claims, secret)

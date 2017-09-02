@@ -28,7 +28,7 @@ class UserRestController {
 
     @RequestMapping(value = "user", method = arrayOf(RequestMethod.GET))
     fun getAuthenticatedUser(request: HttpServletRequest): UndUserDetails {
-        val token = request.getHeader(tokenHeader)
+        //val token = request.getHeader(tokenHeader)
         val username = request.getHeader(usernameHeader)
         val user = userDetailsService.loadUserByUsername(username) as UndUserDetails
         return user
