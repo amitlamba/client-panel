@@ -5,7 +5,9 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
+    "buildDev": "ng build",
+    "buildWatch": "ng build --watch=true",
+    "build": "ng build --prod",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
@@ -42,16 +44,5 @@
     "ts-node": "~2.0.0",
     "tslint": "~4.5.0",
     "typescript": "~2.2.0"
-  },
-  "scripts":
-  {
-    "ng": "ng",
-    "start": "ng serve",
-    "buildDev": "ng build",
-    "buildWatch": "ng build --watch=true",
-    "build": "ng build --prod",
-    "test": "ng test",
-    "lint": "ng lint",
-    "e2e": "ng e2e"
   }
 }
