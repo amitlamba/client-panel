@@ -6,8 +6,10 @@ buildscript {
     }
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version" // Required for Kotlin integration
-        classpath "org.jetbrains.kotlin:kotlin-allopen:$kotlin_version" // See https://kotlinlang.org/docs/reference/compiler-plugins.html#kotlin-spring-compiler-plugin
+        classpath "org.jetbrains.kotlin:kotlin-allopen:$kotlin_version"
+        // See https://kotlinlang.org/docs/reference/compiler-plugins.html#kotlin-spring-compiler-plugin
         classpath "org.springframework.boot:spring-boot-gradle-plugin:$spring_boot_version"
+        classpath "com.moowork.gradle:gradle-node-plugin:1.1.0"
     }
 }
 
@@ -20,6 +22,7 @@ apply plugin: 'org.springframework.boot'
 
 apply plugin: "jacoco"
 apply plugin: 'findbugs'
+apply plugin: "com.moowork.node"
 
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
@@ -58,7 +61,28 @@ jar {
     version = '0.1.0'
 }
 
+node
+        {
+            version = "7.5.0"
+            download = true
+            nodeModulesDir = file("frontend")
+        }
 
+task buildClientDev(type: NpmTask, dependsOn: 'npmInstall'){
+            group = 'build'
+            description = 'Compile client side folder for development'
+            args = ['run','buildDev']
+        }
+task buildClient(type:NpmTask, dependsOn:'npmInstall') {
+            group = 'build'
+            description = "Compile client side folder for production"
+            args = ['run','build']
+        }
+task buildClientWatch(type: NpmTask, dependsOn: 'npmInstall'){
+            group = 'application'
+            description = "Build and watches the client side assets for rebuilding"
+            args = ['run','buildWatch']
+        }
 
 dependencies {
     testCompile(
@@ -69,30 +93,30 @@ dependencies {
     testCompile "org.mockito:mockito-core:1.+"
     testCompile(group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: '1.5.6.RELEASE') {
         exclude(module: 'commons-logging')
-        compile(
-                "org.springframework.boot:spring-boot-starter-web:$springbootVersion",
-                "org.springframework.boot:spring-boot-starter-data-jpa:$springbootVersion",
-                "org.springframework.boot:spring-boot-starter-data-rest:$springbootVersion",
-                "org.springframework.boot:spring-boot-starter-mobile:$springbootVersion",
-                "org.springframework.boot:spring-boot-starter-security:$springbootVersion",
-                "org.springframework.boot:spring-boot-starter-data-mongodb:$springbootVersion",
-                "org.springframework.boot:spring-boot-actuator:$springbootVersion",
-                "org.aspectj:aspectjrt:$aspectjVersion",
-                "org.aspectj:aspectjweaver:$aspectjVersion",
-                'org.postgresql:postgresql:9.4-1206-jdbc42',
-                'io.jsonwebtoken:jjwt:0.7.0',
-                'io.springfox:springfox-swagger2:2.7.0',
-                'io.springfox:springfox-swagger-ui:2.7.0',
-                'com.google.guava:guava:19.0',
-                'org.apache.commons:commons-lang3:3.5',
-                'org.flywaydb:flyway-core:3.2.1',
-                'javax.servlet:jstl:1.2',
-                'jstl:jstl:1.2',
-                'taglibs:standard:1.1.2',
-                'javax.el:el-api:2.2.1-b04'
-        )
-
     }
+    compile(
+            "org.springframework.boot:spring-boot-starter-web:$springbootVersion",
+            "org.springframework.boot:spring-boot-starter-data-jpa:$springbootVersion",
+            "org.springframework.boot:spring-boot-starter-data-rest:$springbootVersion",
+            "org.springframework.boot:spring-boot-starter-mobile:$springbootVersion",
+            "org.springframework.boot:spring-boot-starter-security:$springbootVersion",
+            "org.springframework.boot:spring-boot-starter-data-mongodb:$springbootVersion",
+            "org.springframework.boot:spring-boot-actuator:$springbootVersion",
+            "org.aspectj:aspectjrt:$aspectjVersion",
+            "org.aspectj:aspectjweaver:$aspectjVersion",
+            'org.postgresql:postgresql:9.4-1206-jdbc42',
+            'io.jsonwebtoken:jjwt:0.7.0',
+            'io.springfox:springfox-swagger2:2.7.0',
+            'io.springfox:springfox-swagger-ui:2.7.0',
+            'com.google.guava:guava:19.0',
+            'org.apache.commons:commons-lang3:3.5',
+            'org.flywaydb:flyway-core:3.2.1',
+            'javax.servlet:jstl:1.2',
+            'jstl:jstl:1.2',
+            'taglibs:standard:1.1.2',
+            'javax.el:el-api:2.2.1-b04'
+    )
+
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlin_version"
 
 
@@ -111,4 +135,7 @@ compileTestKotlin {
 }
 
 
+
+bootRun.dependsOn(buildClientDev)
+jar.dependsOn(buildClient)
 
