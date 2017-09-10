@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 import org.springframework.web.servlet.view.InternalResourceViewResolver
+import org.springframework.web.servlet.view.JstlView
 
 
 /**
@@ -14,7 +15,7 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver
  * @author amit
  */
 @Configuration
-@ComponentScan(basePackages = arrayOf("com.und"))
+//@ComponentScan(basePackages = arrayOf("com.und"))
 class SpringMVCConfig : WebMvcConfigurerAdapter() {
 
     @Bean
@@ -22,7 +23,7 @@ class SpringMVCConfig : WebMvcConfigurerAdapter() {
         val resolver  =  InternalResourceViewResolver();
         resolver.setPrefix("/WEB-INF/views/");
         resolver.setSuffix(".jsp");
-        //resolver.setViewClass(JstlView.class);
+        resolver.setViewClass(JstlView::class.java);
         return resolver;
     }
 
