@@ -1,6 +1,7 @@
-package com.und.security
+package com.und.security.utils
 
 import com.und.common.utils.DateUtils
+import com.und.security.model.UndUserDetails
 import io.jsonwebtoken.Claims
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.SignatureAlgorithm
@@ -126,6 +127,7 @@ class RestTokenUtil : Serializable {
     fun refreshToken(token: String, secret: String): String {
         val refreshedToken: String
         val claims = getClaimsFromToken(token, secret)
+        //FIXME NPE
         claims!!.put(CLAIM_KEY_CREATED, dateUtils.now())
         refreshedToken = doGenerateToken(claims, secret)
 

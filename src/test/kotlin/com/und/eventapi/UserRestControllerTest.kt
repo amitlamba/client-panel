@@ -1,15 +1,14 @@
 package com.und.eventapi
 
 import com.und.common.utils.DateUtils
-import com.und.security.RestTokenUtil
-import com.und.security.RestUserFactory
+import com.und.security.utils.RestTokenUtil
+import com.und.security.utils.RestUserFactory
 import com.und.security.model.Authority
 import com.und.security.model.AuthorityName
 import com.und.security.model.User
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.Matchers.any
 import org.mockito.Matchers.anyString
 import org.mockito.Mockito.`when`
 import org.springframework.beans.factory.annotation.Autowired
@@ -65,7 +64,6 @@ class UserRestControllerTest {
     fun getPersonsSuccessfullyWithUserRole() {
 
 
-
         val user = buildMockUser(AuthorityName.ROLE_ADMIN)
 
         val eventUser = RestUserFactory.create(user)
@@ -81,21 +79,23 @@ class UserRestControllerTest {
     private fun buildMockUser(authorityNames: AuthorityName): User {
 
         val user = User()
-        user.username = "username"
-        user.firstname = "firstname"
-        user.authorities = buildAuthorities(authorityNames)
-        user.enabled = java.lang.Boolean.TRUE
-        user.password = ""
-        user.lastname = ""
-        user.clientSecret = "secret"
-        user.email = ""
-        user.key = ""
-        user.lastPasswordResetDate = DateUtils().now()
-        user.lastPasswordResetDate = Date(System.currentTimeMillis() + 1000 * 1000)
+        with(user) {
+            username = "username"
+            firstname = "firstname"
+            authorities = buildAuthorities(authorityNames)
+            enabled = java.lang.Boolean.TRUE
+            password = ""
+            lastname = ""
+            clientSecret = "secret"
+            email = ""
+            key = ""
+            lastPasswordResetDate = DateUtils().now()
+            lastPasswordResetDate = Date(System.currentTimeMillis() + 1000 * 1000)
+        }
         return user
     }
 
-    private fun buildAuthorities(authorityNames: AuthorityName): List<Authority>? {
+    private fun buildAuthorities(authorityNames: AuthorityName): List<Authority> {
 
 
         val authority = Authority()
