@@ -1,8 +1,8 @@
 package com.und.config
 
 
-import com.und.security.RestAuthenticationEntryPoint
-import com.und.security.RestAuthenticationTokenFilter
+import com.und.security.filter.RestAuthenticationEntryPoint
+import com.und.security.filter.RestAuthenticationTokenFilter
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration

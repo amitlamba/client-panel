@@ -2,9 +2,9 @@ package com.und.eventapi
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.und.common.utils.DateUtils
-import com.und.security.RestAuthenticationRequest
-import com.und.security.RestTokenUtil
-import com.und.security.RestUserFactory
+import com.und.security.model.RestAuthenticationRequest
+import com.und.security.utils.RestTokenUtil
+import com.und.security.utils.RestUserFactory
 import com.und.security.model.Authority
 import com.und.security.model.AuthorityName
 import com.und.security.model.User
@@ -116,7 +116,7 @@ class AuthenticationRestControllerTest {
         return user
     }
 
-    private fun buildAuthorities(authorityNames: AuthorityName): List<Authority>? {
+    private fun buildAuthorities(authorityNames: AuthorityName): List<Authority> {
 
         val authority = Authority()
         authority.id = 0L
