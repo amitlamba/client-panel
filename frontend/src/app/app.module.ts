@@ -17,6 +17,7 @@ import { LoginComponent } from './login/index';
 import { HomeComponent } from './home/index';
 import { HeaderComponent } from './header/index';
 import { RegisterComponent } from './register/index';
+import { RegisterService } from './register/register.service';
 
  
 @NgModule({
@@ -39,7 +40,8 @@ import { RegisterComponent } from './register/index';
         UserService,
         fakeBackendProvider,
         MockBackend,
-        BaseRequestOptions
+        BaseRequestOptions,
+        RegisterService
     ],
     bootstrap: [AppComponent]
 })
