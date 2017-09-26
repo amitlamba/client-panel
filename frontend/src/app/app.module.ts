@@ -16,6 +16,8 @@ import { AuthenticationService, UserService } from './_services/index';
 import { LoginComponent } from './login/index';
 import { HomeComponent } from './home/index';
 import { HeaderComponent } from './header/index';
+import { RegisterComponent } from './register/index';
+import { RegisterService } from './register/register.service';
 
  
 @NgModule({
@@ -29,7 +31,8 @@ import { HeaderComponent } from './header/index';
         AppComponent,
         LoginComponent,
         HomeComponent,
-        HeaderComponent
+        HeaderComponent,
+        RegisterComponent
     ],
     providers: [
         AuthGuard,
@@ -37,7 +40,8 @@ import { HeaderComponent } from './header/index';
         UserService,
         fakeBackendProvider,
         MockBackend,
-        BaseRequestOptions
+        BaseRequestOptions,
+        RegisterService
     ],
     bootstrap: [AppComponent]
 })
