@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
  
 import { AuthenticationService } from '../_services/index';
 import { HeaderComponent } from '../header/index';
+import {Http, Response, RequestOptions, Headers} from '@angular/http';
  
 @Component({
     moduleId: module.id,
@@ -15,11 +16,19 @@ export class LoginComponent implements OnInit {
     error = '';
  
     constructor(
+        private http: Http,
         private router: Router,
         private authenticationService: AuthenticationService) { }
  
     ngOnInit() {
         // reset login status
+        this.http.get('https://userndot-a528b.firebaseio.com/code.json')
+        .subscribe(
+          (res:Response)=> {
+                    const data = res.json();
+                    console.log(data);
+                        }
+                );
         this.authenticationService.logout();
     }
  

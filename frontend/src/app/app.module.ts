@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule }    from '@angular/forms';
 import { HttpModule } from '@angular/http';
  
-// used to create fake backend
+ //used to create fake backend
 import { fakeBackendProvider } from './_helpers/index';
 import { MockBackend, MockConnection } from '@angular/http/testing';
 import { BaseRequestOptions } from '@angular/http';
@@ -17,7 +17,9 @@ import { LoginComponent } from './login/index';
 import { HomeComponent } from './home/index';
 import { HeaderComponent } from './header/index';
 import { RegisterComponent } from './register/index';
-import { RegisterService } from './register/register.service';
+import { DummyComponent } from './dummy/dummy.component';
+
+
 
  
 @NgModule({
@@ -32,16 +34,16 @@ import { RegisterService } from './register/register.service';
         LoginComponent,
         HomeComponent,
         HeaderComponent,
-        RegisterComponent
+        RegisterComponent,
+        DummyComponent
     ],
     providers: [
         AuthGuard,
         AuthenticationService,
         UserService,
-        fakeBackendProvider,
+       // fakeBackendProvider,
         MockBackend,
-        BaseRequestOptions,
-        RegisterService
+       // BaseRequestOptions
     ],
     bootstrap: [AppComponent]
 })
