@@ -31,14 +31,14 @@ tasks.withType(JavaCompile) {
 
 jacocoTestReport {
     reports {
-        xml.enabled false
-        csv.enabled false
+        xml.enabled
+        csv.enabled
         html.destination file("${buildDir}/reports/jacocoHtml")
     }
 }
 
 
-ext.kotlinVersion = '1.1.4-3'
+ext.kotlinVersion = '1.1.50'
 ext.springbootVersion = '1.5.6.RELEASE'
 ext.aspectjVersion = '1.8.7'
 ext.jsonPathVersion = '2.1.0'

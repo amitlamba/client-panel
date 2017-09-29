@@ -62,7 +62,7 @@ CREATE TABLE email_template
   email_template_subject CHARACTER VARYING(1000) NOT NULL,
   email_template_body    TEXT                    NOT NULL,
   parent_id              BIGINT,
-  from                   CHARACTER VARYING(200),
+  from_user                   CHARACTER VARYING(200),
   message_type           SMALLINT                NOT NULL,
   tags                   CHARACTER VARYING(200)
 );
