@@ -1,9 +1,6 @@
 package com.und.campaign.model
 
-import javax.persistence.Column
-import javax.persistence.Entity
-import javax.persistence.Id
-import javax.persistence.Table
+import javax.persistence.*
 import javax.validation.constraints.NotNull
 
 @Entity
@@ -12,6 +9,7 @@ class EmailCampaign {
 
     @Id
     @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     var id: Long? = null
 
     @Column(name = "client_id")
