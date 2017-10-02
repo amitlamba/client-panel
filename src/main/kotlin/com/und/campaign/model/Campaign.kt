@@ -1,14 +1,11 @@
 package com.und.campaign.model
 
-import javax.persistence.Column
-import javax.persistence.Entity
-import javax.persistence.Id
-import javax.persistence.Table
+import javax.persistence.*
 import javax.validation.constraints.NotNull
 
 @Entity
 @Table(name = "campaign")
-class Campaign {
+open class Campaign {
 
     @Id
     @Column(name = "id")
@@ -28,7 +25,8 @@ class Campaign {
 
     @Column(name = "frequency_type") //Repetitive or Onetime
     @NotNull
-    var frequencyType: Short? = null//TODO enum
+//    @Enumerated(EnumType.ORDINAL)
+    var frequencyType: Short? = null
 
     @Column(name = "campaign_status") //TODO enum
     @NotNull

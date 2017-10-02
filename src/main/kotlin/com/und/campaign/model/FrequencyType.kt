@@ -1,6 +1,6 @@
 package com.und.campaign.model
 
-enum class FrequencyType(val value: Int) {
+enum class FrequencyType(public val value: Int) {
     ONCE(1),
     REPETITIVE(2);
 
