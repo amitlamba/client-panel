@@ -74,7 +74,7 @@ class WebSecurityConfig : WebSecurityConfigurerAdapter() {
                         "/api/**",
                         "/v2/**",
                         "/login",
-                        "/hello"
+                        "/register"
                 ).permitAll()
                 .antMatchers("/auth/**").permitAll()
                 .anyRequest().authenticated()
