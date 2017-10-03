@@ -8,12 +8,9 @@ import { DummyComponent } from  './dummy/dummy.component';
 
 const appRoutes: Routes = [
     { path: 'login', component: LoginComponent },
-    { path: '', component: HomeComponent    },
+    { path: '', component: HomeComponent, canActivate: [AuthGuard]},
     {path: 'register', component: RegisterComponent },
-    {path: 'dummyJson', component: DummyComponent },
-
-    // otherwise redirect to home
-   // { path: '**', redirectTo: '' }
+    {path: 'dummyJson', component: DummyComponent }
 ];
 
 export const routing = RouterModule.forRoot(appRoutes);

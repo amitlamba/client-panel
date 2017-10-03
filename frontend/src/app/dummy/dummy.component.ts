@@ -8,9 +8,12 @@ import {Http, Response, RequestOptions, Headers} from '@angular/http';
 })
 export class DummyComponent implements OnInit {
 
-  constructor(private http: Http) { }
+  constructor(private http: Http) { 
+  
+  }
 
   ngOnInit() {
+    
   }
   getData(){
     console.log("yahan");

@@ -18,6 +18,7 @@ import { HomeComponent } from './home/index';
 import { HeaderComponent } from './header/index';
 import { RegisterComponent } from './register/index';
 import { DummyComponent } from './dummy/dummy.component';
+import { HttpClientModule } from '@angular/common/http';
 
 
 
@@ -27,7 +28,8 @@ import { DummyComponent } from './dummy/dummy.component';
         BrowserModule,
         FormsModule,
         HttpModule,
-        routing
+        routing,
+        HttpClientModule,
     ],
     declarations: [
         AppComponent,

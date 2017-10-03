@@ -11,13 +11,6 @@ export class AppComponent {
     
     constructor(private http:Http){}
     getData(){
-    this.http.get('https://userndot-a528b.firebaseio.com/code.json')
-    .subscribe(
-      (res:Response)=> {
-                const data = res.json();
-                console.log(data);
-                    }
-            );
  }
 
 }
