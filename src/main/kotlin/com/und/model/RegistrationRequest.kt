@@ -1,10 +1,27 @@
 package com.und.model
 
-import org.jetbrains.annotations.NotNull
+import org.hibernate.validator.constraints.Email
+import javax.validation.constraints.NotNull
+import javax.validation.constraints.Size
 
-data class RegistrationRequest(
+
+class RegistrationRequest() {
 
     @NotNull
-    val email : String,
-    val password : String
-)
+    @Email
+    lateinit var email : String
+
+    @NotNull
+    @Size(min=10, max=15)
+    lateinit var password : String
+
+    @NotNull
+    @Size(min=2, max=30)
+    lateinit var name : String
+
+    @NotNull
+    lateinit var country : String
+
+    @NotNull
+    lateinit var Address : String
+}

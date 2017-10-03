@@ -1,17 +1,15 @@
 package com.und.campaign.model
 
-import javax.persistence.Column
-import javax.persistence.Entity
-import javax.persistence.Id
-import javax.persistence.Table
+import javax.persistence.*
 import javax.validation.constraints.NotNull
 
 @Entity
 @Table(name = "campaign")
-class Campaign {
+open class Campaign {
 
     @Id
     @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     var id: Long? = null
 
     @Column(name = "client_id")
@@ -20,7 +18,7 @@ class Campaign {
 
     @Column(name = "campaign_type") //Email / SMS / Notifications etc
     @NotNull
-    var campaignType: Short? = null //TODO Could be a Enum if possible
+    var campaignType: Short? = null
 
     @Column(name = "segmentation_id") //TODO Foreign Key
     @NotNull
@@ -28,9 +26,25 @@ class Campaign {
 
     @Column(name = "frequency_type") //Repetitive or Onetime
     @NotNull
-    var frequencyType: Short? = null//TODO enum
+    var frequencyType: Short? = null
 
-    @Column(name = "campaign_status") //TODO enum
+    @Column(name = "campaign_status") //TODO enum EmailDeliveryStatus or what?
     @NotNull
     var campaignStatus: Short? = null
+
+    fun setCampaignType(campaignType: CampaignType) {
+        this.campaignType = campaignType.value
+    }
+
+    fun getCampaignType(): CampaignType {
+        return CampaignType.fromValue(this.campaignType!!)!!
+    }
+
+    fun setFrequencyType(frequencyType: FrequencyType) {
+        this.frequencyType = frequencyType.value
+    }
+
+    fun getFrequencyType(): FrequencyType {
+        return FrequencyType.fromValue(this.frequencyType!!)!!
+    }
 }

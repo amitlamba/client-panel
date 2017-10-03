@@ -38,9 +38,9 @@ class RestAuthenticationTokenFilter : OncePerRequestFilter() {
         // String authToken = header.substring(7);
         //String username = restTokenUtil.getUsernameFromToken(authToken);
 
-        logger.info("checking authentication for user " + usernameFromToken)
 
         if (usernameFromToken != null && SecurityContextHolder.getContext().authentication == null) {
+            logger.info("checking authentication for user " + usernameFromToken)
 
             // It is not compelling necessary to load the use details from the database. You could also store the information
             // in the token and read it from it. It's up to you ;)

@@ -93,4 +93,4 @@ CREATE TABLE campign_trigger
   campaign_id    BIGINT    NOT NULL REFERENCES campaign,
   trigger_time   TIMESTAMP NOT NULL,
   trigger_status SMALLINT  NOT NULL
-)
+);

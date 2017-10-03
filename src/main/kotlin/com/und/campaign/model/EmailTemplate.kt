@@ -40,5 +40,13 @@ class EmailTemplate {
 
     @Column(name = "tags")
     var tags: String? = null
+
+    fun setMessageType(emailMessageType: EmailMessageType) {
+        this.messageType = emailMessageType.value
+    }
+
+    fun getMessageType() : EmailMessageType {
+        return EmailMessageType.fromValue(this.messageType!!)!!
+    }
 }
 
