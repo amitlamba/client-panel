@@ -1,4 +1,4 @@
-package com.und.campaign.model
+package com.und.model
 
 enum class CampaignType(val value: Short) {
     EMAIL(1),

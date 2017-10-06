@@ -1,4 +1,4 @@
-package com.und.campaign.model
+package com.und.model
 
 import java.time.LocalDate
 import javax.persistence.*

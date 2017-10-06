@@ -1,4 +1,4 @@
-package com.und.campaign.model
+package com.und.model
 
 enum class FrequencyType(val value: Short) {
     ONCE(1),

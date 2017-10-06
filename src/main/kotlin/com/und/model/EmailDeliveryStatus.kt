@@ -1,4 +1,4 @@
-package com.und.campaign.model
+package com.und.model
 
 enum class EmailDeliveryStatus(val value: Short) {
     NOT_SCHEDULED(1),
