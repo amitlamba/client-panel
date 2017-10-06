@@ -6,6 +6,7 @@ export class RegisterService {
 
   constructor(private http: Http) { }
   getData() {
-    return this.http.get('https://userndot-a528b.firebaseio.com/code.json');
-  }
+    return this.http.get('https://userndot-a528b.firebaseio.com/code.json')
+   .map((res: Response) => res.json());
+   }
 }
