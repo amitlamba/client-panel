@@ -38,26 +38,32 @@ CREATE TABLE appuser
   phone                 VARCHAR(20),
   username              VARCHAR(50)                                         NOT NULL
     CONSTRAINT uk_418sr20kh207kb22viuyno1
-    UNIQUE
+    UNIQUE,
+  date_created          TIMESTAMP WITH TIME ZONE DEFAULT now(),
+  date_modified         TIMESTAMP WITH TIME ZONE DEFAULT now()
 );
 
 
 CREATE TABLE authority
 (
-  id   BIGSERIAL   NOT NULL
+  id            BIGSERIAL   NOT NULL
     CONSTRAINT authority_pkey
     PRIMARY KEY,
-  name VARCHAR(50) NOT NULL
+  name          VARCHAR(50) NOT NULL,
+  date_created  TIMESTAMP WITH TIME ZONE DEFAULT now(),
+  date_modified TIMESTAMP WITH TIME ZONE DEFAULT now()
 );
 
 CREATE TABLE user_authority
 (
-  user_id      BIGINT NOT NULL
+  user_id       BIGINT NOT NULL
     CONSTRAINT fkjk083dm06nfs1ycs8jeyjevdy
     REFERENCES appuser,
-  authority_id BIGINT NOT NULL
+  authority_id  BIGINT NOT NULL
     CONSTRAINT fkgvxjs381k6f48d5d2yi11uh89
-    REFERENCES authority
+    REFERENCES authority,
+  date_created  TIMESTAMP WITH TIME ZONE DEFAULT now(),
+  date_modified TIMESTAMP WITH TIME ZONE DEFAULT now()
 );
 
 INSERT INTO AUTHORITY (ID, NAME) VALUES (1, 'ROLE_USER');
@@ -75,7 +81,9 @@ CREATE TABLE email_template
   parent_id              BIGINT,
   from_user              CHARACTER VARYING(200),
   message_type           SMALLINT                NOT NULL,
-  tags                   CHARACTER VARYING(200)
+  tags                   CHARACTER VARYING(200),
+  date_created           TIMESTAMP WITH TIME ZONE DEFAULT now(),
+  date_modified          TIMESTAMP WITH TIME ZONE DEFAULT now()
 );
 
 CREATE TABLE campaign
@@ -87,7 +95,9 @@ CREATE TABLE campaign
   segmentation_id BIGINT    NOT NULL,
   frequency_type  SMALLINT  NOT NULL,
   schedule        TEXT      NOT NULL,
-  campaign_status SMALLINT  NOT NULL
+  campaign_status SMALLINT  NOT NULL,
+  date_created    TIMESTAMP WITH TIME ZONE DEFAULT now(),
+  date_modified   TIMESTAMP WITH TIME ZONE DEFAULT now()
 );
 
 CREATE TABLE email_campaign
@@ -96,7 +106,9 @@ CREATE TABLE email_campaign
   client_id         BIGINT    NOT NULL REFERENCES client,
   appuser_id        BIGINT    NOT NULL REFERENCES appuser,
   campaign_id       BIGINT    NOT NULL REFERENCES campaign,
-  email_template_id BIGINT    NOT NULL REFERENCES email_template
+  email_template_id BIGINT    NOT NULL REFERENCES email_template,
+  date_created      TIMESTAMP WITH TIME ZONE DEFAULT now(),
+  date_modified     TIMESTAMP WITH TIME ZONE DEFAULT now()
 );
 
 CREATE TABLE campign_trigger
@@ -106,5 +118,7 @@ CREATE TABLE campign_trigger
   appuser_id     BIGINT    NOT NULL REFERENCES appuser,
   campaign_id    BIGINT    NOT NULL REFERENCES campaign,
   trigger_time   TIMESTAMP NOT NULL,
-  trigger_status SMALLINT  NOT NULL
+  trigger_status SMALLINT  NOT NULL,
+  date_created   TIMESTAMP WITH TIME ZONE DEFAULT now(),
+  date_modified  TIMESTAMP WITH TIME ZONE DEFAULT now()
 );
