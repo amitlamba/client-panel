@@ -1,5 +1,7 @@
 package com.und.model
 
+import com.fasterxml.jackson.annotation.JsonIgnore
+import org.hibernate.validator.constraints.Email
 import javax.persistence.*
 import javax.validation.constraints.NotNull
 import javax.validation.constraints.Null
@@ -29,11 +31,13 @@ class EmailTemplate {
     @Null
     var parentID: Long? = null
 
-    @Column(name = "from")
+    @Email
+    @Column(name = "from_user")
     @NotNull
     lateinit var from: String
 
     //TODO See how to use Enum here
+    @get:JsonIgnore
     @Column(name = "message_type") //Promotional or Transactional
     @NotNull
     var messageType: Short? = null
@@ -45,7 +49,7 @@ class EmailTemplate {
         this.messageType = emailMessageType.value
     }
 
-    fun getMessageType() : EmailMessageType {
+    fun getMessageType(): EmailMessageType {
         return EmailMessageType.fromValue(this.messageType!!)!!
     }
 }
