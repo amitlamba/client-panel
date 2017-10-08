@@ -77,6 +77,7 @@ class WebSecurityConfig : WebSecurityConfigurerAdapter() {
                         "/register"
                 ).permitAll()
                 .antMatchers("/auth/**").permitAll()
+                .antMatchers("/register/**").permitAll()
                 .anyRequest().authenticated()
 
         // Custom JWT based security filter

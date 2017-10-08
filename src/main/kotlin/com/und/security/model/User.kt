@@ -30,6 +30,15 @@ class User {
     @SequenceGenerator(name = "user_seq", sequenceName = "user_seq", allocationSize = 1)
     var id: Long? = null
 
+    @Column(name = "CLIENT_ID", length = 50)
+    @NotNull
+    @Size(min = 4, max = 50)
+    var clientId: Long? = null
+
+    @Column(name = "user_type")
+    @NotNull
+    var userType :Int = 1
+
     @Column(name = "USERNAME", length = 50, unique = true)
     @NotNull
     @Size(min = 4, max = 50)
@@ -70,10 +79,13 @@ class User {
     @Size(min = 4, max = 50)
     lateinit var clientSecret: String
 
-
     @Column(name = "KEY", length = 50)
     @Size(min = 4, max = 50)
     var key: String? = null
+
+    @Column(name = "PHONE", length = 15)
+    @Size(min = 10, max = 15)
+    var mobile: String? = null
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "USER_AUTHORITY", joinColumns = arrayOf(JoinColumn(name = "USER_ID", referencedColumnName = "ID")), inverseJoinColumns = arrayOf(JoinColumn(name = "AUTHORITY_ID", referencedColumnName = "ID")))

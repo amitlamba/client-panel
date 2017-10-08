@@ -14,6 +14,7 @@ class RestUserFactory {
         fun create(user: User) =
                 UndUserDetails(
                         id = user.id,
+                        clientId = user.clientId,
                         username = user.username,
                         firstname = user.firstname,
                         lastname = user.lastname,
@@ -24,6 +25,8 @@ class RestUserFactory {
                         lastPasswordResetDate = user.lastPasswordResetDate,
                         secret = user.clientSecret,
                         key = user.key
+
+
                 )
 
         private fun mapToGrantedAuthorities(authorities: List<Authority>): List<GrantedAuthority> {

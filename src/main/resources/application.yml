@@ -16,7 +16,7 @@ spring:
           suffix: .jsp
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/und2
+    url: jdbc:postgresql://localhost:5432/und
     username: postgres
     password:  postgres
 

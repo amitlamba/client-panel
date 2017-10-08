@@ -15,6 +15,8 @@ class UndUserDetails(
         @get:JsonIgnore
         val id: Long?,
 
+        val clientId : Long?,
+
         private val username: String,
 
         val firstname: String?="",

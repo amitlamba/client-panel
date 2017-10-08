@@ -8,17 +8,12 @@ import org.springframework.context.i18n.LocaleContextHolder
 import org.springframework.http.HttpStatus
 import org.springframework.validation.FieldError
 import org.springframework.web.bind.MethodArgumentNotValidException
-import org.springframework.web.bind.annotation.ControllerAdvice
-import org.springframework.web.bind.annotation.ExceptionHandler
-import org.springframework.web.bind.annotation.ResponseBody
-import org.springframework.web.bind.annotation.ResponseStatus
+import org.springframework.web.bind.annotation.*
+import java.lang.Exception
+import javax.validation.ConstraintViolationException
 
 
-
-/**
- * @author Petri Kainulainen
- */
-@ControllerAdvice
+@RestController
 class RestErrorHandler {
 
     companion object {
@@ -28,6 +23,15 @@ class RestErrorHandler {
 
     @Autowired
     lateinit var messageSource: MessageSource
+
+    @ExceptionHandler(Exception::class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ResponseBody
+    fun processOtherError(ex: MethodArgumentNotValidException) {
+        logger.debug("Handling INTERNAL SEREVR error")
+        logger.error("error occured",ex)
+
+    }
 
 
     @ExceptionHandler(MethodArgumentNotValidException::class)
@@ -55,6 +59,7 @@ class RestErrorHandler {
     }
 
     private fun resolveLocalizedErrorMessage(fieldError: FieldError): String {
+        //TODO FIXME error message to be pciked from localised files
         val currentLocale = LocaleContextHolder.getLocale()
         var localizedErrorMessage = messageSource.getMessage(fieldError, currentLocale)
 
