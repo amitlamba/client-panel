@@ -14,8 +14,8 @@ class User {
 
     @Id
     @Column(name = "ID")
-    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "user_seq")
-    @SequenceGenerator(name = "user_seq", sequenceName = "user_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "appuser_id_seq")
+    @SequenceGenerator(name = "appuser_id_seq", sequenceName = "appuser_id_seq", allocationSize = 1)
     var id: Long? = null
 
     @ManyToOne(fetch=FetchType.LAZY)

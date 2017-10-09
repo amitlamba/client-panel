@@ -9,10 +9,7 @@ import org.apache.commons.logging.LogFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Controller
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestMethod
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 import javax.validation.Valid
 
 @RestController
@@ -24,7 +21,7 @@ class RegisterController {
     }
 
     @Autowired
-    lateinit var registrationService:RegistrationService
+    lateinit var registrationService: RegistrationService
 
     @RequestMapping(value = "/register", method = arrayOf(RequestMethod.GET))
     fun registerForm() {
@@ -35,6 +32,18 @@ class RegisterController {
     fun register(@Valid @RequestBody request: RegistrationRequest) {
         registrationService.validate(request)
         registrationService.register(request)
+
+    }
+
+    @RequestMapping(value = "/verifyemail/{code}", method = arrayOf(RequestMethod.GET))
+    fun verifyEmail(@PathVariable code: String) {
+        registrationService.verifyEmail(code)
+
+    }
+
+    @RequestMapping(value = "/newverifyemail/{email}", method = arrayOf(RequestMethod.GET))
+    fun newverifyEmail(@PathVariable email: String) {
+        registrationService.sendVerificationEmail(email)
 
     }
 }

@@ -1,7 +1,11 @@
 buildscript {
     ext.kotlin_version = '1.1.50'
-    ext.spring_boot_version = '1.5.6.RELEASE'
+    ext.spring_boot_version = '2.0.0.M3'
     repositories {
+        mavenCentral()
+        maven { url 'https://repo.spring.io/libs-snapshot' }
+        maven { url "https://repo.spring.io/snapshot" }
+        maven { url "https://repo.spring.io/milestone" }
         jcenter()
     }
     dependencies {
@@ -39,7 +43,7 @@ jacocoTestReport {
 
 
 ext.kotlinVersion = '1.1.50'
-ext.springbootVersion = '1.5.7.RELEASE'
+ext.springbootVersion = '2.0.0.M4'
 ext.aspectjVersion = '1.8.7'
 ext.jsonPathVersion = '2.1.0'
 
@@ -91,7 +95,7 @@ dependencies {
 
     )
     testCompile "org.mockito:mockito-core:1.+"
-    testCompile(group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: '1.5.6.RELEASE') {
+    testCompile(group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: '2.0.0.M4') {
         exclude(module: 'commons-logging')
     }
     compile(
@@ -114,10 +118,12 @@ dependencies {
             'javax.servlet:jstl:1.2',
             'jstl:jstl:1.2',
             'taglibs:standard:1.1.2',
-            'javax.el:el-api:2.2.1-b04'
+            'javax.el:el-api:2.2.1-b04',
+
     )
+    compile "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion"
     compile "org.springframework.boot:spring-boot-devtools:$springbootVersion"
-    compile("org.hibernate:hibernate-validator")
+    //compile("org.hibernate:hibernate-validator")
 
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlin_version"
 

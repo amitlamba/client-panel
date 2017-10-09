@@ -13,8 +13,8 @@ class Client {
 
     @Id
     @Column(name = "ID")
-    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "client_seq")
-    @SequenceGenerator(name = "client_seq", sequenceName = "client_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "client_id_seq")
+    @SequenceGenerator(name = "client_id_seq", sequenceName = "client_id_seq", allocationSize = 1)
     var id: Long? = null
 
     //TODO CREATE STATE COLUMN

@@ -75,4 +75,12 @@ class RegistrationService {
         return client
     }
 
+    fun verifyEmail(code: String) {
+
+    }
+
+    fun sendVerificationEmail(email: String) {
+
+    }
+
 }
