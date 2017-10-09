@@ -5,6 +5,7 @@ import java.util.*
 import javax.persistence.*
 import javax.validation.constraints.NotNull
 import javax.validation.constraints.Size
+import kotlin.collections.ArrayList
 
 @Entity
 @Table(name = "CLIENT")
@@ -23,7 +24,7 @@ class Client {
     @Size(min = 4, max = 50)
     lateinit var name: String
 
-    @Column(name = "EMAIL", length = 50)
+    @Column(name = "EMAIL", length = 50, unique = true)
     @NotNull
     @Size(min = 4, max = 50)
     lateinit var email: String
@@ -54,6 +55,20 @@ class Client {
     @NotNull
     lateinit var dateModified: Date
 
+    @OneToMany(mappedBy = "client",
+            cascade = arrayOf(CascadeType.ALL),
+            orphanRemoval = true)
+    var users = mutableListOf<User>()
 
+    fun addUser(user: User) {
+        users.add(user)
+        user.client = this
+    }
+
+    fun removeUser(user: User) {
+        users.remove( user)
+        user.client = null
+
+    }
 
 }

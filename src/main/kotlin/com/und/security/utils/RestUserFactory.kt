@@ -14,7 +14,7 @@ class RestUserFactory {
         fun create(user: User) =
                 UndUserDetails(
                         id = user.id,
-                        clientId = user.clientId,
+                        clientId = user.client?.id,
                         username = user.username,
                         firstname = user.firstname,
                         lastname = user.lastname,

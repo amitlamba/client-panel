@@ -33,20 +33,22 @@ class RegistrationService {
     }
 
 
-    fun register(registrationRequest: RegistrationRequest): User {
-        val client: Client = Client()
-        with(client) {
-            email = registrationRequest.email
-            phone = registrationRequest.phone
-            name = registrationRequest.name
-            //TODO add state
-        }
-        val clientPersisted = clientRepository.save(client)
+    fun register(registrationRequest: RegistrationRequest): Client {
+        //TODO change response type to wrap errors and success
+        val client = buildClient(registrationRequest)
+        val user = buildUser(registrationRequest)
+        client.addUser(user)
+        //TODO add one more user of type event
 
+        return clientRepository.save(client)
+        //TODO send activation email
+
+    }
+
+    private fun buildUser(registrationRequest: RegistrationRequest): User {
         val user: User = User()
         with(user) {
             email = registrationRequest.email
-            clientId = clientPersisted.id
             password = passwordEncoder.encode(registrationRequest.password)
             firstname = registrationRequest.name
             lastname = registrationRequest.name
@@ -59,8 +61,18 @@ class RegistrationService {
             clientSecret = UUID.randomUUID().toString()
 
         }
-        return userRepository.save(user)
+        return user
+    }
 
+    private fun buildClient(registrationRequest: RegistrationRequest): Client {
+        val client: Client = Client()
+        with(client) {
+            email = registrationRequest.email
+            phone = registrationRequest.phone
+            name = registrationRequest.name
+            //TODO add state
+        }
+        return client
     }
 
 }
