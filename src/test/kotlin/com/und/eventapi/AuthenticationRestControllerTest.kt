@@ -95,7 +95,7 @@ class AuthenticationRestControllerTest {
         `when`<Boolean>(this.restTokenUtil.canTokenBeRefreshed(user.key!!
                 , user.lastPasswordResetDate, user.clientSecret)).thenReturn(true)
 
-        this.mvc!!.perform(get("/refresh").header(tokenHeader, user.key))
+        this.mvc!!.perform(get("/refresh").header(tokenHeader, user.key).header(usernameHeader, user.username))
                 .andExpect(status().is2xxSuccessful)
     }
 
@@ -142,7 +142,7 @@ class AuthenticationRestControllerTest {
                 , user.lastPasswordResetDate, user.clientSecret)).thenReturn(true)
 
         this.mvc!!.perform(get("/refresh")
-                .header(tokenHeader, user.key)
+                .header(tokenHeader, user.key).header(usernameHeader, user.username)
         )
                 .andExpect(status().is2xxSuccessful)
     }

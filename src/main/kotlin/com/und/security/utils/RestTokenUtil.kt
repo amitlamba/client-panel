@@ -25,7 +25,7 @@ class RestTokenUtil : Serializable {
     fun getUsernameFromToken(token: String, secret: String): String? {
         val username: String?
         val claims = getClaimsFromToken(token, secret)
-        username = claims!!.subject
+        username = claims.subject
         return username
     }
 
@@ -41,7 +41,7 @@ class RestTokenUtil : Serializable {
         var expiration: Date?
         try {
             val claims = getClaimsFromToken(token, secret)
-            expiration = claims!!.expiration
+            expiration = claims.expiration
         } catch (e: Exception) {
             expiration = null
         }
@@ -53,7 +53,7 @@ class RestTokenUtil : Serializable {
         var audience: String?
         try {
             val claims = getClaimsFromToken(token, secret)
-            audience = claims!![CLAIM_KEY_AUDIENCE] as String
+            audience = claims[CLAIM_KEY_AUDIENCE] as String
         } catch (e: Exception) {
             audience = null
         }
@@ -61,8 +61,8 @@ class RestTokenUtil : Serializable {
         return audience
     }
 
-    private fun getClaimsFromToken(token: String, secret: String): Claims? {
-        val claims: Claims? =
+    private fun getClaimsFromToken(token: String, secret: String): Claims {
+        val claims =
                 Jwts.parser()
                         .setSigningKey(secret)
                         .parseClaimsJws(token)
@@ -127,8 +127,7 @@ class RestTokenUtil : Serializable {
     fun refreshToken(token: String, secret: String): String {
         val refreshedToken: String
         val claims = getClaimsFromToken(token, secret)
-        //FIXME NPE
-        claims!!.put(CLAIM_KEY_CREATED, dateUtils.now())
+        claims.put(CLAIM_KEY_CREATED, dateUtils.now())
         refreshedToken = doGenerateToken(claims, secret)
 
         return refreshedToken

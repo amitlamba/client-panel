@@ -65,7 +65,7 @@ class UndUserDetails(
         return password
     }
 
-    override fun getAuthorities(): Collection<GrantedAuthority>? {
+    override fun getAuthorities(): Collection<GrantedAuthority> {
         return authorities
     }
 

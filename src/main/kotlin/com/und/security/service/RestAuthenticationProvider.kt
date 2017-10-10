@@ -1,6 +1,8 @@
 package com.und.security.service
 
 import com.und.security.model.RestAuthenticationToken
+import com.und.security.model.UndUserDetails
+import com.und.security.model.User
 import com.und.security.repository.UserRepository
 import com.und.security.utils.RestTokenUtil
 import com.und.security.utils.RestUserFactory
@@ -28,12 +30,14 @@ class RestAuthenticationProvider : AuthenticationProvider {
         val token = authentication as RestAuthenticationToken
         val user = RestUserFactory.create(userRepository.findByUsername(token.getName())!!)
 
-        //FIXME NPE
-        if (token.key.equals(user.key)) {
-            if (restTokenUtil.validateToken(user.key!!, user)) {
-                return RestAuthenticationToken(user, user.password!!, user.authorities!!, token.key)
+
+            if (token.key.equals(user.key)) {
+                if (user.key!=null && restTokenUtil.validateToken(user.key, user)) {
+                    //FIXME hack for preventing null
+                    val password = if(user.password !=null) user.password.toString() else ""
+                    return RestAuthenticationToken(user, password, user.authorities, token.key)
+                }
             }
-        }
 
 
         throw BadCredentialsException("The credentials are invalid")
@@ -42,6 +46,11 @@ class RestAuthenticationProvider : AuthenticationProvider {
 
     override fun supports(authentication: Class<*>): Boolean {
         return RestAuthenticationToken::class.java == authentication
+    }
+
+    private fun isEmptyCredntials(user: UndUserDetails): Boolean {
+        return user.key == null || user.password == null
+
     }
 
 }
