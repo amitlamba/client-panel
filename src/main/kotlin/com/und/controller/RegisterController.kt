@@ -1,6 +1,7 @@
 package com.und.controller
 
 import com.und.common.utils.loggerFor
+import com.und.exception.UndBusinessValidationException
 import com.und.model.RegistrationRequest
 import com.und.security.model.User
 import com.und.security.repository.UserRepository
@@ -30,9 +31,12 @@ class RegisterController {
 
     @RequestMapping(value = "/register", method = arrayOf(RequestMethod.POST))
     fun register(@Valid @RequestBody request: RegistrationRequest) {
-        registrationService.validate(request)
-        registrationService.register(request)
-
+        val errors = registrationService.validate(request)
+        if(errors.getFieldErrors().isNotEmpty()) {
+            throw  UndBusinessValidationException(errors)
+        }
+        val client = registrationService.register(request)
+        registrationService.sendVerificationEmail(client.email)
     }
 
     @RequestMapping(value = "/verifyemail/{code}", method = arrayOf(RequestMethod.GET))
@@ -41,7 +45,7 @@ class RegisterController {
 
     }
 
-    @RequestMapping(value = "/newverifyemail/{email}", method = arrayOf(RequestMethod.GET))
+    @RequestMapping(value = "/sendvfnmail/{email}", method = arrayOf(RequestMethod.GET))
     fun newverifyEmail(@PathVariable email: String) {
         registrationService.sendVerificationEmail(email)
 

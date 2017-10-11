@@ -1,10 +1,8 @@
-package com.und.model
+package com.und.model.validation
 
 import java.util.ArrayList
 
-/**
- * @author Petri Kainulainen
- */
+
 class ValidationError {
 
     private val fieldErrors = ArrayList<FieldError>()
