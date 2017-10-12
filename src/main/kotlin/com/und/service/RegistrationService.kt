@@ -60,15 +60,21 @@ class RegistrationService {
             password = passwordEncoder.encode(registrationRequest.password)
             firstname = registrationRequest.name
             lastname = registrationRequest.name
-            username = registrationRequest.email
+
             mobile = registrationRequest.phone
             enabled = false
             lastPasswordResetDate = DateUtils().now()
             this.userType = userType
             //FIXME handle authorities for default types
-            when(userType) {
-                1 -> {authorities = arrayListOf()}
-                2 -> {authorities = arrayListOf()}
+            when (userType) {
+                1 -> {
+                    username = "admin_${registrationRequest.email}"
+                    authorities = arrayListOf()
+                }
+                2 -> {
+                    username = "event_${registrationRequest.email}"
+                    authorities = arrayListOf()
+                }
             }
             clientSecret = UUID.randomUUID().toString()
 
