@@ -1,12 +1,15 @@
 package com.und.service
 
 import com.und.common.utils.DateUtils
+import com.und.common.utils.loggerFor
+import com.und.exception.UndBusinessValidationException
+import com.und.model.ClientVerification
 import com.und.model.RegistrationRequest
 import com.und.model.validation.ValidationError
 import com.und.repository.ClientRepository
-import com.und.security.model.Authority
-import com.und.security.model.AuthorityName
+import com.und.repository.ClientVerificationRepository
 import com.und.security.model.Client
+import com.und.security.model.EmailMessage
 import com.und.security.model.User
 import com.und.security.repository.UserRepository
 import org.springframework.beans.factory.annotation.Autowired
@@ -19,6 +22,10 @@ import java.util.*
 @Transactional
 class RegistrationService {
 
+    companion object {
+
+        protected val logger = loggerFor(RegistrationService::class.java)
+    }
 
     @Autowired
     lateinit var passwordEncoder: BCryptPasswordEncoder
@@ -28,6 +35,13 @@ class RegistrationService {
 
     @Autowired
     lateinit var clientRepository: ClientRepository
+
+    @Autowired
+    lateinit var emailService: EmailService
+
+    @Autowired
+    lateinit var clientVerificationRepository: ClientVerificationRepository
+
 
     /**
      * validation should be part of transaction different from commit as it will
@@ -49,12 +63,13 @@ class RegistrationService {
         val eventUser = buildUser(registrationRequest, 2)
         client.addUser(adminUser)
         client.addUser(eventUser)
+        client.clientVerification = buildClientVerificationEmail()
         return clientRepository.save(client)
 
     }
 
     private fun buildUser(registrationRequest: RegistrationRequest, userType: Int): User {
-        val user: User = User()
+        val user = User()
         with(user) {
             email = registrationRequest.email
             password = passwordEncoder.encode(registrationRequest.password)
@@ -83,7 +98,7 @@ class RegistrationService {
     }
 
     private fun buildClient(registrationRequest: RegistrationRequest): Client {
-        val client: Client = Client()
+        val client = Client()
         with(client) {
             email = registrationRequest.email
             phone = registrationRequest.phone
@@ -93,21 +108,81 @@ class RegistrationService {
         return client
     }
 
-    fun verifyEmail(code: String) {
-        //TODO
-        //validate link exists
-        //validate link has not expired, and not already used
-        //update tables and verify client if everything is valid
+    fun buildClientVerificationEmail(): ClientVerification {
+        val clientVerification = ClientVerification()
+        with(clientVerification) {
+            emailCode = UUID.randomUUID().toString()
+            //this.client = client
+            this.emailCodeDate = DateUtils().now()
+        }
+        return clientVerification
+    }
+
+    fun verifyEmail(email: String, code: String) {
+        val client = clientRepository.findByEmail(email)
+        if (client != null) {
+            val codeMatch = client.clientVerification.emailCode == code
+            val expired = client.clientVerification.emailCodeDate.before(DateUtils().now())
+            //FIXME convert exception to message wrapper
+            when {
+                codeMatch && !expired -> markAccountVerified(client)
+                !codeMatch || expired -> {
+                    val validationError = ValidationError()
+                    validationError.addFieldError("emailVerification",
+                            "Invalid Link, link has expired please request for new email")
+                    throw UndBusinessValidationException(validationError)
+                }
+
+            }
+
+        }
 
     }
 
-    fun sendVerificationEmail(email: String) {
-        //TODO
-        val url = UUID.randomUUID().toString()
-        //generate random url
-        //persist url in verification table
-        //send email
+    private fun markAccountVerified(client: Client) {
+        client.emailVerified = true
+        client.users.forEach { user -> user.enabled = true }
+        clientRepository.save(client)
+    }
+
+    fun sendVerificationEmail(client: Client) {
+        //FIXME performance issue fetch only verification data with email
+        //TODO that add email in verification table, what will happen if email updates?
+        val user = client.users.filter { it.userType == 1 && it.email == client.email }.first()
+        val message = EmailMessage(
+                subject = "Welcome To UND !!!",
+                from = "",
+                to = "",
+                body = emailService.buildMesageBody(user, client.clientVerification.emailCode)
+
+        )
+        emailService.sendEmail(message)
+        logger.debug("email sent succesfully")
 
     }
+
+    fun sendReVerificationEmail(email: String) {
+        val client = clientRepository.findByEmail(email)
+        if (client == null) {
+            logger.error("No user registered with email ${email}")
+            logger.error("email $email is already verified")
+            val validationError = ValidationError()
+            validationError.addFieldError("Email Verification",
+                    "This email is not registered , please register first.")
+            throw UndBusinessValidationException(validationError)
+        }
+        if (client.emailVerified) {
+            logger.error("email $email is already verified")
+            val validationError = ValidationError()
+            validationError.addFieldError("Email Verification",
+                    "This email has already been verified")
+            throw UndBusinessValidationException(validationError)
+
+        }
+        client.clientVerification = buildClientVerificationEmail()
+        clientRepository.save(client)
+        sendVerificationEmail(client)
+    }
+
 
 }

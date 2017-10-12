@@ -58,18 +58,16 @@ class RestErrorHandler {
 
     private fun processFieldErrors(fieldErrors: List<FieldError>): ValidationError {
         val dto = ValidationError()
-
         for (fieldError in fieldErrors) {
             val localizedErrorMessage = resolveLocalizedErrorMessage(fieldError)
             logger.debug("Adding error message: {} to field: {}", localizedErrorMessage, fieldError.field)
             dto.addFieldError(fieldError.field, localizedErrorMessage)
         }
-
         return dto
     }
 
     private fun resolveLocalizedErrorMessage(fieldError: FieldError): String {
-        //TODO FIXME error message to be pciked from localised files
+        //TODO FIXME error message to be picked from localised files
         val currentLocale = LocaleContextHolder.getLocale()
         var localizedErrorMessage = messageSource.getMessage(fieldError, currentLocale)
 

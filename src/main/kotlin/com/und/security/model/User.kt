@@ -26,9 +26,9 @@ class User {
     @NotNull
     var userType :Int = 1
 
-    @Column(name = "USERNAME", length = 50, unique = true)
+    @Column(name = "USERNAME", length = 255, unique = true)
     @NotNull
-    @Size(min = 4, max = 50)
+    @Size(min = 4, max = 255)
     lateinit var username: String
 
     @Column(name = "PASSWORD", length = 100)
@@ -36,19 +36,19 @@ class User {
     @Size(min = 4, max = 100)
     lateinit var password: String
 
-    @Column(name = "FIRSTNAME", length = 50)
+    @Column(name = "FIRSTNAME", length = 255)
     @NotNull
-    @Size(min = 4, max = 50)
+    @Size(min = 4, max = 255)
     lateinit var firstname: String
 
-    @Column(name = "LASTNAME", length = 50)
+    @Column(name = "LASTNAME", length = 255)
     @NotNull
-    @Size(min = 4, max = 50)
+    @Size(min = 4, max = 255)
     lateinit var lastname: String
 
-    @Column(name = "EMAIL", length = 50)
+    @Column(name = "EMAIL", length = 255)
     @NotNull
-    @Size(min = 4, max = 50)
+    @Size(min = 4, max = 255)
     lateinit var email: String
 
     @Column(name = "ENABLED")
@@ -60,13 +60,13 @@ class User {
     @NotNull
     lateinit var lastPasswordResetDate: Date
 
-    @Column(name = "SECRET", length = 50)
+    @Column(name = "SECRET", length = 255)
     @NotNull
     @ColumnDefault("'mySecret'")
     @Size(min = 4, max = 50)
     lateinit var clientSecret: String
 
-    @Column(name = "KEY", length = 50)
+    @Column(name = "KEY", length = 255)
     @Size(min = 4, max = 50)
     var key: String? = null
 

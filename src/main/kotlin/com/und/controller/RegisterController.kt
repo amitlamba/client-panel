@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*
 import javax.validation.Valid
 
 @RestController
+@RequestMapping("/register")
 class RegisterController {
 
     companion object {
@@ -24,30 +25,31 @@ class RegisterController {
     @Autowired
     lateinit var registrationService: RegistrationService
 
-    @RequestMapping(value = "/register", method = arrayOf(RequestMethod.GET))
+    @RequestMapping( method = arrayOf(RequestMethod.GET))
     fun registerForm() {
 
     }
 
-    @RequestMapping(value = "/register", method = arrayOf(RequestMethod.POST))
+    @RequestMapping( method = arrayOf(RequestMethod.POST))
     fun register(@Valid @RequestBody request: RegistrationRequest) {
         val errors = registrationService.validate(request)
-        if(errors.getFieldErrors().isNotEmpty()) {
+        if (errors.getFieldErrors().isNotEmpty()) {
+            logger.error("business validation failure while registering ${request.email} , with errors ${errors.getFieldErrors()}")
             throw  UndBusinessValidationException(errors)
         }
         val client = registrationService.register(request)
-        registrationService.sendVerificationEmail(client.email)
+        registrationService.sendVerificationEmail(client)
     }
 
-    @RequestMapping(value = "/verifyemail/{code}", method = arrayOf(RequestMethod.GET))
-    fun verifyEmail(@PathVariable code: String) {
-        registrationService.verifyEmail(code)
+    @RequestMapping(value = "/verifyemail/{email}/{code}", method = arrayOf(RequestMethod.GET))
+    fun verifyEmail(@PathVariable email: String, @PathVariable code: String) {
+        registrationService.verifyEmail(email,code)
 
     }
 
     @RequestMapping(value = "/sendvfnmail/{email}", method = arrayOf(RequestMethod.GET))
     fun newverifyEmail(@PathVariable email: String) {
-        registrationService.sendVerificationEmail(email)
+        registrationService.sendReVerificationEmail(email)
 
     }
 }
