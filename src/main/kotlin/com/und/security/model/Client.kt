@@ -1,5 +1,6 @@
 package com.und.security.model
 
+import com.und.model.ClientVerification
 import org.hibernate.annotations.ColumnDefault
 import java.util.*
 import javax.persistence.*
@@ -19,14 +20,14 @@ class Client {
 
     //TODO CREATE STATE COLUMN
 
-    @Column(name = "NAME", length = 50)
+    @Column(name = "NAME", length = 255)
     @NotNull
-    @Size(min = 4, max = 50)
+    @Size(min = 4, max = 255)
     lateinit var name: String
 
-    @Column(name = "EMAIL", length = 50, unique = true)
+    @Column(name = "EMAIL", length = 255, unique = true)
     @NotNull
-    @Size(min = 4, max = 50)
+    @Size(min = 4, max = 255)
     lateinit var email: String
 
     @Column(name = "PHONE", length = 50)
@@ -55,6 +56,15 @@ class Client {
     @NotNull
     lateinit var dateModified: Date
 
+    @OneToOne(mappedBy = "client",
+            cascade = arrayOf(CascadeType.ALL),
+            orphanRemoval = true)
+     var clientVerification: ClientVerification = ClientVerification()
+      set(value)  {
+          field = value
+          field.client = this
+      }
+
     @OneToMany(mappedBy = "client",
             cascade = arrayOf(CascadeType.ALL),
             orphanRemoval = true)
@@ -66,7 +76,7 @@ class Client {
     }
 
     fun removeUser(user: User) {
-        users.remove( user)
+        users.remove(user)
         user.client = null
 
     }

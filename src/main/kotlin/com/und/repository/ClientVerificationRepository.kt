@@ -7,5 +7,6 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface ClientVerificationRepository : JpaRepository<ClientVerification, Long> {
+    fun findByEmailCodeAndClient(code: String, clientId: Long?): ClientVerification?
     //fun findByClientId(name: String): ClientVerification?
 }
