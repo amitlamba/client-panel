@@ -12,17 +12,16 @@ class EmailTemplateService {
     lateinit private var emailTemplateRepository: EmailTemplateRepository
 
     fun getDefaultEmailTemplates(): List<EmailTemplate> {
-        var emailTemplates = emailTemplateRepository.findByClientID()
+        val emailTemplates = emailTemplateRepository.findByClientID()
         return emailTemplates
     }
 
     fun getClientEmailTemplates(clientId: Long, emailTemplateId: Long? = null): List<EmailTemplate> {
-        var emailTemplates = emailTemplateRepository.findByClientID(clientId)
+        val emailTemplates = emailTemplateRepository.findByClientID(clientId)
         return emailTemplates
     }
 
     fun saveEmailTemplate(emailTemplate: EmailTemplate): Long {
-        var emailTemplateId: Long = 0
         val save = emailTemplateRepository.save(emailTemplate)
         return save.id!!
     }

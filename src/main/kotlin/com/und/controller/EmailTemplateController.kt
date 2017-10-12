@@ -1,5 +1,6 @@
 package com.und.controller
 
+import com.und.common.utils.loggerFor
 import com.und.model.EmailTemplate
 import com.und.service.EmailTemplateService
 import org.springframework.beans.factory.annotation.Autowired
@@ -7,15 +8,22 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
+import javax.validation.Valid
 
 @RestController
 class EmailTemplateController {
+
+    companion object {
+
+        protected val logger = loggerFor(javaClass)
+    }
 
     @Autowired
     private lateinit var emailTemplateService: EmailTemplateService
 
     @RequestMapping(value = "/client/default-templates", method = arrayOf(RequestMethod.GET))
     fun getDefaultEmailTemplates(): List<EmailTemplate> {
+        logger.debug("Inside getDefaultEmailTemplates method")
         return emailTemplateService.getDefaultEmailTemplates()
     }
 
@@ -25,7 +33,7 @@ class EmailTemplateController {
     }
 
     @RequestMapping(value = "/client/save-email-template", method = arrayOf(RequestMethod.POST))
-    fun saveEmailTemplate(@RequestParam emailTemplate: EmailTemplate): Long {
+    fun saveEmailTemplate(@RequestParam @Valid emailTemplate: EmailTemplate): Long {
         return emailTemplateService.saveEmailTemplate(emailTemplate)
     }
 
