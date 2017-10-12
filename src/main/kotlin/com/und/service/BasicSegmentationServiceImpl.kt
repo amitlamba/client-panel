@@ -2,7 +2,9 @@ package com.und.service
 
 import com.und.eventapi.model.EventUser
 import com.und.model.Segmentation
+import org.springframework.stereotype.Service
 
+@Service
 class BasicSegmentationServiceImpl : SegmentationService {
     override fun getSegmentationUsers(clientID: Long, segmentation: Segmentation?): List<EventUser> {
         return listOf(element = getDummyEventUser())

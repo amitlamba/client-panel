@@ -9,6 +9,10 @@ import org.springframework.web.servlet.config.annotation.DefaultServletHandlerCo
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 import org.springframework.web.servlet.view.InternalResourceViewResolver
 import org.springframework.web.servlet.view.JstlView
+import org.springframework.scheduling.concurrent.ConcurrentTaskScheduler
+import org.springframework.scheduling.TaskScheduler
+
+
 
 
 /**
@@ -36,6 +40,10 @@ class SpringMVCConfig : WebMvcConfigurerAdapter() {
         return source;
     }
 
+    @Bean
+    fun taskScheduler(): TaskScheduler {
+        return ConcurrentTaskScheduler() //single threaded by default
+    }
 
     override fun configureDefaultServletHandling(configurer:DefaultServletHandlerConfigurer){
         configurer.enable();
