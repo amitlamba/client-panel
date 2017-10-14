@@ -9,16 +9,22 @@ class EmailCampaign {
 
     @Id
     @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    var id: Long? = null
+    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "email_campaign_id_seq")
+    @SequenceGenerator(name = "email_campaign_id_seq", sequenceName = "email_campaign_id_seq", allocationSize = 1)
+    var emailCampaignId: Long? = null
 
     @Column(name = "client_id")
     @NotNull
-    var clientID: Long? = null
+    var emailCampaignClientID: Long? = null
 
-    @Column(name = "campaign_id")
+    @Column(name = "appuser_id")
     @NotNull
-    var campaignID: Long? = null
+    var appuserID: Long? = null
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "campaign_id")
+    @NotNull
+    lateinit var campaign: Campaign
 
     @Column(name = "email_template_id")
     @NotNull

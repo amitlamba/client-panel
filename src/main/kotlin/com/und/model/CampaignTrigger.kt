@@ -21,7 +21,8 @@ class CampaignTrigger {
 
     @Id
     @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "campaign_trigger_id_seq")
+    @SequenceGenerator(name = "campaign_trigger_id_seq", sequenceName = "campaign_trigger_id_seq", allocationSize = 1)
     var id: Long? = null
 
     @Column(name = "client_id")

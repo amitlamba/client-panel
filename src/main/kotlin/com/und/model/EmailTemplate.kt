@@ -12,13 +12,17 @@ class EmailTemplate {
 
     @Id
     @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "email_template_seq")
-    @SequenceGenerator(name = "email_template_seq", sequenceName = "email_template_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "email_template_id_seq")
+    @SequenceGenerator(name = "email_template_id_seq", sequenceName = "email_template_id_seq", allocationSize = 1)
     var id: Long? = null
 
     @Column(name = "client_id")
     @NotNull
     var clientID: Long? = null
+
+    @Column(name = "appuser_id")
+    @NotNull
+    var appuserID: Long? = null
 
     @Column(name = "email_template_body")
     @NotNull
