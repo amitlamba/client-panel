@@ -2,7 +2,7 @@ package com.und.controller.ErrorHandler
 
 import com.und.common.utils.loggerFor
 import com.und.exception.UndBusinessValidationException
-import com.und.model.validation.ValidationError
+import com.und.model.api.ValidationError
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.MessageSource
 import org.springframework.context.i18n.LocaleContextHolder
@@ -36,7 +36,7 @@ class RestErrorHandler {
     @ExceptionHandler(UndBusinessValidationException::class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ResponseBody
-    fun businessValidationError(ex: UndBusinessValidationException) :ValidationError {
+    fun businessValidationError(ex: UndBusinessValidationException) : ValidationError {
         logger.debug("Handling INTERNAL SEREVR error")
         logger.error("error occured",ex)
         return ex.error

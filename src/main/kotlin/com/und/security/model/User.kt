@@ -18,13 +18,13 @@ class User {
     @SequenceGenerator(name = "appuser_id_seq", sequenceName = "appuser_id_seq", allocationSize = 1)
     var id: Long? = null
 
-    @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="CLIENT_ID")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "CLIENT_ID")
     var client: Client? = null
 
     @Column(name = "user_type")
     @NotNull
-    var userType :Int = 1
+    var userType: Int = 1
 
     @Column(name = "USERNAME", length = 255, unique = true)
     @NotNull

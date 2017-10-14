@@ -1,5 +1,6 @@
-package com.und.model.validation
+package com.und.model.api
 
+import com.und.model.api.FieldError
 import java.util.ArrayList
 
 

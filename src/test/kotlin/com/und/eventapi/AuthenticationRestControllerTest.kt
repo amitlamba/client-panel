@@ -116,12 +116,12 @@ class AuthenticationRestControllerTest {
         return user
     }
 
-    private fun buildAuthorities(authorityNames: AuthorityName): List<Authority> {
+    private fun buildAuthorities(authorityNames: AuthorityName): ArrayList<Authority> {
 
         val authority = Authority()
         authority.id = 0L
         authority.name = authorityNames
-        val authorities = Arrays.asList(authority)
+        val authorities = arrayListOf(authority)
         return authorities
     }
 
