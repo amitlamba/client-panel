@@ -12,6 +12,7 @@ import org.springframework.security.authentication.BadCredentialsException
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.AuthenticationException
 import org.springframework.stereotype.Component
+import sun.security.util.Password
 
 /**
  * Created by shiv on 14/08/17.
@@ -31,14 +32,14 @@ class RestAuthenticationProvider : AuthenticationProvider {
         val user = RestUserFactory.create(userRepository.findByUsername(token.getName())!!)
 
 
-            if (token.key.equals(user.key)) {
-                if (user.key!=null && restTokenUtil.validateToken(user.key, user)) {
-                    //FIXME hack for preventing null
-                    val password = if(user.password !=null) user.password.toString() else ""
-                    return RestAuthenticationToken(user, password, user.authorities, token.key)
-                }
+        if (user.key != null) {
+            val password = user.password
+            if (token.key == user.key
+                    && restTokenUtil.validateToken(user.key, user)
+                    && password != null) {
+                return RestAuthenticationToken(user, password, user.authorities, token.key)
             }
-
+        }
 
         throw BadCredentialsException("The credentials are invalid")
 

@@ -8,8 +8,10 @@ import com.und.model.RegistrationRequest
 import com.und.model.api.ValidationError
 import com.und.repository.AuthorityRepository
 import com.und.repository.ClientRepository
-import com.und.security.model.*
-import com.und.security.repository.UserRepository
+import com.und.security.model.AuthorityName
+import com.und.security.model.Client
+import com.und.security.model.EmailMessage
+import com.und.security.model.User
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Service
@@ -27,9 +29,6 @@ class RegistrationService {
 
     @Autowired
     lateinit var passwordEncoder: BCryptPasswordEncoder
-
-    @Autowired
-    lateinit var userRepository: UserRepository
 
     @Autowired
     lateinit var clientRepository: ClientRepository
@@ -76,18 +75,17 @@ class RegistrationService {
             enabled = false
             lastPasswordResetDate = DateUtils().now()
             this.userType = userType
-            //FIXME handle authorities for default types
             when (userType) {
                 1 -> {
                     username = "admin_${registrationRequest.email}"
                     val authority = authorityRepository.findByName(AuthorityName.ROLE_ADMIN)
 
-                    if(authority!=null) authorities = arrayListOf(authority)
+                    if (authority != null) authorities = arrayListOf(authority)
                 }
                 2 -> {
                     username = "event_${registrationRequest.email}"
                     val authority = authorityRepository.findByName(AuthorityName.ROLE_EVENT)
-                    if(authority!=null) authorities = arrayListOf(authority)
+                    if (authority != null) authorities = arrayListOf(authority)
                 }
             }
             clientSecret = UUID.randomUUID().toString()
@@ -145,7 +143,7 @@ class RegistrationService {
     }
 
 
-    public fun sendReVerificationEmail(email: String) {
+    fun sendReVerificationEmail(email: String) {
         val client = clientByEmail(email)
         resetVerificationCode(client)
         sendVerificationEmail(client)
@@ -159,7 +157,7 @@ class RegistrationService {
     private fun clientByEmail(email: String): Client {
         val client = clientRepository.findByEmail(email)
         if (client == null) {
-            logger.error("No user registered with email ${email}")
+            logger.error("No user registered with email $email")
             logger.error("email $email is already verified")
             val validationError = ValidationError()
             validationError.addFieldError("Email Verification",
@@ -179,14 +177,12 @@ class RegistrationService {
 
 
     fun sendVerificationEmail(client: Client) {
-        //FIXME performance issue fetch only verification data with email
-        //TODO that add email in verification table, what will happen if email updates?
-        val user = client.users.filter { it.userType == 1 && it.email == client.email }.first()
+
         val message = EmailMessage(
                 subject = "Welcome To UND !!!",
                 from = "",
                 to = "",
-                body = emailService.buildMesageBody(user, client.clientVerification.emailCode)
+                body = emailService.buildMesageBody(client)
 
         )
         emailService.sendEmail(message)
