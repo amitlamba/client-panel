@@ -1,6 +1,7 @@
 package com.und.controller
 
 import com.und.model.Campaign
+import com.und.security.utils.AuthenticationUtils
 import com.und.service.CampaignService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.RequestMapping
@@ -16,8 +17,11 @@ class CampaignController {
 
     @RequestMapping(value = "/client/get-campaigns", method = arrayOf(RequestMethod.GET))
     fun getCampaigns(@RequestParam(value = "id", required = false) id: Long? = null): List<Campaign> {
-        return campaignService.getCampaigns(2, id)
+        return campaignService.getCampaigns(AuthenticationUtils.clientID!!, id)
     }
 
-
+    fun saveCampaign(campaign: Campaign): Long {
+        //TODO - Complete
+        return 0
+    }
 }

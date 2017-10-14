@@ -18,7 +18,8 @@ open class Campaign {
 
     @Column(name = "campaign_type") //Email / SMS / Notifications etc
     @NotNull
-    var campaignType: Short? = null
+    @Enumerated(EnumType.STRING)
+    var campaignType: CampaignType? = null
 
     @Column(name = "segmentation_id") //TODO Foreign Key
     @NotNull
@@ -26,25 +27,11 @@ open class Campaign {
 
     @Column(name = "frequency_type") //Repetitive or Onetime
     @NotNull
-    var frequencyType: Short? = null
+    @Enumerated(EnumType.STRING)
+    var frequencyType: FrequencyType? = null
 
     @Column(name = "campaign_status") //TODO enum EmailDeliveryStatus or what?
     @NotNull
-    var campaignStatus: Short? = null
-
-    fun setCampaignType(campaignType: CampaignType) {
-        this.campaignType = campaignType.value
-    }
-
-    fun getCampaignType(): CampaignType {
-        return CampaignType.fromValue(this.campaignType!!)!!
-    }
-
-    fun setFrequencyType(frequencyType: FrequencyType) {
-        this.frequencyType = frequencyType.value
-    }
-
-    fun getFrequencyType(): FrequencyType {
-        return FrequencyType.fromValue(this.frequencyType!!)!!
-    }
+    @Enumerated(EnumType.STRING)
+    var campaignStatus: EmailDeliveryStatus? = null
 }

@@ -12,7 +12,7 @@ object AuthenticationUtils {
             val securityContext = SecurityContextHolder.getContext() ?: return false
 
             val authentication = securityContext.authentication
-            return ! (authentication == null || !authentication.isAuthenticated || authentication is AnonymousAuthenticationToken)
+            return !(authentication == null || !authentication.isAuthenticated || authentication is AnonymousAuthenticationToken)
         }
 
     private val principal: UndUserDetails
@@ -33,7 +33,12 @@ object AuthenticationUtils {
 
     val id: String
         get() {
-            return  principal.id.toString()
+            return principal.id.toString()
+        }
+
+    val clientID: Long?
+        get() {
+            return principal.clientId
         }
 
 

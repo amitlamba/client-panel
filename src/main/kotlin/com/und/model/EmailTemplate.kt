@@ -36,21 +36,12 @@ class EmailTemplate {
     @NotNull
     lateinit var from: String
 
-    //TODO See how to use Enum here
-    @get:JsonIgnore
     @Column(name = "message_type") //Promotional or Transactional
     @NotNull
-    var messageType: Short? = null
+    @Enumerated(EnumType.STRING)
+    var messageType: EmailMessageType? = null
 
     @Column(name = "tags")
     var tags: String? = null
-
-    fun setMessageType(emailMessageType: EmailMessageType) {
-        this.messageType = emailMessageType.value
-    }
-
-    fun getMessageType(): EmailMessageType {
-        return EmailMessageType.fromValue(this.messageType!!)!!
-    }
 }
 

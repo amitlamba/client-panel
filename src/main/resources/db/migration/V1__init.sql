@@ -34,7 +34,7 @@ CREATE TABLE appuser
   lastpasswordresetdate TIMESTAMP                                           NOT NULL,
   lastname              VARCHAR(50)                                         NOT NULL,
   password              VARCHAR(100)                                        NOT NULL,
-  user_type             SMALLINT                                            NOT NULL,
+  user_type             VARCHAR(40)                                         NOT NULL,
   phone                 VARCHAR(20),
   username              VARCHAR(50)                                         NOT NULL
     CONSTRAINT uk_418sr20kh207kb22viuyno1
@@ -80,7 +80,7 @@ CREATE TABLE email_template
   email_template_body    TEXT                    NOT NULL,
   parent_id              BIGINT,
   from_user              CHARACTER VARYING(200),
-  message_type           SMALLINT                NOT NULL,
+  message_type           VARCHAR(40)             NOT NULL,
   tags                   CHARACTER VARYING(200),
   date_created           TIMESTAMP WITH TIME ZONE DEFAULT now(),
   date_modified          TIMESTAMP WITH TIME ZONE DEFAULT now()
@@ -88,14 +88,14 @@ CREATE TABLE email_template
 
 CREATE TABLE campaign
 (
-  id              BIGSERIAL NOT NULL CONSTRAINT campaign_pkey PRIMARY KEY,
-  client_id       BIGINT    NOT NULL REFERENCES client,
-  appuser_id      BIGINT    NOT NULL REFERENCES appuser,
-  campaign_type   SMALLINT  NOT NULL,
-  segmentation_id BIGINT    NOT NULL,
-  frequency_type  SMALLINT  NOT NULL,
-  schedule        TEXT      NOT NULL,
-  campaign_status SMALLINT  NOT NULL,
+  id              BIGSERIAL   NOT NULL CONSTRAINT campaign_pkey PRIMARY KEY,
+  client_id       BIGINT      NOT NULL REFERENCES client,
+  appuser_id      BIGINT      NOT NULL REFERENCES appuser,
+  campaign_type   SMALLINT    NOT NULL,
+  segmentation_id BIGINT      NOT NULL,
+  frequency_type  VARCHAR(40) NOT NULL,
+  schedule        TEXT        NOT NULL,
+  campaign_status VARCHAR(40) NOT NULL,
   date_created    TIMESTAMP WITH TIME ZONE DEFAULT now(),
   date_modified   TIMESTAMP WITH TIME ZONE DEFAULT now()
 );
@@ -113,12 +113,12 @@ CREATE TABLE email_campaign
 
 CREATE TABLE campign_trigger
 (
-  id             BIGSERIAL NOT NULL CONSTRAINT campaign_trigger_pkey PRIMARY KEY,
-  client_id      BIGINT    NOT NULL REFERENCES client,
-  appuser_id     BIGINT    NOT NULL REFERENCES appuser,
-  campaign_id    BIGINT    NOT NULL REFERENCES campaign,
-  trigger_time   TIMESTAMP NOT NULL,
-  trigger_status SMALLINT  NOT NULL,
+  id             BIGSERIAL   NOT NULL CONSTRAINT campaign_trigger_pkey PRIMARY KEY,
+  client_id      BIGINT      NOT NULL REFERENCES client,
+  appuser_id     BIGINT      NOT NULL REFERENCES appuser,
+  campaign_id    BIGINT      NOT NULL REFERENCES campaign,
+  trigger_time   TIMESTAMP   NOT NULL,
+  trigger_status VARCHAR(40) NOT NULL,
   date_created   TIMESTAMP WITH TIME ZONE DEFAULT now(),
   date_modified  TIMESTAMP WITH TIME ZONE DEFAULT now()
 );
