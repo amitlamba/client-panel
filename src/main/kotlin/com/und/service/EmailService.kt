@@ -12,7 +12,7 @@ class EmailService {
 
     companion object {
 
-        protected val logger = loggerFor(javaClass)
+        protected val logger = loggerFor(EmailService::class.java)
     }
 
     fun sendEmail(message: EmailMessage){

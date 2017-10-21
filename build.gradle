@@ -1,5 +1,5 @@
 buildscript {
-    ext.kotlin_version = '1.1.50'
+    ext.kotlin_version = '1.1.51'
     ext.spring_boot_version = '2.0.0.M3'
     repositories {
         mavenCentral()
@@ -42,7 +42,7 @@ jacocoTestReport {
 }
 
 
-ext.kotlinVersion = '1.1.50'
+ext.kotlinVersion = '1.1.51'
 ext.springbootVersion = '2.0.0.M4'
 ext.aspectjVersion = '1.8.7'
 ext.jsonPathVersion = '2.1.0'

@@ -32,7 +32,7 @@ class RestTokenUtil : Serializable {
     fun getCreatedDateFromToken(token: String, secret: String): Date? {
         val created: Date?
         val claims = getClaimsFromToken(token, secret)
-        created = Date(claims!![CLAIM_KEY_CREATED] as Long)
+        created = Date(claims[CLAIM_KEY_CREATED] as Long)
 
         return created
     }

@@ -16,7 +16,7 @@ class EmailTemplateController {
 
     companion object {
 
-        protected val logger = loggerFor(javaClass)
+        protected val logger = loggerFor(EmailTemplateController::class.java)
     }
 
     @Autowired

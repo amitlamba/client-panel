@@ -52,7 +52,7 @@ class AuthenticationRestController {
 
         // Reload password post-security so we can generate token
         val user = userDetailsService.loadUserByUsername(authenticationRequest.username)
-        val token = if (user != null && user is UndUserDetails) restTokenUtil.generateToken(user as UndUserDetails, device) else ""
+        val token = if (user != null && user is UndUserDetails) restTokenUtil.generateToken(user, device) else ""
 
         // Return the token
         return ResponseEntity.ok(SecurityAuthenticationResponse(token))

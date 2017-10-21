@@ -19,7 +19,7 @@ class RegisterController {
 
     companion object {
 
-        protected val logger = loggerFor(javaClass)
+        protected val logger = loggerFor(RegisterController::class.java)
     }
 
     @Autowired
@@ -51,5 +51,10 @@ class RegisterController {
     fun newverifyEmail(@PathVariable email: String) {
         registrationService.sendReVerificationEmail(email)
 
+    }
+
+    @RequestMapping(value = "/forgotpassword/{email}", method = arrayOf(RequestMethod.GET))
+    fun forgotpassword(@PathVariable email: String) {
+        //TODO not implemented
     }
 }
