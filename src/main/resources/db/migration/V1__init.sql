@@ -91,7 +91,7 @@ CREATE TABLE campaign
   id              BIGSERIAL   NOT NULL CONSTRAINT campaign_pkey PRIMARY KEY,
   client_id       BIGINT      NOT NULL REFERENCES client,
   appuser_id      BIGINT      NOT NULL REFERENCES appuser,
-  campaign_type   SMALLINT    NOT NULL,
+  campaign_type   VARCHAR(40) NOT NULL,
   segmentation_id BIGINT      NOT NULL,
   frequency_type  VARCHAR(40) NOT NULL,
   schedule        TEXT        NOT NULL,
