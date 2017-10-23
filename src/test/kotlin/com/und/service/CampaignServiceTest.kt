@@ -22,7 +22,7 @@ class CampaignServiceTest {
     @Test
     fun testCreateDummyCampaign() {
         var campaign = createDummyCampaign()
-        campaignService.saveEmailCampaign(campaign.clientID!!, campaign)
+        campaignService.saveCampaign(campaign.clientID!!, campaign)
     }
 
     fun createDummyCampaign(): Campaign {

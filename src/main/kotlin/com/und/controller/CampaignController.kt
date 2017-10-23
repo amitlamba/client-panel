@@ -20,6 +20,11 @@ class CampaignController {
         return campaignService.getCampaigns(AuthenticationUtils.clientID!!, id)
     }
 
+    @RequestMapping(value = "/client/get-email-campaigns", method = arrayOf(RequestMethod.GET))
+    fun getEmailCampaigns(@RequestParam(value = "id", required = false) id: Long? = null): List<Campaign> {
+        return campaignService.getEmailCampaigns(AuthenticationUtils.clientID!!, id)
+    }
+
     fun saveCampaign(campaign: Campaign): Long {
         //TODO - Complete
         return 0

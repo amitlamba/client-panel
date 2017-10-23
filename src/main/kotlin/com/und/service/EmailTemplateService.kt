@@ -17,7 +17,12 @@ class EmailTemplateService {
     }
 
     fun getClientEmailTemplates(clientId: Long, emailTemplateId: Long? = null): List<EmailTemplate> {
-        val emailTemplates = emailTemplateRepository.findByClientID(clientId)
+        var emailTemplates: List<EmailTemplate>
+        if(emailTemplateId != null) {
+            emailTemplates = listOf(emailTemplateRepository.findByIdAndClientID(emailTemplateId, clientId))
+        } else {
+            emailTemplates = emailTemplateRepository.findByClientID(clientId)
+        }
         return emailTemplates
     }
 

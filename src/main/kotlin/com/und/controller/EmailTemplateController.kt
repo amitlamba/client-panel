@@ -29,8 +29,8 @@ class EmailTemplateController {
     }
 
     @RequestMapping(value = "/client/email-templates", method = arrayOf(RequestMethod.GET))
-    fun getClientEmailTemplates(): List<EmailTemplate> {
-        return emailTemplateService.getClientEmailTemplates(AuthenticationUtils.clientID!!)//TODO - Insert a valid clientID
+    fun getClientEmailTemplates(@RequestParam(value = "id", required = false) id: Long? = null): List<EmailTemplate> {
+        return emailTemplateService.getClientEmailTemplates(AuthenticationUtils.clientID!!, id)//TODO - Insert a valid clientID
     }
 
     @RequestMapping(value = "/client/save-email-template", method = arrayOf(RequestMethod.POST))
