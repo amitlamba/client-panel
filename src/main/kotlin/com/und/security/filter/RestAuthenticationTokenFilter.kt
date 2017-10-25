@@ -27,31 +27,31 @@ class RestAuthenticationTokenFilter : OncePerRequestFilter() {
     @Value("\${security.header.token}")
     lateinit private var tokenHeader: String
 
-    @Value("\${security.header.username}")
-    lateinit private var usernameHeader: String
 
     @Throws(ServletException::class, IOException::class)
     override fun doFilterInternal(request: HttpServletRequest, response: HttpServletResponse, chain: FilterChain) {
         val authToken = request.getHeader(this.tokenHeader)
-        val usernameFromToken = request.getHeader(this.usernameHeader)
-        // authToken.startsWith("Bearer ")
-        // String authToken = header.substring(7);
-        //String username = restTokenUtil.getUsernameFromToken(authToken);
+        //TODO validate token from redis here,
+        // insert token while generating, if already there return old one
+        // check If token exists in set, return failure if nor
+        //if exists, get secret of that client's token, verify if fails return error,
+        // else extract all claims and populate userdetails
 
 
-        if (usernameFromToken != null && SecurityContextHolder.getContext().authentication == null) {
-            logger.info("checking authentication for user " + usernameFromToken)
+        if (SecurityContextHolder.getContext().authentication == null && authToken != null) {
+            logger.info("checking authentication for token $authToken ")
 
             // It is not compelling necessary to load the use details from the database. You could also store the information
             // in the token and read it from it. It's up to you ;)
-            val userDetails = this.undUserDetailsService.loadUserByUsername(usernameFromToken)
 
             // For simple validation it is completely sufficient to just check the token integrity. You don't have to call
             // the database compellingly. Again it's up to you ;)
-            if (restTokenUtil.validateToken(authToken, userDetails)) {
+            val userDetails = restTokenUtil.validateToken(authToken)
+            if (userDetails!=null) {
+                //FIXME remove this hardcoded stuff get from cache and key all user details
                 val authentication = UsernamePasswordAuthenticationToken(userDetails, null, userDetails.authorities)
                 authentication.details = WebAuthenticationDetailsSource().buildDetails(request)
-                logger.info("authenticated user $usernameFromToken, setting security context")
+                logger.info("authenticated user usernameFromToken, setting security context")
                 SecurityContextHolder.getContext().authentication = authentication
             }
         }

@@ -6,12 +6,12 @@ import com.und.exception.UndBusinessValidationException
 import com.und.model.ClientVerification
 import com.und.model.RegistrationRequest
 import com.und.model.api.ValidationError
-import com.und.repository.AuthorityRepository
-import com.und.repository.ClientRepository
 import com.und.security.model.AuthorityName
 import com.und.security.model.Client
 import com.und.security.model.EmailMessage
 import com.und.security.model.User
+import com.und.security.service.AuthorityService
+import com.und.security.service.ClientService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Service
@@ -31,20 +31,20 @@ class RegistrationService {
     lateinit var passwordEncoder: BCryptPasswordEncoder
 
     @Autowired
-    lateinit var clientRepository: ClientRepository
+    lateinit var clientService: ClientService
 
     @Autowired
     lateinit var emailService: EmailService
 
     @Autowired
-    lateinit var authorityRepository: AuthorityRepository
+    lateinit var authorityService: AuthorityService
 
     /**
      * validation should be part of transaction different from commit as it will
      * acquire lock on all table, even after this check non unique may exist, if database constraint is not followed.
      */
     fun validate(registrationRequest: RegistrationRequest): ValidationError {
-        val client = clientRepository.findByEmail(registrationRequest.email)
+        val client = clientService.findByEmail(registrationRequest.email)
         val error = ValidationError()
         if (client != null) {
             error.addFieldError("email", "This email id is already registered")
@@ -58,9 +58,15 @@ class RegistrationService {
         val eventUser = buildUser(registrationRequest, 2)
         client.addUser(adminUser)
         client.addUser(eventUser)
+        //FIXME no need for keeping email code here
         client.clientVerification = buildClientVerificationEmail()
-        return clientRepository.save(client)
+        return clientService.save(client)
 
+    }
+
+    fun update(registrationRequest: RegistrationRequest): Client {
+        //TODO update details
+        return Client()
     }
 
     private fun buildUser(registrationRequest: RegistrationRequest, userType: Int): User {
@@ -78,13 +84,13 @@ class RegistrationService {
             when (userType) {
                 1 -> {
                     username = "admin_${registrationRequest.email}"
-                    val authority = authorityRepository.findByName(AuthorityName.ROLE_ADMIN)
+                    val authority = authorityService.findByName(AuthorityName.ROLE_ADMIN)
 
                     if (authority != null) authorities = arrayListOf(authority)
                 }
                 2 -> {
                     username = "event_${registrationRequest.email}"
-                    val authority = authorityRepository.findByName(AuthorityName.ROLE_EVENT)
+                    val authority = authorityService.findByName(AuthorityName.ROLE_EVENT)
                     if (authority != null) authorities = arrayListOf(authority)
                 }
             }
@@ -116,7 +122,7 @@ class RegistrationService {
     }
 
     fun verifyEmail(email: String, code: String) {
-        val client = clientRepository.findByEmail(email)
+        val client = clientService.findByEmail(email)
         if (client != null) {
             val codeMatch = client.clientVerification.emailCode == code
             val expired = client.clientVerification.emailCodeDate.before(DateUtils().now())
@@ -139,7 +145,7 @@ class RegistrationService {
     private fun markAccountVerified(client: Client) {
         client.emailVerified = true
         client.users.forEach { user -> user.enabled = true }
-        clientRepository.save(client)
+        clientService.save(client)
     }
 
 
@@ -151,11 +157,12 @@ class RegistrationService {
 
     private fun resetVerificationCode(client: Client) {
         client.clientVerification = buildClientVerificationEmail()
-        clientRepository.save(client)
+        //TODO figure out a way to only update valid values
+        clientService.save(client)
     }
 
     private fun clientByEmail(email: String): Client {
-        val client = clientRepository.findByEmail(email)
+        val client = clientService.findByEmail(email)
         if (client == null) {
             logger.error("No user registered with email $email")
             logger.error("email $email is already verified")

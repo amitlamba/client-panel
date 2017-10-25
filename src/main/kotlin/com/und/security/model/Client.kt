@@ -2,6 +2,7 @@ package com.und.security.model
 
 import com.und.model.ClientVerification
 import org.hibernate.annotations.ColumnDefault
+import org.hibernate.annotations.DynamicUpdate
 import java.util.*
 import javax.persistence.*
 import javax.validation.constraints.NotNull
@@ -10,6 +11,7 @@ import kotlin.collections.ArrayList
 
 @Entity
 @Table(name = "CLIENT")
+@DynamicUpdate(true)
 class Client {
 
     @Id

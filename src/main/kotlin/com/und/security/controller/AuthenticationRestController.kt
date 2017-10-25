@@ -4,8 +4,8 @@ import com.und.security.model.RestAuthenticationRequest
 import com.und.security.model.UndUserDetails
 import com.und.security.service.SecurityAuthenticationResponse
 import com.und.security.utils.RestTokenUtil
+import com.und.security.service.JWTKeyService
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.ResponseEntity
 import org.springframework.mobile.device.Device
 import org.springframework.security.authentication.AuthenticationManager
@@ -17,16 +17,10 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.bind.annotation.RestController
-import javax.servlet.http.HttpServletRequest
 
 @RestController
 class AuthenticationRestController {
 
-    @Value("\${security.header.token}")
-    lateinit private var tokenHeader: String
-
-    @Value("\${security.header.username}")
-    lateinit private var usernameHeader: String
 
     @Autowired
     lateinit private var authenticationManager: AuthenticationManager
@@ -36,6 +30,9 @@ class AuthenticationRestController {
 
     @Autowired
     lateinit private var userDetailsService: UserDetailsService
+
+    @Autowired
+    lateinit private var jwtKeyService: JWTKeyService
 
     @RequestMapping(value = "\${security.route.authentication.path}", method = arrayOf(RequestMethod.POST))
     @Throws(AuthenticationException::class)
@@ -52,26 +49,13 @@ class AuthenticationRestController {
 
         // Reload password post-security so we can generate token
         val user = userDetailsService.loadUserByUsername(authenticationRequest.username)
-        val token = if (user != null && user is UndUserDetails) restTokenUtil.generateToken(user, device) else ""
+        val token = if (user != null && user is UndUserDetails) {
+            jwtKeyService.generateJwt(user, device)
+        } else ""
 
         // Return the token
         return ResponseEntity.ok(SecurityAuthenticationResponse(token))
     }
 
-    @RequestMapping(value = "\${security.route.authentication.refresh}", method = arrayOf(RequestMethod.GET))
-    fun refreshAndGetAuthenticationToken(request: HttpServletRequest
-            //, @RequestHeader(tokenHeader)
-    ): ResponseEntity<*> {
-        val token = request.getHeader(tokenHeader)
-        val username = request.getHeader(usernameHeader)
-        val user = userDetailsService.loadUserByUsername(username)
-        //val usernameFromToken = restTokenUtil.getUsernameFromToken(token, user.secret)
-        if (user != null && user is UndUserDetails && restTokenUtil.canTokenBeRefreshed(token, user.lastPasswordResetDate!!, user.secret)) {
-            val refreshedToken = restTokenUtil.refreshToken(token, user.secret)
-            return ResponseEntity.ok(SecurityAuthenticationResponse(refreshedToken))
-        } else {
-            return ResponseEntity.badRequest().body<Any>(null)
-        }
-    }
 
 }

@@ -1,12 +1,14 @@
 package com.und.model
 
 import com.und.security.model.Client
+import org.hibernate.annotations.DynamicUpdate
 import java.util.*
 import javax.persistence.*
 import javax.validation.constraints.NotNull
 
 @Entity
 @Table(name = "CLIENT_VERIFICATION")
+@DynamicUpdate(true)
 class ClientVerification {
 
     @Id

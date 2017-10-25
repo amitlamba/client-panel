@@ -1,6 +1,7 @@
 package com.und.security.model
 
 import org.hibernate.annotations.ColumnDefault
+import org.hibernate.annotations.DynamicUpdate
 
 import java.util.Date
 import javax.persistence.*
@@ -10,6 +11,7 @@ import javax.validation.constraints.Size
 
 @Entity
 @Table(name = "APPUSER")
+@DynamicUpdate(true)
 class User {
 
     @Id

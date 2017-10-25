@@ -57,4 +57,14 @@ class RegisterController {
     fun forgotpassword(@PathVariable email: String) {
         //TODO not implemented
     }
+
+    @RequestMapping(value = "/resetpassword/{email}/{code}", method = arrayOf(RequestMethod.GET))
+    fun resetpasswordForm(@PathVariable email: String) {
+        //TODO not implemented
+    }
+
+    @RequestMapping(value = "/resetpassword/{email}/{code}", method = arrayOf(RequestMethod.POST))
+    fun resetpassword(@PathVariable email: String,@PathVariable code: String, @RequestBody registrationRequest: RegistrationRequest) {
+        //TODO not implemented
+    }
 }

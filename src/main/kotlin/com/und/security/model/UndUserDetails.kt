@@ -27,7 +27,7 @@ class UndUserDetails(
 
         val email: String?=null,
 
-        private val authorities: Collection<GrantedAuthority> = arrayListOf<GrantedAuthority>(),
+        private val authorities: Collection<GrantedAuthority> = arrayListOf(),
 
         private val enabled: Boolean = false,
 

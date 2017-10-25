@@ -1,10 +1,12 @@
 package com.und.security.model
 
+import org.hibernate.annotations.DynamicUpdate
 import javax.persistence.*
 import javax.validation.constraints.NotNull
 
 @Entity
 @Table(name = "AUTHORITY")
+@DynamicUpdate(true)
 class Authority {
 
     @Id
