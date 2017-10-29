@@ -42,10 +42,28 @@ jacocoTestReport {
 }
 
 
-ext.kotlinVersion = '1.1.51'
-ext.springbootVersion = '2.0.0.M4'
-ext.aspectjVersion = '1.8.7'
-ext.jsonPathVersion = '2.1.0'
+ext {
+    commonsLangVersion = '3.5'
+    flywayVersion= '3.2.1'
+    jstlVersion = '1.2'
+    taglibVersion = '1.1.2'
+    javaxElVersion = '2.2.1-b04'
+    bitWalkerUagentVersion = '1.20'
+    kotlinVersion = '1.1.51'
+    springbootVersion = '2.0.0.M4'
+    aspectjVersion = '1.8.7'
+    jsonPathVersion = '2.1.0'
+    swaggerVersion = '2.7.0'
+    springkafkaVersion = '2.0.0.RELEASE'
+    pgDriverVersion = '9.4-1206-jdbc42'
+    jjwtVersion = '0.9.0'
+    gauvaVersion = '19.0'
+    bootRedisVersion = '1.4.7.RELEASE'
+    dataRedisVersion = '2.0.0.RELEASE'
+    jedisVersion = '2.9.0'
+    quartzVersion = '2.3.0'
+
+}
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
@@ -108,34 +126,26 @@ dependencies {
             "org.springframework.boot:spring-boot-actuator:$springbootVersion",
             "org.aspectj:aspectjrt:$aspectjVersion",
             "org.aspectj:aspectjweaver:$aspectjVersion",
-            'org.postgresql:postgresql:9.4-1206-jdbc42',
-            'io.jsonwebtoken:jjwt:0.9.0',
-            'io.springfox:springfox-swagger2:2.7.0',
-            'io.springfox:springfox-swagger-ui:2.7.0',
-            'com.google.guava:guava:19.0',
-            'org.apache.commons:commons-lang3:3.5',
-            'org.flywaydb:flyway-core:3.2.1',
-            'javax.servlet:jstl:1.2',
-            'jstl:jstl:1.2',
-            'taglibs:standard:1.1.2',
-            'javax.el:el-api:2.2.1-b04',
+            "org.postgresql:postgresql:$pgDriverVersion",
+            "io.jsonwebtoken:jjwt:$jjwtVersion",
+            "io.springfox:springfox-swagger2:$swaggerVersion",
+            "io.springfox:springfox-swagger-ui:$swaggerVersion",
+            "com.google.guava:guava:$gauvaVersion",
+            "org.apache.commons:commons-lang3:$commonsLangVersion",
+            "org.flywaydb:flyway-core:$flywayVersion",
+            "javax.servlet:jstl:$jstlVersion",
+            "jstl:jstl:$jstlVersion",
+            "taglibs:standard:$taglibVersion",
+            "javax.el:el-api:$javaxElVersion",
 
     )
-    // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-redis
-    compile group: 'org.springframework.boot', name: 'spring-boot-starter-redis', version: '1.4.7.RELEASE'
-    // https://mvnrepository.com/artifact/org.springframework.data/spring-data-redis
-    compile group: 'org.springframework.data', name: 'spring-data-redis', version: '2.0.0.RELEASE'
-
-// https://mvnrepository.com/artifact/redis.clients/jedis
-    compile group: 'redis.clients', name: 'jedis', version: '2.9.0'
-
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-redis', version: "$bootRedisVersion"
+    compile group: 'org.springframework.data', name: 'spring-data-redis', version: "$dataRedisVersion"
+    compile group: 'redis.clients', name: 'jedis', version: "$jedisVersion"
     compile "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion"
     compile "org.springframework.boot:spring-boot-devtools:$springbootVersion"
-    //compile("org.hibernate:hibernate-validator")
-
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlin_version"
-
-    compile "org.quartz-scheduler:quartz:2.3.0"
+    compile "org.quartz-scheduler:quartz:$quartzVersion"
 
 }
 
