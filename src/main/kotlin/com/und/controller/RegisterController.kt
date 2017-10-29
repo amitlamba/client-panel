@@ -2,14 +2,21 @@ package com.und.controller
 
 import com.und.common.utils.loggerFor
 import com.und.exception.UndBusinessValidationException
-import com.und.model.RegistrationRequest
-import com.und.security.model.User
-import com.und.security.repository.UserRepository
+import com.und.model.api.Data
+import com.und.model.api.Response
+import com.und.model.api.ResponseStatus
+import com.und.model.ui.PasswordRequest
+import com.und.model.ui.RegistrationRequest
+import com.und.security.model.EmailMessage
+import com.und.security.service.UserService
+import com.und.security.utils.KEYTYPE
+import com.und.security.utils.RestTokenUtil
+import com.und.service.EmailService
 import com.und.service.RegistrationService
-import org.apache.commons.logging.LogFactory
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
-import org.springframework.stereotype.Controller
+import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
+import org.springframework.mobile.device.Device
 import org.springframework.web.bind.annotation.*
 import javax.validation.Valid
 
@@ -24,6 +31,15 @@ class RegisterController {
 
     @Autowired
     lateinit var registrationService: RegistrationService
+
+    @Autowired
+    lateinit var userService: UserService
+
+    @Autowired
+    lateinit var emailService: EmailService
+
+    @Autowired
+    lateinit var restTokenUtil: RestTokenUtil
 
     @RequestMapping( method = arrayOf(RequestMethod.GET))
     fun registerForm() {
@@ -54,17 +70,58 @@ class RegisterController {
     }
 
     @RequestMapping(value = "/forgotpassword/{email}", method = arrayOf(RequestMethod.GET))
-    fun forgotpassword(@PathVariable email: String) {
-        //TODO not implemented
+    fun forgotPassword(@PathVariable email: String, device: Device) {
+        val code = userService.generateJwtForForgotPassword(email, device)
+        emailService.sendEmail(EmailMessage(
+                from = "",
+                to = "",
+                body = """
+                    Hi, $//userName
+                    please click http://localhost:8080/register/resetpassword/$email/$code to reset password
+                """.trimIndent(),
+                subject = "forgot password"
+
+        ))
     }
 
-    @RequestMapping(value = "/resetpassword/{email}/{code}", method = arrayOf(RequestMethod.GET))
-    fun resetpasswordForm(@PathVariable email: String) {
-        //TODO not implemented
+    @RequestMapping(value = "/resetpassword/{code}", method = arrayOf(RequestMethod.GET))
+    fun resetPasswordForm(@PathVariable code: String): ResponseEntity<Response> {
+        val (userDetails, jwtToken) = restTokenUtil.validateToken(code, KEYTYPE.PASSWORD_RESET)
+        return if (userDetails == null || jwtToken.pswrdRstKey != code) {
+            ResponseEntity.status(HttpStatus.NOT_FOUND).body(Response(
+                    message = "Invalid Link",
+                    status = ResponseStatus.FAIL
+            ))
+        } else {
+            ResponseEntity.status(HttpStatus.OK).body(Response(
+                    status = ResponseStatus.SUCCESS,
+                    data = Data(
+                            value = PasswordRequest(password = ""),
+                            message = "Enter password To Reset"
+                    )
+            ))
+        }
     }
 
-    @RequestMapping(value = "/resetpassword/{email}/{code}", method = arrayOf(RequestMethod.POST))
-    fun resetpassword(@PathVariable email: String,@PathVariable code: String, @RequestBody registrationRequest: RegistrationRequest) {
-        //TODO not implemented
+    @RequestMapping(value = "/resetpassword/{code}", method = arrayOf(RequestMethod.POST))
+    fun resetPassword( @PathVariable code: String,
+                       @RequestBody @Valid passwordRequest: PasswordRequest): ResponseEntity<Response> {
+
+        val (userDetails, jwtToken) = restTokenUtil.validateToken(code, KEYTYPE.PASSWORD_RESET)
+        return if (userDetails == null || jwtToken.pswrdRstKey != code) {
+            ResponseEntity.status(HttpStatus.NOT_FOUND).body(Response(
+                    message = "Invalid Link",
+                    status = ResponseStatus.FAIL
+            ))
+        } else {
+            userService.resetPassword(userDetails, passwordRequest.password, jwtToken)
+            ResponseEntity.ok().body(Response(
+                    status = ResponseStatus.SUCCESS,
+                    message = "Password successfully changed"
+            )
+            )
+        }
     }
+
+
 }

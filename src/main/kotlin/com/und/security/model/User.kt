@@ -24,6 +24,7 @@ class User {
     @JoinColumn(name = "CLIENT_ID")
     var client: Client? = null
 
+    //FIXME replace user type by enum
     @Column(name = "user_type")
     @NotNull
     var userType: Int = 1

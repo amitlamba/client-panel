@@ -48,6 +48,15 @@ class Client {
     @Column(name = "address")
     var address: String? = null
 
+    @Column(name = "firstname")
+    var firstname: String? = null
+
+    @Column(name = "lastname")
+    var lastname: String? = null
+
+    @Column(name = "country")
+    var country: String? = null
+
     @Column(name = "date_created")
     @Temporal(TemporalType.TIMESTAMP)
     @NotNull

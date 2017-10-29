@@ -22,7 +22,6 @@ class RestUserFactory {
                         password = user.password,
                         authorities = mapToGrantedAuthorities(user.authorities),
                         enabled = user.enabled,
-                        lastPasswordResetDate = user.lastPasswordResetDate,
                         secret = user.clientSecret,
                         key = user.key
 

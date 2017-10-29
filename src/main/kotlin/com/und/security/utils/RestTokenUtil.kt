@@ -3,6 +3,7 @@ package com.und.security.utils
 import com.und.common.utils.DateUtils
 import com.und.common.utils.loggerFor
 import com.und.security.model.UndUserDetails
+import com.und.security.model.redis.JWTKeys
 import com.und.security.service.JWTKeyService
 import io.jsonwebtoken.Claims
 import io.jsonwebtoken.Jwts
@@ -40,24 +41,31 @@ class RestTokenUtil : Serializable {
     }
 
 
-    fun validateToken(token: String): UndUserDetails? {
+    fun validateToken(token: String, keyType: KEYTYPE): Pair<UndUserDetails?, JWTKeys> {
+        fun buildUserDetails(claims: Claims, jwtDetails: JWTKeys): UndUserDetails? {
+            val userId = claims[CLAIM_USER_ID].toString().toLong()
+            return UndUserDetails(
+                    id = userId,
+                    clientId = claims[CLAIM_CLIENT_ID].toString().toLong(),
+                    authorities = (claims[CLAIM_ROLES] as ArrayList<String>).map { role -> SimpleGrantedAuthority(role) },
+                    secret = jwtDetails.secret,
+                    username = jwtDetails.username,
+                    password = jwtDetails.password
+            )
+        }
+
         val claims = getClaimsFromToken(token)
-        return if(!claims.isTokenExpired) buildUserDetails(claims) else null
-
-    }
-
-    fun buildUserDetails(claims: Claims): UndUserDetails {
-        val userId =  claims[CLAIM_USER_ID].toString().toLong()
+        val userId = claims[CLAIM_USER_ID].toString().toLong()
         val jwtDetails = jwtKeyService.retrieveJwt(userId)
-        return  UndUserDetails(
-                id = userId,
-                clientId = claims[CLAIM_CLIENT_ID].toString().toLong(),
-                authorities = (claims[CLAIM_ROLES] as ArrayList<String>).map { role -> SimpleGrantedAuthority(role) },
-                secret = jwtDetails.secret,
-                username = jwtDetails.username,
-                password = jwtDetails.password
-        )
+        val matches: Boolean = when (keyType) {
+            KEYTYPE.LOGIN -> jwtDetails.loginKey == token
+            KEYTYPE.PASSWORD_RESET -> jwtDetails.pswrdRstKey == token
+            KEYTYPE.REGISTRATION -> jwtDetails.emailRgstnKey == token
+        }
+        return if (!claims.isTokenExpired && matches) Pair(buildUserDetails(claims, jwtDetails), jwtDetails) else Pair(null, jwtDetails)
+
     }
+
 
     fun generateToken(userDetails: UndUserDetails, device: Device): String {
 
@@ -111,4 +119,8 @@ class RestTokenUtil : Serializable {
         internal val AUDIENCE_MOBILE = "mobile"
         internal val AUDIENCE_TABLET = "tablet"
     }
+}
+
+enum class KEYTYPE {
+    LOGIN, PASSWORD_RESET, REGISTRATION
 }

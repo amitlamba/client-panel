@@ -1,10 +1,28 @@
 package com.und.controller
 
 import com.und.common.utils.loggerFor
-import com.und.exception.UndBusinessValidationException
-import com.und.model.RegistrationRequest
-import com.und.service.RegistrationService
+import com.und.common.utils.usernameFromEmailAndType
+import com.und.model.api.Data
+import com.und.model.api.Response
+import com.und.model.api.ResponseStatus
+import com.und.model.ui.PasswordRequest
+import com.und.model.ui.RegistrationRequest
+import com.und.model.ui.UserProfileRequest
+import com.und.security.model.Client
+import com.und.security.model.EmailMessage
+import com.und.security.model.redis.JWTKeys
+import com.und.security.service.ClientService
+import com.und.security.service.JWTKeyService
+import com.und.security.utils.KEYTYPE
+import com.und.security.service.UserService
+import com.und.security.utils.AuthenticationUtils
+import com.und.security.utils.RestTokenUtil
+import com.und.service.EmailService
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
+import org.springframework.mobile.device.Device
+import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.web.bind.annotation.*
 import javax.validation.Valid
 
@@ -18,29 +36,73 @@ class UserProfileController {
     }
 
     @Autowired
-    lateinit var userProfileService: RegistrationService
+    lateinit var userService: UserService
 
-    @RequestMapping( method = arrayOf(RequestMethod.GET))
-    fun userProfileForm() {
+    @Autowired
+    lateinit private var jwtKeyService: JWTKeyService
 
+    @Autowired
+    lateinit var clientService: ClientService
+
+
+    @RequestMapping(value = "/resetpassword", method = arrayOf(RequestMethod.POST))
+    fun resetPassword(@RequestBody @Valid passwordRequest: PasswordRequest): ResponseEntity<Response> {
+        val userDetails = AuthenticationUtils.principal
+
+        userService.resetPassword(userDetails, passwordRequest.password)
+        return ResponseEntity.ok().body(Response(
+                status = ResponseStatus.SUCCESS,
+                message = "Password successfully changed"
+        ))
+    }
+
+
+    @RequestMapping(value = "/userDetails", method = arrayOf(RequestMethod.GET))
+    fun userDetails(): ResponseEntity<Response> {
+        val clientId = AuthenticationUtils.clientID
+        return if (clientId != null) {
+            val client = clientService.findById(clientId)
+            val userProfile = UserProfileRequest(
+                    firstname = client.firstname ?: "",
+                    lastname = client.lastname ?: "",
+                    address = client.address,
+                    phone = client.phone,
+                    eventUserToken = client.users.filter { it.userType == 2 }.first().key ?: ""
+
+            )
+
+            ResponseEntity.ok().body(Response(
+                    status = ResponseStatus.SUCCESS,
+                    data = Data(userProfile)
+            ))
+        } else {
+            ResponseEntity.badRequest().body(Response(
+                    status = ResponseStatus.ERROR,
+                    message = "not a valid login"
+            ))
+        }
     }
 
     @RequestMapping(value = "/updateUserDetails", method = arrayOf(RequestMethod.POST))
-    fun updateUserDetails(@Valid @RequestBody request: RegistrationRequest) {
-        //TODO check if its own email is being changed this error should not come, also more details might come in registration request object
-        val errors = userProfileService.validate(request)
-        if (errors.getFieldErrors().isNotEmpty()) {
-            logger.error("business validation failure while registering ${request.email} , with errors ${errors.getFieldErrors()}")
-            throw  UndBusinessValidationException(errors)
+    fun updateUserDetails(@Valid @RequestBody request: UserProfileRequest): ResponseEntity<Response> {
+        val client = Client()
+        with(client) {
+            id = AuthenticationUtils.clientID
+            firstname = request.firstname
+            lastname = request.lastname
+            address = request.address
+            phone = request.phone
         }
-        val client = userProfileService.update(request)
-        userProfileService.sendVerificationEmail(client)
+        val status = clientService.updateClient(client)
+        return if (status) ResponseEntity.ok().body(Response()) else ResponseEntity.badRequest().body(Response())
     }
 
 
-
-    @RequestMapping(value = "/generatetoken", method = arrayOf(RequestMethod.POST))
-    fun generateToken(@PathVariable email: String, @PathVariable code: String, @RequestBody registrationRequest: RegistrationRequest) {
-        //TODO not implemented
+    @RequestMapping(value = "/refreshToken", method = arrayOf(RequestMethod.POST))
+    fun generateToken(device: Device): ResponseEntity<*> {
+        val user = AuthenticationUtils.principal
+        val jwt = userService.updateJwtOfEventUser(device, user)
+        return ResponseEntity.ok(jwt)
     }
+
 }

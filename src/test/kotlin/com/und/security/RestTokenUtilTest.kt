@@ -3,15 +3,20 @@ package com.und.security
 import com.und.common.utils.DateUtils
 import com.und.security.model.AuthorityName
 import com.und.security.model.UndUserDetails
+import com.und.security.service.JWTKeyService
 import com.und.security.utils.*
+import io.jsonwebtoken.Claims
+import io.jsonwebtoken.impl.TextCodec
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.within
 import org.assertj.core.util.DateUtil
 import org.junit.Before
 import org.junit.Test
+import org.mockito.ArgumentMatchers
 import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.mockito.Mockito.`when`
+import org.mockito.Mockito.any
 import org.mockito.MockitoAnnotations
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.test.util.ReflectionTestUtils
@@ -25,14 +30,22 @@ class RestTokenUtilTest {
     @Mock
     lateinit private var dateUtilsMock: DateUtils
 
+    @Mock
+    lateinit private var keyResolverMock: KeyResolver
+
+    @Mock
+    lateinit private var jwtKeyService: JWTKeyService
+
     @InjectMocks
     lateinit private var restTokenUtil: RestTokenUtil
 
     @Before
     fun init() {
         MockitoAnnotations.initMocks(this)
-
+        `when`(keyResolverMock.resolveSigningKeyBytes(ArgumentMatchers.any(), ArgumentMatchers.any<Claims?>()))
+                .thenReturn(TextCodec.BASE64.decode("supremesecret"))
         ReflectionTestUtils.setField(restTokenUtil, "expiration", 3600L) // one hour
+        ReflectionTestUtils.setField(restTokenUtil, "keyResolver", keyResolverMock) // one hour
         //ReflectionTestUtils.setField(restTokenUtil, "secret", "mySecret");
     }
 
@@ -127,7 +140,7 @@ class RestTokenUtilTest {
                 UndUserDetails(
                         id = 1L,
                         username = TEST_USER,
-                        secret = "secret",
+                        secret = TextCodec.BASE64.encode("supremesecret"),
                         key = "key",
                         password = "",
                         clientId = 1,

@@ -23,16 +23,13 @@ class UndUserDetails(
 
         val lastname: String?="",
 
-        private val password: String?=null,
+        private var password: String?=null,
 
         val email: String?=null,
 
         private val authorities: Collection<GrantedAuthority> = arrayListOf(),
 
         private val enabled: Boolean = false,
-
-        @get:JsonIgnore
-        val lastPasswordResetDate: Date?=null,
 
         @get:JsonIgnore
         val secret: String,

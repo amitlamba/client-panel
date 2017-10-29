@@ -15,7 +15,7 @@ object AuthenticationUtils {
             return !(authentication == null || !authentication.isAuthenticated || authentication is AnonymousAuthenticationToken)
         }
 
-    private val principal: UndUserDetails
+    val principal: UndUserDetails
         get() {
             val securityContext = SecurityContextHolder.getContext() ?: throw AccessDeniedException("User is not logged in to the system.")
 

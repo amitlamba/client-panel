@@ -3,8 +3,8 @@ package com.und.security.controller
 import com.und.security.model.RestAuthenticationRequest
 import com.und.security.model.UndUserDetails
 import com.und.security.service.SecurityAuthenticationResponse
-import com.und.security.utils.RestTokenUtil
 import com.und.security.service.JWTKeyService
+import com.und.security.utils.KEYTYPE
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.mobile.device.Device
@@ -26,9 +26,6 @@ class AuthenticationRestController {
     lateinit private var authenticationManager: AuthenticationManager
 
     @Autowired
-    lateinit private var restTokenUtil: RestTokenUtil
-
-    @Autowired
     lateinit private var userDetailsService: UserDetailsService
 
     @Autowired
@@ -47,14 +44,19 @@ class AuthenticationRestController {
         )
         SecurityContextHolder.getContext().authentication = authentication
 
-        // Reload password post-security so we can generate token
-        val user = userDetailsService.loadUserByUsername(authenticationRequest.username)
-        val token = if (user != null && user is UndUserDetails) {
-            jwtKeyService.generateJwt(user, device)
-        } else ""
+        val token = generateJwtByUser(authenticationRequest.username?: "", device)
 
         // Return the token
         return ResponseEntity.ok(SecurityAuthenticationResponse(token))
+
+    }
+
+    private fun generateJwtByUser(username : String, device: Device): String {
+        // Reload password post-security so we can generate token
+        val user:UndUserDetails? = userDetailsService.loadUserByUsername(username) as UndUserDetails
+        return  if (user != null) {
+            jwtKeyService.generateJwt(user, device, KEYTYPE.LOGIN).loginKey?:""
+        } else ""
     }
 
 

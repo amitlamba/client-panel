@@ -1,22 +1,20 @@
 package com.und.service
 
-import com.und.common.utils.DateUtils
-import com.und.common.utils.loggerFor
+import com.und.common.utils.*
 import com.und.exception.UndBusinessValidationException
 import com.und.model.ClientVerification
-import com.und.model.RegistrationRequest
 import com.und.model.api.ValidationError
-import com.und.security.model.AuthorityName
+import com.und.model.ui.RegistrationRequest
 import com.und.security.model.Client
 import com.und.security.model.EmailMessage
 import com.und.security.model.User
 import com.und.security.service.AuthorityService
 import com.und.security.service.ClientService
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
+import org.springframework.beans.factory.annotation.Value
+import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import java.util.*
 
 @Service
 @Transactional
@@ -28,7 +26,7 @@ class RegistrationService {
     }
 
     @Autowired
-    lateinit var passwordEncoder: BCryptPasswordEncoder
+    lateinit var passwordEncoder: PasswordEncoder
 
     @Autowired
     lateinit var clientService: ClientService
@@ -38,6 +36,10 @@ class RegistrationService {
 
     @Autowired
     lateinit var authorityService: AuthorityService
+
+
+    @Value("\${security.expiration}")
+    private var expiration: Int = 0
 
     /**
      * validation should be part of transaction different from commit as it will
@@ -81,21 +83,10 @@ class RegistrationService {
             enabled = false
             lastPasswordResetDate = DateUtils().now()
             this.userType = userType
-            when (userType) {
-                1 -> {
-                    username = "admin_${registrationRequest.email}"
-                    val authority = authorityService.findByName(AuthorityName.ROLE_ADMIN)
-
-                    if (authority != null) authorities = arrayListOf(authority)
-                }
-                2 -> {
-                    username = "event_${registrationRequest.email}"
-                    val authority = authorityService.findByName(AuthorityName.ROLE_EVENT)
-                    if (authority != null) authorities = arrayListOf(authority)
-                }
-            }
-            clientSecret = UUID.randomUUID().toString()
-
+            username = usernameFromEmailAndType(email, this.userType)
+            val authority = authorityService.authorityByType(this.userType)
+            if (authority != null) authorities = arrayListOf(authority)
+            clientSecret = randomString(128)
         }
         return user
     }
@@ -106,6 +97,11 @@ class RegistrationService {
             email = registrationRequest.email
             phone = registrationRequest.phone
             name = registrationRequest.name
+            firstname = registrationRequest.firstName
+            lastname = registrationRequest.lastname
+            address = registrationRequest.address
+            country = registrationRequest.country
+            dateModified = DateUtils().now()
             //TODO add state
         }
         return client
@@ -114,7 +110,7 @@ class RegistrationService {
     private fun buildClientVerificationEmail(): ClientVerification {
         val clientVerification = ClientVerification()
         with(clientVerification) {
-            emailCode = UUID.randomUUID().toString()
+            emailCode = randomString(128)//UUID.randomUUID().toString()
             //this.client = client
             this.emailCodeDate = DateUtils().now()
         }
@@ -125,7 +121,7 @@ class RegistrationService {
         val client = clientService.findByEmail(email)
         if (client != null) {
             val codeMatch = client.clientVerification.emailCode == code
-            val expired = client.clientVerification.emailCodeDate.before(DateUtils().now())
+            val expired = DateUtils().now().time < client.clientVerification.emailCodeDate.time - expiration
             //FIXME convert exception to message wrapper
             when {
                 codeMatch && !expired -> markAccountVerified(client)
@@ -184,12 +180,23 @@ class RegistrationService {
 
 
     fun sendVerificationEmail(client: Client) {
+        fun buildMesageBody(client: Client): String {
+            val url = "http://localhost:8080/register/verifyemail/${client.email}/${client.clientVerification.emailCode}"
+            return """
+                    Dear ${client.name},
+                        Welcome your login id is admin_${client.email}
+                        To be able to use it you first need to verify email by clicking on below link
+                        ${url}
+                    Thanks
+                    Team UND
+               """.trimIndent()
+        }
 
         val message = EmailMessage(
                 subject = "Welcome To UND !!!",
                 from = "",
                 to = "",
-                body = emailService.buildMesageBody(client)
+                body = buildMesageBody(client)
 
         )
         emailService.sendEmail(message)

@@ -1,5 +1,6 @@
 package com.und.security.filter
 
+import com.und.security.utils.KEYTYPE
 import com.und.security.utils.RestTokenUtil
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
@@ -46,7 +47,7 @@ class RestAuthenticationTokenFilter : OncePerRequestFilter() {
 
             // For simple validation it is completely sufficient to just check the token integrity. You don't have to call
             // the database compellingly. Again it's up to you ;)
-            val userDetails = restTokenUtil.validateToken(authToken)
+            val (userDetails, jwtToken) = restTokenUtil.validateToken(authToken, KEYTYPE.LOGIN)
             if (userDetails!=null) {
                 //FIXME remove this hardcoded stuff get from cache and key all user details
                 val authentication = UsernamePasswordAuthenticationToken(userDetails, null, userDetails.authorities)

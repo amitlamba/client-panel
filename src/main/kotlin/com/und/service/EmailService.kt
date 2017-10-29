@@ -28,15 +28,5 @@ class EmailService {
     }
 
 
-    fun buildMesageBody(client: Client): String {
-        val url = "http://localhost:8080/verifyemail/${client.email}/${client.clientVerification.emailCode}"
-        return """
-                    Dear ${client.name},
-                        Welcome your login id is admin_${client.email}
-                        To be able to use it you first need to verify email by clicking on below link
-                        ${url}
-                    Thanks
-                    Team UND
-               """.trimIndent()
-    }
+
 }
