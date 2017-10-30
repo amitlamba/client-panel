@@ -19,6 +19,7 @@ import { HeaderComponent } from './header/index';
 import { RegisterComponent } from './register/index';
 import { DummyComponent } from './dummy/dummy.component';
 import { HttpClientModule } from '@angular/common/http';
+import { ProfileComponent } from './profile/profile.component';
 
 
 
@@ -37,7 +38,8 @@ import { HttpClientModule } from '@angular/common/http';
         HomeComponent,
         HeaderComponent,
         RegisterComponent,
-        DummyComponent
+        DummyComponent,
+        ProfileComponent
     ],
     providers: [
         AuthGuard,
