@@ -67,8 +67,8 @@ class UserService {
         }
     }
 
-    fun generateJwtForForgotPassword(email: String, device: Device): String {
-        return generateJwtByUser(email, device, KEYTYPE.PASSWORD_RESET).pswrdRstKey?:""
+    fun generateJwtForForgotPassword(email: String, device: Device): JWTKeys {
+        return generateJwtByUser(email, device, KEYTYPE.PASSWORD_RESET)
     }
 
     private fun generateJwtByUser(username: String, device: Device, keytype: KEYTYPE): JWTKeys {

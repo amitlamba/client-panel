@@ -70,18 +70,29 @@ class RegisterController {
     }
 
     @RequestMapping(value = "/forgotpassword/{email}", method = arrayOf(RequestMethod.GET))
-    fun forgotPassword(@PathVariable email: String, device: Device) {
+    fun forgotPassword(@PathVariable email: String, device: Device): ResponseEntity<Response> {
         val code = userService.generateJwtForForgotPassword(email, device)
         emailService.sendEmail(EmailMessage(
                 from = "",
                 to = "",
                 body = """
                     Hi, $//userName
-                    please click http://localhost:8080/register/resetpassword/$email/$code to reset password
+                    please click http://localhost:8080/register/resetpassword/$email/${code.pswrdRstKey} to reset password
                 """.trimIndent(),
                 subject = "forgot password"
 
         ))
+        return if(code.pswrdRstKey.isNullOrBlank()) {
+            ResponseEntity.status(HttpStatus.NOT_FOUND).body(Response(
+                    message = "Invalid Email Id",
+                    status = ResponseStatus.FAIL
+            ))
+        } else {
+            ResponseEntity.ok().body(Response(
+                    message = "Invalid Link",
+                    status = ResponseStatus.SUCCESS
+            ))
+        }
     }
 
     @RequestMapping(value = "/resetpassword/{code}", method = arrayOf(RequestMethod.GET))
