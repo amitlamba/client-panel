@@ -18,7 +18,7 @@ class RestErrorHandler {
 
     companion object {
 
-        protected val logger = loggerFor(javaClass)
+        protected val logger = loggerFor(RestErrorHandler::class.java)
     }
 
     @Autowired
@@ -75,7 +75,7 @@ class RestErrorHandler {
         //You can remove this check if you prefer to get the default error message.
         if (localizedErrorMessage == fieldError.defaultMessage) {
             val fieldErrorCodes = fieldError.codes
-            localizedErrorMessage = fieldErrorCodes[0]
+            localizedErrorMessage = fieldErrorCodes[0]?:""
         }
 
         return localizedErrorMessage

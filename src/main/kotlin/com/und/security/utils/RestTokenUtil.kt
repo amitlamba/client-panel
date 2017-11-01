@@ -17,7 +17,7 @@ import java.io.Serializable
 import java.util.*
 
 @Component
-class RestTokenUtil : Serializable {
+class RestTokenUtil {
 
     @Autowired
     lateinit private var dateUtils: DateUtils

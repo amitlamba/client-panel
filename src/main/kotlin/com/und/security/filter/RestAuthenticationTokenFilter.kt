@@ -49,7 +49,6 @@ class RestAuthenticationTokenFilter : OncePerRequestFilter() {
             // the database compellingly. Again it's up to you ;)
             val (userDetails, jwtToken) = restTokenUtil.validateToken(authToken, KEYTYPE.LOGIN)
             if (userDetails!=null) {
-                //FIXME remove this hardcoded stuff get from cache and key all user details
                 val authentication = UsernamePasswordAuthenticationToken(userDetails, null, userDetails.authorities)
                 authentication.details = WebAuthenticationDetailsSource().buildDetails(request)
                 logger.info("authenticated user usernameFromToken, setting security context")

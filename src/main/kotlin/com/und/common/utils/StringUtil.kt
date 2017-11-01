@@ -1,15 +1,12 @@
 package com.und.common.utils
 
-import org.apache.commons.lang3.StringUtils
 import java.security.SecureRandom
-import java.util.Random
-
 
 
 /**
  * Created by shiv on 01/09/17.
  */
-fun String.isEmpty(string:String) = StringUtils.isEmpty(string)
+fun String?.isEmpty() = this == null || this.trim() == ""
 
 fun randomString(length:Int):String {
     return RandomString(length).nextString()

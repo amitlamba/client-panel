@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service
 class CampaignSchedulerService {
 
     companion object {
-        protected val logger = loggerFor(javaClass)
+        protected val logger = loggerFor(CampaignSchedulerService::class.java)
     }
 
     @Scheduled(cron = "*/10 * * * * *")
