@@ -21,19 +21,19 @@ class SpringMVCConfig : WebMvcConfigurer {
 
     @Bean
     open fun getInternalResourceViewResolver(): InternalResourceViewResolver {
-        val resolver = InternalResourceViewResolver();
-        resolver.setPrefix("/WEB-INF/views/");
-        resolver.setSuffix(".jsp");
-        resolver.setViewClass(JstlView::class.java);
-        return resolver;
+        val resolver = InternalResourceViewResolver()
+        resolver.setPrefix("/WEB-INF/views/")
+        resolver.setSuffix(".jsp")
+        resolver.setViewClass(JstlView::class.java)
+        return resolver
     }
 
     @Bean
     fun messageSource(): ResourceBundleMessageSource {
-        val source = ResourceBundleMessageSource();
-        source.setBasenames("i18/users", "i18/errormsg");
-        source.setUseCodeAsDefaultMessage(true);
-        return source;
+        val source = ResourceBundleMessageSource()
+        source.setBasenames("i18/users", "i18/errormsg")
+        source.setUseCodeAsDefaultMessage(true)
+        return source
     }
 
     @Bean
@@ -42,7 +42,7 @@ class SpringMVCConfig : WebMvcConfigurer {
     }
 
     override fun configureDefaultServletHandling(configurer: DefaultServletHandlerConfigurer) {
-        configurer.enable();
+        configurer.enable()
     }
 
 

@@ -1,7 +1,7 @@
 package com.und.model
 
 import javax.persistence.*
-import javax.validation.constraints.Email
+//import javax.validation.constraints.Email
 import javax.validation.constraints.NotNull
 import javax.validation.constraints.Null
 
@@ -34,7 +34,7 @@ class EmailTemplate {
     @Null
     var parentID: Long? = null
 
-    @Email
+    //@Email
     @Column(name = "from_user")
     @NotNull
     lateinit var from: String

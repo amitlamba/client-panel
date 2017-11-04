@@ -2,6 +2,7 @@ buildscript {
     ext.kotlin_version = '1.1.51'
     ext.spring_boot_version = '2.0.0.M3'
     repositories {
+        mavenLocal()
         mavenCentral()
         maven { url 'https://repo.spring.io/libs-snapshot' }
         maven { url "https://repo.spring.io/snapshot" }
@@ -11,8 +12,8 @@ buildscript {
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version" // Required for Kotlin integration
         classpath "org.jetbrains.kotlin:kotlin-allopen:$kotlin_version"
-        // See https://kotlinlang.org/docs/reference/compiler-plugins.html#kotlin-spring-compiler-plugin
         classpath "org.springframework.boot:spring-boot-gradle-plugin:$spring_boot_version"
+        classpath('io.spring.gradle:dependency-management-plugin:1.0.3.RELEASE')
         classpath "com.moowork.gradle:gradle-node-plugin:1.1.0"
     }
 }
@@ -23,7 +24,7 @@ apply plugin: 'kotlin' // Required for Kotlin integration
 apply plugin: 'java'
 apply plugin: "kotlin-spring" // See https://kotlinlang.org/docs/reference/compiler-plugins.html#kotlin-spring-compiler-plugin
 apply plugin: 'org.springframework.boot'
-
+apply plugin: 'io.spring.dependency-management'
 apply plugin: "jacoco"
 apply plugin: 'findbugs'
 apply plugin: "com.moowork.node"
@@ -82,13 +83,14 @@ repositories {
     maven { url "https://repo.spring.io/snapshot" }
     maven { url "https://repo.spring.io/milestone" }
     jcenter()
+    mavenLocal()
 }
 
 
 jar {
     group = 'com.und'
     baseName = 'clientpanel'
-    version = '0.1.0'
+    version = '0.2.0'
 }
 
 node
@@ -118,18 +120,19 @@ dependencies {
     testCompile(
             'org.springframework.security:spring-security-test:4.2.3.RELEASE',
     )
+    testCompile group: 'com.nhaarman', name: 'mockito-kotlin', version: '1.5.0'
     testCompile 'org.mockito:mockito-core:1.+'
-    testCompile(group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: '2.0.0.M4') {
+    testCompile(group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: '2.0.0.M3') {
         exclude(module: 'commons-logging')
     }
     compile(
-            "org.springframework.boot:spring-boot-starter-web:$springbootVersion",
-            "org.springframework.boot:spring-boot-starter-data-jpa:$springbootVersion",
-            "org.springframework.boot:spring-boot-starter-data-rest:$springbootVersion",
-            "org.springframework.boot:spring-boot-starter-mobile:$springbootVersion",
-            "org.springframework.boot:spring-boot-starter-security:$springbootVersion",
-            "org.springframework.boot:spring-boot-starter-data-mongodb:$springbootVersion",
-            "org.springframework.boot:spring-boot-actuator:$springbootVersion",
+            //"org.springframework.boot:spring-boot-starter-web:$springbootVersion",
+            "org.springframework.boot:spring-boot-starter-data-jpa",
+            "org.springframework.boot:spring-boot-starter-data-rest",
+            "org.springframework.boot:spring-boot-starter-security",
+            "org.springframework.boot:spring-boot-actuator",
+            "org.springframework.boot:spring-boot-starter-mobile",
+            "org.springframework.boot:spring-boot-starter-data-mongodb",
             "org.aspectj:aspectjrt:$aspectjVersion",
             "org.aspectj:aspectjweaver:$aspectjVersion",
             "org.postgresql:postgresql:$pgDriverVersion",
@@ -140,7 +143,7 @@ dependencies {
             "org.springframework.data:spring-data-redis:$dataRedisVersion",
             "redis.clients:jedis:$jedisVersion",
             "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion",
-            "org.springframework.boot:spring-boot-devtools:$springbootVersion",
+            "org.springframework.boot:spring-boot-devtools",
             "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlin_version",
             "org.quartz-scheduler:quartz:$quartzVersion",
             "org.flywaydb:flyway-core:$flywayVersion",
@@ -150,10 +153,21 @@ dependencies {
             "javax.el:el-api:$javaxElVersion",
 
     )
+    compile ("com.und:auth-client:0.2.0-SNAPSHOT")
+    compile('org.springframework.cloud:spring-cloud-starter-config')
+    compile('org.springframework.cloud:spring-cloud-config-client')
+    compile('org.springframework.cloud:spring-cloud-starter-eureka')
+    compile('org.springframework.cloud:spring-cloud-starter-feign')
+
 
 
 }
 
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:Finchley.M2"
+    }
+}
 
 compileKotlin {
     kotlinOptions {
