@@ -153,7 +153,7 @@ dependencies {
             "javax.el:el-api:$javaxElVersion",
 
     )
-    compile ("com.und:auth-client:0.2.0-SNAPSHOT")
+    compile ("com.und:auth-client:0.3.0-SNAPSHOT")
     compile('org.springframework.cloud:spring-cloud-starter-config')
     compile('org.springframework.cloud:spring-cloud-config-client')
     compile('org.springframework.cloud:spring-cloud-starter-eureka')
