@@ -1,6 +1,6 @@
 buildscript {
     ext.kotlin_version = '1.1.51'
-    ext.spring_boot_version = '2.0.0.M3'
+    ext.spring_boot_version = '2.0.0.M5'
     repositories {
         mavenLocal()
         mavenCentral()
@@ -38,7 +38,7 @@ jacocoTestReport {
     reports {
         xml.enabled
         csv.enabled
-        html.destination file("${buildDir}/reports/jacocoHtml")
+        html.destination file("${buildDir}/reports/jacoco.Html")
     }
 }
 tasks.withType(FindBugs) {
@@ -47,12 +47,12 @@ tasks.withType(FindBugs) {
         html.enabled = true
         reportLevel = "low"
         ignoreFailures = true
-        html.destination file("${buildDir}/reports/findBugsHtml")
+        html.destination file("${buildDir}/reports/findBugs.Html")
     }
 }
 
 ext {
-    commonsLangVersion = '3.5'
+    commonsLangVersion = '3.6'
     flywayVersion= '3.2.1'
     jstlVersion = '1.2'
     taglibVersion = '1.1.2'
@@ -116,13 +116,14 @@ task buildClientWatch(type: NpmTask, dependsOn: 'npmInstall') {
     args = ['run', 'buildWatch']
 }
 
+
 dependencies {
     testCompile(
             'org.springframework.security:spring-security-test:4.2.3.RELEASE',
     )
     testCompile group: 'com.nhaarman', name: 'mockito-kotlin', version: '1.5.0'
     testCompile 'org.mockito:mockito-core:1.+'
-    testCompile(group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: '2.0.0.M3') {
+    testCompile(group: 'org.springframework.boot', name: 'spring-boot-starter-test') {
         exclude(module: 'commons-logging')
     }
     compile(
@@ -139,40 +140,30 @@ dependencies {
             "io.jsonwebtoken:jjwt:$jjwtVersion",
             "io.springfox:springfox-swagger2:$swaggerVersion",
             "io.springfox:springfox-swagger-ui:$swaggerVersion",
-            "org.springframework.boot:spring-boot-starter-redis:$bootRedisVersion",
-            "org.springframework.data:spring-data-redis:$dataRedisVersion",
-            "redis.clients:jedis:$jedisVersion",
             "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion",
             "org.springframework.boot:spring-boot-devtools",
             "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlin_version",
             "org.quartz-scheduler:quartz:$quartzVersion",
             "org.flywaydb:flyway-core:$flywayVersion",
-            "javax.servlet:jstl:$jstlVersion",
-            "jstl:jstl:$jstlVersion",
-            "taglibs:standard:$taglibVersion",
-            "javax.el:el-api:$javaxElVersion",
 
     )
     compile ("com.und:auth-client:0.3.0-SNAPSHOT")
     compile('org.springframework.cloud:spring-cloud-starter-config')
     compile('org.springframework.cloud:spring-cloud-config-client')
-    compile('org.springframework.cloud:spring-cloud-starter-eureka')
+    compile('org.springframework.cloud:spring-cloud-starter-eureka:2.0.0.M2')
     compile('org.springframework.cloud:spring-cloud-starter-feign')
 
 
-
-    // https://mvnrepository.com/artifact/javax.mail/mail
+    compile("org.springframework.kafka:spring-kafka")
+    compile("org.springframework.kafka:spring-kafka-test")
     compile group: 'javax.mail', name: 'mail', version: '1.5.0-b01'
-
-    //kafka
-    compile group: 'org.springframework.kafka', name: 'spring-kafka', version: '2.0.0.RELEASE'
-    compile group: 'org.springframework.kafka', name: 'spring-kafka-test', version: '2.0.0.RELEASE'
+    compile("log4j:log4j")
 
 }
 
 dependencyManagement {
     imports {
-        mavenBom "org.springframework.cloud:spring-cloud-dependencies:Finchley.M2"
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:Finchley.M3"
     }
 }
 
@@ -189,6 +180,6 @@ compileTestKotlin {
 
 
 
-bootRun.dependsOn(buildClientDev)
-jar.dependsOn(buildClient)
+//bootRun.dependsOn(buildClientDev)
+//jar.dependsOn(buildClient)
 
