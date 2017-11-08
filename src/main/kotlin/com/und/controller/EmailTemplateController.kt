@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController
 import javax.validation.Valid
 
 @RestController
+@RequestMapping("/client/email")
 class EmailTemplateController {
 
     companion object {
@@ -22,24 +23,24 @@ class EmailTemplateController {
     @Autowired
     private lateinit var emailTemplateService: EmailTemplateService
 
-    @RequestMapping(value = "/client/default-templates", method = arrayOf(RequestMethod.GET))
+    @RequestMapping(value = "/default-templates", method = arrayOf(RequestMethod.GET))
     fun getDefaultEmailTemplates(): List<EmailTemplate> {
         logger.debug("Inside getDefaultEmailTemplates method")
         return emailTemplateService.getDefaultEmailTemplates()
     }
 
-    @RequestMapping(value = "/client/email-templates", method = arrayOf(RequestMethod.GET))
+    @RequestMapping(value = "/templates", method = arrayOf(RequestMethod.GET))
     fun getClientEmailTemplates(@RequestParam(value = "id", required = false) id: Long? = null): List<EmailTemplate> {
         return emailTemplateService.getClientEmailTemplates(AuthenticationUtils.clientID!!, id)//TODO - Insert a valid clientID
     }
 
-    @RequestMapping(value = "/client/save-email-template", method = arrayOf(RequestMethod.POST))
+    @RequestMapping(value = "/save-template", method = arrayOf(RequestMethod.POST))
     fun saveEmailTemplate(@RequestParam @Valid emailTemplate: EmailTemplate): Long {
         emailTemplate.clientID=AuthenticationUtils.clientID
         return emailTemplateService.saveEmailTemplate(emailTemplate)
     }
 
-    @RequestMapping(value = "/client/user-event-attributes", method = arrayOf(RequestMethod.GET))
+    @RequestMapping(value = "/user-event-attributes", method = arrayOf(RequestMethod.GET))
     fun getUserEventAttributes() {
         emailTemplateService.getUserEventAttributes()
     }

@@ -1,7 +1,7 @@
-CREATE TABLE service_provider_details
+CREATE TABLE service_provider_credentials
 (
   id                    BIGSERIAL   NOT NULL
-    CONSTRAINT service_provider_details_pkey
+    CONSTRAINT service_provider_credentials_pkey
     PRIMARY KEY,
   client_id             BIGINT      NOT NULL REFERENCES client,
   appuser_id            BIGINT      NOT NULL REFERENCES appuser,
