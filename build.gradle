@@ -52,7 +52,7 @@ tasks.withType(FindBugs) {
 }
 
 ext {
-    commonsLangVersion = '3.6'
+    commonsLangVersion = '3.5'
     flywayVersion= '3.2.1'
     jstlVersion = '1.2'
     taglibVersion = '1.1.2'
@@ -127,7 +127,6 @@ dependencies {
         exclude(module: 'commons-logging')
     }
     compile(
-            //"org.springframework.boot:spring-boot-starter-web:$springbootVersion",
             "org.springframework.boot:spring-boot-starter-data-jpa",
             "org.springframework.boot:spring-boot-starter-data-rest",
             "org.springframework.boot:spring-boot-starter-security",
@@ -137,7 +136,6 @@ dependencies {
             "org.aspectj:aspectjrt:$aspectjVersion",
             "org.aspectj:aspectjweaver:$aspectjVersion",
             "org.postgresql:postgresql:$pgDriverVersion",
-            "io.jsonwebtoken:jjwt:$jjwtVersion",
             "io.springfox:springfox-swagger2:$swaggerVersion",
             "io.springfox:springfox-swagger-ui:$swaggerVersion",
             "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion",

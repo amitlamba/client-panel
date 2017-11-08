@@ -7,9 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.cloud.context.config.annotation.RefreshScope
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient
 import org.springframework.cloud.netflix.feign.EnableFeignClients
-import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.ComponentScan
-import org.springframework.context.support.ResourceBundleMessageSource
 
 @SpringBootApplication
 @EnableAutoConfiguration
@@ -20,6 +18,5 @@ import org.springframework.context.support.ResourceBundleMessageSource
 class ClientPanelApplication
 
 fun main(args: Array<String>) {
-
     SpringApplication.run(ClientPanelApplication::class.java, *args)
 }

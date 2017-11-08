@@ -8,9 +8,9 @@
   </appender>
 
   <logger name="com.und" level="DEBUG" />
-  <logger name="org.springframework" level="DEBUG" />
+  <logger name="org.springframework" level="WARN" />
 
-  <root level="DEBUG">
+  <root level="WARN">
     <appender-ref ref="STDOUT" />
   </root>
 
