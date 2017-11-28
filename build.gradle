@@ -1,14 +1,19 @@
 buildscript {
-    ext.kotlin_version = '1.1.50'
-    ext.spring_boot_version = '1.5.6.RELEASE'
+    ext.kotlin_version = '1.1.60'
+    ext.spring_boot_version = '2.0.0.M3'
     repositories {
+        mavenLocal()
+        mavenCentral()
+        maven { url 'https://repo.spring.io/libs-snapshot' }
+        maven { url "https://repo.spring.io/snapshot" }
+        maven { url "https://repo.spring.io/milestone" }
         jcenter()
     }
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version" // Required for Kotlin integration
         classpath "org.jetbrains.kotlin:kotlin-allopen:$kotlin_version"
-        // See https://kotlinlang.org/docs/reference/compiler-plugins.html#kotlin-spring-compiler-plugin
         classpath "org.springframework.boot:spring-boot-gradle-plugin:$spring_boot_version"
+        classpath('io.spring.gradle:dependency-management-plugin:1.0.3.RELEASE')
         classpath "com.moowork.gradle:gradle-node-plugin:1.1.0"
     }
 }
@@ -19,7 +24,7 @@ apply plugin: 'kotlin' // Required for Kotlin integration
 apply plugin: 'java'
 apply plugin: "kotlin-spring" // See https://kotlinlang.org/docs/reference/compiler-plugins.html#kotlin-spring-compiler-plugin
 apply plugin: 'org.springframework.boot'
-
+apply plugin: 'io.spring.dependency-management'
 apply plugin: "jacoco"
 apply plugin: 'findbugs'
 apply plugin: "com.moowork.node"
@@ -33,15 +38,46 @@ jacocoTestReport {
     reports {
         xml.enabled
         csv.enabled
-        html.destination file("${buildDir}/reports/jacocoHtml")
+        html.destination file("${buildDir}/reports/jacoco.Html")
+    }
+}
+tasks.withType(FindBugs) {
+    reports {
+        xml.enabled = false
+        html.enabled = true
+        reportLevel = "low"
+        ignoreFailures = true
+        html.destination file("${buildDir}/reports/findBugs.Html")
     }
 }
 
+ext {
+    commonsLangVersion = '3.5'
+    flywayVersion= '3.2.1'
+    jstlVersion = '1.2'
+    taglibVersion = '1.1.2'
+    javaxElVersion = '2.2.1-b04'
+    bitWalkerUagentVersion = '1.20'
+<<<<<<< Updated upstream
+    kotlinVersion = '1.1.51'
+    springbootVersion = '2.0.0.M3'
+=======
+    kotlinVersion = '1.1.60'
+    springbootVersion = '2.0.0.M5'
+>>>>>>> Stashed changes
+    aspectjVersion = '1.8.7'
+    jsonPathVersion = '2.1.0'
+    swaggerVersion = '2.7.0'
+    springkafkaVersion = '2.0.0.RELEASE'
+    pgDriverVersion = '9.4-1206-jdbc42'
+    jjwtVersion = '0.9.0'
+    gauvaVersion = '19.0'
+    bootRedisVersion = '1.4.7.RELEASE'
+    dataRedisVersion = '2.0.0.RELEASE'
+    jedisVersion = '2.9.0'
+    quartzVersion = '2.3.0'
 
-ext.kotlinVersion = '1.1.50'
-ext.springbootVersion = '1.5.7.RELEASE'
-ext.aspectjVersion = '1.8.7'
-ext.jsonPathVersion = '2.1.0'
+}
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
@@ -52,13 +88,14 @@ repositories {
     maven { url "https://repo.spring.io/snapshot" }
     maven { url "https://repo.spring.io/milestone" }
     jcenter()
+    mavenLocal()
 }
 
 
 jar {
     group = 'com.und'
     baseName = 'clientpanel'
-    version = '0.1.0'
+    version = '0.2.0'
 }
 
 node
@@ -68,62 +105,81 @@ node
             nodeModulesDir = file("frontend")
         }
 
-task buildClientDev(type: NpmTask, dependsOn: 'npmInstall'){
-            group = 'build'
-            description = 'Compile client side folder for development'
-            args = ['run','buildDev']
-        }
-task buildClient(type:NpmTask, dependsOn:'npmInstall') {
-            group = 'build'
-            description = "Compile client side folder for production"
-            args = ['run','build']
-        }
-task buildClientWatch(type: NpmTask, dependsOn: 'npmInstall'){
-            group = 'application'
-            description = "Build and watches the client side assets for rebuilding"
-            args = ['run','buildWatch']
-        }
+task buildClientDev(type: NpmTask, dependsOn: 'npmInstall') {
+    group = 'build'
+    description = 'Compile client side folder for development'
+    args = ['run', 'buildDev']
+}
+task buildClient(type: NpmTask, dependsOn: 'npmInstall') {
+    group = 'build'
+    description = "Compile client side folder for production"
+    args = ['run', 'build']
+}
+task buildClientWatch(type: NpmTask, dependsOn: 'npmInstall') {
+    group = 'application'
+    description = "Build and watches the client side assets for rebuilding"
+    args = ['run', 'buildWatch']
+}
+
 
 dependencies {
     testCompile(
-            'junit:junit:4.12',
             'org.springframework.security:spring-security-test:4.2.3.RELEASE',
-
     )
-    testCompile "org.mockito:mockito-core:1.+"
-    testCompile(group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: '1.5.6.RELEASE') {
+    testCompile group: 'com.nhaarman', name: 'mockito-kotlin', version: '1.5.0'
+    testCompile 'org.mockito:mockito-core:1.+'
+    testCompile(group: 'org.springframework.boot', name: 'spring-boot-starter-test') {
         exclude(module: 'commons-logging')
     }
     compile(
-            "org.springframework.boot:spring-boot-starter-web:$springbootVersion",
-            "org.springframework.boot:spring-boot-starter-data-jpa:$springbootVersion",
-            "org.springframework.boot:spring-boot-starter-data-rest:$springbootVersion",
-            "org.springframework.boot:spring-boot-starter-mobile:$springbootVersion",
-            "org.springframework.boot:spring-boot-starter-security:$springbootVersion",
-            "org.springframework.boot:spring-boot-starter-data-mongodb:$springbootVersion",
-            "org.springframework.boot:spring-boot-actuator:$springbootVersion",
-            "org.aspectj:aspectjrt:$aspectjVersion",
-            "org.aspectj:aspectjweaver:$aspectjVersion",
-            'org.postgresql:postgresql:9.4-1206-jdbc42',
-            'io.jsonwebtoken:jjwt:0.7.0',
-            'io.springfox:springfox-swagger2:2.7.0',
-            'io.springfox:springfox-swagger-ui:2.7.0',
-            'com.google.guava:guava:19.0',
-            'org.apache.commons:commons-lang3:3.5',
-            'org.flywaydb:flyway-core:3.2.1',
-            'javax.servlet:jstl:1.2',
-            'jstl:jstl:1.2',
-            'taglibs:standard:1.1.2',
-            'javax.el:el-api:2.2.1-b04'
-    )
-    compile "org.springframework.boot:spring-boot-devtools:$springbootVersion"
-    compile("org.hibernate:hibernate-validator")
+            "org.springframework.boot:spring-boot-starter-data-jpa",
+            "org.springframework.boot:spring-boot-starter-data-rest",
+            "org.springframework.boot:spring-boot-starter-security",
+            "org.springframework.boot:spring-boot-actuator",
+            "org.springframework.boot:spring-boot-starter-mobile",
+            "org.springframework.boot:spring-boot-starter-data-mongodb",
+            "org.aspectj:aspectjrt",
+            "org.aspectj:aspectjweaver",
+            "org.postgresql:postgresql:$pgDriverVersion",
+            "io.springfox:springfox-swagger2:$swaggerVersion",
+            "io.springfox:springfox-swagger-ui:$swaggerVersion",
+            "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion",
+            "org.springframework.boot:spring-boot-devtools",
+            "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlin_version",
+            "org.quartz-scheduler:quartz:$quartzVersion",
+            "org.flywaydb:flyway-core:$flywayVersion",
 
-    compile "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlin_version"
+    )
+    compile ("com.und:auth-client:0.4.0-SNAPSHOT")
+    compile('org.springframework.cloud:spring-cloud-starter-config')
+    compile('org.springframework.cloud:spring-cloud-config-client')
+    compile('org.springframework.cloud:spring-cloud-starter-eureka:2.0.0.M2')
+    compile('org.springframework.cloud:spring-cloud-starter-feign')
+
+
+    compile("org.springframework.kafka:spring-kafka")
+    compile("org.springframework.kafka:spring-kafka-test")
+    compile group: 'javax.mail', name: 'mail', version: '1.5.0-b01'
+    compile("log4j:log4j")
+
+    //web-push
+    compile group: 'nl.martijndwars', name: 'web-push', version: '3.0.1'
+
+    //fcm
+    // https://mvnrepository.com/artifact/de.bytefish.fcmjava/fcmjava-core
+    compile group: 'de.bytefish.fcmjava', name: 'fcmjava-core', version: '2.4'
+    // https://mvnrepository.com/artifact/de.bytefish.fcmjava/fcmjava-client
+    compile group: 'de.bytefish.fcmjava', name: 'fcmjava-client', version: '2.4'
+
 
 
 }
 
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:Finchley.M2"
+    }
+}
 
 compileKotlin {
     kotlinOptions {
@@ -138,6 +194,6 @@ compileTestKotlin {
 
 
 
-bootRun.dependsOn(buildClientDev)
-jar.dependsOn(buildClient)
+//bootRun.dependsOn(buildClientDev)
+//jar.dependsOn(buildClient)
 
