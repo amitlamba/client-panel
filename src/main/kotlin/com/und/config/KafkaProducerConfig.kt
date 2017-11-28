@@ -13,7 +13,7 @@ import org.springframework.kafka.core.KafkaTemplate
 import org.springframework.kafka.core.ProducerFactory
 import java.util.*
 
-//    /usr/local/zookeeper/bin/zkServer.sh start
+//   sudo /usr/local/zookeeper/bin/zkServer.sh start
 //    /usr/local/kafka/bin/kafka-server-start.sh -daemon /usr/local/kafka/config/server.properties
 @Configuration
 @EnableKafka

@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.junit4.SpringRunner
 
-@Ignore
+//@Ignore
 @RunWith(SpringRunner::class)
 @SpringBootTest
 class UnsubscribeServiceTest {
@@ -23,6 +23,7 @@ class UnsubscribeServiceTest {
         println(unsubscribeLink)
         val dataFromUnsubscribeLink = unsubscribeService.getDataFromUnsubscribeLink(unsubscribeLink = unsubscribeLink)
         println(dataFromUnsubscribeLink)
+        assert(dummyUnsubscribeLinkParams.equals(dataFromUnsubscribeLink), {"The object could not be recreated"})
     }
 
     private fun createDummyUnsubscribeLinkParams(): UnsubscribeService.UnsubscribeLinkParams {
