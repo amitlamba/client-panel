@@ -4,7 +4,7 @@ spring:
       default
   cloud:
     config:
-      #uri: http://localhost:8888
+      uri: http://nestros.com:8888
       enabled: true
       name: client-panel
   application:
@@ -12,15 +12,3 @@ spring:
   mvc:
     view:
       prefix:
-
-eureka:
-  instance:
-    prefer-ip-address: true
-    health-check-url-path: /application/health
-  client:
-    register-with-eureka: true
-    fetch-registry: true
-    service-url: http://103.227.68.166:8761/eureka
-      #discovery:
-       # enabled: true
-        #service-id: auth-service

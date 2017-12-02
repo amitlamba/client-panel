@@ -1,5 +1,5 @@
 buildscript {
-    ext.kotlin_version = '1.1.60'
+    ext.kotlin_version = '1.1.61'
     ext.spring_boot_version = '2.0.0.M3'
     repositories {
         mavenLocal()
@@ -58,13 +58,8 @@ ext {
     taglibVersion = '1.1.2'
     javaxElVersion = '2.2.1-b04'
     bitWalkerUagentVersion = '1.20'
-<<<<<<< Updated upstream
-    kotlinVersion = '1.1.51'
+    kotlinVersion = '1.1.61'
     springbootVersion = '2.0.0.M3'
-=======
-    kotlinVersion = '1.1.60'
-    springbootVersion = '2.0.0.M5'
->>>>>>> Stashed changes
     aspectjVersion = '1.8.7'
     jsonPathVersion = '2.1.0'
     swaggerVersion = '2.7.0'
