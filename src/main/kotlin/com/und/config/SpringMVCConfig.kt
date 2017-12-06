@@ -1,6 +1,7 @@
 package com.und.config
 
 
+import io.netty.handler.codec.http.cors.CorsConfig
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.support.ResourceBundleMessageSource
@@ -10,6 +11,12 @@ import org.springframework.web.servlet.config.annotation.DefaultServletHandlerCo
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 import org.springframework.web.servlet.view.InternalResourceViewResolver
 import org.springframework.web.servlet.view.JstlView
+import org.springframework.boot.web.servlet.FilterRegistrationBean
+import org.springframework.core.Ordered
+import org.springframework.web.cors.CorsConfiguration
+import org.springframework.web.cors.CorsConfigurationSource
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource
+import org.springframework.web.filter.CorsFilter
 
 
 /**
@@ -45,6 +52,49 @@ class SpringMVCConfig : WebMvcConfigurer {
         configurer.enable()
     }
 
+//    @Bean
+//    fun corsFilter(): FilterRegistrationBean<*> {
+//        val source = UrlBasedCorsConfigurationSource()
+//        val config = CorsConfiguration()
+//        config.allowCredentials = true
+//        config.addAllowedOrigin("http://localhost:4200")
+//        config.addAllowedHeader("*")
+//        config.addAllowedMethod("*")
+//        source.registerCorsConfiguration("/**", config)
+//        val bean = FilterRegistrationBean(CorsFilter(source))
+//        bean.setOrder(Ordered.HIGHEST_PRECEDENCE)
+//        return bean
+//    }
 
+    @Bean
+    fun corsFilter(): CorsFilter {
+        val source = UrlBasedCorsConfigurationSource()
+        val config = CorsConfiguration()
+        config.allowCredentials = true
+        config.addAllowedOrigin("http://localhost:4200")
+        config.addAllowedHeader("*")
+        config.addAllowedMethod("*")
+        source.registerCorsConfiguration("/**", config)
+        val bean = FilterRegistrationBean(CorsFilter(source))
+        bean.setOrder(Ordered.HIGHEST_PRECEDENCE)
+        return CorsFilter(source)
+    }
+
+
+//    @Bean
+//    fun corsConfigurationSource(): CorsConfigurationSource {
+//        val source = UrlBasedCorsConfigurationSource()
+//        val config = CorsConfiguration()
+//        config.allowCredentials = true
+////        config.addAllowedOrigin("http://localhost:4200")
+//        config.allowedOrigins = listOf("*")
+//        config.allowedHeaders = listOf("Authorization", "Cache-Control", "Content-Type")
+//        config.allowedMethods = listOf("HEAD",
+//                "GET", "POST", "PUT", "DELETE", "PATCH")
+////        config.addExposedHeader("authorization")
+////        config.addExposedHeader("Content-Type")
+//        source.registerCorsConfiguration("/**", config)
+//        return source
+//    }
 
 }

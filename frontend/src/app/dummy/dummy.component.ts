@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import {Http, Response, RequestOptions, Headers} from '@angular/http';
+import {Component, OnInit} from '@angular/core';
+import {HttpClient} from "@angular/common/http";
 
 @Component({
   selector: 'app-dummy',
@@ -8,22 +8,17 @@ import {Http, Response, RequestOptions, Headers} from '@angular/http';
 })
 export class DummyComponent implements OnInit {
 
-  constructor(private http: Http) { 
-  
+  constructor(private httpClient: HttpClient) {
+
   }
 
   ngOnInit() {
-    
+
   }
-  getData(){
+
+  getData() {
     console.log("yahan");
-    this.http.get('https://userndot-a528b.firebaseio.com/code.json')
-    .subscribe(
-      (res:Response)=> {
-				const data = res.json();
-				console.log(data);
-					}
-			);
+    this.httpClient.get('https://userndot-a528b.firebaseio.com/code.json');
   }
 
 }

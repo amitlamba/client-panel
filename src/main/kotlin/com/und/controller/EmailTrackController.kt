@@ -15,7 +15,7 @@ import java.io.ByteArrayOutputStream
 import java.net.URLDecoder
 import java.net.URLEncoder
 
-
+@CrossOrigin
 @Controller
 @RequestMapping("/email")
 class EmailTrackController {

@@ -5,18 +5,16 @@ import com.und.model.SmsTemplate
 import com.und.security.utils.AuthenticationUtils
 import com.und.service.SmsTemplateService
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestMethod
-import org.springframework.web.bind.annotation.RequestParam
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 import javax.validation.Valid
 
+@CrossOrigin
 @RestController
 @RequestMapping("/client/sms")
 class SmsTemplateController {
     companion object {
 
-        protected val logger = loggerFor(javaClass)
+        protected val logger = loggerFor(SmsTemplateController::class.java)
     }
 
     @Autowired
