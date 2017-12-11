@@ -2,9 +2,10 @@ import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
 import 'rxjs/add/operator/map'
 
-import {User} from "../_models/user";
+import {EventUser} from "../_models/user";
 import {AuthenticationService} from "./authentication.service";
-import {HttpClient, HttpHeaders} from "@angular/common/http";
+import {HttpClient} from "@angular/common/http";
+import {AppSettings} from "../_settings/app-settings";
 
 @Injectable()
 export class UserService {
@@ -12,14 +13,11 @@ export class UserService {
               private authenticationService: AuthenticationService) {
   }
 
-  getUsers(): Observable<User[]> {
-
-    let headers = new HttpHeaders({ 'authorization': this.authenticationService.token });
-    let options = { headers: headers };
+  getUsers(): Observable<EventUser[]> {
 
     // get users from api
-    // return this.httpClient.get<User[]>(AppSettings.API_ENDPOINT_CLIENT_CLIENT_USERS_GETLIST);
-    return this.httpClient.get<User[]>("http://localhost:9191/client/users/get-list",
-      options);
+    return this.httpClient.get<EventUser[]>(AppSettings.API_ENDPOINT_CLIENT_CLIENT_USERS_GETLIST);
   }
+
+
 }

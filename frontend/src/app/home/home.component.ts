@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 
-import {User} from "../_models/user";
+import {EventUser, User} from "../_models/user";
 import {UserService} from "../_services/user.service";
 
 @Component({
@@ -9,7 +9,8 @@ import {UserService} from "../_services/user.service";
 })
 
 export class HomeComponent implements OnInit {
-  users: User[] = [];
+  title: string = "Dashboard"
+  users: EventUser[] = [];
 
   constructor(private userService: UserService) {
   }

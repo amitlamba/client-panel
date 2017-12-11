@@ -1,9 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import 'rxjs/add/operator/map';
 import {AuthenticationService} from "../_services/authentication.service";
-import {AppSettings} from "../_settings/app-settings";
 
 
 @Component({
@@ -31,9 +30,21 @@ export class LoginComponent implements OnInit {
   }
 
   login() {
+    this.loading = true;
 
     const body = {username: this.model.username, password: this.model.password};
-    this.http
+    this.authenticationService.login(this.model.username, this.model.password).subscribe(
+      (response) => {
+        console.log(response);
+        this.router.navigate(['/']);
+      },
+      (error: HttpErrorResponse) => {
+        this.error = 'Username or password is incorrect';
+        this.loading = false;
+        console.log("this.error: " + this.error + ", this.loading: " + this.loading);
+      }
+    );
+    /*this.http
       .post(AppSettings.API_ENDPOINT_AUTH+'/auth', body)
       .subscribe(
         (response: any) => {
@@ -48,6 +59,6 @@ export class LoginComponent implements OnInit {
             return false;
           }
         }
-      );
+      );*/
   }
 }

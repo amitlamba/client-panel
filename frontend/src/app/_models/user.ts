@@ -4,3 +4,31 @@ export class User {
   firstName: string;
   lastName: string;
 }
+
+export class EventUser {
+  id: string;
+  clientId: string; //client id , user is associated with, this can come from collection
+  clientUserId: string;//this is id of the user client has provided
+  socialId: SocialId;
+  standardInfo: StandardInfo;
+  additionalInfo: object;
+  //FIXME creation date can't keep changing
+  creationDate: number
+
+}
+
+export class SocialId{
+fbId: string;
+googleId: string;
+mobile: string;
+email: string;
+}
+
+export class StandardInfo {
+  firstName: string;
+  lastName: string;
+  gender: string;
+  dob: string;
+  country: string;
+  countryCode: string;
+}

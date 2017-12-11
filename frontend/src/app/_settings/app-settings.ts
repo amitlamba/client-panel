@@ -2,7 +2,8 @@ export class AppSettings {
   public static API_ENDPOINT = "http://nestros.com:8080";
 
 
-  public static API_ENDPOINT_CLIENT = AppSettings.API_ENDPOINT + "/client";
+  // public static API_ENDPOINT_CLIENT = AppSettings.API_ENDPOINT + "/client";
+  public static API_ENDPOINT_CLIENT = "http://localhost:9191"
 
   public static API_ENDPOINT_CLIENT_CLIENT = AppSettings.API_ENDPOINT_CLIENT + "/client";
   public static API_ENDPOINT_CLIENT_CLIENT_EMAIL = AppSettings.API_ENDPOINT_CLIENT_CLIENT + "/email";
@@ -35,4 +36,10 @@ export class AppSettings {
   public static API_ENDPOINT_AUTH_REGISTER_SENDVFNEMAIL = AppSettings.API_ENDPOINT_AUTH_REGISTER + "/sendvfnmail";
   public static API_ENDPOINT_AUTH_REGISTER_FORGOTPASSWORD = AppSettings.API_ENDPOINT_AUTH_REGISTER + "/forgotpassword";
   public static API_ENDPOINT_AUTH_REGISTER_RESETPASSWORD = AppSettings.API_ENDPOINT_AUTH_REGISTER + "/resetpassword";
+
+  public static API_ENDPOINT_AUTH_SETTING = AppSettings.API_ENDPOINT_AUTH + "/setting";
+  public static API_ENDPOINT_AUTH_SETTING_RESETPASSWORD = AppSettings.API_ENDPOINT_AUTH_SETTING + "/resetpassword";
+  public static API_ENDPOINT_AUTH_SETTING_USERDETAILS = AppSettings.API_ENDPOINT_AUTH_SETTING + "/userProfile";
+  public static API_ENDPOINT_AUTH_SETTING_UPDATEUSERDETAILS = AppSettings.API_ENDPOINT_AUTH_SETTING + "/updateUserDetails";
+  public static API_ENDPOINT_AUTH_SETTING_REFRESHTOKEN = AppSettings.API_ENDPOINT_AUTH_SETTING + "/refreshToken";
 }

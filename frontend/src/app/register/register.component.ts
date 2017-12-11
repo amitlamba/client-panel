@@ -1,24 +1,7 @@
-import {Component, OnInit} from '@angular/core';
-import {NgForm} from '@angular/forms';
-import {Http, Response, RequestOptions, Headers} from '@angular/http';
-import {HttpClient} from '@angular/common/http';
-
-import {NgModule, ViewChild} from '@angular/core';
-import {FormsModule, FormGroup, FormControl} from '@angular/forms';
-import {AppSettings} from "../_settings/app-settings";
-
-class Signup {
-  constructor(public firstName: string = '',
-              public lastName: string = '',
-              public email: string = '',
-              public company: string = '',
-              public password: string = '',
-              public mobile: number = 190,
-              public comments: string = '',
-              public country: string = '',
-              public language: string = '') {
-  }
-}
+import {Component, OnInit, ViewChild} from '@angular/core';
+import {RegistrationRequest} from "../_models/client";
+import {AuthenticationService} from "../_services/authentication.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-register',
@@ -27,11 +10,13 @@ class Signup {
 })
 export class RegisterComponent implements OnInit {
 
-  constructor(private httpClient: HttpClient) {
+  constructor(private authenticationService: AuthenticationService, private router: Router) {
   }
 
-  model: Signup = new Signup();
+  model: RegistrationRequest = new RegistrationRequest();
   @ViewChild('f') form: any;
+  loading = false;
+  error = '';
 
   langs: string[] = [
     'English',
@@ -40,25 +25,22 @@ export class RegisterComponent implements OnInit {
   ];
 
   onSubmit(form: FormData) {
+    this.loading = true;
     if (this.form.valid) {
-      const body = {
-        email: this.model.email,
-        company: this.model.company,
-        firstname: this.model.firstName,
-        lastname: this.model.lastName,
-        mobile: this.model.mobile,
-        country: this.model.country,
-        comments: this.model.comments
-      };
-      this.httpClient
-        .post(AppSettings.API_ENDPOINT_AUTH + '/register', body)
+      console.log(this.form);
+      console.log(this.model);
+      this.authenticationService.register(this.model)
         .subscribe(
-          (response: any) => {
-
+          response => {
+            this.router.navigate(['/login']);
+          },
+          (error: Error) => {
+            this.error = "Not Registered. Server Error: " + error.message;
+            this.loading = false;
           }
         );
-
     }
+
   }
 
 
