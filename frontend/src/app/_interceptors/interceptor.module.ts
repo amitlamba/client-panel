@@ -30,9 +30,9 @@ export class HttpRequestInterceptor implements HttpInterceptor {
         .catch((err: any, caught) => {
           if (err instanceof HttpErrorResponse) {
             if (err.status === 403 || err.status === 401) {
-              console.info('err.error =', err.error, ';');
+              console.error('err.error =', err.error, ';');
             }
-            console.info('err =', err, caught, ';');
+            console.error('err =', err, caught, ';');
             return Observable.throw(err);
           }
         });

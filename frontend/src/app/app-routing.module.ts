@@ -9,6 +9,9 @@ import {RegisterComponent} from "./register/register.component";
 import {DummyComponent} from "./dummy/dummy.component";
 import {SettingsComponent} from "./settings/settings.component";
 import {ServiceprovidersComponent} from "./settings/serviceproviders/serviceproviders.component";
+import {TemplatesComponent} from "./templates/templates.component";
+import {EmailTemplatesComponent} from "./templates/email-templates/email-templates.component";
+import {SmsTemplatesComponent} from "./templates/sms-templates/sms-templates.component";
 
 const routes: Routes = [
   {path: 'login', component: LoginComponent},
@@ -19,6 +22,11 @@ const routes: Routes = [
   {path: 'settings', component: SettingsComponent, children: [
     {path: 'profile', component: ProfileComponent},
     {path: 'service-provider-settings', component: ServiceprovidersComponent}
+  ]},
+  {path: 'templates', redirectTo:"templates/email", pathMatch:"full"},
+  {path: 'templates', component: TemplatesComponent, children: [
+    {path: 'email', component: EmailTemplatesComponent},
+    {path: 'sms', component: SmsTemplatesComponent}
   ]},
 ];
 

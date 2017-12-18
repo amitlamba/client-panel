@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import {ServiceProvider, ServiceProviderType} from "../../_models/client";
+import {Component, Input, OnInit, ViewChild} from '@angular/core';
+import {ServiceProvider, ServiceProviderCredentials, ServiceProviderType} from "../../_models/client";
+import {MessageService} from "../../_services/message.service";
+import {AuthenticationService} from "../../_services/authentication.service";
 
 @Component({
   selector: 'app-profile-serviceproviders',
@@ -8,15 +10,22 @@ import {ServiceProvider, ServiceProviderType} from "../../_models/client";
 })
 export class ServiceprovidersComponent implements OnInit {
 
+  @ViewChild("f") form: any;
   serviceProviderTypes: string[] = [];
   serviceProviders: string[] = [];
+  serviceProviderCredentials: ServiceProviderCredentials = new ServiceProviderCredentials();
 
-  constructor() { }
+  constructor(private messageService: MessageService, private authenticationService: AuthenticationService) { }
 
   ngOnInit() {
     this.initServiceProviderTypes();
     this.initServiceProviders();
-    console.log(this.serviceProviders);
+    this.authenticationService.getServiceProviderCredentialsEmail().subscribe(
+      response => {
+        console.log(response);
+        this.serviceProviderCredentials = response[0];
+      }
+    );
   }
 
   initServiceProviderTypes() {
@@ -28,4 +37,15 @@ export class ServiceprovidersComponent implements OnInit {
     const objValues = Object.keys(ServiceProvider).map(k => ServiceProvider[k]);
     this.serviceProviders = objValues.filter(v => typeof v === "string") as string[];
   }
+
+  onSave(form: FormData) {
+    if (this.form.valid) {
+      this.authenticationService.saveServiceProviderCredentialEmail(this.serviceProviderCredentials)
+        .subscribe(
+          response => {
+          }
+        );
+    }
+  }
+
 }

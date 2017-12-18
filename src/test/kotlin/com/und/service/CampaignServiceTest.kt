@@ -51,7 +51,7 @@ class CampaignServiceTest {
         emailTemplate.emailTemplateBody = "Dummy Body"
         emailTemplate.emailTemplateSubject = "Dummy Subject"
         emailTemplate.from = "amit@userndot.com"
-        emailTemplate.messageType = EmailMessageType.PROMOTIONAL
+        emailTemplate.messageType = MessageType.PROMOTIONAL
         emailTemplateService.saveEmailTemplate(emailTemplate)
     }
 }

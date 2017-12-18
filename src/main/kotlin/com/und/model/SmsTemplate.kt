@@ -1,6 +1,5 @@
 package com.und.model
 
-import com.fasterxml.jackson.annotation.JsonIgnore
 import org.hibernate.validator.constraints.Email
 import javax.persistence.*
 import javax.validation.constraints.NotNull
@@ -24,6 +23,10 @@ class SmsTemplate {
     @NotNull
     var appuserID: Long? = null
 
+    @Column(name = "name")
+    @NotNull
+    lateinit var name: String
+
     @Column(name = "sms_template_body")
     @NotNull
     lateinit var smsTemplateBody: String
@@ -32,7 +35,6 @@ class SmsTemplate {
     @Null
     var parentID: Long? = null
 
-    @Email
     @Column(name = "from_user")
     @NotNull
     lateinit var from: String
@@ -40,7 +42,7 @@ class SmsTemplate {
     @Column(name = "message_type") //Promotional or Transactional
     @NotNull
     @Enumerated(EnumType.STRING)
-    var messageType: EmailMessageType? = null
+    var messageType: MessageType? = null
 
     @Column(name = "tags")
     var tags: String? = null

@@ -1,6 +1,7 @@
 package com.und.service
 
 import com.und.model.SmsTemplate
+import com.und.model.Status
 import com.und.repository.SmsTemplateRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -23,6 +24,7 @@ class SmsTemplateService {
     }
 
     fun saveSmsTemplate(smsTemplate: SmsTemplate): Long {
+        smsTemplate.status = Status.ACTIVE
         val save = smsTemplateRepository.save(smsTemplate)
         return save.id!!
     }

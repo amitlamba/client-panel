@@ -32,8 +32,9 @@ class SmsTemplateController {
     }
 
     @RequestMapping(value = "/save-template", method = arrayOf(RequestMethod.POST))
-    fun saveSmsTemplate(@RequestParam @Valid smsTemplate: SmsTemplate): Long {
+    fun saveSmsTemplate(@RequestBody smsTemplate: SmsTemplate): Long {
         smsTemplate.clientID = AuthenticationUtils.clientID
+        smsTemplate.appuserID=AuthenticationUtils.principal.id
         return smsTemplateService.saveSmsTemplate(smsTemplate)
     }
 

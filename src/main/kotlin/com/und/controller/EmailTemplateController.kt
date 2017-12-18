@@ -33,8 +33,9 @@ class EmailTemplateController {
     }
 
     @RequestMapping(value = "/save-template", method = arrayOf(RequestMethod.POST))
-    fun saveEmailTemplate(@RequestParam @Valid emailTemplate: EmailTemplate): Long {
+    fun saveEmailTemplate(@RequestBody emailTemplate: EmailTemplate): Long {
         emailTemplate.clientID=AuthenticationUtils.clientID
+        emailTemplate.appuserID=AuthenticationUtils.principal.id
         return emailTemplateService.saveEmailTemplate(emailTemplate)
     }
 

@@ -11,7 +11,7 @@ import {UserProfileRequest} from "../../_models/client";
 export class ProfileComponent implements OnInit {
   @ViewChild('f') form: any;
 
-  userProfile: UserProfileRequest;
+  userProfile: UserProfileRequest = new UserProfileRequest();
   successMessage: string = "";
   username: string;
 
@@ -39,8 +39,9 @@ export class ProfileComponent implements OnInit {
 
   ngOnInit() {
     this.authenticationService.getUserDetails().subscribe(
-      (userProfile: UserProfileRequest) => {
-        this.userProfile = userProfile;
+      (userProfile) => {
+        console.log(userProfile);
+        this.userProfile = userProfile.data.value;
       }
     )
     this.username = this.authenticationService.getUsername();

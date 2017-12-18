@@ -23,6 +23,10 @@ class EmailTemplate {
     @NotNull
     var appuserID: Long? = null
 
+    @Column(name = "name")
+    @NotNull
+    lateinit var name: String
+
     @Column(name = "email_template_body")
     @NotNull
     lateinit var emailTemplateBody: String
@@ -42,9 +46,14 @@ class EmailTemplate {
     @Column(name = "message_type") //Promotional or Transactional
     @NotNull
     @Enumerated(EnumType.STRING)
-    var messageType: EmailMessageType? = null
+    var messageType: MessageType? = null
 
     @Column(name = "tags")
     var tags: String? = null
+
+//    @Column(name = "status")
+//    @NotNull
+//    @Enumerated(EnumType.STRING)
+//    lateinit var status: Status
 }
 

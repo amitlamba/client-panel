@@ -1,4 +1,4 @@
-import {Component, OnChanges, OnInit, ViewEncapsulation} from '@angular/core';
+import {AfterViewInit, Component, OnChanges, OnInit, ViewEncapsulation} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {AuthenticationService} from "./_services/authentication.service";
 
@@ -8,25 +8,27 @@ import {AuthenticationService} from "./_services/authentication.service";
   styleUrls: ['app.component.css'],
   encapsulation: ViewEncapsulation.None
 })
-export class AppComponent implements OnInit, OnChanges {
+export class AppComponent
+  // implements OnInit, OnChanges, AfterViewInit
+{
 
   loggedIn: boolean;
 
   constructor(private http: HttpClient, private authenticationService: AuthenticationService) {
   }
 
-  ngOnInit(): void {
-    this.isLoggedIn();
-  }
-
-  ngOnChanges() {
-    this.isLoggedIn();
-  }
-
-  ngAfterViewInit() {
-    this.isLoggedIn();
-    // this.cdr.detectChanges();
-  }
+  // ngOnInit(): void {
+  //   this.isLoggedIn();
+  // }
+  //
+  // ngOnChanges() {
+  //   this.isLoggedIn();
+  // }
+  //
+  // ngAfterViewInit() {
+  //   this.isLoggedIn();
+  //   // this.cdr.detectChanges();
+  // }
 
   isLoggedIn() {
     if(this.authenticationService.token) {
@@ -35,6 +37,16 @@ export class AppComponent implements OnInit, OnChanges {
       this.loggedIn = false;
     }
     return this.loggedIn;
+  }
+
+  login() {
+    this.loggedIn=true;
+  }
+
+  logout() {
+    // this.isLoggedIn();
+    this.loggedIn=false;
+    // this.authenticationService.logout();
   }
 
 }

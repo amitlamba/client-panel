@@ -1,6 +1,7 @@
 package com.und.service
 
 import com.und.model.EmailTemplate
+import com.und.model.Status
 import com.und.repository.EmailTemplateRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -27,6 +28,7 @@ class EmailTemplateService {
     }
 
     fun saveEmailTemplate(emailTemplate: EmailTemplate): Long {
+//        emailTemplate.status = Status.ACTIVE
         val save = emailTemplateRepository.save(emailTemplate)
         return save.id!!
     }

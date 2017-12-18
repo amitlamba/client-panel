@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {Router} from '@angular/router';
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import 'rxjs/add/operator/map';
@@ -15,6 +15,8 @@ export class LoginComponent implements OnInit {
   loading = false;
   error = '';
   public token: string;
+
+  @Output() loginEvent = new EventEmitter();
 
   constructor(private http: HttpClient,
               private router: Router,
@@ -36,6 +38,7 @@ export class LoginComponent implements OnInit {
     this.authenticationService.login(this.model.username, this.model.password).subscribe(
       (response) => {
         console.log(response);
+        this.loginEvent.emit();
         this.router.navigate(['/']);
       },
       (error: HttpErrorResponse) => {

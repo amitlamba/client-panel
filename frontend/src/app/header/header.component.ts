@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, EventEmitter, Output} from '@angular/core';
 import {AuthenticationService} from "../_services/authentication.service";
 
 @Component({
@@ -9,11 +9,18 @@ import {AuthenticationService} from "../_services/authentication.service";
 
 export class HeaderComponent {
 
+  @Output() logout = new EventEmitter();
+
   constructor(private authenticationService: AuthenticationService) {
 
   }
 
   clientName(): string {
     return this.authenticationService.getUsername();
+  }
+
+  logoutUser() {
+    this.authenticationService.logout();
+    this.logout.emit();
   }
 }

@@ -6,6 +6,7 @@ import com.und.security.utils.AuthenticationUtils
 import com.und.service.UserSettingsService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
+import javax.validation.Valid
 
 @CrossOrigin
 @RestController
@@ -28,7 +29,7 @@ class UserSettingsController {
     }
 
     @RequestMapping(value = "/email-service-provider/save", method = arrayOf(RequestMethod.POST))
-    fun saveEmailServiceProvider(@RequestParam serviceProviderCredentials: ServiceProviderCredentials): Long? {
+    fun saveEmailServiceProvider(@RequestBody serviceProviderCredentials: ServiceProviderCredentials): Long? {
         val clientID = AuthenticationUtils.clientID
         val userID = AuthenticationUtils.principal.id
         serviceProviderCredentials.appuserID=userID
@@ -50,7 +51,7 @@ class UserSettingsController {
     }
 
     @RequestMapping(value = "/sms-service-provider/save", method = arrayOf(RequestMethod.POST))
-    fun saveSmsServiceProvider(@RequestParam serviceProviderCredentials: ServiceProviderCredentials): Long? {
+    fun saveSmsServiceProvider(@RequestBody serviceProviderCredentials: ServiceProviderCredentials): Long? {
         val clientID = AuthenticationUtils.clientID
         val userID = AuthenticationUtils.principal.id
         serviceProviderCredentials.appuserID=userID

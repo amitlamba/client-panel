@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface ServiceProviderCredentialsRepository : JpaRepository<ServiceProviderCredentials, Long> {
-    fun findAllByClientIDAndServiceProviderAndStatus(clientID: Long, serviceProviderType: ServiceProviderType, status: Status): List<ServiceProviderCredentials>
-    fun findAllByClientIDAndServiceProvider(clientID: Long, serviceProviderType: ServiceProviderType): List<ServiceProviderCredentials>
-    fun findAllByClientIDAndIdAndServiceProvider(clientID: Long, id: Long, serviceProviderType: ServiceProviderType): ServiceProviderCredentials?
+    fun findAllByClientIDAndServiceProviderTypeAndStatus(clientID: Long, serviceProviderType: ServiceProviderType, status: Status): List<ServiceProviderCredentials>
+    fun findAllByClientIDAndServiceProviderType(clientID: Long, serviceProviderType: ServiceProviderType): List<ServiceProviderCredentials>
+    fun findAllByClientIDAndIdAndServiceProviderType(clientID: Long, id: Long, serviceProviderType: ServiceProviderType): ServiceProviderCredentials?
 }

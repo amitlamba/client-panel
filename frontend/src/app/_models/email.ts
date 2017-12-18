@@ -16,15 +16,16 @@ export class EmailTemplate {
   id: number;
   clientID: number;
   appuserID: number;
+  name: string;
   emailTemplateBody: string;
   emailTemplateSubject: string;
   parentID: number;
   from: string;
-  messageType: EmailMessageType;
+  messageType: MessageType;
   tags: string;
 }
 
-export enum EmailMessageType{
+export enum MessageType{
   TRANSACTIONAL,
   PROMOTIONAL
 }
