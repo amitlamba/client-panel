@@ -17,11 +17,11 @@ export class EventUser {
 
 }
 
-export class SocialId{
-fbId: string;
-googleId: string;
-mobile: string;
-email: string;
+export class SocialId {
+  fbId: string;
+  googleId: string;
+  mobile: string;
+  email: string;
 }
 
 export class StandardInfo {
@@ -31,4 +31,35 @@ export class StandardInfo {
   dob: string;
   country: string;
   countryCode: string;
+}
+
+export class UserParams {
+  public static params = [
+    "{user.socialId.email}",
+    "{user.socialId.mobile}",
+    "{user.standardInfo.firstName}",
+    "{user.standardInfo.lastName}",
+    "{user.standardInfo.gender}",
+    "{user.standardInfo.dob}",
+    "{user.standardInfo.country}",
+    "{user.standardInfo.countryCode}"
+  ];
+}
+
+export enum UserAccessTimeType {
+  All = "All",
+  New = "New",
+  Recurring = "Recurring",
+  NoOfSessions = "No of Sessions"
+}
+
+export class UserAccessTime {
+  userAccessTimeType: UserAccessTimeType;
+}
+
+export class UserSegment {
+  userSegmentId: string;
+  userSegmentName: string;
+  userAccessTime: UserAccessTime;
+
 }

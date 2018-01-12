@@ -14,7 +14,7 @@ export class AppComponent
 
   loggedIn: boolean;
 
-  constructor(private http: HttpClient, private authenticationService: AuthenticationService) {
+  constructor(private authenticationService: AuthenticationService) {
   }
 
   // ngOnInit(): void {

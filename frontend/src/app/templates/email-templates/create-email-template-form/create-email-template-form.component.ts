@@ -4,6 +4,8 @@ import {TemplatesService} from "../../../_services/templates.service";
 import {isNullOrUndefined} from "util";
 import {Router} from "@angular/router";
 import {MessageService} from "../../../_services/message.service";
+import {UserFields} from "../../../_settings/app-settings";
+import {UserParams} from "../../../_models/user";
 
 @Component({
   selector: 'app-create-email-template-form',
@@ -12,8 +14,12 @@ import {MessageService} from "../../../_services/message.service";
 })
 export class CreateEmailTemplateFormComponent implements OnInit, OnChanges {
 
+  showRichTextEditor: boolean = true;
   emailTemplate: EmailTemplate = new EmailTemplate();
   @ViewChild("f") form: any;
+
+  userFields = UserFields.USER_DETAIILS;
+  items = UserParams.params;
 
   constructor(private templatesService: TemplatesService, private messageService: MessageService) {
   }
@@ -51,5 +57,8 @@ export class CreateEmailTemplateFormComponent implements OnInit, OnChanges {
     }
   }
 
+  keyupHandlerFunction(event: any) {
+
+  }
 
 }
