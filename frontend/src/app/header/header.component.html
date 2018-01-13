@@ -22,6 +22,17 @@
           </div>
         </li>
 
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownSegments" role="button" data-toggle="dropdown"
+             aria-haspopup="true" aria-expanded="false" [routerLinkActive]="['active']">
+            Segments
+          </a>
+          <div class="dropdown-menu dropdown-menu-left" aria-labelledby="navbarDropdown" [routerLinkActive]="['active']">
+            <a class="dropdown-item" [routerLink]="['/segment/find-users']" [routerLinkActive]="['active']">Find Users</a>
+            <a class="dropdown-item" [routerLink]="['/segment/segments']" [routerLinkActive]="['active']">Segments</a>
+          </div>
+        </li>
+
         <li class="nav-item">
           <a class="nav-link disabled" href="#">Disabled</a>
         </li>

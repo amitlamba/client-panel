@@ -49,3 +49,27 @@ export class AppSettings {
   public static API_ENDPOINT_AUTH_SETTING_UPDATEUSERDETAILS = AppSettings.API_ENDPOINT_AUTH_SETTING + "/updateUserDetails";
   public static API_ENDPOINT_AUTH_SETTING_REFRESHTOKEN = AppSettings.API_ENDPOINT_AUTH_SETTING + "/refreshToken";
 }
+
+export class UserField {
+  fieldDisplayName: string;
+  fieldVariableString: string;
+  fieldCategory: string;
+  constructor(fieldDisplayName: string, fieldVariableString: string, fieldCategory: string) {
+    this.fieldDisplayName=fieldDisplayName;
+    this.fieldVariableString=fieldVariableString;
+    this.fieldCategory=fieldCategory;
+  }
+}
+
+export class UserFields {
+  public static USER_FIRST_NAME = new UserField("First Name", "${user.standardInfo.firstName}", "User Fields");
+  public static USER_LAST_NAME = new UserField("Last Name", "${user.standardInfo.lastName}", "User Fields");
+  public static USER_EMAIL = new UserField("Email", "${user.socialId.email}", "User Fields");
+  public static USER_MOBILE_NUMBER = new UserField("Mobile Number", "${user.socialId.mobile}", "User Fields");
+  public static USER_DETAIILS = [
+    UserFields.USER_FIRST_NAME,
+    UserFields.USER_LAST_NAME,
+    UserFields.USER_EMAIL,
+    UserFields.USER_MOBILE_NUMBER
+  ];
+}

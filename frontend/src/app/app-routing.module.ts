@@ -12,19 +12,29 @@ import {ServiceprovidersComponent} from "./settings/serviceproviders/serviceprov
 import {TemplatesComponent} from "./templates/templates.component";
 import {EmailTemplatesComponent} from "./templates/email-templates/email-templates.component";
 import {SmsTemplatesComponent} from "./templates/sms-templates/sms-templates.component";
+import {SegmentCategoryComponent} from "./segment-category/segment-category.component";
+import {FindUsersComponent} from "./segment-category/find-users/find-users.component";
+import {SegmentsComponent} from "./segment-category/segments/segments.component";
+import {ResetPwdComponent} from "./login/reset-pwd/reset-pwd.component";
 
 const routes: Routes = [
   {path: 'login', component: LoginComponent},
   {path: '', component: HomeComponent, canActivate: [AuthGuard]},
   {path: 'register', component: RegisterComponent},
+  {path: 'resetpwd/:code', component: ResetPwdComponent},
   {path: 'dummyJson', component: DummyComponent},
-  {path: 'settings', redirectTo:"settings/profile", pathMatch:"full"},
-  {path: 'settings', component: SettingsComponent, children: [
+  {path: 'settings', redirectTo:"settings/profile", pathMatch:"full", canActivate: [AuthGuard]},
+  {path: 'settings', component: SettingsComponent, canActivate: [AuthGuard], children: [
     {path: 'profile', component: ProfileComponent},
     {path: 'service-provider-settings', component: ServiceprovidersComponent}
   ]},
-  {path: 'templates', redirectTo:"templates/email", pathMatch:"full"},
-  {path: 'templates', component: TemplatesComponent, children: [
+  {path: 'segment', redirectTo:"segment/segments", canActivate: [AuthGuard], pathMatch:"full"},
+  {path: 'segment', component: SegmentCategoryComponent, canActivate: [AuthGuard], children: [
+    {path: 'find-users', component: FindUsersComponent},
+    {path: 'segments', component: SegmentsComponent}
+  ]},
+  {path: 'templates', redirectTo:"templates/email", canActivate: [AuthGuard], pathMatch:"full"},
+  {path: 'templates', component: TemplatesComponent, canActivate: [AuthGuard], children: [
     {path: 'email', component: EmailTemplatesComponent},
     {path: 'sms', component: SmsTemplatesComponent}
   ]},
