@@ -15,11 +15,13 @@ import {SmsTemplatesComponent} from "./templates/sms-templates/sms-templates.com
 import {SegmentCategoryComponent} from "./segment-category/segment-category.component";
 import {FindUsersComponent} from "./segment-category/find-users/find-users.component";
 import {SegmentsComponent} from "./segment-category/segments/segments.component";
+import {ResetPwdComponent} from "./login/reset-pwd/reset-pwd.component";
 
 const routes: Routes = [
   {path: 'login', component: LoginComponent},
   {path: '', component: HomeComponent, canActivate: [AuthGuard]},
   {path: 'register', component: RegisterComponent},
+  {path: 'resetpwd/:code', component: ResetPwdComponent},
   {path: 'dummyJson', component: DummyComponent},
   {path: 'settings', redirectTo:"settings/profile", pathMatch:"full", canActivate: [AuthGuard]},
   {path: 'settings', component: SettingsComponent, canActivate: [AuthGuard], children: [

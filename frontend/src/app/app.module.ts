@@ -38,6 +38,8 @@ import {MentionModule} from "./_helpers/mention/mention.module";
 import { SegmentCategoryComponent } from './segment-category/segment-category.component';
 import { FindUsersComponent } from './segment-category/find-users/find-users.component';
 import { SegmentsComponent } from './segment-category/segments/segments.component';
+import { DidEventsComponent } from './segment-category/did-events/did-events.component';
+import { ResetPwdComponent } from './login/reset-pwd/reset-pwd.component';
 
 
 @NgModule({
@@ -73,7 +75,9 @@ import { SegmentsComponent } from './segment-category/segments/segments.componen
     CkEditorComponent,
     SegmentCategoryComponent,
     FindUsersComponent,
-    SegmentsComponent
+    SegmentsComponent,
+    DidEventsComponent,
+    ResetPwdComponent
   ],
   providers: [
     AuthGuard,
