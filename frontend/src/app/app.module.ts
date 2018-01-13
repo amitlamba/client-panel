@@ -1,6 +1,6 @@
 import {NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
-import {FormsModule} from '@angular/forms';
+import {FormsModule, NgForm} from '@angular/forms';
 //used to create fake backend
 import {MockBackend} from '@angular/http/testing';
 
@@ -31,6 +31,7 @@ import { EmailTemplatesComponent } from './templates/email-templates/email-templ
 import { CreateEmailTemplateFormComponent } from './templates/email-templates/create-email-template-form/create-email-template-form.component';
 import {TemplatesService} from "./_services/templates.service";
 import { CreateSmsTemplateFormComponent } from './templates/sms-templates/create-sms-template-form/create-sms-template-form.component';
+import { ForgotPasswordComponent } from './login/forgot-password/forgot-password.component';
 
 
 @NgModule({
@@ -60,7 +61,8 @@ import { CreateSmsTemplateFormComponent } from './templates/sms-templates/create
     SmsTemplatesComponent,
     EmailTemplatesComponent,
     CreateEmailTemplateFormComponent,
-    CreateSmsTemplateFormComponent
+    CreateSmsTemplateFormComponent,
+    ForgotPasswordComponent
   ],
   providers: [
     AuthGuard,
