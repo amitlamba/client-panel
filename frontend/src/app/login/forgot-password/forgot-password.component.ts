@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {NgForm} from "@angular/forms";
 import {AuthenticationService} from "../../_services/authentication.service";
 import {HttpErrorResponse} from "@angular/common/http";
@@ -14,7 +14,7 @@ export class ForgotPasswordComponent implements OnInit {
 
   user:any = {
     email:''
-  }
+  };
   constructor(private authenticationService: AuthenticationService,
               private router:Router) { }
 
@@ -28,12 +28,9 @@ export class ForgotPasswordComponent implements OnInit {
       .subscribe(
       (response) => {
         console.log(response);
-        // this.loginEvent.emit();
         this.router.navigate(['/']);
       },
       (error: HttpErrorResponse) => {
-        // this.error = 'Email is incorrect';
-        // this.loading = false;
         console.log(error);
       }
     );

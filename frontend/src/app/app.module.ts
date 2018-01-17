@@ -1,6 +1,6 @@
 import {NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
-import {FormsModule, NgForm} from '@angular/forms';
+import {FormsModule} from '@angular/forms';
 //used to create fake backend
 import {MockBackend} from '@angular/http/testing';
 
@@ -21,7 +21,7 @@ import {InterceptorModule} from "./_interceptors/interceptor.module";
 import {FooterComponent} from './footer/footer.component';
 import {ServiceprovidersComponent} from './settings/serviceproviders/serviceproviders.component';
 import {LogoutHeaderComponent} from './header/logout-header.component';
-import {AppRoutingModule} from './/app-routing.module';
+import {AppRoutingModule} from './app-routing.module';
 import {SettingsComponent} from './settings/settings.component';
 import {MessagesComponent} from './messages/messages.component';
 import {MessageService} from "./_services/message.service";
@@ -41,6 +41,7 @@ import { FindUsersComponent } from './segment-category/find-users/find-users.com
 import { SegmentsComponent } from './segment-category/segments/segments.component';
 import { DidEventsComponent } from './segment-category/did-events/did-events.component';
 import { ResetPwdComponent } from './login/reset-pwd/reset-pwd.component';
+import { PageNotFoundComponent } from './shared/page-not-found/page-not-found.component';
 
 
 @NgModule({
@@ -79,7 +80,8 @@ import { ResetPwdComponent } from './login/reset-pwd/reset-pwd.component';
     FindUsersComponent,
     SegmentsComponent,
     DidEventsComponent,
-    ResetPwdComponent
+    ResetPwdComponent,
+    PageNotFoundComponent
   ],
   providers: [
     AuthGuard,
