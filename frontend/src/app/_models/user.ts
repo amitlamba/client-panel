@@ -45,21 +45,3 @@ export class UserParams {
     "{user.standardInfo.countryCode}"
   ];
 }
-
-export enum UserAccessTimeType {
-  All = "All",
-  New = "New",
-  Recurring = "Recurring",
-  NoOfSessions = "No of Sessions"
-}
-
-export class UserAccessTime {
-  userAccessTimeType: UserAccessTimeType;
-}
-
-export class UserSegment {
-  userSegmentId: string;
-  userSegmentName: string;
-  userAccessTime: UserAccessTime;
-
-}
