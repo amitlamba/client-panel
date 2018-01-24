@@ -1,4 +1,3 @@
-
 <div class="container">
   <div class="card">
     <div class="card-header">
@@ -10,4 +9,26 @@
       <a href="#" class="btn btn-primary">Go somewhere</a>
     </div>
   </div>
+</div>
+<div class="container-fluid">
+  <table class="table table-bordered my-3">
+    <thead style="background-color: rgba(0, 0, 0, .03);">
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Segment Name</th>
+      <th scope="col">Segment Type</th>
+      <th scope="col">Created On</th>
+      <th scope="col">Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let segment of segments">
+      <th scope="row">{{segment.id}}</th>
+      <td>{{segment.name}}</td>
+      <td>{{segment.type}}</td>
+      <td>{{segment.creationDate}}</td>
+      <td></td>
+    </tr>
+    </tbody>
+  </table>
 </div>

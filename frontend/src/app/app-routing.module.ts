@@ -16,9 +16,11 @@ import {SegmentCategoryComponent} from "./segment-category/segment-category.comp
 import {FindUsersComponent} from "./segment-category/find-users/find-users.component";
 import {SegmentsComponent} from "./segment-category/segments/segments.component";
 import {ResetPwdComponent} from "./login/reset-pwd/reset-pwd.component";
+import {TestComponent} from "./test/test.component";
 
 const routes: Routes = [
   {path: 'login', component: LoginComponent},
+  {path: 'test', component: TestComponent},
   {path: '', component: HomeComponent, canActivate: [AuthGuard]},
   {path: 'register', component: RegisterComponent},
   {path: 'resetpwd/:code', component: ResetPwdComponent},

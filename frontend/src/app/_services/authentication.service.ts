@@ -58,9 +58,25 @@ export class AuthenticationService {
     return this.httpClient.get(AppSettings.API_ENDPOINT_AUTH_REGISTER_FORGOTPASSWORD + "/" + email)
       .pipe(
         tap(next => this.messageService.addSuccessMessage("Please see your email " +email + " to reset password.")),
-        catchError(this.handleError<any>('forgotpassword'))
+        catchError(this.handleError<any>('Failed To Forgot Password'))
       );
   }
+  resetpassword(code: string): Observable<any> {
+    return this.httpClient.get(AppSettings.API_ENDPOINT_AUTH_REGISTER_RESETPASSWORD + "/" + code +'/');
+      // .pipe(
+      //   tap(next => this.messageService.addSuccessMessage("Password Reset Successfully")),
+      //   catchError(this.handleError<any>('Error!'))
+      // );
+  }
+  resetpasswordupdate(code: string,password: string): Observable<any> {
+    return this.httpClient.post(AppSettings.API_ENDPOINT_AUTH_REGISTER_RESETPASSWORD + "/" + code + "/",
+      {password: password})
+      .pipe(
+        tap(next => this.messageService.addSuccessMessage("Password Reset Successfully")),
+        catchError(this.handleError<any>('Please Enter Password Again.'))
+      );
+  }
+
 
   getUserDetails(): Observable<any> {
     return this.httpClient.get<any>(AppSettings.API_ENDPOINT_AUTH_SETTING_USERDETAILS)

@@ -1,6 +1,9 @@
 
 export class Segment {
+  id: number;
   name: string;
+  type: string;
+  creationDate: string;
   conversionEvent: string;
   didEvents: DidEvents;
   didNotEvents: DidEvents;
