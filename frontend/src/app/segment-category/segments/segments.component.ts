@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {Segment} from "../../_models/segment";
 
 @Component({
   selector: 'app-segments',
@@ -7,9 +8,34 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SegmentsComponent implements OnInit {
 
-  constructor() { }
+  segments: Segment[] = [];
+
+  constructor() {
+    this.segments.push(this.createNewSegment());
+    this.segments.push(this.createNewSegment());
+    this.segments.push(this.createNewSegment());
+    this.segments.push(this.createNewSegment());
+    this.segments.push(this.createNewSegment());
+    this.segments.push(this.createNewSegment());
+    this.segments.push(this.createNewSegment());
+  }
 
   ngOnInit() {
+  }
+
+  private createNewSegment(): Segment {
+    var textArray = [
+      'Behaviour',
+      'Live'
+    ];
+    var randomNumber = Math.floor(Math.random()*textArray.length);
+
+    var segment = new Segment();
+    segment.id = Math.floor(Math.random() * 200000) + 1;
+    segment.name = "Segment # "+segment.id;
+    segment.type = textArray[randomNumber];
+    segment.creationDate = "2017-01-01";
+    return segment;
   }
 
 }

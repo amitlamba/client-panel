@@ -42,6 +42,8 @@ import { SegmentsComponent } from './segment-category/segments/segments.componen
 import { DidEventsComponent } from './segment-category/did-events/did-events.component';
 import { ResetPwdComponent } from './login/reset-pwd/reset-pwd.component';
 import { PageNotFoundComponent } from './shared/page-not-found/page-not-found.component';
+import { TestComponent } from './test/test.component';
+import { ExpComponent } from './test/exp/exp.component';
 
 
 @NgModule({
@@ -81,7 +83,12 @@ import { PageNotFoundComponent } from './shared/page-not-found/page-not-found.co
     SegmentsComponent,
     DidEventsComponent,
     ResetPwdComponent,
-    PageNotFoundComponent
+    PageNotFoundComponent,
+    TestComponent,
+    ExpComponent
+  ],
+  entryComponents: [
+    ExpComponent
   ],
   providers: [
     AuthGuard,
