@@ -40,6 +40,10 @@ import { FindUsersComponent } from './segment-category/find-users/find-users.com
 import { SegmentsComponent } from './segment-category/segments/segments.component';
 import { DidEventsComponent } from './segment-category/did-events/did-events.component';
 import { ResetPwdComponent } from './login/reset-pwd/reset-pwd.component';
+import {Daterangepicker} from "ng2-daterangepicker";
+import { MyDateRangePickerModule } from 'mydaterangepicker';
+import { DidEventComponent } from './segment-category/did-events/did-event/did-event.component';
+import { FilterComponent } from './segment-category/did-events/did-event/filter/filter.component';
 
 
 @NgModule({
@@ -49,7 +53,9 @@ import { ResetPwdComponent } from './login/reset-pwd/reset-pwd.component';
     HttpClientModule,
     InterceptorModule,
     AppRoutingModule,
-    MentionModule
+    MentionModule,
+    Daterangepicker,
+    MyDateRangePickerModule
   ],
   declarations: [
     AppComponent,
@@ -77,7 +83,9 @@ import { ResetPwdComponent } from './login/reset-pwd/reset-pwd.component';
     FindUsersComponent,
     SegmentsComponent,
     DidEventsComponent,
-    ResetPwdComponent
+    ResetPwdComponent,
+    DidEventComponent,
+    FilterComponent
   ],
   providers: [
     AuthGuard,
@@ -89,6 +97,7 @@ import { ResetPwdComponent } from './login/reset-pwd/reset-pwd.component';
     MessageService,
     TemplatesService,
   ],
+  entryComponents: [DidEventComponent],
   bootstrap: [AppComponent]
 })
 

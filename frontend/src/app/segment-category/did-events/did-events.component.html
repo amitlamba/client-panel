@@ -1,4 +1,4 @@
-<div class="form-group col-4 d-inline-flex">
+<div class="form-group d-inline-flex mt-3">
     <div class="mr-4">
       <select class="form-control" id="andOr">
         <option>All (AND)</option>
@@ -6,24 +6,15 @@
       </select>
     </div>
     <div class="mt-2">
-      <p>OF THESE EVENTS</p>
+      <p class="font-weight-bold">of these events</p>
     </div>
+</div>
+<app-did-event></app-did-event>
+<ng-template #container>
+</ng-template>
+<div>
+  <button class="btn btn-success  mt-3"
+          (click)="addComponent(didEventClass)"><i class="fa fa-plus-circle"></i> Add Event</button>
+</div>
 
-</div>
-<div class="event-widget">
-  <div class="form-group col-4">
-    <select class="form-control" id="filterName">
-      <option>Added to Cart</option>
-      <option>App Uninstalled</option>
-      <option selected>Charged</option>
-      <option>Category Viewed</option>
-      <option>Notification Sent</option>
-      <option>Notification Viewed</option>
-      <option>Product Viewed</option>
-      <option>Payment Offer Applied</option>
-      <option>Support Call</option>
-      <option>Searched</option>
-      <option>UTM Visited</option>
-    </select>
-  </div>
-</div>
+
