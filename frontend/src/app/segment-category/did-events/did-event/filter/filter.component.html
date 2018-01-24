@@ -1,0 +1,42 @@
+<div class="form-inline">
+  <div class="form-group col-3 my-0 pr-0">
+    <select class="form-control col-12">
+      <option selected>Event Property</option>
+      <option>First Time</option>
+      <option>Time of the day</option>
+      <option>Day of the week</option>
+      <option>Day of the month</option>
+    </select>
+  </div>
+  <div class="form-group col-3 my-0 pr-0">
+    <select class="form-control col-12"
+            (change)="filterSecondDropdown($event.target.value)">
+      <option selected>Amount</option>
+      <option>Category</option>
+      <option>Delivery Date</option>
+      <option>Payment Mode</option>
+      <option>Product</option>
+    </select>
+  </div>
+  <div class="form-group col-3 my-0 pr-0">
+    <select class="form-control col-12"
+            (change)="filterDropdown($event.target.value)"
+            [hidden]="hideEqualityDropdown">
+      <option selected>=&nbsp;&nbsp;(equals)</option>
+      <option>≏&nbsp;&nbsp;(Between)</option>
+      <option>>&nbsp;&nbsp;(greater than)</option>
+      <option><&nbsp;&nbsp;(less than)</option>
+      <option>≠&nbsp;&nbsp;(not equals)</option>
+      <option>∃&nbsp;&nbsp;(exists)</option>
+      <option>∄&nbsp;&nbsp;(does not exists)</option>
+    </select>
+  </div>
+  <div class="form-group col-1 ml-3 px-0"
+       [hidden]="hideInputNumber">
+    <input type="number" class="form-control col-12" value="1" min="1">
+  </div>
+  <div class="form-group col-1 mx-3 px-0"
+       [hidden]="hideInputBetween">
+    <input type="number" class="form-control col-12" value="1" min="1">
+  </div>
+</div>
