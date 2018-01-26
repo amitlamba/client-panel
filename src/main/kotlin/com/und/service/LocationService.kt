@@ -23,7 +23,7 @@ class LocationService {
     }
 
     fun getStatesByCountryId(countryId: Int): List<States> {
-        return statesRepository.fingByCountryId(countryId)
+        return statesRepository.findByCountryId(countryId)
     }
 
     fun getCitiesByStateId(stateId: Int): List<Cities> {

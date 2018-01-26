@@ -13,7 +13,7 @@ interface CountriesRepository : JpaRepository<Countries, Int> {
 
 @Repository
 interface StatesRepository : JpaRepository<States, Int> {
-    fun fingByCountryId(countryId: Int): List<States>
+    fun findByCountryId(countryId: Int): List<States>
 }
 
 @Repository
