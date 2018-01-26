@@ -57,11 +57,9 @@ export class PropertySumOf {
 }
 
 export class DateOperator {
-
 }
 
 export class NumberOperator {
-
 }
 
 export class GlobalFilters {
@@ -156,5 +154,16 @@ export class AppFields {
 }
 
 export class AppFieldOperator {
+}
 
+export class RegisteredEvent {
+  name: string;
+  properties: RegisteredEventProperties[];
+}
+
+export class RegisteredEventProperties {
+  name: string;
+  dataType: string;
+  regex: string;
+  options: string[];
 }
