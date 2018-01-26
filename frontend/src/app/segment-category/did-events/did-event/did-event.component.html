@@ -2,18 +2,18 @@
      #eventWidget>
   <div class="form-inline">
     <div class="form-group col-4 my-3 pr-0">
-      <select class="form-control col-12">
-        <option>Added to Cart</option>
-        <option>App Uninstalled</option>
-        <option selected>Charged</option>
-        <option>Category Viewed</option>
-        <option>Notification Sent</option>
-        <option>Notification Viewed</option>
-        <option>Product Viewed</option>
-        <option>Payment Offer Applied</option>
-        <option>Support Call</option>
-        <option>Searched</option>
-        <option>UTM Visited</option>
+      <select class="form-control col-12" (change)="eventNameChanged($event.target.value)">
+        <option *ngFor="let regEvent of registeredEvents">{{ regEvent.name }}</option>
+        <!--<option>App Uninstalled</option>-->
+        <!--<option selected>Charged</option>-->
+        <!--<option>Category Viewed</option>-->
+        <!--<option>Notification Sent</option>-->
+        <!--<option>Notification Viewed</option>-->
+        <!--<option>Product Viewed</option>-->
+        <!--<option>Payment Offer Applied</option>-->
+        <!--<option>Support Call</option>-->
+        <!--<option>Searched</option>-->
+        <!--<option>UTM Visited</option>-->
       </select>
     </div>
     <div class="form-group col-2 my-3">
@@ -74,8 +74,8 @@
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
-
-  <app-filter></app-filter>
+  <!--registeredEvents[0].properties-->
+  <app-filter [properties]="passProperties()"></app-filter>
 
   <div class="ml-3 mb-3">
     <button type="button" class="btn btn-link">

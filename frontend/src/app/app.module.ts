@@ -30,24 +30,28 @@ import {SmsTemplatesComponent} from './templates/sms-templates/sms-templates.com
 import {EmailTemplatesComponent} from './templates/email-templates/email-templates.component';
 import {CreateEmailTemplateFormComponent} from './templates/email-templates/create-email-template-form/create-email-template-form.component';
 import {TemplatesService} from "./_services/templates.service";
-import {ForgotPasswordComponent} from './login/forgot-password/forgot-password.component';
+import { ForgotPasswordComponent } from './login/forgot-password/forgot-password.component';
 import {CreateSmsTemplateFormComponent} from './templates/sms-templates/create-sms-template-form/create-sms-template-form.component';
 import {UndEditorComponent} from './und-editor/und-editor.component';
 import {SimpleTinyComponent} from './_helpers/simple-tiny/simple-tiny.component';
 import {CkEditorComponent} from './_helpers/ck-editor/ck-editor.component';
 import {MentionModule} from "./_helpers/mention/mention.module";
-import {SegmentCategoryComponent} from './segment-category/segment-category.component';
-import {FindUsersComponent} from './segment-category/find-users/find-users.component';
-import {SegmentsComponent} from './segment-category/segments/segments.component';
-import {DidEventsComponent} from './segment-category/did-events/did-events.component';
-import {ResetPwdComponent} from './login/reset-pwd/reset-pwd.component';
+import { SegmentCategoryComponent } from './segment-category/segment-category.component';
+import { FindUsersComponent } from './segment-category/find-users/find-users.component';
+import { SegmentsComponent } from './segment-category/segments/segments.component';
+import { DidEventsComponent } from './segment-category/did-events/did-events.component';
+import { ResetPwdComponent } from './login/reset-pwd/reset-pwd.component';
 import {Daterangepicker} from "ng2-daterangepicker";
-import {MyDateRangePickerModule} from 'mydaterangepicker';
-import {DidEventComponent} from './segment-category/did-events/did-event/did-event.component';
-import {FilterComponent} from './segment-category/did-events/did-event/filter/filter.component';
-import {PageNotFoundComponent} from './shared/page-not-found/page-not-found.component';
-import {TestComponent} from './test/test.component';
-import {ExpComponent} from './test/exp/exp.component';
+import { MyDateRangePickerModule } from 'mydaterangepicker';
+import { DidEventComponent } from './segment-category/did-events/did-event/did-event.component';
+import { FilterComponent } from './segment-category/did-events/did-event/filter/filter.component';
+
+import { PageNotFoundComponent } from './shared/page-not-found/page-not-found.component';
+import { TestComponent } from './test/test.component';
+import { ExpComponent } from './test/exp/exp.component';
+import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+import {AngularMultiSelectModule} from "angular2-multiselect-dropdown";
 
 
 @NgModule({
@@ -59,7 +63,11 @@ import {ExpComponent} from './test/exp/exp.component';
     AppRoutingModule,
     MentionModule,
     Daterangepicker,
-    MyDateRangePickerModule
+    MyDateRangePickerModule,
+    BrowserAnimationsModule,
+    OwlDateTimeModule,
+    OwlNativeDateTimeModule,
+    AngularMultiSelectModule
   ],
   declarations: [
     AppComponent,
@@ -95,9 +103,6 @@ import {ExpComponent} from './test/exp/exp.component';
     TestComponent,
     ExpComponent
   ],
-  entryComponents: [
-    ExpComponent
-  ],
   providers: [
     AuthGuard,
     AuthenticationService,
@@ -108,7 +113,7 @@ import {ExpComponent} from './test/exp/exp.component';
     MessageService,
     TemplatesService,
   ],
-  entryComponents: [DidEventComponent],
+  entryComponents: [DidEventComponent,ExpComponent],
   bootstrap: [AppComponent]
 })
 
