@@ -45,5 +45,19 @@ password: string;-->
         <button type="submit" class="btn btn-primary" [disabled]="f.invalid">Save</button>
       </div>
     </form>
+    <div *ngFor="let serviceproviderType of getServiceProviderTypes()">
+      <div>
+        {{serviceproviderType}}
+        <div *ngFor="let serviceProvider of getServiceProviders(serviceproviderType)">
+          --- {{serviceProvider}}
+          <form novalidate>
+            <div *ngFor="let field of getServiceProviderFields(serviceProvider, serviceproviderType)" class="form-group">
+              <label for="{{field.fieldName}}">{{field.fieldDisplayName}}</label>
+              <input required type="text" placeholder="{{field.fieldDisplayName}}" class="form-control" id="{{field.fieldName}}" name="{{field.fieldName}}">
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

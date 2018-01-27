@@ -44,6 +44,7 @@ import { ResetPwdComponent } from './login/reset-pwd/reset-pwd.component';
 import { PageNotFoundComponent } from './shared/page-not-found/page-not-found.component';
 import { TestComponent } from './test/test.component';
 import { ExpComponent } from './test/exp/exp.component';
+import {SettingsService} from "./_services/settings.service";
 
 
 @NgModule({
@@ -99,6 +100,7 @@ import { ExpComponent } from './test/exp/exp.component';
     // BaseRequestOptions
     MessageService,
     TemplatesService,
+    SettingsService
   ],
   bootstrap: [AppComponent]
 })
