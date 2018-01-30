@@ -51,7 +51,8 @@ import { TestComponent } from './test/test.component';
 import { ExpComponent } from './test/exp/exp.component';
 import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
-import {AngularMultiSelectModule} from "angular2-multiselect-dropdown";
+import {AngularMultiSelectModule} from './multiselect/multiselect.component';
+
 
 
 @NgModule({
