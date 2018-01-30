@@ -58,18 +58,19 @@
   </div>
   <form class="mx-5" *ngIf="firstTime">
     <div class="form-group">
-      <angular2-multiselect [data]="firstTimeList" [(ngModel)]="formModel.skills"
+      <angular-multiselect [data]="firstTimeList" [(ngModel)]="formModel.skills"
                             [settings]="dropdownSettings"
                             name="skills">
-      </angular2-multiselect>
+      </angular-multiselect>
     </div>
   </form>
-  <form class="mx-5" *ngIf="dayOfTheWeek">
-    <div class="form-group">
-      <angular2-multiselect [data]="dayOfTheWeekList" [(ngModel)]="formModel1.skills"
+  <form class="mx-3" *ngIf="dayOfTheWeek" style="width: 500px;height: 32px;">
+    <div class="multiselect">
+      <angular-multiselect [data]="dayOfTheWeekList" [(ngModel)]="formModel1.skills"
                             [settings]="dropdownSettings"
-                            name="skills1">
-      </angular2-multiselect>
+                            name="skills1"
+                            >
+      </angular-multiselect>
     </div>
   </form>
   <!--<div class="form-group col-1 mx-3 px-0"-->

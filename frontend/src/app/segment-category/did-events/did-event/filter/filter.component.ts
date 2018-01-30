@@ -5,7 +5,8 @@ import {NgForm} from "@angular/forms";
 @Component({
   selector: 'app-filter',
   templateUrl: './filter.component.html',
-  styleUrls: ['./filter.component.css']
+  styleUrls: ['./filter.component.css'],
+  host: { '[class]': 'dropdownSettings.classes' },
 })
 export class FilterComponent implements OnInit {
   hideInputNumber = false;
@@ -52,7 +53,8 @@ export class FilterComponent implements OnInit {
       text:"Options",
       selectAllText:'Select All',
       unSelectAllText:'UnSelect All',
-      enableSearchFilter: false
+      enableSearchFilter: false,
+      classes:"custom-class"
     };
   }
 
