@@ -52,6 +52,8 @@ import { ExpComponent } from './test/exp/exp.component';
 import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {AngularMultiSelectModule} from './multiselect/multiselect.component';
+import {SegmentService} from "./_services/segment.service";
+import { GlobalFiltersComponent } from './segment-category/global-properties/global-filters.component';
 
 
 
@@ -102,7 +104,8 @@ import {AngularMultiSelectModule} from './multiselect/multiselect.component';
     FilterComponent,
     PageNotFoundComponent,
     TestComponent,
-    ExpComponent
+    ExpComponent,
+    GlobalFiltersComponent
   ],
   providers: [
     AuthGuard,
@@ -113,6 +116,7 @@ import {AngularMultiSelectModule} from './multiselect/multiselect.component';
     // BaseRequestOptions
     MessageService,
     TemplatesService,
+    SegmentService,
   ],
   entryComponents: [DidEventComponent,ExpComponent],
   bootstrap: [AppComponent]

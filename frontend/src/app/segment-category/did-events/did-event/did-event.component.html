@@ -1,7 +1,7 @@
 <div class="event-widget my-2"
      #eventWidget>
   <div class="form-inline">
-    <div class="form-group col-4 my-3 pr-0">
+    <div class="form-group col-sm-4 my-3 pr-0">
       <select class="form-control col-12" (change)="eventNameChanged($event.target.value)">
         <option *ngFor="let regEvent of registeredEvents">{{ regEvent.name }}</option>
         <!--<option>App Uninstalled</option>-->
@@ -16,7 +16,7 @@
         <!--<option>UTM Visited</option>-->
       </select>
     </div>
-    <div class="form-group col-2 my-3">
+    <div class="form-group col-sm-2 my-3">
       <select class="form-control"
               (change)="dropdownChanged($event.target.value)">
         <option value="Before">Before</option>
@@ -25,11 +25,11 @@
         <option value="Between">Between</option>
         <option value="In the Past">In the Past</option>
         <option value="Was Exactly">Was Exactly</option>
-        <option value="Today"selected>Today</option>
+        <option value="Today" selected>Today</option>
       </select>
     </div>
-    <div class="form-group col-2 my-3"
-         [hidden]="hideElementDatepicker">
+    <div class="form-group col-sm-2 my-3"
+         *ngIf="!hideElementDatepicker">
 
       <div class="input-group"
            daterangepicker
@@ -40,7 +40,7 @@
         {{ singleDate | date:'M/dd/y' }}
       </span>
         <span class="input-group-btn">
-        <a type="button" class="btn btn-default"><i class="fa fa-calendar" aria-hidden="true"></i></a>
+        <a type="button" class="btn btn-default"><i class="far fa-calendar-alt"></i></a>
       </span>
       </div>
     </div>
@@ -51,12 +51,12 @@
                               [(ngModel)]="model" required></my-date-range-picker>
       </form>
     </div>
-    <div class="form-group col-2 my-3 pr-0" [hidden]="hideElementDaySelector">
+    <div class="form-group col-2 my-3 pr-0" *ngIf="!hideElementDaySelector">
       <input type="number" class="form-control col-10" value="1" min="1">
     </div>
 
     <div class="form-group col-2 my-3 pl-0"
-         [hidden]="hideElementDaySelector">
+         *ngIf="!hideElementDaySelector">
       <select class="form-control">
         <option value="mins">mins</option>
         <option value="hours">hours</option>

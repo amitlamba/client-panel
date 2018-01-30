@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {DaterangepickerConfig} from "ng2-daterangepicker";
 import {IMyDrpOptions} from 'mydaterangepicker';
 import {RegisteredEvent, RegisteredEventProperties} from "../../../_models/segment";
+import {SegmentService} from "../../../_services/segment.service";
 
 @Component({
   selector: 'app-did-event',
@@ -12,52 +13,15 @@ export class DidEventComponent implements OnInit {
   registeredEvents:RegisteredEvent[] = [];
   a:any;
 
-  constructor(private daterangepickerOptions: DaterangepickerConfig) {
+  constructor(private daterangepickerOptions: DaterangepickerConfig, private segmentService: SegmentService) {
     this.daterangepickerOptions.settings = {
       locale: {format: 'YYYY-MM-DD'},
       alwaysShowCalendars: false
     };
     this.singleDate = Date.now();
-
-    var registeredEvent = new RegisteredEvent();
-    registeredEvent.name="Added to Cart";
-    var registeredEvent2 = new RegisteredEvent();
-    registeredEvent2.name="UTM Visited";
-
-    registeredEvent.properties = [];
-    registeredEvent2.properties = [];
-
-    var property1 = new RegisteredEventProperties();
-    property1.name="Event Property";
-    registeredEvent.properties.push(property1);
-
-    var property2 = new RegisteredEventProperties();
-    property2.name="First Time";
-    registeredEvent.properties.push(property2);
-    registeredEvent2.properties.push(property2);
-    var property3 = new RegisteredEventProperties();
-    property3.name="Time of the day";
-    registeredEvent.properties.push(property3);
-    registeredEvent2.properties.push(property3);
-    var property4 = new RegisteredEventProperties();
-    property4.name="Day of the week";
-    registeredEvent.properties.push(property4);
-    registeredEvent2.properties.push(property4);
-    var property5 = new RegisteredEventProperties();
-    property5.name="Day of the month";
-    registeredEvent.properties.push(property5);
-    registeredEvent2.properties.push(property5);
-
-    var property6 = new RegisteredEventProperties();
-    property6.name="UTM Source";
-    registeredEvent2.properties.push(property6);
-    var property7 = new RegisteredEventProperties();
-    property7.name="Session Referrer";
-    registeredEvent2.properties.push(property7);
-
-    this.registeredEvents.push(registeredEvent);
-    this.registeredEvents.push(registeredEvent2);
+    this.registeredEvents = this.segmentService.getSampleEvents();
     // console.log(this.registeredEvents);
+
   }
   eventNameChanged(val:any){
     if (val=="Added to Cart"){
@@ -98,7 +62,7 @@ export class DidEventComponent implements OnInit {
     }
   }
 
-  private singleSelect(value: any) {
+  singleSelect(value: any) {
     this.singleDate = value.start;
   }
 
@@ -106,7 +70,7 @@ export class DidEventComponent implements OnInit {
     dateFormat: 'dd.mm.yyyy',
     height: '30px'
   };
-  private model: any = {
+  model: any = {
     beginDate: {year: 2018, month: 10, day: 9},
     endDate: {year: 2018, month: 10, day: 19}
   };
