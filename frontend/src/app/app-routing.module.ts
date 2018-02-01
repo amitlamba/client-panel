@@ -17,6 +17,8 @@ import {FindUsersComponent} from "./segment-category/find-users/find-users.compo
 import {SegmentsComponent} from "./segment-category/segments/segments.component";
 import {ResetPwdComponent} from "./login/reset-pwd/reset-pwd.component";
 import {TestComponent} from "./test/test.component";
+import {PageNotFoundComponent} from "./shared/page-not-found/page-not-found.component";
+import {CampaignsComponent} from "./campaigns/campaigns.component";
 
 const routes: Routes = [
   {path: 'login', component: LoginComponent},
@@ -40,6 +42,8 @@ const routes: Routes = [
     {path: 'email', component: EmailTemplatesComponent},
     {path: 'sms', component: SmsTemplatesComponent}
   ]},
+  {path: 'campaigns', component:CampaignsComponent, canActivate: [AuthGuard]},
+  { path: '**', component: PageNotFoundComponent }
 ];
 
 @NgModule({

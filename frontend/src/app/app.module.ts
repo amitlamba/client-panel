@@ -42,6 +42,7 @@ import { SegmentsComponent } from './segment-category/segments/segments.componen
 import { DidEventsComponent } from './segment-category/did-events/did-events.component';
 import { ResetPwdComponent } from './login/reset-pwd/reset-pwd.component';
 import {Daterangepicker} from "ng2-daterangepicker";
+import { DaterangepickerConfig } from 'ng2-daterangepicker';
 import { MyDateRangePickerModule } from 'mydaterangepicker';
 import { DidEventComponent } from './segment-category/did-events/did-event/did-event.component';
 import { FilterComponent } from './segment-category/did-events/did-event/filter/filter.component';
@@ -52,6 +53,7 @@ import { ExpComponent } from './test/exp/exp.component';
 import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {AngularMultiSelectModule} from './multiselect/multiselect.component';
+import { CampaignsComponent } from './campaigns/campaigns.component';
 
 
 
@@ -102,7 +104,8 @@ import {AngularMultiSelectModule} from './multiselect/multiselect.component';
     FilterComponent,
     PageNotFoundComponent,
     TestComponent,
-    ExpComponent
+    ExpComponent,
+    CampaignsComponent
   ],
   providers: [
     AuthGuard,
