@@ -12,7 +12,7 @@ import org.junit.Ignore
 import org.junit.Test
 import java.time.Duration
 
-
+@Ignore
 class FcmClientIntegrationTest {
     private inner class PersonData(@get:JsonProperty("firstName")
                                    val firstName: String, @get:JsonProperty("lastName")
