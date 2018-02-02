@@ -103,7 +103,7 @@ dependencies {
     compile('org.springframework.boot:spring-boot-starter-data-mongodb')
     compile('org.springframework.boot:spring-boot-starter-data-rest')
     compile("org.springframework.boot:spring-boot-starter-mobile:1.5.9.RELEASE")
-    compile('org.flywaydb:flyway-core:5.0.7')
+    compile('org.flywaydb:flyway-core:3.2.1')
     compile('org.springframework.kafka:spring-kafka')
     compile('org.springframework.boot:spring-boot-starter-mail')
     compile('org.springframework.boot:spring-boot-starter-quartz')
