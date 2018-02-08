@@ -1,0 +1,62 @@
+<div class="container my-5">
+  <div class="row">
+    <div class="form-group col-sm">
+      <form #myForm="ngForm" novalidate>
+        <my-date-range-picker name="mydaterange" [options]="myDateRangePickerOptions"
+                              [(ngModel)]="model" required></my-date-range-picker>
+      </form>
+    </div>
+    <div class="dropdown col-sm text-center">
+      <button class="btn btn-success dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        New Campaign
+      </button>
+      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+        <a class="dropdown-item" [routerLink]="['setup']" [routerLinkActive]="['active']"><i class="fas fa-mobile-alt "></i>  SMS</a>
+        <a class="dropdown-item" href="#"><i class="far fa-envelope"></i>  Email</a>
+        <a class="dropdown-item" href="#"><i class="fal fa-mobile"></i>  Mobile Push</a>
+        <a class="dropdown-item" href="#"><i class="fab fa-chrome"></i>  Web Push</a>
+      </div>
+    </div>
+  </div>
+  <div class="table-responsive mt-5">
+    <table class="table table-bordered my-3">
+      <thead style="background-color: rgba(0, 0, 0, .03);">
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Campaign Name</th>
+        <th scope="col">Campaign Type</th>
+        <th scope="col">Created On</th>
+        <th scope="col">Frequency</th>
+        <th scope="col">Sent</th>
+        <th scope="col">Conversion Rate</th>
+        <th scope="col">Status</th>
+        <th scope="col">Delivery</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <th scope="row">12314</th>
+        <td>Campaign 1</td>
+        <td>Push</td>
+        <td>01/01/2018</td>
+        <td>Weekly</td>
+        <td>24,125</td>
+        <td>13%</td>
+        <td>Completed</td>
+        <td>One time</td>
+      </tr>
+      <tr>
+        <th scope="row">12314</th>
+        <td>Campaign 1</td>
+        <td>Push</td>
+        <td>01/01/2018</td>
+        <td>Weekly</td>
+        <td>24,125</td>
+        <td>13%</td>
+        <td>Completed</td>
+        <td>One time</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -2,17 +2,22 @@ import {EmailCampaign} from "./email";
 
 export class Campaign {
   id: number;
+  name:string;
   clientID: number;
   appuserID: number;
   campaignType: CampaignType;
   segmentationID: number;
   frequencyType: FrequencyType;
   schedule: string;
-  campaignStatus: EmailDeliveryStatus;
+  createdOn: Date;
+  // campaignStatus: EmailDeliveryStatus;
+  campaignStatus: DeliveryStatus;
+
   emailCampaign: EmailCampaign;
+  // smsCampaign: SmsCampaign;
 }
 
-export enum EmailDeliveryStatus {
+export enum DeliveryStatus {
   NOT_SCHEDULED,
   SCHEDULED,
   IN_PROCESS,

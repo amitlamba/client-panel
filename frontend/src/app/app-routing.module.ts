@@ -19,6 +19,8 @@ import {ResetPwdComponent} from "./login/reset-pwd/reset-pwd.component";
 import {TestComponent} from "./test/test.component";
 import {PageNotFoundComponent} from "./shared/page-not-found/page-not-found.component";
 import {CampaignsComponent} from "./campaigns/campaigns.component";
+import {SetupCampaignComponent} from "./campaigns/setup-campaign/setup-campaign.component";
+import {CampaignsListComponent} from "./campaigns/campaigns-list/campaigns-list.component";
 
 const routes: Routes = [
   {path: 'login', component: LoginComponent},
@@ -42,7 +44,10 @@ const routes: Routes = [
     {path: 'email', component: EmailTemplatesComponent},
     {path: 'sms', component: SmsTemplatesComponent}
   ]},
-  {path: 'campaigns', component:CampaignsComponent, canActivate: [AuthGuard]},
+  {path: 'campaigns', component:CampaignsListComponent, canActivate: [AuthGuard], pathMatch:"full"},
+  {path: 'campaigns', component:CampaignsComponent, canActivate: [AuthGuard],children: [
+      {path: 'setup',component:SetupCampaignComponent}
+    ]},
   { path: '**', component: PageNotFoundComponent }
 ];
 

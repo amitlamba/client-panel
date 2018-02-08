@@ -1,0 +1,117 @@
+<div class="container col-lg-7 mt-5">
+  <div class="card"
+       *ngIf="!showScheduleForm">
+    <h3 class="card-header">
+      Setup Your Campaign
+    </h3>
+    <div class="card-body">
+      <form novalidate
+            #f="ngForm">
+          <div class="form-group col-9">
+            <label class="card-title h5">Campaign Name</label>
+            <input class="form-control"
+                   type="text"
+                   placeholder="Campaign Name"
+                   name="campaignName"
+                   [(ngModel)]="campaignName"
+                   required
+                   #campaign="ngModel">
+          </div>
+          <div class="form-group col-9">
+            <label class="card-title h5">Who do you want to send this campaign to?</label>
+            <select class="form-control"
+                    name="segmentName"
+                    [(ngModel)]="segment"
+                    required>
+              <option value="" selected>Please Select a Segment</option>
+              <option *ngFor="let segmentName of segmentsList"
+                      [value]="segmentName">{{segmentName}}
+              </option>
+            </select>
+          </div>
+        <button class="btn btn-primary ml-3 px-4"
+                (click)="continueToSchedule()">Continue</button>
+        <!--[disabled]="f.invalid"-->
+        <!--<pre>{{f.value | json}}</pre>-->
+      </form>
+    </div>
+  </div>
+
+  <div class="card"
+        *ngIf="showScheduleForm">
+    <h3 class="card-header">
+      When do you want to schedule this campaign?
+    </h3>
+    <div class="card-body">
+      <form>
+        <div class="col-12">
+          <label class="card-title h5">Message Type</label>
+          <br>
+          <input class="mr-1"
+                 type="radio"
+                 name="messageType"
+                 value="oneTime"
+                 checked
+                 required> One Time
+
+          <input  class="ml-2 mr-1"
+                  type="radio"
+                  name="messageType"
+                  value="multipleDates"
+                  required> On Multiple Dates
+
+          <input class="ml-2 mr-1"
+                 type="radio"
+                 name="messageType"
+                 value="recurring"
+                 required> Recurring
+        </div>
+        <div class="col-9 mt-4">
+          <label class="card-title h5">Campaign start date and time</label>
+          <br>
+          <input class="mr-1"
+                 type="radio"
+                 name="campaignStartTime"
+                 value="oneTime"
+                 checked
+                 required> Now
+          <input class="mr-1 ml-2"
+                 type="radio"
+                 name="campaignStartTime"
+                 value="later"
+                 required> Later
+          <div class="row"
+               *ngIf="true">
+            <div class=" col-md-4 col-sm-6 my-3  pr-0 form-inline">
+              <div class="input-group"
+                   daterangepicker
+                   [options]="singlePicker"
+                   (selected)="singleSelect($event)">
+              <span class="form-control uneditable-input pr-4"  name="daterange" >
+                  {{ singleDate | date:'M/dd/y' }}
+              </span>
+                <span class="input-group-btn">
+                <a type="button" class="btn btn-default"><i class="far fa-calendar-alt"></i></a>
+              </span>
+              </div>
+              <p class="ml-4 mt-3"style="font-size: 15px;">at</p>
+            </div>
+            <div class="col-md-7 form-inline border-bottom">
+              <input type="number" class="form-control col-3 mr-2" value="4" min="1" max="12">&#58;
+              <input type="number" class="form-control col-3 mx-2" value="10" min="0" max="55" step="5">
+              <select class="form-control col-4">
+                <option value="AM">AM</option>
+                <option value="PM">PM</option>
+              </select>
+            </div>
+          </div>
+        <div class="bg-light p-3 mb-3 rounded font-italic"><span class="font-weight-bold">Summary &#58;</span>  Laksh is my name</div>
+        </div>
+        <button class="btn btn-primary ml-3 px-4">Continue</button>
+      </form>
+
+    </div>
+  </div>
+</div>
+
+

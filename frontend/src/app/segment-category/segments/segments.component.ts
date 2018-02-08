@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {Segment} from "../../_models/segment";
+import {SegmentService} from "../../_services/segment.service";
 
 @Component({
   selector: 'app-segments',
@@ -7,35 +8,14 @@ import {Segment} from "../../_models/segment";
   styleUrls: ['./segments.component.css']
 })
 export class SegmentsComponent implements OnInit {
+  segments:Segment[]=[];
 
-  segments: Segment[] = [];
-
-  constructor() {
-    this.segments.push(this.createNewSegment());
-    this.segments.push(this.createNewSegment());
-    this.segments.push(this.createNewSegment());
-    this.segments.push(this.createNewSegment());
-    this.segments.push(this.createNewSegment());
-    this.segments.push(this.createNewSegment());
-    this.segments.push(this.createNewSegment());
+  constructor(public segmentService:SegmentService) {
   }
 
   ngOnInit() {
+    this.segments=this.segmentService.segments;
   }
 
-  private createNewSegment(): Segment {
-    var textArray = [
-      'Behaviour',
-      'Live'
-    ];
-    var randomNumber = Math.floor(Math.random()*textArray.length);
-
-    var segment = new Segment();
-    segment.id = Math.floor(Math.random() * 200000) + 1;
-    segment.name = "Segment # "+segment.id;
-    segment.type = textArray[randomNumber];
-    segment.creationDate = "2017-01-01";
-    return segment;
-  }
 
 }

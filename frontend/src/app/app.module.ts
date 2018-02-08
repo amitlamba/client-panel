@@ -53,9 +53,12 @@ import { ExpComponent } from './test/exp/exp.component';
 import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {AngularMultiSelectModule} from './multiselect/multiselect.component';
+
 import { CampaignsComponent } from './campaigns/campaigns.component';
-
-
+import {SegmentService} from "./_services/segment.service";
+import { GlobalFiltersComponent } from './segment-category/global-properties/global-filters.component';
+import { SetupCampaignComponent } from './campaigns/setup-campaign/setup-campaign.component';
+import { CampaignsListComponent } from './campaigns/campaigns-list/campaigns-list.component';
 
 @NgModule({
   imports: [
@@ -105,7 +108,10 @@ import { CampaignsComponent } from './campaigns/campaigns.component';
     PageNotFoundComponent,
     TestComponent,
     ExpComponent,
-    CampaignsComponent
+    CampaignsComponent,
+    GlobalFiltersComponent,
+    SetupCampaignComponent,
+    CampaignsListComponent
   ],
   providers: [
     AuthGuard,
@@ -116,6 +122,7 @@ import { CampaignsComponent } from './campaigns/campaigns.component';
     // BaseRequestOptions
     MessageService,
     TemplatesService,
+    SegmentService,
   ],
   entryComponents: [DidEventComponent,ExpComponent],
   bootstrap: [AppComponent]

@@ -1,0 +1,19 @@
+<div class="my-2 event-widget">
+  <form>
+    <div class="row d-flex flex-row">
+      <div class="form-group col-md-3 m-2">
+        <select class="form-control" (change)="firstFilterChanged($event.target.value)">
+          <option *ngFor="let propType of firstDropDown" value="{{propType}}">{{propType}}</option>
+        </select>
+      </div>
+      <div class="form-group col-md-3 m-2">
+        <select class="form-control" (change)="secondFilterChanged($event.target.value)">
+          <option *ngFor="let propType of secondDropDown" value="{{propType}}">{{propType}}</option>
+        </select>
+      </div>
+      <div class="col-md-6">
+        <p>Hello World</p>
+      </div>
+    </div>
+  </form>
+</div>
