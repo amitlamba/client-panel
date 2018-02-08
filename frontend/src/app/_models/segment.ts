@@ -165,5 +165,11 @@ export class RegisteredEventProperties {
   name: string;
   dataType: string;
   regex: string;
-  options: string[];
+  options: any[];
+}
+
+export class GlobalFilterItem {
+  value: string;
+  displayName: string;
+  type: string;
 }

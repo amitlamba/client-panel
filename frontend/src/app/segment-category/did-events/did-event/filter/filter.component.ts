@@ -1,6 +1,8 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {AfterContentInit, Component, Input, OnChanges, OnInit, ViewChild, ViewContainerRef} from '@angular/core';
 import {RegisteredEventProperties} from "../../../../_models/segment";
 import {NgForm} from "@angular/forms";
+import {SegmentService} from "../../../../_services/segment.service";
+import {iterator} from "rxjs/symbol/iterator";
 
 @Component({
   selector: 'app-filter',
@@ -9,45 +11,43 @@ import {NgForm} from "@angular/forms";
   host: { '[class]': 'dropdownSettings.classes' },
 })
 export class FilterComponent implements OnInit {
+
+  @ViewChild('filterWidget') filterWidget: ViewContainerRef;
+
+  selectedProperty: RegisteredEventProperties = null;
+
   hideInputNumber = false;
   hideInputBetween = true;
   eventProperty=false;
   dropdownSettings={};
 
-  timeOfTheDay=false;
-
-  firstTimeList=[];
-  firstTime=false;
-
-  dayOfTheWeekList=[];
-  dayOfTheWeek=false;
-
-  formModel = {
-    skills:[]
-  };
   formModel1 = {
     skills:[]
   };
-  @Input() properties:RegisteredEventProperties[]=[];
+  @Input() eventProperties:RegisteredEventProperties[]=[];
+  @Input() defaultProperties:RegisteredEventProperties[]=[];
+  _parentComponentsArr:any[];
+  _ref:any;
 
-  constructor() {
+  constructor(segmentService: SegmentService) {
+  }
 
+  removeObject(){
+    this.removeFromParentArr();
+    this._ref.destroy();
+  }
+
+  removeFromParentArr() {
+    // Find the component
+    const componentIndex = this._parentComponentsArr.indexOf(this._ref);
+
+    if (componentIndex !== -1) {
+      // Remove component from both view and array
+      this._parentComponentsArr.splice(componentIndex, 1);
+    }
   }
 
   ngOnInit() {
-    // console.log(this.properties);
-    this.firstTimeList = [
-      {"id":1,"itemName":"Yes"}
-    ];
-    this.dayOfTheWeekList = [
-      {"id":1,"itemName":"Sunday"},
-      {"id":2,"itemName":"Monday"},
-      {"id":3,"itemName":"Tuesday"},
-      {"id":4,"itemName":"Wednesday"},
-      {"id":5,"itemName":"Thursday"},
-      {"id":6,"itemName":"Friday"},
-      {"id":7,"itemName":"Saturday"}
-    ];
     this.dropdownSettings = {
       singleSelection: false,
       text:"Options",
@@ -59,54 +59,24 @@ export class FilterComponent implements OnInit {
   }
 
   filterFirstDropdown(val:any){
-    if (val=="Event Property"){
-      this.eventProperty=true;
-      this.timeOfTheDay=false;
-      this.firstTime=false;
-      this.dayOfTheWeek=false;
-    }
-    else if (val=="Time of the day") {
-      this.timeOfTheDay=true;
-      this.eventProperty=false;
-      this.firstTime=false;
-      this.dayOfTheWeek=false;
-    }
-    else if(val=="First Time") {
-      this.firstTime=true;
-      this.timeOfTheDay=false;
-      this.eventProperty=false;
-      this.dayOfTheWeek=false;
-    }
-    else if(val=="Day of the week"){
-      this.dayOfTheWeek=true;
-      this.timeOfTheDay=false;
-      this.eventProperty=false;
-      this.firstTime=false;
-    }
+    this.selectedProperty = this.getPropertyByName(val);
   }
 
-  filterDropdown(val:any) {
-    if(val =='∃  (exists)' || val == '∄  (does not exists)'){
-      this.hideInputNumber=true;
-      this.hideInputBetween=true;
+  getPropertyByName(propName: string): RegisteredEventProperties {
+    for(let prop of this.eventProperties) {
+      if(prop.name == propName)
+        return prop;
     }
-    else if (val=='≏  (Between)'){
-      this.hideInputNumber=false;
-      this.hideInputBetween=false;
+    for(let prop of this.defaultProperties) {
+      if(prop.name == propName)
+        return prop;
     }
-    else {
-      this.hideInputBetween=true;
-      this.hideInputNumber=false;
-    }
+    return null;
   }
-  // hideEqualityDropdown=false;
-  // filterSecondDropdown(val:any){
-  //   if (val=='Delivery Date'){
-  //       this.hideEqualityDropdown=true;
-  //   }
-  //   else{
-  //     this.hideEqualityDropdown=false;
-  //   }
-  // }
 
+  getSelectedPropertyOptions(): any[] {
+    let options = this.selectedProperty.options.map((option, index)=>{return {'id': index, 'itemName':option}});
+    console.log(options);
+    return options;
+  }
 }

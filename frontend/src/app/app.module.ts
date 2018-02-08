@@ -53,8 +53,13 @@ import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {AngularMultiSelectModule} from './multiselect/multiselect.component';
 import {SegmentService} from "./_services/segment.service";
-import { GlobalFiltersComponent } from './segment-category/global-properties/global-filters.component';
-
+import { GlobalFiltersComponent } from './segment-category/global-filters/global-filters.component';
+import { DateComparatorComponent } from './segment-category/date-comparator/date-comparator.component';
+import { GeographyFiltersComponent } from './segment-category/geography-filters/geography-filters.component';
+import { StringComparatorComponent } from './segment-category/string-comparator/string-comparator.component';
+import { NumberComparatorComponent } from './segment-category/number-comparator/number-comparator.component';
+import { GlobalFilterComponent } from './segment-category/global-filters/global-filter/global-filter.component';
+import { GeographyFilterComponent } from "./segment-category/geography-filters/geography-filter/geography-filter.component";
 
 
 @NgModule({
@@ -105,7 +110,13 @@ import { GlobalFiltersComponent } from './segment-category/global-properties/glo
     PageNotFoundComponent,
     TestComponent,
     ExpComponent,
-    GlobalFiltersComponent
+    GlobalFiltersComponent,
+    DateComparatorComponent,
+    GeographyFiltersComponent,
+    StringComparatorComponent,
+    NumberComparatorComponent,
+    GlobalFilterComponent,
+    GeographyFilterComponent
   ],
   providers: [
     AuthGuard,
@@ -118,7 +129,13 @@ import { GlobalFiltersComponent } from './segment-category/global-properties/glo
     TemplatesService,
     SegmentService,
   ],
-  entryComponents: [DidEventComponent,ExpComponent],
+  entryComponents: [
+    DidEventComponent,
+    ExpComponent,
+    FilterComponent,
+    GeographyFilterComponent,
+    GlobalFilterComponent
+  ],
   bootstrap: [AppComponent]
 })
 
