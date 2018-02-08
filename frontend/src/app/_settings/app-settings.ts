@@ -33,6 +33,10 @@ export class AppSettings {
   public static API_ENDPOINT_CLIENT_SEGMENT = AppSettings.API_ENDPOINT_CLIENT + "/segment";
   public static API_ENDPOINT_CLIENT_SEGMENT_METADATA = AppSettings.API_ENDPOINT_CLIENT_SEGMENT + "/metadata";
 
+  public static API_ENDPOINT_CLIENT_LOCATION = AppSettings.API_ENDPOINT_CLIENT + "location";
+  public static API_ENDPOINT_CLIENT_LOCATION_COUNTRIES = AppSettings.API_ENDPOINT_CLIENT_LOCATION + "/countries";
+  public static API_ENDPOINT_CLIENT_LOCATION_STATES = AppSettings.API_ENDPOINT_CLIENT_LOCATION + "/states";
+  public static API_ENDPOINT_CLIENT_LOCATION_CITIES = AppSettings.API_ENDPOINT_CLIENT_LOCATION + "/cities";
 
   public static API_ENDPOINT_AUTH = AppSettings.API_ENDPOINT + "/auth";
 
