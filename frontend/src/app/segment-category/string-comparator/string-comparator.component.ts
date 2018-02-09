@@ -10,7 +10,7 @@ export class StringComparatorComponent implements OnInit {
 
   @Input() options: string[];
   stringComparatorMetadata: any;
-  stringComparatorOperators: string[];
+  @Input() stringComparatorOperators: string[];
   private singleFieldRequiredComparators: string[] = ["Equals","NotEquals","Contains","DoesNotContain"];
   private doubleFieldRequiredComparators: string[] = [];
   private noFieldRequiredComparators: string[] = ["Exists","DoesNotExist"];
@@ -18,10 +18,11 @@ export class StringComparatorComponent implements OnInit {
 
   constructor(public segmentService: SegmentService) {
     this.stringComparatorMetadata = this.segmentService.stringComparatorMetadata;
-    this.stringComparatorOperators = Object.keys(this.segmentService.stringComparatorMetadata);
   }
 
   ngOnInit() {
+    if(!this.stringComparatorOperators)
+      this.stringComparatorOperators = Object.keys(this.segmentService.stringComparatorMetadata);
   }
 
   dropdownChanged(comparator: string) {

@@ -10,7 +10,7 @@ export class NumberComparatorComponent implements OnInit {
 
   @Input() options: string[];
   numberComparatorMetadata: any;
-  numberComparatorOperators: string[];
+  @Input() numberComparatorOperators: string[];
   private singleFieldRequiredComparators: string[] = ["Equals", "NotEquals", "GreaterThan", "LessThan"];
   private doubleFieldRequiredComparators: string[] = ["Between"];
   private noFieldRequiredComparators: string[] = ["Exists", "DoesNotExist"];
@@ -19,10 +19,11 @@ export class NumberComparatorComponent implements OnInit {
 
   constructor(public segmentService: SegmentService) {
     this.numberComparatorMetadata = this.segmentService.numberComparatorMetadata;
-    this.numberComparatorOperators = Object.keys(this.segmentService.numberComparatorMetadata);
   }
 
   ngOnInit() {
+    if(!this.numberComparatorOperators)
+      this.numberComparatorOperators = Object.keys(this.segmentService.numberComparatorMetadata);
   }
 
   dropdownChanged(comparator: string) {

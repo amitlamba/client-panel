@@ -152,4 +152,5 @@ export class DidEventComponent implements OnInit {
       this.hidePropertySumFilter = true;
     }
   }
+
 }

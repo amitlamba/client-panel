@@ -27,46 +27,42 @@
     </button>
   </div>
 
-  <div class="ml-3" *ngIf="!hideWhere">
+  <div class="ml-3" *ngIf="!hideWhere && eventSelected">
     <p class="mb-1">where</p>
   </div>
-  <div class="form-inline" *ngIf="!hideWhere">
-    <div class="form-group mb-3 col-3 pr-0">
-      <select class="form-control col-10"
+  <div class="form-inline" *ngIf="!hideWhere && eventSelected">
+    <div class="form-group pr-0 ml-3">
+      <select class="form-control"
               (change)="countDropdown($event.target.value)">
         <option selected>Count</option>
         <option>Property Sum Of</option>
       </select>
     </div>
-    <div class="form-group mb-3 col-3 px-0 custom-left"
-         [hidden]="hidePropertySumFilter">
+    <div class="form-group px-0 custom-left" *ngIf="!hidePropertySumFilter">
       <select class="form-control col-9">
-        <option selected>Amount</option>
-        <option>Payment Mode</option>
-        <option>Delivery Date</option>
-        <option>Product</option>
-        <option>Category</option>
+        <option *ngFor="let prop of eventProperties" [value]="prop.name">{{prop.name}}</option>
       </select>
     </div>
-    <div class="form-group mb-3 col-3 px-0 custom-left">
-      <select class="form-control col-12"
-              (change)="whereDropdown($event.target.value)"
-              [ngStyle]="{'right':hidePropertySumFilter ===false?'35px':'0'}">
-        <option selected>≥&nbsp;&nbsp;(greater or equals)</option>
-        <option>≏&nbsp;&nbsp;(Between)</option>
-        <option>≤&nbsp;&nbsp;(less than or equals)</option>
-        <option>=&nbsp;&nbsp;(equals)</option>
-      </select>
-    </div>
-    <div class="form-group col-1 mb-3 mr-3 px-0"
-         [ngStyle]="{'right':hidePropertySumFilter ===false?'35px':'0'}">
-      <input type="number" class="form-control col-12" value="1" min="1">
-    </div>
-    <div class="form-group col-1 mb-3 px-0"
-         [hidden]="hideElementInput"
-         [ngStyle]="{'right':hidePropertySumFilter ===false?'31px':'0'}">
-      <input type="number" class="form-control col-12" value="1" min="1">
-    </div>
+    <app-number-comparator [numberComparatorOperators]="['Equals', 'Between', 'GreaterThan', 'LessThan']"></app-number-comparator>
+    <!--<div class="form-group mb-3 col-3 px-0 custom-left">-->
+      <!--<select class="form-control col-12"-->
+              <!--(change)="whereDropdown($event.target.value)"-->
+              <!--[ngStyle]="{'right':hidePropertySumFilter ===false?'35px':'0'}">-->
+        <!--<option selected>≥&nbsp;&nbsp;(greater or equals)</option>-->
+        <!--<option>≏&nbsp;&nbsp;(Between)</option>-->
+        <!--<option>≤&nbsp;&nbsp;(less than or equals)</option>-->
+        <!--<option>=&nbsp;&nbsp;(equals)</option>-->
+      <!--</select>-->
+    <!--</div>-->
+    <!--<div class="form-group col-1 mb-3 mr-3 px-0"-->
+         <!--[ngStyle]="{'right':hidePropertySumFilter ===false?'35px':'0'}">-->
+      <!--<input type="number" class="form-control col-12" value="1" min="1">-->
+    <!--</div>-->
+    <!--<div class="form-group col-1 mb-3 px-0"-->
+         <!--[hidden]="hideElementInput"-->
+         <!--[ngStyle]="{'right':hidePropertySumFilter ===false?'31px':'0'}">-->
+      <!--<input type="number" class="form-control col-12" value="1" min="1">-->
+    <!--</div>-->
 
   </div>
 </div>
