@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Segment} from "../../_models/segment";
 import {Router} from "@angular/router";
+import {SegmentService} from "../../_services/segment.service";
 
 @Component({
   selector: 'app-segments',
@@ -11,7 +12,7 @@ export class SegmentsComponent implements OnInit {
 
   segments: Segment[] = [];
 
-  constructor(private router: Router) {
+  constructor(private router: Router, public segmentService:SegmentService) {
     this.segments.push(this.createNewSegment());
     this.segments.push(this.createNewSegment());
     this.segments.push(this.createNewSegment());
@@ -22,6 +23,7 @@ export class SegmentsComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.segments=this.segmentService.segments;
   }
 
   private createNewSegment(): Segment {

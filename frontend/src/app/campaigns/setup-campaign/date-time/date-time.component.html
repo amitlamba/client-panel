@@ -1,0 +1,43 @@
+<div class="row">
+  <div class=" col-md-4 col-sm-6 mt-2 mb-1  pr-0 form-inline">
+    <div class="input-group"
+         daterangepicker
+         [options]="singlePicker"
+         (selected)="singleSelect($event)">
+              <span class="form-control uneditable-input pr-4"
+                    name="daterange">
+                  {{ singleDate | date:'dd/M/y' }}
+              </span>
+              <span class="input-group-btn">
+                <a type="button" class="btn btn-default"><i class="far fa-calendar-alt"></i></a>
+              </span>
+    </div>
+    <p class="ml-4 mt-3" style="font-size: 15px;">at</p>
+  </div>
+  <div class="col-md-7 form-inline border-bottom">
+    <input type="number"
+           class="form-control col-3 mr-2"
+           min="1"
+           max="12"
+           name="hours"
+           [(ngModel)]="campaignTime.hours">&#58;
+    <input type="number"
+           class="form-control col-3 mx-2"
+           min="0"
+           max="55"
+           step="5"
+           name="minutes"
+           [(ngModel)]="campaignTime.minutes">
+    <select class="form-control col-4">
+      <option value="AM">AM</option>
+      <option value="PM">PM</option>
+    </select>
+  </div>
+  <button type="button"
+          class="close ml-auto mr-4 pos"
+          aria-label="Close"
+          (click)="removeObject()"
+          *ngIf="showCloseButton">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>

@@ -1,14 +1,36 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import {City, Country, RegisteredEvent, RegisteredEventProperties, State} from "../_models/segment";
+import {City, Country, RegisteredEvent, RegisteredEventProperties, Segment, State} from "../_models/segment";
 import {AppSettings} from "../_settings/app-settings";
 import {tap} from "rxjs/operators";
 import {Observable} from "rxjs/Observable";
 
 @Injectable()
 export class SegmentService {
+    segments: Segment[] = [];
 
   constructor(private httpClient: HttpClient) {
+    this.segments.push(this.createNewSegment());
+    this.segments.push(this.createNewSegment());
+    this.segments.push(this.createNewSegment());
+    this.segments.push(this.createNewSegment());
+    this.segments.push(this.createNewSegment());
+    this.segments.push(this.createNewSegment());
+    this.segments.push(this.createNewSegment());
+  }
+  private createNewSegment(): Segment {
+    var textArray = [
+      'Behaviour',
+      'Live'
+    ];
+    var randomNumber = Math.floor(Math.random()*textArray.length);
+
+    var segment = new Segment();
+    segment.id = Math.floor(Math.random() * 200000) + 1;
+    segment.name = "Segment # "+segment.id;
+    segment.type = textArray[randomNumber];
+    segment.creationDate = "2017-01-01";
+    return segment;
   }
 
   getEvents(): Observable<RegisteredEvent[]> {
@@ -419,5 +441,48 @@ export class SegmentService {
       displayName: "∄ (does not exist)",
       dataFieldsRequired: 0
     }
+  };
+
+  schedule = {
+    "schedule":[
+      {
+        "name":"One Time",
+        "Options":[
+          {
+            "name":"Now/Later",
+            "type":"Date"
+          }
+        ]
+      },
+      {
+        "name":"On Multiple Dates",
+        "Type":"Date Time[]"
+      },
+      {
+        "name":"Recurring",
+        "options":[
+          {
+            "name":"Campaign Start",
+            "type":"Date"
+          },
+          {
+            "name":"Campaign End",
+            "options":[
+              {
+                "name":"Never End"
+              },
+              {
+                "name":"Select Date",
+                "type":"Date"
+              },
+              {
+                "name":"After",
+                "type":"Number"
+              }
+            ]
+          }
+        ]
+      }
+    ]
   };
 }

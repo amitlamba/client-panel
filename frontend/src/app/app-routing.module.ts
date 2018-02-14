@@ -1,5 +1,4 @@
 import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
 import {RouterModule, Routes} from "@angular/router";
 import {LoginComponent} from "./login/login.component";
 import {HomeComponent} from "./home/home.component";
@@ -18,6 +17,10 @@ import {SegmentsComponent} from "./segment-category/segments/segments.component"
 import {ResetPwdComponent} from "./login/reset-pwd/reset-pwd.component";
 import {TestComponent} from "./test/test.component";
 import {CreateNewSegmentComponent} from "./segment-category/segments/create-new-segment/create-new-segment.component";
+import {PageNotFoundComponent} from "./shared/page-not-found/page-not-found.component";
+import {CampaignsComponent} from "./campaigns/campaigns.component";
+import {SetupCampaignComponent} from "./campaigns/setup-campaign/setup-campaign.component";
+import {CampaignsListComponent} from "./campaigns/campaigns-list/campaigns-list.component";
 
 const routes: Routes = [
   {path: 'login', component: LoginComponent},
@@ -42,6 +45,11 @@ const routes: Routes = [
     {path: 'email', component: EmailTemplatesComponent},
     {path: 'sms', component: SmsTemplatesComponent}
   ]},
+  {path: 'campaigns', component:CampaignsListComponent, canActivate: [AuthGuard], pathMatch:"full"},
+  {path: 'campaigns', component:CampaignsComponent, canActivate: [AuthGuard],children: [
+      {path: 'setup',component:SetupCampaignComponent}
+    ]},
+  { path: '**', component: PageNotFoundComponent }
 ];
 
 @NgModule({
