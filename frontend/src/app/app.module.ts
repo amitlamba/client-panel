@@ -60,6 +60,9 @@ import { StringComparatorComponent } from './segment-category/string-comparator/
 import { NumberComparatorComponent } from './segment-category/number-comparator/number-comparator.component';
 import { GlobalFilterComponent } from './segment-category/global-filters/global-filter/global-filter.component';
 import { GeographyFilterComponent } from "./segment-category/geography-filters/geography-filter/geography-filter.component";
+import { CreateNewSegmentComponent } from './segment-category/segments/create-new-segment/create-new-segment.component';
+import { UsersByBehaviourComponent } from './segment-category/find-users/users-by-behaviour/users-by-behaviour.component';
+import {Select2Module} from "ng2-select2";
 
 
 @NgModule({
@@ -75,7 +78,8 @@ import { GeographyFilterComponent } from "./segment-category/geography-filters/g
     BrowserAnimationsModule,
     OwlDateTimeModule,
     OwlNativeDateTimeModule,
-    AngularMultiSelectModule
+    AngularMultiSelectModule,
+    Select2Module
   ],
   declarations: [
     AppComponent,
@@ -116,7 +120,9 @@ import { GeographyFilterComponent } from "./segment-category/geography-filters/g
     StringComparatorComponent,
     NumberComparatorComponent,
     GlobalFilterComponent,
-    GeographyFilterComponent
+    GeographyFilterComponent,
+    CreateNewSegmentComponent,
+    UsersByBehaviourComponent,
   ],
   providers: [
     AuthGuard,

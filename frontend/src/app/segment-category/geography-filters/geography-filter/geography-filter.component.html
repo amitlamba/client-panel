@@ -1,7 +1,10 @@
 <div class="my-2 event-widget">
   <div class="row d-flex flex-row ml-2">
     <div class="form-group m-2">
-      <input class="form-control" placeholder="Country"/>
+      <!--<select2 class="form-control" placeholder="Country" [options]="countriesSelectList" [(ngModel)]="selectedCountry" (onSelect)="onCountrySelect($event)"></select2>-->
+      <!--<input class="form-control" placeholder="Country"/>-->
+      <!--<select2 placeholder="Country" class="form-control"  [data]="countriesSelectList"></select2>-->
+      <select2 [data]="countriesSelectList | async" [value]="countriesSelectList | async" [width]="150"></select2>
     </div>
     <div class="form-group m-2">
       <input class="form-control" placeholder="State"/>

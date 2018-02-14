@@ -17,6 +17,8 @@ export class GeographyFilterComponent implements OnInit {
   selectedCity: City;
   geography: boolean;
 
+  countriesSelectList: any[] = [];
+
   _parentComponentsArr: any[];
   _ref: any;
 
@@ -35,7 +37,10 @@ export class GeographyFilterComponent implements OnInit {
     }
   }
 
-  constructor(private segmentService: SegmentService) { }
+  constructor(private segmentService: SegmentService) {
+    this.getCountries();
+    this.countriesSelectList = ["Afghanistan","India"];
+  }
 
   ngOnInit() {
   }
@@ -44,6 +49,8 @@ export class GeographyFilterComponent implements OnInit {
     this.segmentService.getCountries().subscribe(
       countries => {
         this.countries = countries;
+        this.countries.forEach((country) => {this.countriesSelectList.push({id: country.id, text: country.name})});
+        // console.log(JSON.stringify(this.countriesSelectList));
       }
     );
   }
@@ -64,4 +71,7 @@ export class GeographyFilterComponent implements OnInit {
     );
   }
 
+  onCountrySelect(country: any) {
+    console.log(country);
+  }
 }

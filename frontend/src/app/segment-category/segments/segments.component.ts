@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {Segment} from "../../_models/segment";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-segments',
@@ -10,7 +11,7 @@ export class SegmentsComponent implements OnInit {
 
   segments: Segment[] = [];
 
-  constructor() {
+  constructor(private router: Router) {
     this.segments.push(this.createNewSegment());
     this.segments.push(this.createNewSegment());
     this.segments.push(this.createNewSegment());
@@ -24,11 +25,11 @@ export class SegmentsComponent implements OnInit {
   }
 
   private createNewSegment(): Segment {
-    var textArray = [
+    let textArray = [
       'Behaviour',
       'Live'
     ];
-    var randomNumber = Math.floor(Math.random()*textArray.length);
+    let randomNumber = Math.floor(Math.random()*textArray.length);
 
     var segment = new Segment();
     segment.id = Math.floor(Math.random() * 200000) + 1;
@@ -38,4 +39,7 @@ export class SegmentsComponent implements OnInit {
     return segment;
   }
 
+  onCreateNew() {
+    this.router.navigate(["segment","create-new-segment"]);
+  }
 }

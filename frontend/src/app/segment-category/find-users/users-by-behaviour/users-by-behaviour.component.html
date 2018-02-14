@@ -1,0 +1,35 @@
+<div class="card">
+  <div class="card-header">
+    <i class="fas fa-users"></i> Users by behavior
+  </div>
+  <div class="card-body">
+    <div class="card">
+      <div class="card-body">
+        <div class="card-title"><h4 class="d-inline">Users who did </h4><span class="small text-muted">(optional)</span>
+        </div>
+        <app-did-events></app-did-events>
+      </div>
+    </div>
+    AND
+    <div class="card">
+      <div class="card-body">
+        <div class="card-title">Users who did not do <span class="small text-muted">(optional)</span></div>
+        <app-did-events [didNotEvent]="true"></app-did-events>
+      </div>
+    </div>
+    AND
+    <div class="card">
+      <div class="card-body">
+        <div class="card-title">Users with these properties <span class="small text-muted">(optional)</span></div>
+        <app-global-filters></app-global-filters>
+      </div>
+    </div>
+    AND
+    <div class="card">
+      <div class="card-body">
+        <div class="card-title">Users with these Locations <span class="small text-muted">(optional)</span></div>
+        <app-geography-filters></app-geography-filters>
+      </div>
+    </div>
+  </div>
+</div>

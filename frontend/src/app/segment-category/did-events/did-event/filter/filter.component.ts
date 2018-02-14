@@ -76,7 +76,6 @@ export class FilterComponent implements OnInit {
 
   getSelectedPropertyOptions(): any[] {
     let options = this.selectedProperty.options.map((option, index)=>{return {'id': index, 'itemName':option}});
-    console.log(options);
     return options;
   }
 }
