@@ -34,3 +34,25 @@ export enum CampaignType {
   SMS,
   MOBILE_PUSH_NOTIFICATION
 }
+
+
+
+export class Schedule {
+  scheduleType: string;
+  startTime: Now;
+  campaignTimeList: CampaignTime[];
+}
+export class CampaignTime {
+  date: string;
+  hours: number;
+  minutes: number;
+  ampm: AmPm;
+}
+export enum Now{
+  "Now"="Now",
+  "Later"="Later"
+}
+export enum AmPm {
+  AM="AM",
+  PM="PM"
+}

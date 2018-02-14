@@ -1,9 +1,0 @@
-.form-inline{
-  flex-flow:row;
-}
-
-@media only screen and  (max-width: 768px) {
-  .border-bottom{
-    margin-bottom: 12px;
-  }
-}

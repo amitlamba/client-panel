@@ -64,6 +64,7 @@ import {NumberComparatorComponent} from './segment-category/number-comparator/nu
 import {GlobalFilterComponent} from './segment-category/global-filters/global-filter/global-filter.component';
 import {GeographyFilterComponent} from "./segment-category/geography-filters/geography-filter/geography-filter.component";
 import {GlobalFiltersComponent} from "./segment-category/global-filters/global-filters.component";
+import { DateTimeComponent } from './campaigns/setup-campaign/date-time/date-time.component';
 
 @NgModule({
   imports: [
@@ -122,7 +123,8 @@ import {GlobalFiltersComponent} from "./segment-category/global-filters/global-f
     StringComparatorComponent,
     NumberComparatorComponent,
     GlobalFilterComponent,
-    GeographyFilterComponent
+    GeographyFilterComponent,
+    DateTimeComponent
   ],
   providers: [
     AuthGuard,
@@ -138,6 +140,7 @@ import {GlobalFiltersComponent} from "./segment-category/global-filters/global-f
   entryComponents: [
     DidEventComponent,
     ExpComponent,
+    DateTimeComponent,
     FilterComponent,
     GeographyFilterComponent,
     GlobalFilterComponent
