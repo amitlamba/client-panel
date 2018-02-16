@@ -10,6 +10,7 @@ export class Segment {
 }
 
 export class DidEvents {
+  description: string;
   joinCondition: JoinCondition;
   events: Event[];
 }
@@ -33,11 +34,24 @@ export class DateFilter {
 }
 
 export class PropertyFilter {
-  propertyName: string;
-  propertyType: string;
-  operator: DateOperator;
+  name: string;
+  type: PropertyType;
+  filterType: PropertyFilterType;
+  operator: string;
   values: string[];
   valueUnit: string;
+}
+
+export enum PropertyType {
+  string="string",
+  number="number",
+  date="date"
+}
+
+export enum PropertyFilterType {
+  eventproperty="eventproperty",
+  genericproperty="genericproperty",
+  UTM="UTM"
 }
 
 export class WhereFilter {
@@ -56,10 +70,35 @@ export class PropertySumOf {
   values: number[]
 }
 
-export class DateOperator {
+export enum DateOperator {
+  Before="Before",
+  After="After",
+  On="On",
+  Between="Between",
+  InThePast="InThePast",
+  WasExactly="WasExactly",
+  Today="Today",
+  InTheFuture="InTheFuture",
+  WillBeExactly="WillBeExactly"
 }
 
-export class NumberOperator {
+export enum NumberOperator {
+  Equals="Equals",
+  Between="Between",
+  GreaterThan="GreaterThan",
+  LessThan="LessThan",
+  NotEquals="NotEquals",
+  Exists="Exists",
+  DoesNotExist="DoesNotExist"
+}
+
+export enum StringOperator {
+  Equals="Equals",
+  NotEquals="NotEquals",
+  Contains="Contains",
+  DoesNotContain="DoesNotContain",
+  Exists="Exists",
+  DoesNotExist="DoesNotExist"
 }
 
 export class GlobalFilters {

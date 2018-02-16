@@ -7,7 +7,8 @@ import {Observable} from "rxjs/Observable";
 
 @Injectable()
 export class SegmentService {
-    segments: Segment[] = [];
+  segments: Segment[] = [];
+  countries: Country[];
 
   constructor(private httpClient: HttpClient) {
     this.segments.push(this.createNewSegment());

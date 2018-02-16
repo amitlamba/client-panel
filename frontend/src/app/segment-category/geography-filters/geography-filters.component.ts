@@ -1,5 +1,7 @@
 import {Component, ComponentFactoryResolver, OnInit, ViewChild, ViewContainerRef} from '@angular/core';
 import {GeographyFilterComponent} from "./geography-filter/geography-filter.component";
+import {SegmentService} from "../../_services/segment.service";
+import {Country} from "../../_models/segment";
 
 @Component({
   selector: 'app-geography-filters',
@@ -11,10 +13,27 @@ export class GeographyFiltersComponent implements OnInit {
   @ViewChild('container', {read: ViewContainerRef}) container: ViewContainerRef;
   components = [];
 
-  constructor(private componentFactoryResolver: ComponentFactoryResolver) {
+  addUserLocationDisabled: boolean;
+
+  constructor(private componentFactoryResolver: ComponentFactoryResolver, private segmentService: SegmentService) {
   }
 
   ngOnInit() {
+  }
+
+  addUserLocation() {
+    this.addUserLocationDisabled = true;
+    if (this.segmentService.countries) {
+      this.addComponent();
+    } else {
+      this.segmentService.getCountries().subscribe(
+        countries => {
+          this.segmentService.countries=countries;
+          this.addComponent();
+        }
+      );
+    }
+    this.addUserLocationDisabled = false;
   }
 
   addComponent() {

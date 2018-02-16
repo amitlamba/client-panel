@@ -15,14 +15,17 @@ export class GeographyFilterComponent implements OnInit {
   selectedCountry: Country;
   selectedState: State;
   selectedCity: City;
-  geography: boolean;
 
   countriesSelectList: any[] = [];
+  statesSelectList: any[] = [];
+  citiesSelectList: any[] = [];
+
+  select2Options: Select2Options = {};
 
   _parentComponentsArr: any[];
   _ref: any;
 
-  removeObject(){
+  removeObject() {
     this.removeFromParentArr();
     this._ref.destroy();
   }
@@ -38,21 +41,15 @@ export class GeographyFilterComponent implements OnInit {
   }
 
   constructor(private segmentService: SegmentService) {
-    this.getCountries();
-    this.countriesSelectList = ["Afghanistan","India"];
+    this.countries = segmentService.countries;
+    this.countriesSelectList.push({id: -1, text: "--Select--"});
+    this.countries.forEach((country) => {
+      this.countriesSelectList.push({id: country.id, text: country.name})
+    });
+    // this.select2Options.placeholder="--Select--";
   }
 
   ngOnInit() {
-  }
-
-  getCountries() {
-    this.segmentService.getCountries().subscribe(
-      countries => {
-        this.countries = countries;
-        this.countries.forEach((country) => {this.countriesSelectList.push({id: country.id, text: country.name})});
-        // console.log(JSON.stringify(this.countriesSelectList));
-      }
-    );
   }
 
   getStates(countryId: number) {
@@ -71,7 +68,52 @@ export class GeographyFilterComponent implements OnInit {
     );
   }
 
-  onCountrySelect(country: any) {
-    console.log(country);
+  onCountrySelect(data: any) {
+    console.log(data);
+    console.log(data['data'][0]);
+    if (data.value > 0)
+      this.segmentService.getStates(data.value).subscribe(
+        states => {
+          this.statesSelectList = [];
+          this.statesSelectList.push({id: -1, text: "--Select--"});
+          states.forEach(state => {
+            this.statesSelectList.push({id: state.id, text: state.name})
+          });
+          this.selectedCountry = {id: data.value, name: data['data'][0].text};
+          this.selectedState = null;
+          this.selectedCity = null;
+        });
+    else {
+      this.selectedCountry = null;
+      this.selectedState = null;
+      this.selectedCity = null;
+    }
+  }
+
+  onStateSelect(data: any) {
+    console.log(data);
+    if (data.value > 0)
+      this.segmentService.getCities(data.value).subscribe(
+        cities => {
+          this.citiesSelectList = [];
+          this.citiesSelectList.push({id: -1, text: "--Select--"});
+          cities.forEach(city => {
+            this.citiesSelectList.push({id: city.id, text: city.name})
+          });
+          this.selectedState = {id: data.value, name: data['data'][0].text};
+          this.selectedCity = null;
+        });
+    else {
+      this.selectedState = null;
+      this.selectedCity = null;
+    }
+  }
+
+  onCitySelect(data: any) {
+    console.log(data);
+    if (data.value > 0)
+      this.selectedCity = {id: data.value, name: data['data'][0].text};
+    else
+      this.selectedCity = null;
   }
 }
