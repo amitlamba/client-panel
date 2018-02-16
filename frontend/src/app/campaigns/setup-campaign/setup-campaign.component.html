@@ -7,36 +7,38 @@
     <div class="card-body">
       <form novalidate
             #f="ngForm">
-          <div class="form-group col-9">
-            <label class="card-title h5">Campaign Name</label>
-            <input class="form-control"
-                   type="text"
-                   placeholder="Campaign Name"
-                   name="campaignName"
-                   [(ngModel)]="campaignName"
-                   required>
-          </div>
-          <div class="form-group col-9">
-            <label class="card-title h5">Who do you want to send this campaign to?</label>
-            <select class="form-control"
-                    name="segmentName"
-                    [(ngModel)]="segment"
-                    required>
-              <option value="" selected>Please Select a Segment</option>
-              <option *ngFor="let segmentName of segmentsList"
-                      [value]="segmentName">{{segmentName}}
-              </option>
-            </select>
-          </div>
+        <div class="form-group col-9">
+          <label class="card-title h5">Campaign Name</label>
+          <input class="form-control"
+                 type="text"
+                 placeholder="Campaign Name"
+                 name="campaignName"
+                 [(ngModel)]="campaignName"
+                 required>
+        </div>
+        <div class="form-group col-9">
+          <label class="card-title h5">Who do you want to send this campaign to?</label>
+          <select class="form-control"
+                  name="segmentName"
+                  [(ngModel)]="segment"
+                  required>
+            <option value="" selected>Please Select a Segment</option>
+            <option *ngFor="let segmentName of segmentsList"
+                    [value]="segmentName">{{segmentName}}
+            </option>
+          </select>
+        </div>
         <button class="btn btn-primary ml-3 px-4"
-                (click)="continueToSchedule()" type="button"
-                [disabled]="f.invalid">Continue</button>
+                (click)="continueToSchedule()"
+                type="button"
+                [disabled]="f.invalid">Continue
+        </button>
       </form>
     </div>
   </div>
 
   <div class="card"
-        *ngIf="showScheduleForm">
+       *ngIf="showScheduleForm">
     <h3 class="card-header">
       When do you want to schedule this campaign?
     </h3>
@@ -56,14 +58,14 @@
                  (click)="emptyCampaignTimesArray()">
           <label for="oneTime">One Time</label>
 
-          <input  class="ml-2 mr-1"
-                  type="radio"
-                  name="messageType"
-                  value="multipleDates"
-                  id="multipleDates"
-                  required
-                  [(ngModel)]="schedule.scheduleType"
-                  (click)="emptyCampaignTimesArray()">
+          <input class="ml-2 mr-1"
+                 type="radio"
+                 name="messageType"
+                 value="multipleDates"
+                 id="multipleDates"
+                 required
+                 [(ngModel)]="schedule.scheduleType"
+                 (click)="emptyCampaignTimesArray()">
           <label for="multipleDates">On Multiple Dates</label>
 
           <input class="ml-2 mr-1"
@@ -97,12 +99,12 @@
                  [(ngModel)]="schedule.startTime"
                  (click)="emptyCampaignTimesArray()">
           <label for="later">Later</label>
-            <app-date-time *ngIf="schedule.startTime==='Later'"
-                           [campaignTimes]="schedule.campaignTimeList"></app-date-time>
+          <app-date-time *ngIf="schedule.startTime==='Later'"
+                         [campaignTimes]="schedule.campaignTimeList"></app-date-time>
 
         </div>
         <div class="col-9 mt-2"
-              *ngIf="schedule.scheduleType==='multipleDates'">
+             *ngIf="schedule.scheduleType==='multipleDates'">
           <label class="card-title mb-0 h5">Pick Dates</label>
           <br>
           <app-date-time [campaignTimes]="schedule.campaignTimeList"></app-date-time>
@@ -115,9 +117,9 @@
           </button>
         </div>
         <div *ngIf="schedule.scheduleType==='recurring'">
-          <div class="col-12 mt-2">
+          <div class="col-12 mt-3">
             <label class="card-title mb-0 h5">Campaign Start</label>
-            <div class="input-group col-md-5 col-sm-6 col-xs-6 pl-0 my-3"
+            <div class="input-group col-md-5 col-sm-6 col-xs-6 pl-0 mt-3 mb-4"
                  daterangepicker
                  [options]="singlePicker"
                  (selected)="singleSelect($event)">
@@ -130,7 +132,7 @@
               </span>
             </div>
           </div>
-          <div class="col-12 mb-2">
+          <div class="col-12 mb-3 mt-2">
             <label class="card-title h5">Campaign End</label>
             <br>
             <input class="mr-1"
@@ -140,12 +142,12 @@
                    id="campaignEnd"
                    required>
             <label for="campaignEnd">Never End</label>
-            <input  class="ml-2 mr-1"
-                    type="radio"
-                    name="campaignEnd"
-                    value="selectDate"
-                    id="selectDate"
-                    required>
+            <input class="ml-2 mr-1"
+                   type="radio"
+                   name="campaignEnd"
+                   value="selectDate"
+                   id="selectDate"
+                   required>
             <label for="selectDate">Select Date</label>
             <input class="ml-2 mr-1"
                    type="radio"
@@ -160,8 +162,9 @@
             </label>
           </div>
           <div class="col-12 mb-2">
-            Repeat:
-            <cron-editor [(cron)]="cronExpression" [disabled]="isCronDisabled" [(options)]="cronOptions">Cron here...</cron-editor>
+            <label class="card-title h5">Repeat </label>
+            <cron-editor [(cron)]="cronExpression" [disabled]="isCronDisabled" [(options)]="cronOptions">Cron here...
+            </cron-editor>
           </div>
         </div>
         <div class="bg-light p-3 mb-3 rounded font-italic">

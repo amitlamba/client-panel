@@ -38,10 +38,26 @@ export enum CampaignType {
 
 
 export class Schedule {
-  scheduleType: string;
+  scheduleType: ScheduleType;
   startTime: Now;
   campaignTimeList: CampaignTime[];
+  cronExpression: string;
+  startDateTime: Date;
+  scheduleEnd: ScheduleEnd;
 }
+
+export class ScheduleEnd {
+  neverEnd: boolean;
+  endsOn: Date;
+  occurrences: number;
+}
+
+export enum ScheduleType{
+  oneTime = "oneTime",
+  multipleDates = "multipleDates",
+  recurring = "recurring"
+}
+
 export class CampaignTime {
   date: string;
   hours: number;
