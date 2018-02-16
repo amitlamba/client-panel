@@ -68,6 +68,7 @@ import {CampaignsComponent} from './campaigns/campaigns.component';
 import {SetupCampaignComponent} from './campaigns/setup-campaign/setup-campaign.component';
 import {CampaignsListComponent} from './campaigns/campaigns-list/campaigns-list.component';
 import {DateTimeComponent} from './campaigns/setup-campaign/date-time/date-time.component';
+import {CronEditorModule} from "./cron-editor/cron-editor.module";
 
 @NgModule({
   imports: [
@@ -83,7 +84,8 @@ import {DateTimeComponent} from './campaigns/setup-campaign/date-time/date-time.
     OwlDateTimeModule,
     OwlNativeDateTimeModule,
     AngularMultiSelectModule,
-    Select2Module
+    Select2Module,
+    CronEditorModule,
   ],
   declarations: [
     AppComponent,
@@ -130,7 +132,7 @@ import {DateTimeComponent} from './campaigns/setup-campaign/date-time/date-time.
     GeographyFilterComponent,
     CreateNewSegmentComponent,
     UsersByBehaviourComponent,
-    DateTimeComponent
+    DateTimeComponent,
   ],
   providers: [
     AuthGuard,

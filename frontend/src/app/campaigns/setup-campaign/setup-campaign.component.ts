@@ -3,6 +3,7 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {SegmentService} from "../../_services/segment.service";
 import {DateTimeComponent} from "./date-time/date-time.component";
 import {CampaignTime, Now, Schedule} from "../../_models/campaign";
+import {CronOptions} from "../../cron-editor/CronOptions";
 
 @Component({
   selector: 'app-setup-campaign',
@@ -10,9 +11,31 @@ import {CampaignTime, Now, Schedule} from "../../_models/campaign";
   styleUrls: ['./setup-campaign.component.css']
 })
 export class SetupCampaignComponent implements OnInit {
-  showScheduleForm=false;
-  showCloseButton=false;
-  schedule=new Schedule();
+  showScheduleForm = false;
+  showCloseButton = false;
+  schedule = new Schedule();
+
+  cronExpression = '4 3 2 12 1/1 ? *';
+  isCronDisabled = false;
+  cronOptions: CronOptions = {
+    formInputClass: 'form-control cron-editor-input',
+    formSelectClass: 'form-control cron-editor-select',
+    formRadioClass: 'cron-editor-radio',
+    formCheckboxClass: 'cron-editor-checkbox',
+
+    defaultTime: "10:00:00",
+
+    hideMinutesTab: false,
+    hideHourlyTab: false,
+    hideDailyTab: false,
+    hideWeeklyTab: false,
+    hideMonthlyTab: false,
+    hideYearlyTab: false,
+    hideAdvancedTab: false,
+
+    use24HourTime: false,
+    hideSeconds: true
+  };
 
   //Date Picker
   public singleDate: any;
