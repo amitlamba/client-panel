@@ -14,11 +14,18 @@ export class SetupCampaignComponent implements OnInit {
   showCloseButton=false;
   schedule=new Schedule();
 
+  //Date Picker
+  public singleDate: any;
+  public singlePicker = {
+    singleDatePicker: true,
+    showDropdowns: true,
+    opens: "right"
+  };
+
   //Campaign Name And Segment Name
   campaignName:string = "";
   segment:string="";
   segmentsList:any=[];
-
 
   @ViewChild('parent', { read: ViewContainerRef })    container: ViewContainerRef;
 
@@ -27,6 +34,7 @@ export class SetupCampaignComponent implements OnInit {
     this.schedule.scheduleType="oneTime";
     this.schedule.startTime=Now.Now;
     this.schedule.campaignTimeList= new Array<CampaignTime>();
+    this.singleDate = Date.now();
   }
   ngOnInit() {
     //Segments List

@@ -76,7 +76,7 @@
                  (click)="emptyCampaignTimesArray()">
           <label for="recurring">Recurring</label>
         </div>
-        <div class="col-9 mt-4"
+        <div class="col-9 mt-2"
              *ngIf="schedule.scheduleType==='oneTime'">
           <label class="card-title h5">Campaign start date and time</label>
           <br>
@@ -101,7 +101,7 @@
                            [campaignTimes]="schedule.campaignTimeList"></app-date-time>
 
         </div>
-        <div class="col-9 mt-4"
+        <div class="col-9 mt-2"
               *ngIf="schedule.scheduleType==='multipleDates'">
           <label class="card-title mb-0 h5">Pick Dates</label>
           <br>
@@ -113,6 +113,52 @@
             <i class="fa fa-plus " aria-hidden="true"></i>
             Add another date
           </button>
+        </div>
+        <div *ngIf="schedule.scheduleType==='recurring'">
+          <div class="col-12 mt-2">
+            <label class="card-title mb-0 h5">Campaign Start</label>
+            <div class="input-group col-md-5 col-sm-6 col-xs-6 pl-0 my-3"
+                 daterangepicker
+                 [options]="singlePicker"
+                 (selected)="singleSelect($event)">
+              <span class="form-control uneditable-input pr-2 col-6"
+                    name="daterange">
+                  {{ singleDate | date:'dd/M/y' }}
+              </span>
+              <span class="input-group-btn">
+                <a type="button" class="btn btn-default"><i class="far fa-calendar-alt"></i></a>
+              </span>
+            </div>
+          </div>
+          <div class="col-12 mb-2">
+            <label class="card-title h5">Campaign End</label>
+            <br>
+            <input class="mr-1"
+                   type="radio"
+                   name="campaignEnd"
+                   value="neverEnd"
+                   id="campaignEnd"
+                   required>
+            <label for="campaignEnd">Never End</label>
+            <input  class="ml-2 mr-1"
+                    type="radio"
+                    name="campaignEnd"
+                    value="selectDate"
+                    id="selectDate"
+                    required>
+            <label for="selectDate">Select Date</label>
+            <input class="ml-2 mr-1"
+                   type="radio"
+                   name="campaignEnd"
+                   value="afterOccurences"
+                   id="afterOccurences"
+                   required>
+            <label for="afterOccurences" class="form-inline d-inline">
+              After
+              <input type="number" class="form-control col-1">
+              occurences
+            </label>
+          </div>
         </div>
         <div class="bg-light p-3 mb-3 rounded font-italic">
           <span class="font-weight-bold">
