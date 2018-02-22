@@ -2,7 +2,7 @@ import {ComponentFactoryResolver, ViewContainerRef} from '@angular/core';
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {SegmentService} from "../../_services/segment.service";
 import {DateTimeComponent} from "./date-time/date-time.component";
-import {CampaignTime, Now, Schedule, ScheduleType} from "../../_models/campaign";
+import {CampaignTime, Now, Schedule, ScheduleEnd, ScheduleEndType, ScheduleType} from "../../_models/campaign";
 import {CronOptions} from "../../cron-editor/CronOptions";
 
 @Component({
@@ -14,7 +14,6 @@ export class SetupCampaignComponent implements OnInit {
   showScheduleForm = false;
   showCloseButton = false;
   schedule = new Schedule();
-
   cronExpression = '4 3 2 12 1/1 ? *';
   isCronDisabled = false;
   cronOptions: CronOptions = {
@@ -58,6 +57,10 @@ export class SetupCampaignComponent implements OnInit {
     this.schedule.startTime = Now.Now;
     this.schedule.campaignTimeList = new Array<CampaignTime>();
     this.singleDate = Date.now();
+    this.schedule.startDateTime = this.singleDate;
+    this.schedule.scheduleEnd = new ScheduleEnd();
+    this.schedule.scheduleEnd.endType = ScheduleEndType.NeverEnd;
+    this.schedule.scheduleEnd.endsOn = this.singleDate;
   }
 
   ngOnInit() {
@@ -77,6 +80,14 @@ export class SetupCampaignComponent implements OnInit {
     console.log(this.schedule);
   }
 
+  campaignStartDateSelect(value: any) {
+    this.schedule.startDateTime = value.start.valueOf();
+  }
+
+  campaignEndDateSelect(value: any) {
+    this.schedule.scheduleEnd.endsOn = value.start.valueOf();
+  }
+
   addAnotherDateTime() {
     this.showCloseButton = true;
     // check and resolve the component
@@ -92,6 +103,10 @@ export class SetupCampaignComponent implements OnInit {
     this.schedule.campaignTimeList = [];
   }
 
+  resetScheduleEnd() {
+    // this.schedule.scheduleEnd = new ScheduleEnd();
+    // console.log("laksh");
+  }
 }
 
 

@@ -59,3 +59,22 @@
 .nav-tabs li a {
   cursor: pointer;
 }
+/*CheckBox Styling*/
+.select-size  input[type="checkbox"]{
+  display: none !important;
+}
+
+label {
+  width: 35px;
+  height: 35px;
+  text-align: center;
+  border: 1px solid #ddd;
+  line-height: 33px;
+  margin-right: 4px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.checkbox-btn:checked ~ label{
+  background: #999;
+  color: #fff;
+}

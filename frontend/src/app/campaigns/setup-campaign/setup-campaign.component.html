@@ -31,8 +31,9 @@
         <button class="btn btn-primary ml-3 px-4"
                 (click)="continueToSchedule()"
                 type="button"
-                [disabled]="f.invalid">Continue
+        >Continue
         </button>
+        <!--[disabled]="f.invalid"-->
       </form>
     </div>
   </div>
@@ -122,10 +123,10 @@
             <div class="input-group col-md-5 col-sm-6 col-xs-6 pl-0 mt-3 mb-4"
                  daterangepicker
                  [options]="singlePicker"
-                 (selected)="singleSelect($event)">
+                 (selected)="campaignStartDateSelect($event)">
               <span class="form-control uneditable-input pr-2 col-6"
                     name="daterange">
-                  {{ singleDate | date:'dd/M/y' }}
+                  {{ schedule.startDateTime | date:'dd/M/y' }}
               </span>
               <span class="input-group-btn">
                 <a type="button" class="btn btn-default"><i class="far fa-calendar-alt"></i></a>
@@ -138,28 +139,48 @@
             <input class="mr-1"
                    type="radio"
                    name="campaignEnd"
-                   value="neverEnd"
-                   id="campaignEnd"
+                   id="neverEnd"
+                   value="NeverEnd"
+                   [(ngModel)]="schedule.scheduleEnd.endType"
                    required>
-            <label for="campaignEnd">Never End</label>
+            <label for="neverEnd">Never End</label>
             <input class="ml-2 mr-1"
                    type="radio"
                    name="campaignEnd"
-                   value="selectDate"
+                   value="EndsOnDate"
+                   [(ngModel)]="schedule.scheduleEnd.endType"
                    id="selectDate"
                    required>
             <label for="selectDate">Select Date</label>
             <input class="ml-2 mr-1"
                    type="radio"
                    name="campaignEnd"
-                   value="afterOccurences"
+                   value="Occurrences"
+                   [(ngModel)]="schedule.scheduleEnd.endType"
                    id="afterOccurences"
                    required>
-            <label for="afterOccurences" class="form-inline d-inline">
+            <label for="afterOccurences"
+                   class="form-inline d-inline">
               After
-              <input type="number" class="form-control col-1">
+              <input type="number"
+                     name="occurences"
+                     class="form-control col-1"
+                     [(ngModel)]="schedule.scheduleEnd.occurrences">
               occurences
             </label>
+            <div *ngIf="schedule.scheduleEnd.endType==='EndsOnDate'"
+                 class="input-group col-md-5 col-sm-6 col-xs-6 pl-0 mt-3 mb-4"
+                 daterangepicker
+                 [options]="singlePicker"
+                 (selected)="campaignEndDateSelect($event)">
+              <span class="form-control uneditable-input pr-2 col-6"
+                    name="daterange">
+                  {{ schedule.scheduleEnd.endsOn | date:'dd/M/y' }}
+              </span>
+              <span class="input-group-btn">
+                <a type="button" class="btn btn-default"><i class="far fa-calendar-alt"></i></a>
+              </span>
+            </div>
           </div>
           <div class="col-12 mb-2">
             <label class="card-title h5">Repeat </label>
@@ -182,6 +203,9 @@
                   class="mr-3">
               {{campaignTime.date|date}} at {{campaignTime.hours}}:{{campaignTime.minutes}}
             </span>
+          </p>
+          <p *ngIf="schedule.scheduleType==='recurring'">
+            <b> {{cronExpression}} </b>
           </p>
         </div>
         <button class="btn btn-primary ml-3 px-4"

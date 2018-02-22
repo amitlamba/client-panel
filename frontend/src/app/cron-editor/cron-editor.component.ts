@@ -11,6 +11,8 @@ import {Days, Months, MonthWeeks} from "./enums";
 export class CronGenComponent implements OnInit, OnChanges {
   @Input() public disabled: boolean;
   @Input() public options: CronOptions;
+  public multiSelectOption: Select2Options;
+  myDays = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
 
   @Input()
   get cron(): string {
@@ -34,7 +36,9 @@ export class CronGenComponent implements OnInit, OnChanges {
 
   public async ngOnInit() {
     this.state = this.getDefaultState();
-
+    this.multiSelectOption = {
+      multiple: true
+    };
     this.handleModelChange(this.cron);
   }
 
@@ -78,7 +82,6 @@ export class CronGenComponent implements OnInit, OnChanges {
 
   public regenerateCron() {
     this.isDirty = true;
-
     switch (this.activeTab) {
       case "minutes":
         this.cron = `${this.state.minutes.seconds} 0/${this.state.minutes.minutes} * 1/1 * ? *`;
@@ -107,10 +110,10 @@ export class CronGenComponent implements OnInit, OnChanges {
       case "monthly":
         switch (this.state.monthly.subTab) {
           case "specificDay":
-            this.cron = `${this.state.monthly.specificDay.seconds} ${this.state.monthly.specificDay.minutes} ${this.hourToCron(this.state.monthly.specificDay.hours, this.state.monthly.specificDay.hourType)} ${this.state.monthly.specificDay.day} 1/${this.state.monthly.specificDay.months} ? *`;
+            this.cron = `${this.state.monthly.specificDay.seconds} ${this.state.monthly.specificDay.minutes} ${this.hourToCron(this.state.monthly.specificDay.hours, this.state.monthly.specificDay.hourType)} ${this.state.monthly.specificDay.days.filter((value, index)=>{if(value) return true;}).join(",")} 1/${this.state.monthly.specificDay.months} ? *`;
             break;
           case "specificWeekDay":
-            this.cron = `${this.state.monthly.specificWeekDay.seconds} ${this.state.monthly.specificWeekDay.minutes} ${this.hourToCron(this.state.monthly.specificWeekDay.hours, this.state.monthly.specificWeekDay.hourType)} ? 1/${this.state.monthly.specificWeekDay.months} ${this.state.monthly.specificWeekDay.day}${this.state.monthly.specificWeekDay.monthWeek} *`;
+            this.cron = `${this.state.monthly.specificWeekDay.seconds} ${this.state.monthly.specificWeekDay.minutes} ${this.hourToCron(this.state.monthly.specificWeekDay.hours, this.state.monthly.specificWeekDay.hourType)} ? 1/${this.state.monthly.specificWeekDay.months} ${this.state.monthly.specificWeekDay.days.map((value,index,array)=>{let d=index%7;let w=Math.floor(index/7); if(value) return this.myDays[d]+this.selectOptions.monthWeeks[w];}).filter((value, index)=>{console.log(value);if(value) return true;}).join(",")} *`;
             break;
           default:
             throw "Invalid cron monthly subtab selection";
@@ -312,7 +315,7 @@ export class CronGenComponent implements OnInit, OnChanges {
       monthly: {
         subTab: "specificDay",
         specificDay: {
-          day: "1",
+          days: ["1"],
           months: 1,
           hours: this.getAmPmHour(defaultHours),
           minutes: defaultMinutes,
@@ -321,7 +324,7 @@ export class CronGenComponent implements OnInit, OnChanges {
         },
         specificWeekDay: {
           monthWeek: "#1",
-          day: "MON",
+          days: [true],
           months: 1,
           hours: this.getAmPmHour(defaultHours),
           minutes: defaultMinutes,

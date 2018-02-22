@@ -2,7 +2,7 @@ import {EmailCampaign} from "./email";
 
 export class Campaign {
   id: number;
-  name:string;
+  name: string;
   clientID: number;
   appuserID: number;
   campaignType: CampaignType;
@@ -36,7 +36,6 @@ export enum CampaignType {
 }
 
 
-
 export class Schedule {
   scheduleType: ScheduleType;
   startTime: Now;
@@ -47,12 +46,18 @@ export class Schedule {
 }
 
 export class ScheduleEnd {
-  neverEnd: boolean;
-  endsOn: Date;
+  endType: ScheduleEndType;
+  endsOn: any;
   occurrences: number;
 }
 
-export enum ScheduleType{
+export enum ScheduleEndType {
+  "NeverEnd" = "NeverEnd",
+  "EndsOnDate" = "EndsOnDate",
+  "Occurrences" = "Occurrences"
+}
+
+export enum ScheduleType {
   oneTime = "oneTime",
   multipleDates = "multipleDates",
   recurring = "recurring"
@@ -64,11 +69,13 @@ export class CampaignTime {
   minutes: number;
   ampm: AmPm;
 }
-export enum Now{
-  "Now"="Now",
-  "Later"="Later"
+
+export enum Now {
+  "Now" = "Now",
+  "Later" = "Later"
 }
+
 export enum AmPm {
-  AM="AM",
-  PM="PM"
+  AM = "AM",
+  PM = "PM"
 }
