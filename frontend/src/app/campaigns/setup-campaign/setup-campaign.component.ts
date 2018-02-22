@@ -14,7 +14,7 @@ export class SetupCampaignComponent implements OnInit {
   showScheduleForm = false;
   showCloseButton = false;
   schedule = new Schedule();
-  cronExpression = '4 3 2 12 1/1 ? *';
+  cronExpression = '4 3 2 1 1/1 ? *';
   isCronDisabled = false;
   cronOptions: CronOptions = {
     formInputClass: 'form-control cron-editor-input',

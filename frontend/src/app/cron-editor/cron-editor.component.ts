@@ -110,7 +110,7 @@ export class CronGenComponent implements OnInit, OnChanges {
       case "monthly":
         switch (this.state.monthly.subTab) {
           case "specificDay":
-            this.cron = `${this.state.monthly.specificDay.seconds} ${this.state.monthly.specificDay.minutes} ${this.hourToCron(this.state.monthly.specificDay.hours, this.state.monthly.specificDay.hourType)} ${this.state.monthly.specificDay.days.filter((value, index)=>{if(value) return true;}).join(",")} 1/${this.state.monthly.specificDay.months} ? *`;
+            this.cron = `${this.state.monthly.specificDay.seconds} ${this.state.monthly.specificDay.minutes} ${this.hourToCron(this.state.monthly.specificDay.hours, this.state.monthly.specificDay.hourType)} ${this.state.monthly.specificDay.days.map((value,index)=>{if(value) {return this.getSelectOptions().monthDaysWithLasts[index]} else return null}).filter((value, index)=>{if(value) return true;}).join(",")} 1/${this.state.monthly.specificDay.months} ? *`;
             break;
           case "specificWeekDay":
             this.cron = `${this.state.monthly.specificWeekDay.seconds} ${this.state.monthly.specificWeekDay.minutes} ${this.hourToCron(this.state.monthly.specificWeekDay.hours, this.state.monthly.specificWeekDay.hourType)} ? 1/${this.state.monthly.specificWeekDay.months} ${this.state.monthly.specificWeekDay.days.map((value,index,array)=>{let d=index%7;let w=Math.floor(index/7); if(value) return this.myDays[d]+this.selectOptions.monthWeeks[w];}).filter((value, index)=>{console.log(value);if(value) return true;}).join(",")} *`;
@@ -315,7 +315,7 @@ export class CronGenComponent implements OnInit, OnChanges {
       monthly: {
         subTab: "specificDay",
         specificDay: {
-          days: ["1"],
+          days: [false, true],
           months: 1,
           hours: this.getAmPmHour(defaultHours),
           minutes: defaultMinutes,

@@ -101,12 +101,12 @@
                      [ngClass]="state.formRadioClass"> On the
               <div class="select-size px-0 my-1">
                 <div class="d-inline-flex"
-                     (click)="regenerateCron($event)"
+                     (change)="regenerateCron($event)"
                      *ngFor="let monthDaysWithLast of selectOptions.monthDaysWithLasts;let i=index">
                   <input type="checkbox"
-                         [disabled]="disabled || activeTab !== 'monthly'"
+                         [disabled]="disabled || activeTab !== 'monthly' || state.monthly.subTab !== 'specificDay'"
                          class="checkbox-btn"
-                         [(ngModel)]="state.monthly.specificWeekDay[0]"
+                         [(ngModel)]="state.monthly.specificDay.days[i]"
                          id="{{monthDaysWithLast}}">
                   <label style="width: 100px;"
                          class="checkbox-btn"
@@ -157,7 +157,7 @@
                 <div class="d-inline-flex"
                      *ngFor="let monthlyDay of myDays;let j=index">
                   <input type="checkbox"
-                         [disabled]="disabled || activeTab !== 'monthly'"
+                         [disabled]="disabled || activeTab !== 'monthly' || state.monthly.subTab !== 'specificWeekDay'"
                          (change)="regenerateCron($event)"
                          class="checkbox-btn"
                          [(ngModel)]="state.monthly.specificWeekDay.days[7*i+j]"
