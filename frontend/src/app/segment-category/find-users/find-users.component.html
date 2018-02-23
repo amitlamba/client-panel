@@ -1,35 +1,7 @@
 <div class="container-fluid">
   <div class="row d-flex flex-wrap flex-row">
     <div class="col-lg-8 mt-5">
-      <div class="card">
-        <div class="card-header">
-          <i class="fas fa-users"></i> Users by behavior
-        </div>
-        <div class="card-body">
-          <div class="card">
-            <div class="card-body">
-              <div class="card-title"><h4 class="d-inline">Users who did </h4><span class="small text-muted">(optional)</span></div>
-              <app-did-events></app-did-events>
-
-            </div>
-          </div>
-          AND
-          <div class="card">
-            <div class="card-body">
-              <div class="card-title">Users who did not do <span class="small text-muted">(optional)</span></div>
-              <button class="btn btn-success"><i class="fa fa-plus-circle"></i> Add Event</button>
-            </div>
-          </div>
-          AND
-          <div class="card">
-            <div class="card-body">
-              <div class="card-title">Users with these properties <span class="small text-muted">(optional)</span></div>
-              <app-global-filters></app-global-filters>
-              <button class="btn btn-success"><i class="fa fa-plus-circle"></i> Add user properties</button>
-            </div>
-          </div>
-        </div>
-      </div>
+      <app-users-by-behaviour></app-users-by-behaviour>
     </div>
     <div class="col-lg-4 mt-5">
       <div class="card">

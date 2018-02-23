@@ -1,5 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Segment} from "../../_models/segment";
+import {Router} from "@angular/router";
+import {SegmentService} from "../../_services/segment.service";
 
 @Component({
   selector: 'app-segments',
@@ -10,7 +12,7 @@ export class SegmentsComponent implements OnInit {
 
   segments: Segment[] = [];
 
-  constructor() {
+  constructor(private router: Router, public segmentService:SegmentService) {
     this.segments.push(this.createNewSegment());
     this.segments.push(this.createNewSegment());
     this.segments.push(this.createNewSegment());
@@ -21,14 +23,15 @@ export class SegmentsComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.segments=this.segmentService.segments;
   }
 
   private createNewSegment(): Segment {
-    var textArray = [
+    let textArray = [
       'Behaviour',
       'Live'
     ];
-    var randomNumber = Math.floor(Math.random()*textArray.length);
+    let randomNumber = Math.floor(Math.random()*textArray.length);
 
     var segment = new Segment();
     segment.id = Math.floor(Math.random() * 200000) + 1;
@@ -38,4 +41,7 @@ export class SegmentsComponent implements OnInit {
     return segment;
   }
 
+  onCreateNew() {
+    this.router.navigate(["segment","create-new-segment"]);
+  }
 }

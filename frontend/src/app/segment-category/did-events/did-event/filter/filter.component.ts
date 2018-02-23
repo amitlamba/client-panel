@@ -1,6 +1,12 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {RegisteredEventProperties} from "../../../../_models/segment";
+import {
+  AfterContentInit, Component, EventEmitter, Input, OnChanges, OnInit, Output, ViewChild,
+  ViewContainerRef
+} from '@angular/core';
+import {PropertyFilter, PropertyType, RegisteredEventProperties} from "../../../../_models/segment";
 import {NgForm} from "@angular/forms";
+import {SegmentService} from "../../../../_services/segment.service";
+import {iterator} from "rxjs/symbol/iterator";
+import {DidEventComponent} from "../did-event.component";
 
 @Component({
   selector: 'app-filter',
@@ -9,45 +15,61 @@ import {NgForm} from "@angular/forms";
   host: { '[class]': 'dropdownSettings.classes' },
 })
 export class FilterComponent implements OnInit {
-  hideInputNumber = false;
-  hideInputBetween = true;
-  eventProperty=false;
+
+  @ViewChild('filterWidget') filterWidget: ViewContainerRef;
+
+  selectedProperty: RegisteredEventProperties = null;
+
   dropdownSettings={};
 
-  timeOfTheDay=false;
-
-  firstTimeList=[];
-  firstTime=false;
-
-  dayOfTheWeekList=[];
-  dayOfTheWeek=false;
-
-  formModel = {
-    skills:[]
-  };
   formModel1 = {
     skills:[]
   };
-  @Input() properties:RegisteredEventProperties[]=[];
+  @Input() eventProperties:RegisteredEventProperties[]=[];
+  @Input() defaultProperties:RegisteredEventProperties[]=[];
 
-  constructor() {
+  private localPropertyFilter: PropertyFilter;
+  @Input() get propertyFilter(): PropertyFilter {
+    return this.localPropertyFilter;
+  }
 
+  set propertyFilter(propertyFilter: PropertyFilter) {
+    if(!propertyFilter.values)
+      propertyFilter.values = [];
+    this.localPropertyFilter = propertyFilter;
+    this.propertyFilterChange.emit(this.localPropertyFilter);
+  }
+
+  // the name is an Angular convention, @Input variable name + "Change" suffix
+  @Output() propertyFilterChange = new EventEmitter();
+
+  _parentRef:DidEventComponent;
+  _ref:any;
+
+  constructor(segmentService: SegmentService) {
+  }
+
+  removeObject(){
+    this.removeFromParentArr();
+    this._ref.destroy();
+  }
+
+  removeFromParentArr() {
+    // Find the component
+    const componentIndex = this._parentRef.components.indexOf(this._ref);
+
+    if (componentIndex !== -1) {
+      // Remove component from both view and array
+      this._parentRef.components.splice(componentIndex, 1);
+    }
+
+    const index = this._parentRef.didEvent.propertyFilters.indexOf(this.propertyFilter);
+    if (index != -1) {
+      this._parentRef.didEvent.propertyFilters.splice(index, 1);
+    }
   }
 
   ngOnInit() {
-    // console.log(this.properties);
-    this.firstTimeList = [
-      {"id":1,"itemName":"Yes"}
-    ];
-    this.dayOfTheWeekList = [
-      {"id":1,"itemName":"Sunday"},
-      {"id":2,"itemName":"Monday"},
-      {"id":3,"itemName":"Tuesday"},
-      {"id":4,"itemName":"Wednesday"},
-      {"id":5,"itemName":"Thursday"},
-      {"id":6,"itemName":"Friday"},
-      {"id":7,"itemName":"Saturday"}
-    ];
     this.dropdownSettings = {
       singleSelection: false,
       text:"Options",
@@ -59,54 +81,25 @@ export class FilterComponent implements OnInit {
   }
 
   filterFirstDropdown(val:any){
-    if (val=="Event Property"){
-      this.eventProperty=true;
-      this.timeOfTheDay=false;
-      this.firstTime=false;
-      this.dayOfTheWeek=false;
-    }
-    else if (val=="Time of the day") {
-      this.timeOfTheDay=true;
-      this.eventProperty=false;
-      this.firstTime=false;
-      this.dayOfTheWeek=false;
-    }
-    else if(val=="First Time") {
-      this.firstTime=true;
-      this.timeOfTheDay=false;
-      this.eventProperty=false;
-      this.dayOfTheWeek=false;
-    }
-    else if(val=="Day of the week"){
-      this.dayOfTheWeek=true;
-      this.timeOfTheDay=false;
-      this.eventProperty=false;
-      this.firstTime=false;
-    }
+    this.selectedProperty = this.getPropertyByName(val);
+    this.localPropertyFilter.name = this.selectedProperty.name;
+    this.localPropertyFilter.type = PropertyType[this.selectedProperty.dataType];
   }
 
-  filterDropdown(val:any) {
-    if(val =='∃  (exists)' || val == '∄  (does not exists)'){
-      this.hideInputNumber=true;
-      this.hideInputBetween=true;
+  getPropertyByName(propName: string): RegisteredEventProperties {
+    for(let prop of this.eventProperties) {
+      if(prop.name == propName)
+        return prop;
     }
-    else if (val=='≏  (Between)'){
-      this.hideInputNumber=false;
-      this.hideInputBetween=false;
+    for(let prop of this.defaultProperties) {
+      if(prop.name == propName)
+        return prop;
     }
-    else {
-      this.hideInputBetween=true;
-      this.hideInputNumber=false;
-    }
+    return null;
   }
-  // hideEqualityDropdown=false;
-  // filterSecondDropdown(val:any){
-  //   if (val=='Delivery Date'){
-  //       this.hideEqualityDropdown=true;
-  //   }
-  //   else{
-  //     this.hideEqualityDropdown=false;
-  //   }
-  // }
 
+  getSelectedPropertyOptions(): any[] {
+    let options = this.selectedProperty.options.map((option, index)=>{return {'id': index, 'itemName':option}});
+    return options;
+  }
 }

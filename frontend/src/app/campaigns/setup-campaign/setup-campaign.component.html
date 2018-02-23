@@ -1,0 +1,219 @@
+<div class="container col-lg-7 mt-5">
+  <div class="card"
+       *ngIf="!showScheduleForm">
+    <h3 class="card-header">
+      Setup Your Campaign
+    </h3>
+    <div class="card-body">
+      <form novalidate
+            #f="ngForm">
+        <div class="form-group col-9">
+          <label class="card-title h5">Campaign Name</label>
+          <input class="form-control"
+                 type="text"
+                 placeholder="Campaign Name"
+                 name="campaignName"
+                 [(ngModel)]="campaignName"
+                 required>
+        </div>
+        <div class="form-group col-9">
+          <label class="card-title h5">Who do you want to send this campaign to?</label>
+          <select class="form-control"
+                  name="segmentName"
+                  [(ngModel)]="segment"
+                  required>
+            <option value="" selected>Please Select a Segment</option>
+            <option *ngFor="let segmentName of segmentsList"
+                    [value]="segmentName">{{segmentName}}
+            </option>
+          </select>
+        </div>
+        <button class="btn btn-primary ml-3 px-4"
+                (click)="continueToSchedule()"
+                type="button"
+        >Continue
+        </button>
+        <!--[disabled]="f.invalid"-->
+      </form>
+    </div>
+  </div>
+
+  <div class="card"
+       *ngIf="showScheduleForm">
+    <h3 class="card-header">
+      When do you want to schedule this campaign?
+    </h3>
+    <div class="card-body">
+      <form (ngSubmit)="onSubmit(f)"
+            #f="ngForm">
+        <div class="col-12">
+          <label class="card-title h5">Message Type</label>
+          <br>
+          <input class="mr-1"
+                 type="radio"
+                 name="messageType"
+                 value="oneTime"
+                 id="oneTime"
+                 required
+                 [(ngModel)]="schedule.scheduleType"
+                 (click)="emptyCampaignTimesArray()">
+          <label for="oneTime">One Time</label>
+
+          <input class="ml-2 mr-1"
+                 type="radio"
+                 name="messageType"
+                 value="multipleDates"
+                 id="multipleDates"
+                 required
+                 [(ngModel)]="schedule.scheduleType"
+                 (click)="emptyCampaignTimesArray()">
+          <label for="multipleDates">On Multiple Dates</label>
+
+          <input class="ml-2 mr-1"
+                 type="radio"
+                 name="messageType"
+                 value="recurring"
+                 id="recurring"
+                 required
+                 [(ngModel)]="schedule.scheduleType"
+                 (click)="emptyCampaignTimesArray()">
+          <label for="recurring">Recurring</label>
+        </div>
+        <div class="col-9 mt-2"
+             *ngIf="schedule.scheduleType==='oneTime'">
+          <label class="card-title h5">Campaign start date and time</label>
+          <br>
+          <input class="mr-1"
+                 type="radio"
+                 name="campaignStartTime"
+                 value="Now"
+                 id="now"
+                 required
+                 [(ngModel)]="schedule.startTime">
+          <label for="now">Now</label>
+          <input class="mr-1 ml-2"
+                 type="radio"
+                 name="campaignStartTime"
+                 value="Later"
+                 id="later"
+                 required
+                 [(ngModel)]="schedule.startTime"
+                 (click)="emptyCampaignTimesArray()">
+          <label for="later">Later</label>
+          <app-date-time *ngIf="schedule.startTime==='Later'"
+                         [campaignTimes]="schedule.campaignTimeList"></app-date-time>
+
+        </div>
+        <div class="col-9 mt-2"
+             *ngIf="schedule.scheduleType==='multipleDates'">
+          <label class="card-title mb-0 h5">Pick Dates</label>
+          <br>
+          <app-date-time [campaignTimes]="schedule.campaignTimeList"></app-date-time>
+          <div #parent></div>
+          <button type="button"
+                  class="btn btn-link py-0 pl-0 mb-2"
+                  (click)="addAnotherDateTime()">
+            <i class="fa fa-plus " aria-hidden="true"></i>
+            Add another date
+          </button>
+        </div>
+        <div *ngIf="schedule.scheduleType==='recurring'">
+          <div class="col-12 mt-3">
+            <label class="card-title mb-0 h5">Campaign Start</label>
+            <div class="input-group col-md-5 col-sm-6 col-xs-6 pl-0 mt-3 mb-4"
+                 daterangepicker
+                 [options]="singlePicker"
+                 (selected)="campaignStartDateSelect($event)">
+              <span class="form-control uneditable-input pr-2 col-6"
+                    name="daterange">
+                  {{ schedule.startDateTime | date:'dd/M/y' }}
+              </span>
+              <span class="input-group-btn">
+                <a type="button" class="btn btn-default"><i class="far fa-calendar-alt"></i></a>
+              </span>
+            </div>
+          </div>
+          <div class="col-12 mb-3 mt-2">
+            <label class="card-title h5">Campaign End</label>
+            <br>
+            <input class="mr-1"
+                   type="radio"
+                   name="campaignEnd"
+                   id="neverEnd"
+                   value="NeverEnd"
+                   [(ngModel)]="schedule.scheduleEnd.endType"
+                   required>
+            <label for="neverEnd">Never End</label>
+            <input class="ml-2 mr-1"
+                   type="radio"
+                   name="campaignEnd"
+                   value="EndsOnDate"
+                   [(ngModel)]="schedule.scheduleEnd.endType"
+                   id="selectDate"
+                   required>
+            <label for="selectDate">Select Date</label>
+            <input class="ml-2 mr-1"
+                   type="radio"
+                   name="campaignEnd"
+                   value="Occurrences"
+                   [(ngModel)]="schedule.scheduleEnd.endType"
+                   id="afterOccurences"
+                   required>
+            <label for="afterOccurences"
+                   class="form-inline d-inline">
+              After
+              <input type="number"
+                     name="occurences"
+                     class="form-control col-1"
+                     [(ngModel)]="schedule.scheduleEnd.occurrences">
+              occurences
+            </label>
+            <div *ngIf="schedule.scheduleEnd.endType==='EndsOnDate'"
+                 class="input-group col-md-5 col-sm-6 col-xs-6 pl-0 mt-3 mb-4"
+                 daterangepicker
+                 [options]="singlePicker"
+                 (selected)="campaignEndDateSelect($event)">
+              <span class="form-control uneditable-input pr-2 col-6"
+                    name="daterange">
+                  {{ schedule.scheduleEnd.endsOn | date:'dd/M/y' }}
+              </span>
+              <span class="input-group-btn">
+                <a type="button" class="btn btn-default"><i class="far fa-calendar-alt"></i></a>
+              </span>
+            </div>
+          </div>
+          <div class="col-12 mb-2">
+            <label class="card-title h5">Repeat </label>
+            <cron-editor [(cron)]="cronExpression" [disabled]="isCronDisabled" [(options)]="cronOptions">Cron here...
+            </cron-editor>
+          </div>
+        </div>
+        <div class="bg-light p-3 mb-3 rounded font-italic">
+          <span class="font-weight-bold">
+            Summary &#58;
+          </span>
+          Send {{schedule.scheduleType}}
+          <span *ngIf="schedule.scheduleType=='oneTime'">
+            {{schedule.startTime}}
+          </span>
+          <p *ngIf="schedule.startTime==='Later' || schedule.scheduleType==='multipleDates'"
+             class="d-inline">
+            On
+            <span *ngFor="let campaignTime of schedule.campaignTimeList"
+                  class="mr-3">
+              {{campaignTime.date|date}} at {{campaignTime.hours}}:{{campaignTime.minutes}}
+            </span>
+          </p>
+          <p *ngIf="schedule.scheduleType==='recurring'">
+            <b> {{cronExpression}} </b>
+          </p>
+        </div>
+        <button class="btn btn-primary ml-3 px-4"
+                type="submit">Continue
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+
+

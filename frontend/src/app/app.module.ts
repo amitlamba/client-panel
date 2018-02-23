@@ -54,8 +54,23 @@ import {OwlDateTimeModule, OwlNativeDateTimeModule} from 'ng-pick-datetime';
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {AngularMultiSelectModule} from './multiselect/multiselect.component';
 import {SegmentService} from "./_services/segment.service";
-import {GlobalFiltersComponent} from './segment-category/global-properties/global-filters.component';
+import {GlobalFiltersComponent} from './segment-category/global-filters/global-filters.component';
+import {DateComparatorComponent} from './segment-category/date-comparator/date-comparator.component';
+import {GeographyFiltersComponent} from './segment-category/geography-filters/geography-filters.component';
+import {StringComparatorComponent} from './segment-category/string-comparator/string-comparator.component';
+import {NumberComparatorComponent} from './segment-category/number-comparator/number-comparator.component';
+import {GlobalFilterComponent} from './segment-category/global-filters/global-filter/global-filter.component';
+import {GeographyFilterComponent} from "./segment-category/geography-filters/geography-filter/geography-filter.component";
+import {CreateNewSegmentComponent} from './segment-category/segments/create-new-segment/create-new-segment.component';
+import {UsersByBehaviourComponent} from './segment-category/find-users/users-by-behaviour/users-by-behaviour.component';
+import {Select2Module} from "ng2-select2";
 
+import {CampaignsComponent} from './campaigns/campaigns.component';
+import {SetupCampaignComponent} from './campaigns/setup-campaign/setup-campaign.component';
+import {CampaignsListComponent} from './campaigns/campaigns-list/campaigns-list.component';
+import {DateTimeComponent} from './campaigns/setup-campaign/date-time/date-time.component';
+import {CronEditorModule} from "./cron-editor/cron-editor.module";
+import {SegmentNlpComponent} from './segment-category/segment-nlp/segment-nlp.component';
 
 @NgModule({
   imports: [
@@ -70,7 +85,9 @@ import {GlobalFiltersComponent} from './segment-category/global-properties/globa
     BrowserAnimationsModule,
     OwlDateTimeModule,
     OwlNativeDateTimeModule,
-    AngularMultiSelectModule
+    AngularMultiSelectModule,
+    Select2Module,
+    CronEditorModule,
   ],
   declarations: [
     AppComponent,
@@ -105,7 +122,20 @@ import {GlobalFiltersComponent} from './segment-category/global-properties/globa
     PageNotFoundComponent,
     TestComponent,
     ExpComponent,
-    GlobalFiltersComponent
+    CampaignsComponent,
+    SetupCampaignComponent,
+    CampaignsListComponent,
+    GlobalFiltersComponent,
+    DateComparatorComponent,
+    GeographyFiltersComponent,
+    StringComparatorComponent,
+    NumberComparatorComponent,
+    GlobalFilterComponent,
+    GeographyFilterComponent,
+    CreateNewSegmentComponent,
+    UsersByBehaviourComponent,
+    DateTimeComponent,
+    SegmentNlpComponent,
   ],
   providers: [
     AuthGuard,
@@ -119,7 +149,14 @@ import {GlobalFiltersComponent} from './segment-category/global-properties/globa
     SettingsService,
     SegmentService,
   ],
-  entryComponents: [DidEventComponent,ExpComponent],
+  entryComponents: [
+    DidEventComponent,
+    ExpComponent,
+    DateTimeComponent,
+    FilterComponent,
+    GeographyFilterComponent,
+    GlobalFilterComponent
+  ],
   bootstrap: [AppComponent]
 })
 
