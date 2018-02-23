@@ -1,0 +1,80 @@
+<div class="form-inline">
+  <div class="form-group col-3 my-0 pr-0">
+    <select class="form-control col-12"
+            (change)="filterFirstDropdown($event.target.value)">
+      <option *ngFor="let prop of properties">{{prop.name}}</option>
+      <!--<option>First Time</option>-->
+      <!--<option>Time of the day</option>-->
+      <!--<option>Day of the week</option>-->
+      <!--<option>Day of the month</option>-->
+    </select>
+  </div>
+  <div class="form-group col-3 my-0 pr-0"
+       *ngIf="eventProperty">
+    <select class="form-control col-12"
+            (change)="filterSecondDropdown($event.target.value)">
+      <option selected>Amount</option>
+      <option>Category</option>
+      <option>Delivery Date</option>
+      <option>Payment Mode</option>
+      <option>Product</option>
+    </select>
+  </div>
+  <div class="form-group col-3 my-0 pr-0"
+       *ngIf="eventProperty">
+    <select class="form-control col-12"
+            (change)="filterDropdown($event.target.value)"
+            [hidden]="hideEqualityDropdown"
+            >
+      <option selected>=&nbsp;&nbsp;(equals)</option>
+      <option>≏&nbsp;&nbsp;(Between)</option>
+      <option>>&nbsp;&nbsp;(greater than)</option>
+      <option><&nbsp;&nbsp;(less than)</option>
+      <option>≠&nbsp;&nbsp;(not equals)</option>
+      <option>∃&nbsp;&nbsp;(exists)</option>
+      <option>∄&nbsp;&nbsp;(does not exists)</option>
+    </select>
+  </div>
+  <div class="form-group col-1 ml-3 px-0"
+       *ngIf="eventProperty"
+       [hidden]="hideInputNumber">
+    <input type="number" class="form-control col-12" value="1" min="1">
+  </div>
+  <div class="mx-3 mt-1"
+       *ngIf="timeOfTheDay">
+  <label>
+    From :
+    <input [owlDateTimeTrigger]="dt4" [owlDateTime]="dt4">
+    <owl-date-time [pickerType]="'timer'" #dt4></owl-date-time>
+  </label>
+  </div>
+  <div class="mx-3 mt-1"
+       *ngIf="timeOfTheDay">
+    <label>
+      To:
+      <input [owlDateTimeTrigger]="dt1" [owlDateTime]="dt1">
+      <owl-date-time [pickerType]="'timer'" #dt1></owl-date-time>
+    </label>
+  </div>
+  <form class="mx-5" *ngIf="firstTime">
+    <div class="form-group">
+      <angular-multiselect [data]="firstTimeList" [(ngModel)]="formModel.skills"
+                            [settings]="dropdownSettings"
+                            name="skills">
+      </angular-multiselect>
+    </div>
+  </form>
+  <form class="mx-3" *ngIf="dayOfTheWeek" style="width: 500px;height: 32px;">
+    <div class="multiselect">
+      <angular-multiselect [data]="dayOfTheWeekList" [(ngModel)]="formModel1.skills"
+                            [settings]="dropdownSettings"
+                            name="skills1"
+                            >
+      </angular-multiselect>
+    </div>
+  </form>
+  <!--<div class="form-group col-1 mx-3 px-0"-->
+       <!--[hidden]="hideInputBetween">-->
+    <!--<input type="number" class="form-control col-12" value="1" min="1">-->
+  <!--</div>-->
+</div>

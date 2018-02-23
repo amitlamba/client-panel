@@ -1,5 +1,5 @@
 <div class="col-sm-6">
-<form (ngSubmit)="onSave()" #f="ngForm">
+<form (ngSubmit)="onSave(f)" #f="ngForm">
   <div class="form-group">
     <label for="name">Name</label>
     <input type="text" class="form-control" maxlength="100" id="name" name="name" placeholder="Name (Will help you in searching templates)" [(ngModel)]="smsTemplate.name">

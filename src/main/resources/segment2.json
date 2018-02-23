@@ -66,6 +66,10 @@
       }
     }
   ],
+
+
+
+
   "globalFIlters": {
     "UserProperties": [
       {
@@ -108,17 +112,43 @@
   ],
   "Technographics": [
     {
-
+      "Browser":["Chrome","Firefox","Internet Explorer","Mobile Application","Opera","Others","Safari","Sea Monkey","UC Browser"],
+      "Device":["Desktop","Mobile","Tablet","TV"],
+      "OS":["Android","Blackberry","Ios","Linux","Mac","Others","Windows"]
     }
   ],
   "Reachability": [
     {
-
+      "hasDeviceToken":["Yes","No"],
+      "hasEmailAddress":["Yes","No"],
+      "hasPhoneNumber":["Yes","No"],
+      "unsubscribedPush":["Yes","No"],
+      "unsubscribedEmail":["Yes","No"],
+      "unsubscribedSMS":["Yes","gitNo"]
     }
   ],
   "AppFields": [
     {
-
+      "App Version":{
+        "Operator":["Equals","Contains","Does not Contain","not equals"],
+        "Versions":[0,1,2,3,4]
+      },
+      "Make":{
+        "Operator":["Equals","Contains","Does not Contain","not equals"],
+        "Versions":["Apple","Samsung","Motorola","Sony","HTC","Xiaomi"]
+      },
+      "Models":{
+        "Operator":["Equals","Contains","Does not Contain","not equals"],
+        "Versions":["Iphone 6","Iphone 8","Iphone 7","Moto g3"]
+      },
+      "OS Version":{
+        "Operator":["Equals","Contains","Does not Contain","not equals"],
+        "Versions":["4.0.1","4.4.1","9.2","9.1","6.0.1"]
+      },
+      "SDK Version":{
+        "Operator":["Equals","Contains","Does not Contain","not equals"],
+        "Versions":[9001,9002,9003,9004]
+      }
     }
   ]
 }

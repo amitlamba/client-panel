@@ -4,12 +4,15 @@ import com.und.model.Cities
 import com.und.model.Countries
 import com.und.model.States
 import com.und.service.LocationService
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
 
 @CrossOrigin
-@RestController("/location")
+@RestController("location")
+@RequestMapping("/location")
 class LocationController {
 
+    @Autowired
     private lateinit var locationService: LocationService
 
     @RequestMapping(value = "/countries", method = arrayOf(RequestMethod.GET))

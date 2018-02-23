@@ -1,11 +1,6 @@
-<div class="fluid">
-  <div>
-    Segment
-    <br>
-    Find Users
-  </div>
-  <div class="row">
-    <div class="col-8">
+<div class="container-fluid">
+  <div class="row d-flex flex-wrap flex-row">
+    <div class="col-lg-8 mt-5">
       <div class="card">
         <div class="card-header">
           <i class="fas fa-users"></i> Users by behavior
@@ -13,9 +8,9 @@
         <div class="card-body">
           <div class="card">
             <div class="card-body">
-              <div class="card-title">Users who did <span class="small text-muted">(optional)</span></div>
+              <div class="card-title"><h4 class="d-inline">Users who did </h4><span class="small text-muted">(optional)</span></div>
               <app-did-events></app-did-events>
-              <button class="btn btn-success  mt-3"><i class="fa fa-plus-circle"></i> Add Event</button>
+
             </div>
           </div>
           AND
@@ -29,14 +24,25 @@
           <div class="card">
             <div class="card-body">
               <div class="card-title">Users with these properties <span class="small text-muted">(optional)</span></div>
+              <app-global-filters></app-global-filters>
               <button class="btn btn-success"><i class="fa fa-plus-circle"></i> Add user properties</button>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <div class="col-4">
+    <div class="col-lg-4 mt-5">
       <div class="card">
+        <div class="card-header">
+          <i class="fas fa-user"></i> Users by identity
+        </div>
+        <div class="card-body">
+          <h5 class="card-title">Special title treatment</h5>
+          <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+          <a href="#" class="btn btn-primary">Go somewhere</a>
+        </div>
+      </div>
+      <div class="card mt-5">
         <div class="card-header">
           <i class="fas fa-user"></i> Users by identity
         </div>
