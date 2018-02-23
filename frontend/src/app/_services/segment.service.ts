@@ -1,6 +1,14 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import {City, Country, RegisteredEvent, RegisteredEventProperties, Segment, State} from "../_models/segment";
+import {
+  City,
+  Country,
+  DidEvents, GlobalFilter,
+  RegisteredEvent,
+  RegisteredEventProperties,
+  Segment,
+  State
+} from "../_models/segment";
 import {AppSettings} from "../_settings/app-settings";
 import {tap} from "rxjs/operators";
 import {Observable} from "rxjs/Observable";
@@ -8,6 +16,7 @@ import {Observable} from "rxjs/Observable";
 @Injectable()
 export class SegmentService {
   segments: Segment[] = [];
+  editSegment: Segment;
   countries: Country[];
 
   constructor(private httpClient: HttpClient) {
@@ -18,6 +27,7 @@ export class SegmentService {
     this.segments.push(this.createNewSegment());
     this.segments.push(this.createNewSegment());
     this.segments.push(this.createNewSegment());
+    this.editSegment = this.initSegment(new Segment());
   }
   private createNewSegment(): Segment {
     var textArray = [
@@ -32,6 +42,17 @@ export class SegmentService {
     segment.type = textArray[randomNumber];
     segment.creationDate = "2017-01-01";
     return segment;
+  }
+  private initSegment(segment: Segment): Segment {
+    segment.didEvents = this.initDidEvents(new DidEvents());
+    segment.didNotEvents = this.initDidEvents(new DidEvents());
+    segment.globalFilters = new Array<GlobalFilter>();
+    segment.geographyFilters = [];
+    return segment;
+  }
+  private initDidEvents(didEvents: DidEvents): DidEvents {
+    didEvents.events = [];
+    return didEvents;
   }
 
   getEvents(): Observable<RegisteredEvent[]> {
@@ -193,7 +214,7 @@ export class SegmentService {
       );
   }
 
-  globalFilters = {
+  globalFiltersMetadata = {
     "UserProperties": [
       {
         "propertyName": "User Property Name",
@@ -411,16 +432,6 @@ export class SegmentService {
   };
 
   stringComparatorMetadata = {
-    Equals: {
-      displayName: "= (equals)",
-      dataFieldsRequired: 1
-    }
-    ,
-    NotEquals: {
-      displayName: "≠ (not equals)",
-      dataFieldsRequired: 1
-    }
-    ,
     Contains: {
       displayName: "∋ (contains)",
       dataFieldsRequired: 1,
@@ -431,6 +442,16 @@ export class SegmentService {
       displayName: "∌ (does not contain)",
       dataFieldsRequired: 1,
       dataFieldType: "array"
+    }
+    ,
+    Equals: {
+      displayName: "= (equals)",
+      dataFieldsRequired: 1
+    }
+    ,
+    NotEquals: {
+      displayName: "≠ (not equals)",
+      dataFieldsRequired: 1
     }
     ,
     Exists: {

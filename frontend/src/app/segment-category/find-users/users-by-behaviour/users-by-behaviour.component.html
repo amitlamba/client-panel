@@ -7,29 +7,30 @@
       <div class="card-body">
         <div class="card-title"><h4 class="d-inline">Users who did </h4><span class="small text-muted">(optional)</span>
         </div>
-        <app-did-events></app-did-events>
+        <app-did-events [didEvents]="segment.didEvents"></app-did-events>
       </div>
     </div>
     AND
     <div class="card">
       <div class="card-body">
         <div class="card-title">Users who did not do <span class="small text-muted">(optional)</span></div>
-        <app-did-events [didNotEvent]="true"></app-did-events>
+        <app-did-events [didEvents]="segment.didNotEvents" [didNotEvent]="true"></app-did-events>
       </div>
     </div>
     AND
     <div class="card">
       <div class="card-body">
         <div class="card-title">Users with these properties <span class="small text-muted">(optional)</span></div>
-        <app-global-filters></app-global-filters>
+        <app-global-filters [(globalFilters)]="segment.globalFilters"></app-global-filters>
       </div>
     </div>
     AND
     <div class="card">
       <div class="card-body">
         <div class="card-title">Users with these Locations <span class="small text-muted">(optional)</span></div>
-        <app-geography-filters></app-geography-filters>
+        <app-geography-filters [(geographyFilters)]="segment.geographyFilters"></app-geography-filters>
       </div>
     </div>
+    <button class="btn btn-primary mt-2" (click)="find()">Find</button>
   </div>
 </div>

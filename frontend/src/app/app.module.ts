@@ -69,6 +69,7 @@ import {SetupCampaignComponent} from './campaigns/setup-campaign/setup-campaign.
 import {CampaignsListComponent} from './campaigns/campaigns-list/campaigns-list.component';
 import {DateTimeComponent} from './campaigns/setup-campaign/date-time/date-time.component';
 import {CronEditorModule} from "./cron-editor/cron-editor.module";
+import { SegmentNlpComponent } from './segment-category/segment-nlp/segment-nlp.component';
 
 @NgModule({
   imports: [
@@ -133,6 +134,7 @@ import {CronEditorModule} from "./cron-editor/cron-editor.module";
     CreateNewSegmentComponent,
     UsersByBehaviourComponent,
     DateTimeComponent,
+    SegmentNlpComponent,
   ],
   providers: [
     AuthGuard,

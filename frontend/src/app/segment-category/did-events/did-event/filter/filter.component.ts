@@ -1,8 +1,12 @@
-import {AfterContentInit, Component, Input, OnChanges, OnInit, ViewChild, ViewContainerRef} from '@angular/core';
-import {RegisteredEventProperties} from "../../../../_models/segment";
+import {
+  AfterContentInit, Component, EventEmitter, Input, OnChanges, OnInit, Output, ViewChild,
+  ViewContainerRef
+} from '@angular/core';
+import {PropertyFilter, PropertyType, RegisteredEventProperties} from "../../../../_models/segment";
 import {NgForm} from "@angular/forms";
 import {SegmentService} from "../../../../_services/segment.service";
 import {iterator} from "rxjs/symbol/iterator";
+import {DidEventComponent} from "../did-event.component";
 
 @Component({
   selector: 'app-filter',
@@ -16,9 +20,6 @@ export class FilterComponent implements OnInit {
 
   selectedProperty: RegisteredEventProperties = null;
 
-  hideInputNumber = false;
-  hideInputBetween = true;
-  eventProperty=false;
   dropdownSettings={};
 
   formModel1 = {
@@ -26,7 +27,23 @@ export class FilterComponent implements OnInit {
   };
   @Input() eventProperties:RegisteredEventProperties[]=[];
   @Input() defaultProperties:RegisteredEventProperties[]=[];
-  _parentComponentsArr:any[];
+
+  private localPropertyFilter: PropertyFilter;
+  @Input() get propertyFilter(): PropertyFilter {
+    return this.localPropertyFilter;
+  }
+
+  set propertyFilter(propertyFilter: PropertyFilter) {
+    if(!propertyFilter.values)
+      propertyFilter.values = [];
+    this.localPropertyFilter = propertyFilter;
+    this.propertyFilterChange.emit(this.localPropertyFilter);
+  }
+
+  // the name is an Angular convention, @Input variable name + "Change" suffix
+  @Output() propertyFilterChange = new EventEmitter();
+
+  _parentRef:DidEventComponent;
   _ref:any;
 
   constructor(segmentService: SegmentService) {
@@ -39,11 +56,16 @@ export class FilterComponent implements OnInit {
 
   removeFromParentArr() {
     // Find the component
-    const componentIndex = this._parentComponentsArr.indexOf(this._ref);
+    const componentIndex = this._parentRef.components.indexOf(this._ref);
 
     if (componentIndex !== -1) {
       // Remove component from both view and array
-      this._parentComponentsArr.splice(componentIndex, 1);
+      this._parentRef.components.splice(componentIndex, 1);
+    }
+
+    const index = this._parentRef.didEvent.propertyFilters.indexOf(this.propertyFilter);
+    if (index != -1) {
+      this._parentRef.didEvent.propertyFilters.splice(index, 1);
     }
   }
 
@@ -60,6 +82,8 @@ export class FilterComponent implements OnInit {
 
   filterFirstDropdown(val:any){
     this.selectedProperty = this.getPropertyByName(val);
+    this.localPropertyFilter.name = this.selectedProperty.name;
+    this.localPropertyFilter.type = PropertyType[this.selectedProperty.dataType];
   }
 
   getPropertyByName(propName: string): RegisteredEventProperties {

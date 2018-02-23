@@ -8,13 +8,14 @@
     </select>
   </div>
   <div class="form-group col-3 my-0 pr-0" *ngIf="selectedProperty && selectedProperty.dataType=='string'">
-    <app-string-comparator></app-string-comparator>
+    <app-string-comparator [(operator)]="localPropertyFilter.operator" [(values)]="localPropertyFilter.values"></app-string-comparator>
   </div>
   <div class="form-group col-3 my-0 pr-0" *ngIf="selectedProperty && selectedProperty.dataType=='number'">
-    <app-number-comparator></app-number-comparator>
+    <app-number-comparator [(operator)]="localPropertyFilter.operator" [(values)]="localPropertyFilter.values"></app-number-comparator>
   </div>
   <div class="form-group col-3 my-0 pr-0" *ngIf="selectedProperty && selectedProperty.dataType=='date'">
-    <app-date-comparator></app-date-comparator>
+    <app-date-comparator [(operator)]="localPropertyFilter.operator" [(values)]="localPropertyFilter.values"
+                         [(valueUnit)]="localPropertyFilter.valueUnit"></app-date-comparator>
   </div>
   <!--<div class="form-group col-1 ml-3 px-0" *ngIf="eventProperty" [hidden]="hideInputNumber">-->
     <!--<input type="number" class="form-control col-12" value="1" min="1">-->

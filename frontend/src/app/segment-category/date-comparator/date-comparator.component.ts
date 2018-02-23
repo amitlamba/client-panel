@@ -1,8 +1,10 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {SegmentService} from "../../_services/segment.service";
 import {IMyDrpOptions} from "mydaterangepicker";
 import {DaterangepickerConfig} from "ng2-daterangepicker";
 import * as moment from "moment";
+import {DateFilter, DateOperator} from "../../_models/segment";
+import {Operator} from "rxjs/Operator";
 
 @Component({
   selector: 'app-date-comparator',
@@ -18,7 +20,35 @@ export class DateComparatorComponent implements OnInit {
   hideWillBeExactlyDaySelector = true;
   removeElement = false;
 
-  @Input("dataType") dataType: string;
+  private localOperator: DateOperator;
+  @Input() get operator(): DateOperator {
+    return this.localOperator;
+  }
+  set operator(operator: DateOperator) {
+    this.localOperator = operator;
+    this.operatorChange.emit(this.localOperator);
+  }
+  @Output() operatorChange = new EventEmitter();
+
+  private localValues: any[];
+  @Input() get values(): any[] {
+    return this.localValues;
+  }
+  set values(values: any[]) {
+    this.localValues = values;
+    this.valuesChange.emit(this.localValues);
+  }
+  @Output() valuesChange = new EventEmitter();
+
+  private localValueUnit: string;
+  @Input() get valueUnit(): string {
+    return this.localValueUnit;
+  }
+  set valueUnit(valueUnit: string) {
+    this.localValueUnit = valueUnit;
+    this.valueUnitChange.emit(this.localValueUnit);
+  }
+  @Output() valueUnitChange = new EventEmitter();
 
   dateComparatorMetadata: any;
   absoluteDateComparatorMetadata: string[];
@@ -45,7 +75,11 @@ export class DateComparatorComponent implements OnInit {
   public singlePicker = {
     singleDatePicker: true,
     showDropdowns: true,
-    opens: "right"
+    startDate: moment(),
+    opens: "right",
+    locale: {
+      format: "YYYY-MM-DD"
+    }
   };
 
   public multiPicker = {
@@ -66,10 +100,19 @@ export class DateComparatorComponent implements OnInit {
   selectedDate(value, daterange) {
     console.log(value);
     console.log(daterange);
+    let values = [];
+    values[0] = value;
+    values[1] = daterange;
+    this.localValues = values;
+    this.values = this.localValues;
   }
 
   singleSelect(value: any) {
     console.log(value);
+    let values = [];
+    values[0] = value;
+    this.localValues = values;
+    this.values = this.localValues;
   }
 
   dropdownChanged(val: string) {
@@ -110,6 +153,7 @@ export class DateComparatorComponent implements OnInit {
       this.hideWasExactlyDaySelector = true;
       this.hideWillBeExactlyDaySelector = true;
     }
+    this.localOperator = DateOperator[val];
   }
 
 }

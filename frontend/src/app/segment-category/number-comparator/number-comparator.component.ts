@@ -1,5 +1,6 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {SegmentService} from "../../_services/segment.service";
+import {NumberOperator} from "../../_models/segment";
 
 @Component({
   selector: 'app-number-comparator',
@@ -17,6 +18,36 @@ export class NumberComparatorComponent implements OnInit {
   field1Required: boolean = false;
   field2Required: boolean = false;
 
+  private localOperator: NumberOperator;
+  @Input() get operator(): NumberOperator {
+    return this.localOperator;
+  }
+  set operator(operator: NumberOperator) {
+    this.localOperator = operator;
+    this.operatorChange.emit(this.localOperator);
+  }
+  @Output() operatorChange = new EventEmitter();
+
+  private localValues: any[] = [];
+  @Input() get values(): any[] {
+    return this.localValues;
+  }
+  set values(values: any[]) {
+    this.localValues = values;
+    this.valuesChange.emit(this.localValues);
+  }
+  @Output() valuesChange = new EventEmitter();
+
+  private localValueUnit: string;
+  @Input() get valueUnit(): string {
+    return this.localValueUnit;
+  }
+  set valueUnit(valueUnit: string) {
+    this.localValueUnit = valueUnit;
+    this.valueUnitChange.emit(this.localValueUnit);
+  }
+  @Output() valueUnitChange = new EventEmitter();
+
   constructor(public segmentService: SegmentService) {
     this.numberComparatorMetadata = this.segmentService.numberComparatorMetadata;
   }
@@ -27,6 +58,7 @@ export class NumberComparatorComponent implements OnInit {
   }
 
   dropdownChanged(comparator: string) {
+    this.operator = NumberOperator[comparator];
     if (this.doubleFieldRequiredComparators.includes(comparator)) {
       this.field1Required = this.field2Required = true;
     } else if (this.singleFieldRequiredComparators.includes(comparator)) {

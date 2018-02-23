@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {SegmentService} from "../../../_services/segment.service";
+import {GlobalFilter, GlobalFilterType} from "../../../_models/segment";
+import {GlobalFiltersComponent} from "../global-filters.component";
 
 @Component({
   selector: 'app-global-filter',
@@ -8,7 +10,17 @@ import {SegmentService} from "../../../_services/segment.service";
 })
 export class GlobalFilterComponent implements OnInit {
 
-  globalFilters: any;
+  localGlobalFilter: GlobalFilter;
+  @Input() get globalFilter(): GlobalFilter {
+    return this.localGlobalFilter;
+  }
+  set globalFilter(globalFilter: GlobalFilter) {
+    this.localGlobalFilter = globalFilter;
+    this.globalFilterChange.emit(this.localGlobalFilter);
+  }
+  @Output() globalFilterChange = new EventEmitter();
+
+  globalFiltersMetadata: any;
   firstDropDown: string[];
   secondDropDown: any[];
   firstFilterSelected: string;
@@ -17,7 +29,7 @@ export class GlobalFilterComponent implements OnInit {
   options: any[];
   maxOrder: number = 0;
 
-  _parentComponentsArr: any[];
+  _parentRef: GlobalFiltersComponent;
   _ref: any;
 
   removeObject(){
@@ -27,38 +39,47 @@ export class GlobalFilterComponent implements OnInit {
 
   removeFromParentArr() {
     // Find the component
-    const componentIndex = this._parentComponentsArr.indexOf(this._ref);
+    const componentIndex = this._parentRef.components.indexOf(this._ref);
 
     if (componentIndex !== -1) {
       // Remove component from both view and array
-      this._parentComponentsArr.splice(componentIndex, 1);
+      this._parentRef.components.splice(componentIndex, 1);
+    }
+
+    const index = this._parentRef.globalFilters.indexOf(this.globalFilter);
+    if (index != -1) {
+      this._parentRef.globalFilters.splice(index, 1);
     }
   }
 
   constructor(private segmentService: SegmentService) {
-    this.globalFilters = this.segmentService.globalFilters;
+    this.globalFiltersMetadata = this.segmentService.globalFiltersMetadata;
   }
 
   ngOnInit() {
-    this.firstDropDown = Object.keys(this.globalFilters);
+    this.firstDropDown = Object.keys(this.globalFiltersMetadata);
   }
 
   getSecondFilters(): string[] {
-    return Object.keys(this.globalFilters[this.firstFilterSelected]);
+    return Object.keys(this.globalFiltersMetadata[this.firstFilterSelected]);
   }
 
   firstFilterChanged(name: string) {
     this.firstFilterSelected = name;
+    this.globalFilter.globalFilterType = GlobalFilterType[name];
     this.secondDropDown = this.getDropdownList(1);
     this.maxOrder = 1;
   }
 
   secondFilterChanged(name: string) {
     this.secondFilterSelected = name;
-    for(var filter in this.globalFilters[this.firstFilterSelected]) {
+    this.globalFilter.name = name;
+    this.globalFilter.values = [];
+    for(var filter in this.globalFiltersMetadata[this.firstFilterSelected]) {
       if(filter["propertyName"] == this.secondFilterSelected) {
         this.secondFilterDataType = filter["propertyType"];
         this.options = filter["options"];
+        this.globalFilter.type = this.secondFilterDataType;
       }
     }
     this.maxOrder = 2;
@@ -68,11 +89,11 @@ export class GlobalFilterComponent implements OnInit {
   getDropdownList(order: number): any[] {
     switch (order) {
       case 0:
-        return Object.keys(this.globalFilters);
+        return Object.keys(this.globalFiltersMetadata);
       case 1:
         // if(this.firstFilterSelected == "Geography")
         //   return this.segmentService.getCountries().subscribe();
-        var filters = this.globalFilters[this.firstFilterSelected];
+        var filters = this.globalFiltersMetadata[this.firstFilterSelected];
         return filters;
     }
   }

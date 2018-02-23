@@ -1,7 +1,10 @@
-import {Component, ComponentFactoryResolver, OnInit, ViewChild, ViewContainerRef} from '@angular/core';
+import {
+  Component, ComponentFactoryResolver, EventEmitter, Input, OnInit, Output, ViewChild,
+  ViewContainerRef
+} from '@angular/core';
 import {GeographyFilterComponent} from "./geography-filter/geography-filter.component";
 import {SegmentService} from "../../_services/segment.service";
-import {Country} from "../../_models/segment";
+import {Country, Geography} from "../../_models/segment";
 
 @Component({
   selector: 'app-geography-filters',
@@ -9,6 +12,16 @@ import {Country} from "../../_models/segment";
   styleUrls: ['./geography-filters.component.css']
 })
 export class GeographyFiltersComponent implements OnInit {
+
+  localGeographyFilters: Geography[] = [];
+  @Input() get geographyFilters(): Geography[] {
+    return this.localGeographyFilters;
+  }
+  set geographyFilters(geographyFilters: Geography[]) {
+    this.localGeographyFilters = geographyFilters;
+    this.geographyFiltersChange.emit(this.localGeographyFilters);
+  }
+  @Output() geographyFiltersChange = new EventEmitter();
 
   @ViewChild('container', {read: ViewContainerRef}) container: ViewContainerRef;
   components = [];
@@ -42,7 +55,10 @@ export class GeographyFiltersComponent implements OnInit {
     const component = this.container.createComponent(componentFactory);
 
     component.instance._ref = component;
-    component.instance._parentComponentsArr = this.components;
+    component.instance._parentRef = this;
+    let geography = new Geography();
+    this.geographyFilters.push(geography);
+    component.instance.geographyFilter = geography;
 
     // Push the component so that we can keep track of which components are created
     this.components.push(component);

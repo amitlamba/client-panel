@@ -7,7 +7,9 @@
       </select>
     </div>
 
-    <app-date-comparator class="row d-flex flex-row" *ngIf="eventSelected"></app-date-comparator>
+    <app-date-comparator [(operator)]="didEvent.dateFilter.operator" [(values)]="didEvent.dateFilter.values"
+                         [(valueUnit)]="didEvent.dateFilter.valueUnit"
+                         class="row d-flex flex-row" *ngIf="eventSelected"></app-date-comparator>
 
     <button type="button"
             class="close ml-auto mr-4 pos"
@@ -32,18 +34,18 @@
   </div>
   <div class="form-inline" *ngIf="!hideWhere && eventSelected">
     <div class="form-group pr-0 ml-3">
-      <select class="form-control"
-              (change)="countDropdown($event.target.value)">
-        <option selected>Count</option>
-        <option>Property Sum Of</option>
+      <select class="form-control" (change)="countDropdown($event.target.value)" [(ngModel)]="didEvent.whereFilter.whereFilterName">
+        <option selected disabled>--Select--</option>
+        <option value="Count">Count</option>
+        <option value="SumOfValuesOf" *ngIf="getNumberTypeEventProperties().length>0">Property Sum Of</option>
       </select>
     </div>
-    <div class="form-group px-0 custom-left" *ngIf="!hidePropertySumFilter">
-      <select class="form-control col-9">
-        <option *ngFor="let prop of eventProperties" [value]="prop.name">{{prop.name}}</option>
+    <div class="form-group ml-2" *ngIf="!hidePropertySumFilter && getNumberTypeEventProperties().length>0">
+      <select class="form-control">
+        <option *ngFor="let prop of getNumberTypeEventProperties()" [value]="prop.name">{{prop.name}}</option>
       </select>
     </div>
-    <app-number-comparator [numberComparatorOperators]="['Equals', 'Between', 'GreaterThan', 'LessThan']"></app-number-comparator>
+    <app-number-comparator [(operator)]="didEvent.whereFilter.operator" [(values)]="didEvent.whereFilter.values" [numberComparatorOperators]="['Equals', 'Between', 'GreaterThan', 'LessThan']"></app-number-comparator>
     <!--<div class="form-group mb-3 col-3 px-0 custom-left">-->
       <!--<select class="form-control col-12"-->
               <!--(change)="whereDropdown($event.target.value)"-->

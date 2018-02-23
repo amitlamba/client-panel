@@ -1,6 +1,7 @@
-import {Component, OnInit} from '@angular/core';
-import {City, Country, State} from "../../../_models/segment";
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {City, Country, Geography, State} from "../../../_models/segment";
 import {SegmentService} from "../../../_services/segment.service";
+import {GeographyFiltersComponent} from "../geography-filters.component";
 
 @Component({
   selector: 'app-geography-filter',
@@ -8,6 +9,16 @@ import {SegmentService} from "../../../_services/segment.service";
   styleUrls: ['./geography-filter.component.css']
 })
 export class GeographyFilterComponent implements OnInit {
+
+  localGeographyFilter: Geography;
+  @Input() get geographyFilter(): Geography {
+    return this.localGeographyFilter;
+  }
+  set geographyFilter(geographyFilter: Geography) {
+    this.localGeographyFilter = geographyFilter;
+    this.geographyFilterChange.emit(this.localGeographyFilter);
+  }
+  @Output() geographyFilterChange = new EventEmitter();
 
   countries: Country[];
   states: State[];
@@ -22,7 +33,7 @@ export class GeographyFilterComponent implements OnInit {
 
   select2Options: Select2Options = {};
 
-  _parentComponentsArr: any[];
+  _parentRef: GeographyFiltersComponent;
   _ref: any;
 
   removeObject() {
@@ -32,11 +43,16 @@ export class GeographyFilterComponent implements OnInit {
 
   removeFromParentArr() {
     // Find the component
-    const componentIndex = this._parentComponentsArr.indexOf(this._ref);
+    const componentIndex = this._parentRef.components.indexOf(this._ref);
 
     if (componentIndex !== -1) {
       // Remove component from both view and array
-      this._parentComponentsArr.splice(componentIndex, 1);
+      this._parentRef.components.splice(componentIndex, 1);
+    }
+
+    const index = this._parentRef.geographyFilters.indexOf(this.geographyFilter);
+    if (index != -1) {
+      this._parentRef.geographyFilters.splice(index, 1);
     }
   }
 
@@ -71,6 +87,9 @@ export class GeographyFilterComponent implements OnInit {
   onCountrySelect(data: any) {
     console.log(data);
     console.log(data['data'][0]);
+    this.geographyFilter.country = new Country();
+    this.geographyFilter.country.id = data.value;
+    this.geographyFilter.country.name = data['data'][0].text;
     if (data.value > 0)
       this.segmentService.getStates(data.value).subscribe(
         states => {
@@ -92,6 +111,9 @@ export class GeographyFilterComponent implements OnInit {
 
   onStateSelect(data: any) {
     console.log(data);
+    this.geographyFilter.state = new State();
+    this.geographyFilter.state.id = data.value;
+    this.geographyFilter.state.name = data['data'][0].text;
     if (data.value > 0)
       this.segmentService.getCities(data.value).subscribe(
         cities => {
@@ -111,6 +133,9 @@ export class GeographyFilterComponent implements OnInit {
 
   onCitySelect(data: any) {
     console.log(data);
+    this.geographyFilter.city = new City();
+    this.geographyFilter.city.id = data.value;
+    this.geographyFilter.city.name = data['data'][0].text;
     if (data.value > 0)
       this.selectedCity = {id: data.value, name: data['data'][0].text};
     else
