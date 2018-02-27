@@ -1,5 +1,6 @@
 package com.und.controller
 
+import com.und.model.mongo.CommonMetadata
 import com.und.model.mongo.EventMetadata
 import com.und.service.EventMetadataService
 import org.springframework.beans.factory.annotation.Autowired
@@ -15,13 +16,14 @@ class SegmentController {
     @Autowired
     private lateinit var eventMetadataService: EventMetadataService
 
-    @RequestMapping(value = "/metadata", method = arrayOf(RequestMethod.GET))
+    @RequestMapping(value = ["/metadata"], method = arrayOf(RequestMethod.GET))
     fun getEventMetadta(): List<EventMetadata> {
         return eventMetadataService.getEventMetadata()
     }
 
-    fun getCommonProperties() {
-
+    @RequestMapping(value = ["/commonproperties"], method = arrayOf(RequestMethod.GET))
+    fun getCommonProperties() : List<CommonMetadata> {
+        return eventMetadataService.getCommonProperties()
     }
 
 

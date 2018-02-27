@@ -49,6 +49,7 @@ import {FilterComponent} from './segment-category/did-events/did-event/filter/fi
 import {PageNotFoundComponent} from './shared/page-not-found/page-not-found.component';
 import {TestComponent} from './test/test.component';
 import {ExpComponent} from './test/exp/exp.component';
+import {SettingsService} from "./_services/settings.service";
 import {OwlDateTimeModule, OwlNativeDateTimeModule} from 'ng-pick-datetime';
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {AngularMultiSelectModule} from './multiselect/multiselect.component';
@@ -69,7 +70,7 @@ import {SetupCampaignComponent} from './campaigns/setup-campaign/setup-campaign.
 import {CampaignsListComponent} from './campaigns/campaigns-list/campaigns-list.component';
 import {DateTimeComponent} from './campaigns/setup-campaign/date-time/date-time.component';
 import {CronEditorModule} from "./cron-editor/cron-editor.module";
-import { SegmentNlpComponent } from './segment-category/segment-nlp/segment-nlp.component';
+import {SegmentNlpComponent} from './segment-category/segment-nlp/segment-nlp.component';
 
 @NgModule({
   imports: [
@@ -145,6 +146,7 @@ import { SegmentNlpComponent } from './segment-category/segment-nlp/segment-nlp.
     // BaseRequestOptions
     MessageService,
     TemplatesService,
+    SettingsService,
     SegmentService,
   ],
   entryComponents: [

@@ -10,6 +10,14 @@ class EventMetadata(
         val properties: MutableList<Property>) {
 }
 
+@Document(collection = "#{tenantProvider.getTenant()}_userproperties")
+class CommonMetadata(
+        @field: Id var id: String? = "",
+        val name: String,
+        val properties: MutableList<Property>) {
+}
+
+
 class Property(
         val name: String,
         val options: MutableList<Any>

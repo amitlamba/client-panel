@@ -66,6 +66,10 @@
       }
     }
   ],
+
+
+
+
   "globalFIlters": {
     "UserProperties": [
       {
@@ -120,7 +124,7 @@
       "hasPhoneNumber":["Yes","No"],
       "unsubscribedPush":["Yes","No"],
       "unsubscribedEmail":["Yes","No"],
-      "unsubscribedSMS":["Yes","No"]
+      "unsubscribedSMS":["Yes","gitNo"]
     }
   ],
   "AppFields": [
