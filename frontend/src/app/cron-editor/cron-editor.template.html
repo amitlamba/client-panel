@@ -111,7 +111,7 @@
                   <label style="width: 100px;"
                          class="checkbox-btn"
                          for="{{monthDaysWithLast}}"
-                          *ngIf="i===0 || i===32 || i===33">{{monthDayDisplay(monthDaysWithLast)}}</label>
+                         *ngIf="i===0 || i===32 || i===33">{{monthDayDisplay(monthDaysWithLast)}}</label>
                   <label class="checkbox-btn"
                          for="{{monthDaysWithLast}}"
                          *ngIf="i>0 && i<10 ">{{monthDayDisplay(monthDaysWithLast)|slice:0:3}}</label>
@@ -120,16 +120,6 @@
                          *ngIf="i>10 && i<32 ">{{monthDayDisplay(monthDaysWithLast)|slice:0:4}}</label>
                 </div>
               </div>
-              <!--<select class="month-days"-->
-              <!--[disabled]="disabled || activeTab !== 'monthly' || state.monthly.subTab !== 'specificDay'"-->
-              <!--(change)="regenerateCron($event)"-->
-              <!--[(ngModel)]="state.monthly.specificDay.day"-->
-              <!--[ngClass]="options.formSelectClass">-->
-              <!--<option *ngFor="let monthDaysWithLast of selectOptions.monthDaysWithLasts"-->
-              <!--[ngValue]="monthDaysWithLast">-->
-              <!--{{monthDayDisplay(monthDaysWithLast)}}-->
-              <!--</option>-->
-              <!--</select>-->
               of every
               <select class="months-small"
                       [disabled]="disabled || activeTab !== 'monthly' || state.monthly.subTab !== 'specificDay'"
@@ -165,22 +155,6 @@
                   <label class="checkbox-btn" for="{{monthlyDay+monthWeek}}">{{monthlyDay|slice:0:1}}</label>
                 </div>
               </div>
-              <!--<select class="day-order-in-month"-->
-              <!--[disabled]="disabled || activeTab !== 'monthly' || state.monthly.subTab !== 'specificWeekDay'"-->
-              <!--(change)="regenerateCron($event)" [(ngModel)]="state.monthly.specificWeekDay.monthWeek"-->
-              <!--[ngClass]="options.formSelectClass">-->
-              <!--<option *ngFor="let monthWeek of selectOptions.monthWeeks" [ngValue]="monthWeek">-->
-              <!--{{monthWeekDisplay(monthWeek)}}-->
-              <!--</option>-->
-              <!--</select>-->
-              <!--<select class="week-days"-->
-              <!--[disabled]="disabled || activeTab !== 'monthly' || state.monthly.subTab !== 'specificWeekDay'"-->
-              <!--(change)="regenerateCron($event)" [(ngModel)]="state.monthly.specificWeekDay.day"-->
-              <!--[ngClass]="options.formSelectClass">-->
-              <!--<option *ngFor="let day of selectOptions.days" [ngValue]="day">-->
-              <!--{{dayDisplay(day)}}-->
-              <!--</option>-->
-              <!--</select> of every-->
               of every
               <select class="months-small"
                       [disabled]="disabled || activeTab !== 'monthly' || state.monthly.subTab !== 'specificWeekDay'"

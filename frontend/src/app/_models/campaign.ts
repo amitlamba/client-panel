@@ -3,17 +3,17 @@ import {EmailCampaign} from "./email";
 export class Campaign {
   id: number;
   name: string;
-  clientID: number;
-  appuserID: number;
+  schedule: Schedule;
   campaignType: CampaignType;
   segmentationID: number;
-  frequencyType: FrequencyType;
-  schedule: string;
-  createdOn: Date;
+  templateID: number;
+  // createdOn: Date;
+  // clientID: number;
+  // appuserID: number;
+  // frequencyType: FrequencyType;
   // campaignStatus: EmailDeliveryStatus;
-  campaignStatus: DeliveryStatus;
-
-  emailCampaign: EmailCampaign;
+  // campaignStatus: DeliveryStatus;
+  // emailCampaign: EmailCampaign;
   // smsCampaign: SmsCampaign;
 }
 
@@ -30,11 +30,10 @@ export enum FrequencyType {
 }
 
 export enum CampaignType {
-  EMAIL,
-  SMS,
-  MOBILE_PUSH_NOTIFICATION
+  EMAIL = "EMAIL",
+  SMS = "SMS",
+  MOBILE_PUSH_NOTIFICATION = "MOBILE_PUSH_NOTIFICATION"
 }
-
 
 export class Schedule {
   scheduleType: ScheduleType;

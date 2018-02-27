@@ -2,8 +2,14 @@ import {ComponentFactoryResolver, ViewContainerRef} from '@angular/core';
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {SegmentService} from "../../_services/segment.service";
 import {DateTimeComponent} from "./date-time/date-time.component";
-import {CampaignTime, Now, Schedule, ScheduleEnd, ScheduleEndType, ScheduleType} from "../../_models/campaign";
+import {
+  Campaign, CampaignTime, CampaignType, Now, Schedule, ScheduleEnd, ScheduleEndType,
+  ScheduleType
+} from "../../_models/campaign";
 import {CronOptions} from "../../cron-editor/CronOptions";
+import {TemplatesService} from "../../_services/templates.service";
+import {SmsTemplate} from "../../_models/sms";
+import {Segment} from "../../_models/segment";
 
 @Component({
   selector: 'app-setup-campaign',
@@ -11,11 +17,14 @@ import {CronOptions} from "../../cron-editor/CronOptions";
   styleUrls: ['./setup-campaign.component.css']
 })
 export class SetupCampaignComponent implements OnInit {
-  showScheduleForm = false;
-  showCloseButton = false;
-  schedule = new Schedule();
+  showScheduleForm: boolean = false;
+  showCloseButton: boolean = false;
   cronExpression = '4 3 2 1 1/1 ? *';
-  isCronDisabled = false;
+  isCronDisabled: boolean = false;
+  smsTemplatesList: SmsTemplate[] = [];
+  schedule: Schedule = new Schedule();
+  campaign: Campaign = new Campaign();
+
   cronOptions: CronOptions = {
     formInputClass: 'form-control cron-editor-input',
     formSelectClass: 'form-control cron-editor-select',
@@ -44,15 +53,15 @@ export class SetupCampaignComponent implements OnInit {
     opens: "right"
   };
 
-  //Campaign Name And Segment Name
+  //Campaign Name
   campaignName: string = "";
-  segment: string = "";
-  segmentsList: any = [];
+  segmentsList: Segment[] = [];
 
   @ViewChild('parent', {read: ViewContainerRef}) container: ViewContainerRef;
 
   constructor(private _cfr: ComponentFactoryResolver,
-              public segmentService: SegmentService) {
+              public segmentService: SegmentService,
+              private templatesService: TemplatesService) {
     this.schedule.scheduleType = ScheduleType.oneTime;
     this.schedule.startTime = Now.Now;
     this.schedule.campaignTimeList = new Array<CampaignTime>();
@@ -66,29 +75,47 @@ export class SetupCampaignComponent implements OnInit {
   ngOnInit() {
     //Segments List
     for (let i = 0; i < this.segmentService.segments.length; i++) {
-      this.segmentsList.push(this.segmentService.segments[i].name);
+      this.segmentsList.push(this.segmentService.segments[i]);
     }
+    //SmsTemplates List
+    this.templatesService.getSmsTemplates().subscribe(
+      (response) => {
+        for (let i = 0; i < response.length; i++) {
+          this.smsTemplatesList.push(response[i]);
+        }
+      }
+    );
   }
 
-  continueToSchedule() {
+  continueToSchedule(): void {
     this.showScheduleForm = true;
   }
 
-  onSubmit() {
-    console.log(this.campaignName);
-    console.log(this.segment);
-    console.log(this.schedule);
+  onSubmit(): void {
+    this.schedule.cronExpression = this.cronExpression;
+    this.campaign.name = this.campaignName;
+    this.campaign.schedule = this.schedule;
+    this.campaign.campaignType = CampaignType.SMS;
+    console.log(this.campaign);
   }
 
-  campaignStartDateSelect(value: any) {
+  saveSegmentID(segmentID: number): void {
+    this.campaign.segmentationID = segmentID;
+  }
+
+  saveTemplateID(templateID: number): void {
+    this.campaign.templateID = templateID;
+  }
+
+  campaignStartDateSelect(value: any): void {
     this.schedule.startDateTime = value.start.valueOf();
   }
 
-  campaignEndDateSelect(value: any) {
+  campaignEndDateSelect(value: any): void {
     this.schedule.scheduleEnd.endsOn = value.start.valueOf();
   }
 
-  addAnotherDateTime() {
+  addAnotherDateTime(): void {
     this.showCloseButton = true;
     // check and resolve the component
     var comp = this._cfr.resolveComponentFactory(DateTimeComponent);
@@ -99,13 +126,8 @@ export class SetupCampaignComponent implements OnInit {
     dateTimeComponent.instance.campaignTimes = this.schedule.campaignTimeList;
   }
 
-  emptyCampaignTimesArray() {
+  emptyCampaignTimesArray(): void {
     this.schedule.campaignTimeList = [];
-  }
-
-  resetScheduleEnd() {
-    // this.schedule.scheduleEnd = new ScheduleEnd();
-    // console.log("laksh");
   }
 }
 
