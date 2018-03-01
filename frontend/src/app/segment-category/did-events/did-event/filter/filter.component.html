@@ -43,11 +43,10 @@
       </select>
   </div>
   <div *ngIf="selectedProperty && selectedProperty.dataType=='multiselect'">
-      <angular-multiselect [data]="getSelectedPropertyOptions()" [(ngModel)]="formModel1.skills"
-                            [settings]="dropdownSettings"
-                            name="multiselect"
-                            >
-      </angular-multiselect>
+    <select2 class="ml-2"
+             [data]="getSelectedPropertyOptions()"
+             [options]="select2Options"
+             [width]="380"></select2>
   </div>
   <button type="button" class="close ml-auto mr-4 pos" aria-label="Close" (click)="removeObject()">
     <span aria-hidden="true">&times;</span>

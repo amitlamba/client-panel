@@ -52,7 +52,6 @@ import {ExpComponent} from './test/exp/exp.component';
 import {SettingsService} from "./_services/settings.service";
 import {OwlDateTimeModule, OwlNativeDateTimeModule} from 'ng-pick-datetime';
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
-import {AngularMultiSelectModule} from './multiselect/multiselect.component';
 import {SegmentService} from "./_services/segment.service";
 import {GlobalFiltersComponent} from './segment-category/global-filters/global-filters.component';
 import {DateComparatorComponent} from './segment-category/date-comparator/date-comparator.component';
@@ -85,7 +84,6 @@ import {SegmentNlpComponent} from './segment-category/segment-nlp/segment-nlp.co
     BrowserAnimationsModule,
     OwlDateTimeModule,
     OwlNativeDateTimeModule,
-    AngularMultiSelectModule,
     Select2Module,
     CronEditorModule,
   ],

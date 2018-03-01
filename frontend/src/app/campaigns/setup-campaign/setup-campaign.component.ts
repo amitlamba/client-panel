@@ -96,7 +96,7 @@ export class SetupCampaignComponent implements OnInit {
     this.campaign.name = this.campaignName;
     this.campaign.schedule = this.schedule;
     this.campaign.campaignType = CampaignType.SMS;
-    console.log(this.campaign);
+    console.log(JSON.stringify(this.campaign));
   }
 
   saveSegmentID(segmentID: number): void {
