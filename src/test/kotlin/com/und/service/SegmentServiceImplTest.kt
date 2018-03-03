@@ -10,14 +10,14 @@ import org.springframework.test.context.junit4.SpringRunner
 @Ignore
 @RunWith(SpringRunner::class)
 @SpringBootTest
-class BasicSegmentationServiceImplTest {
+class SegmentServiceImplTest {
 
     @Autowired
     lateinit var eventMetadataService:EventMetadataService
     
     @Test
     fun getSegmentationUsersTestWithDummy() {
-        val basicSegmentationServiceImpl = BasicSegmentationServiceImpl()
+        val basicSegmentationServiceImpl = SegmentServiceImpl()
         val dummyEventUser = basicSegmentationServiceImpl.getSegmentationUsers(1)
         println(dummyEventUser)
         var eventmetadata = eventMetadataService.getEventMetadata()

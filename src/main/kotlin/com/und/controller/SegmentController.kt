@@ -2,12 +2,13 @@ package com.und.controller
 
 import com.und.model.mongo.CommonMetadata
 import com.und.model.mongo.EventMetadata
+import com.und.model.api.Segment
 import com.und.service.EventMetadataService
+import com.und.service.SegmentService
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.web.bind.annotation.CrossOrigin
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestMethod
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.*
 
 @RestController("segment")
 @RequestMapping("/segment")
@@ -16,14 +17,23 @@ class SegmentController {
     @Autowired
     private lateinit var eventMetadataService: EventMetadataService
 
-    @RequestMapping(value = ["/metadata"], method = arrayOf(RequestMethod.GET))
+    @Autowired
+    private lateinit var segmentationService: SegmentService
+
+    @GetMapping(value = ["/metadata"])
     fun getEventMetadta(): List<EventMetadata> {
         return eventMetadataService.getEventMetadata()
     }
 
-    @RequestMapping(value = ["/commonproperties"], method = arrayOf(RequestMethod.GET))
-    fun getCommonProperties() : List<CommonMetadata> {
+    @GetMapping(value = ["/commonproperties"])
+    fun getCommonProperties(): List<CommonMetadata> {
         return eventMetadataService.getCommonProperties()
+    }
+
+    @PostMapping(value = ["/save"])
+    fun save(segment: Segment): ResponseEntity<Segment> {
+        val persistedSegment = segmentationService.createSegment(segment)
+        return ResponseEntity( persistedSegment, HttpStatus.CREATED)
     }
 
 

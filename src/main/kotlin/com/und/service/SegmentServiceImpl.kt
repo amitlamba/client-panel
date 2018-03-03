@@ -4,10 +4,11 @@ import com.und.eventapi.model.EventUser
 import com.und.eventapi.model.SocialId
 import com.und.eventapi.model.StandardInfo
 import com.und.model.Segmentation
+import com.und.model.api.Segment
 import org.springframework.stereotype.Service
 
 @Service
-class BasicSegmentationServiceImpl : SegmentationService {
+class SegmentServiceImpl : SegmentService {
     override fun getSegmentationUsers(clientID: Long, segmentation: Segmentation?): List<EventUser> {
         return listOf(element = getDummyEventUser())
     }
@@ -22,5 +23,11 @@ class BasicSegmentationServiceImpl : SegmentationService {
         eventUser.id=null
 
         return eventUser
+    }
+
+    override fun createSegment(segment: Segment): Segment {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        // save in segment db
+
     }
 }
