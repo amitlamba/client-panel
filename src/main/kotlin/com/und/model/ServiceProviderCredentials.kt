@@ -3,6 +3,7 @@ package com.und.model
 import java.util.*
 import javax.persistence.*
 import javax.validation.constraints.NotNull
+import kotlin.collections.HashMap
 
 @Entity
 @Table(name = "service_provider_credentials")
@@ -58,6 +59,10 @@ class ServiceProviderCredentials {
     @NotNull
     @Enumerated(EnumType.STRING)
     lateinit var status: Status
+
+    @Column(name = "credentials")
+    @NotNull
+    lateinit var credentialsMap: HashMap<String, String>
 }
 
 enum class ServiceProvider(val value: Short) {

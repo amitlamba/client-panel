@@ -5,24 +5,19 @@ export class ServiceProviderCredentials {
   id: string;
   clientID: number;
   appuserID: number;
-  serviceProviderType: ServiceProviderType;
-  serviceProvider: ServiceProvider;
+  serviceProviderType: string;
+  serviceProvider: string;
   url: string;
   port: number;
   username: string;
   password: string;
-}
-
-export enum ServiceProvider {
-  AWS_SES,
-  AWS_SNS,
-  GOOGLE_FCM
+  credentialsMap: any = {}; // store the map, key value pairs
 }
 
 export enum ServiceProviderType {
-  EMAIL_SERVICE_PROVIDER,
-  SMS_SERVICE_PROVIDER,
-  NOTIFICATIONS_SERVICE_PROVIDER
+  "Email Service Provider" = "Email Service Provider",
+  "SMS Service Provider" = "SMS Service Provider",
+  "Notification Service Provider" = "Notification Service Provider"
 }
 
 export class RegistrationRequest {
