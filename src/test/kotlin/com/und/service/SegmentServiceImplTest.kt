@@ -17,11 +17,11 @@ class SegmentServiceImplTest {
     
     @Test
     fun getSegmentationUsersTestWithDummy() {
-        val basicSegmentationServiceImpl = SegmentServiceImpl()
+/*        val basicSegmentationServiceImpl = SegmentServiceImpl()
         val dummyEventUser = basicSegmentationServiceImpl.getSegmentationUsers(1)
         println(dummyEventUser)
         var eventmetadata = eventMetadataService.getEventMetadata()
-        println(eventmetadata)
+        println(eventmetadata)*/
 
     }
 }

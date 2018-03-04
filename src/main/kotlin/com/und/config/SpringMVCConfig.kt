@@ -25,8 +25,6 @@ import org.springframework.web.servlet.view.JstlView
 class SpringMVCConfig : WebMvcConfigurer {
 
 
-
-
     @Bean
     fun getInternalResourceViewResolver(): InternalResourceViewResolver {
         val resolver = InternalResourceViewResolver()

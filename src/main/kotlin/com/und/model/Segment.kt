@@ -17,6 +17,17 @@ class Segment {
     @NotNull
     var clientID: Long? = null
 
+    @Column(name = "name")
+    @NotNull
     var name: String = ""
+
+    @Column(name = "type")
+    @NotNull
     var type: String = ""
+
+    @Column(name = "data")
+    @NotNull
+    var data: String = "{}"
+
+
 }
