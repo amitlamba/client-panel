@@ -1,8 +1,8 @@
 package com.und.service
 
-import com.und.eventapi.model.*
 import com.und.eventapi.repository.EventRepository
 import com.und.eventapi.repository.EventUserRepository
+import com.und.model.mongo.eventapi.*
 import com.und.security.utils.TenantProvider
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -34,7 +34,7 @@ class ClientUsersService {
         eventUser.clientId ="1"
         eventUser.clientUserId="1"
         eventUser.standardInfo = StandardInfo(firstName = "Amit", lastName = "Lamba", country = "India", countryCode = "IN",
-                dob = "2017-01-04",gender = "Male")
+                dob = "2017-01-04", gender = "Male")
         eventUser.socialId = SocialId(email = "amit@userndot.com", mobile = "8882774104")
         eventUser.id=null
 

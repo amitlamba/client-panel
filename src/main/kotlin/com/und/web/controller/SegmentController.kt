@@ -1,10 +1,10 @@
-package com.und.controller
+package com.und.web.controller
 
 import com.und.model.mongo.CommonMetadata
 import com.und.model.mongo.EventMetadata
-import com.und.model.api.Segment
 import com.und.service.EventMetadataService
 import com.und.service.SegmentService
+import com.und.web.model.Segment
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity

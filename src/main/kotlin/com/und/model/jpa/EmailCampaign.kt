@@ -1,5 +1,6 @@
-package com.und.model
+package com.und.model.jpa
 
+import com.und.model.jpa.Campaign
 import javax.persistence.*
 import javax.validation.constraints.NotNull
 

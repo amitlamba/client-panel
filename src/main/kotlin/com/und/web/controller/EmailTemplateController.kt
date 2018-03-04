@@ -1,12 +1,11 @@
-package com.und.controller
+package com.und.web.controller
 
 import com.und.common.utils.loggerFor
-import com.und.model.EmailTemplate
+import com.und.model.jpa.EmailTemplate
 import com.und.security.utils.AuthenticationUtils
 import com.und.service.EmailTemplateService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
-import javax.validation.Valid
 
 @CrossOrigin
 @RestController

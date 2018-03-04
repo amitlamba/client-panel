@@ -1,6 +1,6 @@
 package com.und.model
 
-import com.und.eventapi.model.Event
+import com.und.model.mongo.eventapi.Event
 import java.util.*
 
 class Segmentation {

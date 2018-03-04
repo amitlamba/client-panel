@@ -1,10 +1,9 @@
 package com.und.service
 
-import com.google.gson.Gson
 import com.und.eventapi.repository.SegmentRepository
-import com.und.model.Segment
+import com.und.model.jpa.Segment
 import com.und.security.utils.AuthenticationUtils
-import com.und.model.api.Segment as WebSegment
+import com.und.web.model.Segment as WebSegment
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 

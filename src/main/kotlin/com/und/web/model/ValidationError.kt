@@ -1,4 +1,4 @@
-package com.und.model.api
+package com.und.web.model
 
 import com.und.model.api.FieldError
 import java.util.ArrayList

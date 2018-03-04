@@ -1,6 +1,6 @@
-package com.und.controller
+package com.und.web.controller
 
-import com.und.eventapi.model.ClickTrackEvent
+import com.und.model.mongo.eventapi.ClickTrackEvent
 import com.und.service.ClickTrackService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Controller

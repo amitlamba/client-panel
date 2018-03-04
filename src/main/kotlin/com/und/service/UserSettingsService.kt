@@ -1,8 +1,8 @@
 package com.und.service
 
 import com.und.common.utils.DateUtils
-import com.und.model.ServiceProviderCredentials
-import com.und.model.ServiceProviderType
+import com.und.model.jpa.ServiceProviderCredentials
+import com.und.model.jpa.ServiceProviderType
 import com.und.model.Status
 import com.und.repository.ServiceProviderCredentialsRepository
 import org.springframework.beans.factory.annotation.Autowired

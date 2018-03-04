@@ -1,8 +1,8 @@
-package com.und.controller
+package com.und.web.controller
 
-import com.und.model.Cities
-import com.und.model.Countries
-import com.und.model.States
+import com.und.model.jpa.Cities
+import com.und.model.jpa.Countries
+import com.und.model.jpa.States
 import com.und.service.LocationService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*

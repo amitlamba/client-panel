@@ -1,8 +1,8 @@
 package com.und.repository
 
-import com.und.model.Cities
-import com.und.model.Countries
-import com.und.model.States
+import com.und.model.jpa.Cities
+import com.und.model.jpa.Countries
+import com.und.model.jpa.States
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
 

@@ -1,6 +1,7 @@
-package com.und.model
+package com.und.model.jpa
 
-import org.hibernate.validator.constraints.Email
+import com.und.model.MessageType
+import com.und.model.Status
 import javax.persistence.*
 import javax.validation.constraints.NotNull
 import javax.validation.constraints.Null

@@ -1,4 +1,4 @@
-package com.und.model
+package com.und.model.jpa
 
 import javax.persistence.*
 import javax.validation.constraints.NotNull

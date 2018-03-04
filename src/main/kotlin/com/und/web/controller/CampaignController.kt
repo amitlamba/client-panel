@@ -1,6 +1,6 @@
-package com.und.controller
+package com.und.web.controller
 
-import com.und.model.Campaign
+import com.und.model.jpa.Campaign
 import com.und.security.utils.AuthenticationUtils
 import com.und.service.CampaignService
 import org.springframework.beans.factory.annotation.Autowired

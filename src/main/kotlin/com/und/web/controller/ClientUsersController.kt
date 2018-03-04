@@ -1,7 +1,7 @@
-package com.und.controller
+package com.und.web.controller
 
-import com.und.eventapi.model.Event
-import com.und.eventapi.model.EventUser
+import com.und.model.mongo.eventapi.Event
+import com.und.model.mongo.eventapi.EventUser
 import com.und.security.utils.AuthenticationUtils
 import com.und.service.ClientUsersService
 import org.springframework.beans.factory.annotation.Autowired

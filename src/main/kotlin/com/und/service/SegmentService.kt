@@ -1,7 +1,6 @@
 package com.und.service
 
-import com.und.model.Segment
-import com.und.model.api.Segment as WebSegment
+import com.und.web.model.Segment as WebSegment
 import org.springframework.stereotype.Service
 
 @Service

@@ -74,11 +74,11 @@ export class ServiceprovidersComponent implements OnInit {
 
   onSave(form: FormData) {
     if (this.form.valid) {
-      // this.authenticationService.saveServiceProviderCredentialEmail(this.serviceProviderCredentials)
-      //   .subscribe(
-      //     response => {
-      //     }
-      //   );
+      this.authenticationService.saveServiceProviderCredentialEmail(this.serviceProviderCredentials)
+        .subscribe(
+          response => {
+          }
+        );
       console.log(JSON.stringify(this.serviceProviderCredentials));
     }
   }

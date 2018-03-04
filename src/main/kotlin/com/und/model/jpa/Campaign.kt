@@ -1,5 +1,8 @@
-package com.und.model
+package com.und.model.jpa
 
+import com.und.model.CampaignType
+import com.und.model.EmailDeliveryStatus
+import com.und.model.FrequencyType
 import javax.persistence.*
 import javax.validation.constraints.NotNull
 

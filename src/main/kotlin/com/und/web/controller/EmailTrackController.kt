@@ -1,10 +1,9 @@
-package com.und.controller
+package com.und.web.controller
 
 import com.und.common.utils.decrypt
 import com.und.common.utils.encrypt
 import com.und.model.EmailRead
 import com.und.service.EmailService
-import kafka.utils.Json
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.*

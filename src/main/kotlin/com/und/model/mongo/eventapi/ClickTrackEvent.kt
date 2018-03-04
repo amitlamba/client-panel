@@ -1,8 +1,7 @@
-package com.und.eventapi.model
+package com.und.model.mongo.eventapi
 
 import org.springframework.data.annotation.Id
 import org.springframework.data.mongodb.core.mapping.Document
-import org.springframework.data.mongodb.core.mapping.Field
 import java.util.*
 
 @Document(collection = "#{tenantProvider.getTenant()}_click_event")

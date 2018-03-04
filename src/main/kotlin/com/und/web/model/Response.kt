@@ -1,4 +1,4 @@
-package com.und.model.api
+package com.und.web.model
 
 data class Response<T> (
     var status: ResponseStatus = ResponseStatus.EMPTY,

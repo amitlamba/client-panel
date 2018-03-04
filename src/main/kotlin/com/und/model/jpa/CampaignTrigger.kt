@@ -1,4 +1,4 @@
-package com.und.model
+package com.und.model.jpa
 
 import java.time.LocalDate
 import javax.persistence.*

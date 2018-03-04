@@ -1,6 +1,6 @@
 package com.und.service
 
-import com.und.model.SmsTemplate
+import com.und.model.jpa.SmsTemplate
 import com.und.model.Status
 import com.und.repository.SmsTemplateRepository
 import org.springframework.beans.factory.annotation.Autowired
