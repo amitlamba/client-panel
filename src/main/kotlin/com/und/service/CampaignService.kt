@@ -1,6 +1,7 @@
 package com.und.service
 
 import com.und.model.*
+import com.und.model.jpa.Campaign
 import com.und.repository.CampaignRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service

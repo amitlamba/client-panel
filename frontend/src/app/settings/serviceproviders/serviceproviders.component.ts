@@ -1,5 +1,5 @@
-import {Component, Input, OnInit, ViewChild} from '@angular/core';
-import {ServiceProvider, ServiceProviderCredentials, ServiceProviderType} from "../../_models/client";
+import {Component, OnInit, ViewChild} from '@angular/core';
+import {ServiceProviderCredentials, ServiceProviderType} from "../../_models/client";
 import {MessageService} from "../../_services/message.service";
 import {AuthenticationService} from "../../_services/authentication.service";
 import {SettingsService} from "../../_services/settings.service";
@@ -12,48 +12,64 @@ import {SettingsService} from "../../_services/settings.service";
 export class ServiceprovidersComponent implements OnInit {
 
   @ViewChild("f") form: any;
-  serviceProviderTypes: string[] = [];
-  serviceProviders: string[] = [];
   serviceProviderCredentials: ServiceProviderCredentials = new ServiceProviderCredentials();
 
-  serviceProviderTypes1: string[];
+  serviceProviderTypes: string[];
+  serviceProviders: string[];
+  serviceProviderFields: any = {};
 
   constructor(private messageService: MessageService, private authenticationService: AuthenticationService,
-              public settingsService: SettingsService) { }
-
-  ngOnInit() {
+              public settingsService: SettingsService) {
     this.initServiceProviderTypes();
     this.initServiceProviders();
+  }
+
+  ngOnInit() {
     this.authenticationService.getServiceProviderCredentialsEmail().subscribe(
       response => {
         console.log(response);
-        this.serviceProviderCredentials = response[0];
+        // this.serviceProviderCredentials = response[0];
       }
     );
   }
 
   initServiceProviderTypes() {
-    const objValues = Object.keys(ServiceProviderType).map(k => ServiceProviderType[k]);
-    this.serviceProviderTypes = objValues.filter(v => typeof v === "string") as string[];
-
-    this.serviceProviderTypes1  = Object.keys(this.settingsService.serviceProviders);
+    this.setServiceProviderTypes();
   }
 
   initServiceProviders() {
-    const objValues = Object.keys(ServiceProvider).map(k => ServiceProvider[k]);
-    this.serviceProviders = objValues.filter(v => typeof v === "string") as string[];
+    this.setServiceProviders(this.serviceProviderCredentials.serviceProviderType);
   }
 
-  getServiceProviderTypes() {
-    return Object.keys(this.settingsService.serviceProviders);
+  setServiceProviderTypes() {
+    let spTypes = Object.keys(this.settingsService.serviceProviders);
+    if (!this.serviceProviderCredentials.serviceProviderType)
+      this.serviceProviderCredentials.serviceProviderType = spTypes[0];
+    console.log(spTypes);
+    this.serviceProviderTypes = spTypes;
   }
 
-  getServiceProviders(serviceProviderType: string) {
-    return Object.keys(this.settingsService.serviceProviders[serviceProviderType]);
+  setServiceProviders(serviceProviderType: string) {
+    let sp = Object.keys(this.settingsService.serviceProviders[serviceProviderType]);
+    this.serviceProviderCredentials.serviceProvider = sp[0];
+    this.setServiceProviderFields();
+    this.serviceProviders = sp;
+    this.serviceProviderCredentials.credentialsMap = {};
   }
 
-  getServiceProviderFields(serviceProvider: string, serviceProviderType: string) {
-    return this.settingsService.serviceProviders[serviceProviderType][serviceProvider]["fields"];
+  onChangeServiceProviderType() {
+    console.log(this.serviceProviderCredentials.serviceProviderType);
+    let sp = this.setServiceProviders(this.serviceProviderCredentials.serviceProviderType);
+  }
+
+  onChangeServiceProvider() {
+    this.setServiceProviderFields();
+  }
+
+  setServiceProviderFields() {
+    let f = this.settingsService.serviceProviders[this.serviceProviderCredentials.serviceProviderType][this.serviceProviderCredentials.serviceProvider]["fields"];
+    console.log(f);
+    this.serviceProviderFields = f;
   }
 
   onSave(form: FormData) {
@@ -63,6 +79,7 @@ export class ServiceprovidersComponent implements OnInit {
           response => {
           }
         );
+      console.log(JSON.stringify(this.serviceProviderCredentials));
     }
   }
 

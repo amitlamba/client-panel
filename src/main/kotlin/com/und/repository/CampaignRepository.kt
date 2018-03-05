@@ -1,9 +1,7 @@
 package com.und.repository
 
-import com.und.model.Campaign
+import com.und.model.jpa.Campaign
 import com.und.model.CampaignType
-import com.und.model.EmailCampaign
-import com.und.model.EmailTemplate
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
 

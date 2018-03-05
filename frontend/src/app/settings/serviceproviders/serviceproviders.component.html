@@ -12,7 +12,7 @@ password: string;-->
     <form novalidate (ngSubmit)="onSave(f)" #f="ngForm">
       <div class="form-group">
         <label for="serviceProviderType">Service Provider Type</label>
-        <select required class="form-control" id="serviceProviderType" name="serviceProviderType" [(ngModel)]="serviceProviderCredentials.serviceProviderType">
+        <select required class="form-control" id="serviceProviderType" name="serviceProviderType" [(ngModel)]="serviceProviderCredentials.serviceProviderType" (change)="onChangeServiceProviderType()">
           <option *ngFor="let serviceProviderType of serviceProviderTypes" value="{{serviceProviderType}}">
             {{serviceProviderType}}
           </option>
@@ -20,44 +20,32 @@ password: string;-->
       </div>
       <div class="form-group">
         <label for="serviceProvider">Service Provider</label>
-        <select required class="form-control" id="serviceProvider" name="serviceProvider" [(ngModel)]="serviceProviderCredentials.serviceProvider">
+        <select required class="form-control" id="serviceProvider" name="serviceProvider" [(ngModel)]="serviceProviderCredentials.serviceProvider" (change)="onChangeServiceProvider()">
           <option *ngFor="let serviceProvider of serviceProviders" value="{{serviceProvider}}">{{serviceProvider}}
           </option>
         </select>
       </div>
-      <div class="form-group">
-        <label for="url">Url</label>
-        <input required type="text" class="form-control" id="url" name="url" placeholder="https://example.com" [(ngModel)]="serviceProviderCredentials.url">
-      </div>
-      <div class="form-group">
-        <label for="port">Port</label>
-        <input required type="number" placeholder="Port" class="form-control" id="port" name="port" [(ngModel)]="serviceProviderCredentials.port">
-      </div>
-      <div class="form-group">
-        <label for="username">Username</label>
-        <input required type="text" placeholder="Username" class="form-control" id="username" name="username" [(ngModel)]="serviceProviderCredentials.username">
-      </div>
-      <div class="form-group">
-        <label for="password">Password</label>
-        <input required type="password" placeholder="Password" class="form-control" id="password" name="password" [(ngModel)]="serviceProviderCredentials.password">
+      <div *ngFor="let field of serviceProviderFields" class="form-group">
+        <label for="{{field.fieldName}}">{{field.fieldDisplayName}}</label>
+        <input required type="text" placeholder="{{field.fieldDisplayName}}" class="form-control" id="{{field.fieldName}}" name="{{field.fieldName}}" [(ngModel)]="serviceProviderCredentials.credentialsMap[field.fieldName]">
       </div>
       <div class="text-right">
         <button type="submit" class="btn btn-primary" [disabled]="f.invalid">Save</button>
       </div>
     </form>
-    <div *ngFor="let serviceproviderType of getServiceProviderTypes()">
-      <div>
-        {{serviceproviderType}}
-        <div *ngFor="let serviceProvider of getServiceProviders(serviceproviderType)">
-          --- {{serviceProvider}}
-          <form novalidate>
-            <div *ngFor="let field of getServiceProviderFields(serviceProvider, serviceproviderType)" class="form-group">
-              <label for="{{field.fieldName}}">{{field.fieldDisplayName}}</label>
-              <input required type="text" placeholder="{{field.fieldDisplayName}}" class="form-control" id="{{field.fieldName}}" name="{{field.fieldName}}">
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
+    <!--<div *ngFor="let serviceproviderType of getServiceProviderTypes()">-->
+      <!--<div>-->
+        <!--{{serviceproviderType}}-->
+        <!--<div *ngFor="let serviceProvider of getServiceProviders(serviceproviderType)">-->
+          <!-- -&#45;&#45; {{serviceProvider}}-->
+          <!--<form novalidate>-->
+            <!--<div *ngFor="let field of getServiceProviderFields(serviceProvider, serviceproviderType)" class="form-group">-->
+              <!--<label for="{{field.fieldName}}">{{field.fieldDisplayName}}</label>-->
+              <!--<input required type="text" placeholder="{{field.fieldDisplayName}}" class="form-control" id="{{field.fieldName}}" name="{{field.fieldName}}">-->
+            <!--</div>-->
+          <!--</form>-->
+        <!--</div>-->
+      <!--</div>-->
+    <!--</div>-->
   </div>
 </div>

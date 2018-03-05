@@ -1,6 +1,9 @@
 package com.und.service
 
 import com.und.model.*
+import com.und.model.jpa.Campaign
+import com.und.model.jpa.EmailCampaign
+import com.und.model.jpa.EmailTemplate
 import org.junit.Ignore
 import org.junit.Test
 import org.junit.runner.RunWith

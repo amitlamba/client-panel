@@ -1,7 +1,7 @@
 package com.und.service
 
 import com.und.common.utils.loggerFor
-import com.und.eventapi.model.ClickTrackEvent
+import com.und.model.mongo.eventapi.ClickTrackEvent
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.kafka.core.KafkaTemplate
 import org.springframework.kafka.support.SendResult

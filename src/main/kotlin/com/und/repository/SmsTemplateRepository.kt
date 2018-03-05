@@ -1,6 +1,6 @@
 package com.und.repository
 
-import com.und.model.SmsTemplate
+import com.und.model.jpa.SmsTemplate
 import com.und.model.Status
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository

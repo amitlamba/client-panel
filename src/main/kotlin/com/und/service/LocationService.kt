@@ -1,8 +1,8 @@
 package com.und.service
 
-import com.und.model.Cities
-import com.und.model.Countries
-import com.und.model.States
+import com.und.model.jpa.Cities
+import com.und.model.jpa.Countries
+import com.und.model.jpa.States
 import com.und.repository.CitiesRepository
 import com.und.repository.CountriesRepository
 import com.und.repository.StatesRepository

@@ -1,7 +1,6 @@
 package com.und.service
 
-import com.und.model.EmailTemplate
-import com.und.model.Status
+import com.und.model.jpa.EmailTemplate
 import com.und.repository.EmailTemplateRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service

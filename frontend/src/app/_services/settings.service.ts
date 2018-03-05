@@ -17,9 +17,63 @@ export class SettingsService {
    */
   readonly serviceProviders: any = {
     "Email Service Provider": {
-      "AWS - Simple Email Service": {
-        "name": "AWS - Simple Email Service",
-        "displayName": "AWS - Simple Email Service",
+      "SMTP": {
+        "name": "SMTP",
+        "displayName": "SMTP",
+        "fields": [
+          {
+            "fieldName": "url",
+            "fieldDisplayName": "URL",
+            "required": true,
+            "fieldType": "string",
+          },
+          {
+            "fieldName": "port",
+            "fieldDisplayName": "Port",
+            "required": true,
+            "fieldType": "number",
+          },
+          {
+            "fieldName": "username",
+            "fieldDisplayName": "Username",
+            "required": true,
+            "fieldType": "string",
+          },
+          {
+            "fieldName": "password",
+            "fieldDisplayName": "Password",
+            "required": true,
+            "fieldType": "string",
+          }
+        ]
+      },
+      "AWS - Simple Email Service (API)": {
+        "name": "AWS - Simple Email Service (API)",
+        "displayName": "AWS - Simple Email Service (API)",
+        "fields": [
+          {
+            "fieldName": "AWS_REGION",
+            "fieldDisplayName": "AWS Region",
+            "required": true,
+            "fieldType": "string",
+          },
+          {
+            "fieldName": "AWS_ACCESS_KEY_ID",
+            "fieldDisplayName": "AWS Access Key ID",
+            "required": true,
+            "fieldType": "string",
+          },
+          {
+            "fieldName": "AWS_SECRET_ACCESS_KEY",
+            "fieldDisplayName": "AWS Secret Access Key",
+            "required": true,
+            "fieldType": "string",
+          }
+        ]
+      },
+      "AWS - Simple Email Service (SMTP)": {
+        "name": "AWS - Simple Email Service (SMTP)",
+        "displayName": "AWS - Simple Email Service (SMTP)",
         "fields": [
           {
             "fieldName": "url",
@@ -54,26 +108,20 @@ export class SettingsService {
         "displayName": "AWS - Simple Email Service",
         "fields": [
           {
-            "fieldName": "url",
-            "fieldDisplayName": "URL",
+            "fieldName": "AWS_REGION",
+            "fieldDisplayName": "AWS Region",
             "required": true,
             "fieldType": "string",
           },
           {
-            "fieldName": "port",
-            "fieldDisplayName": "Port",
-            "required": true,
-            "fieldType": "number",
-          },
-          {
-            "fieldName": "username",
-            "fieldDisplayName": "Username",
+            "fieldName": "AWS_ACCESS_KEY_ID",
+            "fieldDisplayName": "AWS Access Key ID",
             "required": true,
             "fieldType": "string",
           },
           {
-            "fieldName": "password",
-            "fieldDisplayName": "Password",
+            "fieldName": "AWS_SECRET_ACCESS_KEY",
+            "fieldDisplayName": "AWS Secret Access Key",
             "required": true,
             "fieldType": "string",
           }

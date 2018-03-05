@@ -1,6 +1,6 @@
 package com.und.config
 
-import com.und.eventapi.model.ClickTrackEvent
+import com.und.model.mongo.eventapi.ClickTrackEvent
 import com.und.model.Email
 import com.und.model.EmailRead
 import org.apache.kafka.clients.producer.ProducerConfig
