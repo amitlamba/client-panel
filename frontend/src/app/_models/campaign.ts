@@ -30,9 +30,9 @@ export enum FrequencyType {
 }
 
 export enum CampaignType {
-  EMAIL = "EMAIL",
-  SMS = "SMS",
-  MOBILE_PUSH_NOTIFICATION = "MOBILE_PUSH_NOTIFICATION"
+  EMAIL="EMAIL",
+  SMS="SMS",
+  MOBILE_PUSH_NOTIFICATION="MOBILE_PUSH_NOTIFICATION"
 }
 
 export class Schedule {
@@ -40,7 +40,7 @@ export class Schedule {
   startTime: Now;
   campaignTimeList: CampaignTime[];
   cronExpression: string;
-  startDateTime: Date;
+  startDateTime: string;
   scheduleEnd: ScheduleEnd;
 }
 

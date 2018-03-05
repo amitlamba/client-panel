@@ -4,13 +4,13 @@
          daterangepicker
          [options]="singlePicker"
          (selected)="singleSelect($event)">
-              <span class="form-control uneditable-input pr-4"
-                    name="daterange">
-                  {{ singleDate | date:'dd/M/y' }}
-              </span>
-              <span class="input-group-btn">
-                <a type="button" class="btn btn-default"><i class="far fa-calendar-alt"></i></a>
-              </span>
+    <span class="form-control uneditable-input pr-4"
+          name="daterange">
+    {{ campaignTime.date | date:'dd/M/y' }}
+    </span>
+      <span class="input-group-btn">
+    <a type="button" class="btn btn-default"><i class="far fa-calendar-alt"></i></a>
+    </span>
     </div>
     <p class="ml-4 mt-3" style="font-size: 15px;">at</p>
   </div>

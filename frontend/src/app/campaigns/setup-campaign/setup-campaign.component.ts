@@ -10,6 +10,7 @@ import {CronOptions} from "../../cron-editor/CronOptions";
 import {TemplatesService} from "../../_services/templates.service";
 import {SmsTemplate} from "../../_models/sms";
 import {Segment} from "../../_models/segment";
+import * as moment from "moment";
 
 @Component({
   selector: 'app-setup-campaign',
@@ -45,8 +46,7 @@ export class SetupCampaignComponent implements OnInit {
     hideSeconds: true
   };
 
-  //Date Picker
-  public singleDate: any;
+  //Date Picker Options
   public singlePicker = {
     singleDatePicker: true,
     showDropdowns: true,
@@ -65,11 +65,10 @@ export class SetupCampaignComponent implements OnInit {
     this.schedule.scheduleType = ScheduleType.oneTime;
     this.schedule.startTime = Now.Now;
     this.schedule.campaignTimeList = new Array<CampaignTime>();
-    this.singleDate = Date.now();
-    this.schedule.startDateTime = this.singleDate;
+    this.schedule.startDateTime = moment(Date.now()).format("YYYY-MM-DD");
     this.schedule.scheduleEnd = new ScheduleEnd();
     this.schedule.scheduleEnd.endType = ScheduleEndType.NeverEnd;
-    this.schedule.scheduleEnd.endsOn = this.singleDate;
+    this.schedule.scheduleEnd.endsOn = moment(Date.now()).format("YYYY-MM-DD");
   }
 
   ngOnInit() {
@@ -108,11 +107,11 @@ export class SetupCampaignComponent implements OnInit {
   }
 
   campaignStartDateSelect(value: any): void {
-    this.schedule.startDateTime = value.start.valueOf();
+    this.schedule.startDateTime = moment(value.end.valueOf()).format("YYYY-MM-DD");
   }
 
   campaignEndDateSelect(value: any): void {
-    this.schedule.scheduleEnd.endsOn = value.start.valueOf();
+    this.schedule.scheduleEnd.endsOn = moment(value.end.valueOf()).format("YYYY-MM-DD");
   }
 
   addAnotherDateTime(): void {
