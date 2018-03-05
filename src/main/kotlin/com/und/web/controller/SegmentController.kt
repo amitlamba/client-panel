@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*
 
 @RestController("segment")
 @RequestMapping("/segment")
+@CrossOrigin
 class SegmentController {
 
     @Autowired
