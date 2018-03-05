@@ -34,10 +34,20 @@
                   #templateID
                   (change)="saveTemplateID(templateID.value)">
             <option value="selectTemplate" selected>Choose from a list of Templates . . .</option>
-            <option *ngFor="let smsTemplate of smsTemplatesList"
-                    [value]="smsTemplate.id">{{smsTemplate.name}}
-            </option>
+            <ng-container
+              *ngIf="currentPath==='sms'">
+              <option *ngFor="let smsTemplate of smsTemplatesList"
+                      [value]="smsTemplate.id">{{smsTemplate.name}}
+              </option>
+            </ng-container>
+            <ng-container
+              *ngIf="currentPath==='email'">
+              <option *ngFor="let emailTemplate of emailTemplatesList"
+                      [value]="emailTemplate.id">{{emailTemplate.name}}
+              </option>
+            </ng-container>
           </select>
+
         </div>
         <button class="btn btn-primary ml-3 px-4"
                 (click)="continueToSchedule()"

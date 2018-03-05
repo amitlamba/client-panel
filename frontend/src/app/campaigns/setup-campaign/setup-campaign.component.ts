@@ -11,6 +11,8 @@ import {TemplatesService} from "../../_services/templates.service";
 import {SmsTemplate} from "../../_models/sms";
 import {Segment} from "../../_models/segment";
 import * as moment from "moment";
+import {ActivatedRoute} from "@angular/router";
+import {Email, EmailTemplate} from "../../_models/email";
 
 @Component({
   selector: 'app-setup-campaign',
@@ -18,11 +20,13 @@ import * as moment from "moment";
   styleUrls: ['./setup-campaign.component.css']
 })
 export class SetupCampaignComponent implements OnInit {
+  currentPath: string;
   showScheduleForm: boolean = false;
   showCloseButton: boolean = false;
   cronExpression = '4 3 2 1 1/1 ? *';
   isCronDisabled: boolean = false;
   smsTemplatesList: SmsTemplate[] = [];
+  emailTemplatesList: EmailTemplate[] = [];
   schedule: Schedule = new Schedule();
   campaign: Campaign = new Campaign();
 
@@ -61,7 +65,8 @@ export class SetupCampaignComponent implements OnInit {
 
   constructor(private _cfr: ComponentFactoryResolver,
               public segmentService: SegmentService,
-              private templatesService: TemplatesService) {
+              private templatesService: TemplatesService,
+              private route: ActivatedRoute) {
     this.schedule.scheduleType = ScheduleType.oneTime;
     this.schedule.startTime = Now.Now;
     this.schedule.campaignTimeList = new Array<CampaignTime>();
@@ -69,6 +74,7 @@ export class SetupCampaignComponent implements OnInit {
     this.schedule.scheduleEnd = new ScheduleEnd();
     this.schedule.scheduleEnd.endType = ScheduleEndType.NeverEnd;
     this.schedule.scheduleEnd.endsOn = moment(Date.now()).format("YYYY-MM-DD");
+    this.currentPath = this.route.snapshot.url[0].path;
   }
 
   ngOnInit() {
@@ -84,6 +90,15 @@ export class SetupCampaignComponent implements OnInit {
         }
       }
     );
+
+    //EmailTemplates List
+    this.templatesService.getEmailTemplates().subscribe(
+      (response) => {
+        for (let i = 0; i < response.length; i++) {
+          this.emailTemplatesList.push(response[i]);
+        }
+      }
+    );
   }
 
   continueToSchedule(): void {
@@ -94,7 +109,12 @@ export class SetupCampaignComponent implements OnInit {
     this.schedule.cronExpression = this.cronExpression;
     this.campaign.name = this.campaignName;
     this.campaign.schedule = this.schedule;
-    this.campaign.campaignType = CampaignType.SMS;
+    if(this.currentPath==='sms'){
+      this.campaign.campaignType = CampaignType.SMS;
+    }
+    else{
+      this.campaign.campaignType = CampaignType.EMAIL;
+    }
     console.log(JSON.stringify(this.campaign));
   }
 
