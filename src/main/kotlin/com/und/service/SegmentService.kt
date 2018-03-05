@@ -7,5 +7,7 @@ import org.springframework.stereotype.Service
 interface SegmentService {
 
     fun createSegment(websegment: WebSegment): WebSegment
+
+    fun allSegment(): List<WebSegment>
 }
 

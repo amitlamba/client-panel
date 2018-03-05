@@ -13,9 +13,5 @@ class CampaignSchedulerService {
         protected val logger = loggerFor(CampaignSchedulerService::class.java)
     }
 
-    @Scheduled(cron = "0 * * * * *")
-    fun scheduleCampaignsInTrigger() {
-        logger.debug("Running Scheduler cron = \"0 * * * * *\"")
-        //TODO: Complete Scheduling process
-    }
+
 }

@@ -31,9 +31,16 @@ class SegmentController {
     }
 
     @PostMapping(value = ["/save"])
-    fun save(segment: Segment): ResponseEntity<Segment> {
+    fun save(@RequestBody segment: Segment): ResponseEntity<Segment> {
+        //FIXME Validate for unique name for a client
         val persistedSegment = segmentationService.createSegment(segment)
         return ResponseEntity( persistedSegment, HttpStatus.CREATED)
+    }
+
+    @GetMapping(value = ["/list"])
+    fun save(): ResponseEntity<List<Segment>> {
+        val allSegment = segmentationService.allSegment()
+        return ResponseEntity( allSegment, HttpStatus.OK)
     }
 
 

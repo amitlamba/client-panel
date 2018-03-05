@@ -1,5 +1,7 @@
 package com.und.service
 
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import com.und.eventapi.repository.SegmentRepository
 import com.und.model.jpa.Segment
 import com.und.security.utils.AuthenticationUtils
@@ -13,21 +15,6 @@ class SegmentServiceImpl : SegmentService {
     @Autowired
     lateinit var segmentRepository: SegmentRepository
 
-/*    override fun getSegmentationUsers(clientID: Long, segmentation: Segmentation?): List<EventUser> {
-        return listOf(element = getDummyEventUser())
-    }*/
-
-/*    fun getDummyEventUser(): EventUser {
-        val eventUser = EventUser()
-        eventUser.clientId ="1"
-        eventUser.clientUserId="1"
-        eventUser.standardInfo = StandardInfo(firstName = "Amit", lastName = "Lamba", country = "India", countryCode = "IN",
-                dob = "2017-01-04",gender = "Male")
-        eventUser.socialId = SocialId(email = "amit@userndot.com", mobile = "8882774104")
-        eventUser.id=null
-
-        return eventUser
-    }*/
 
     override fun createSegment(websegment: WebSegment): WebSegment {
         val segment = buildSegment(websegment)
@@ -37,6 +24,19 @@ class SegmentServiceImpl : SegmentService {
 
     }
 
+    override fun allSegment(): List<WebSegment> {
+        val clientID = AuthenticationUtils.clientID
+        val websegments = mutableListOf<WebSegment>()
+        if(clientID != null) {
+            val segments = segmentRepository.findByClientID(clientID)
+            if (segments != null) {
+                segments.forEach { websegments.add(buildWebSegment(it)) }
+            }
+        }
+
+        return websegments
+    }
+
     private fun buildSegment(websegment: WebSegment): Segment {
         val segment = Segment()
         with(segment) {
@@ -44,13 +44,15 @@ class SegmentServiceImpl : SegmentService {
             name = websegment.name
             type = websegment.type
             clientID = AuthenticationUtils.clientID
-            //data = Gson.
+            appuserID = AuthenticationUtils.principal.id
+            //FIXME create a separate class for json conversion
+            data = GsonBuilder().create().toJson(websegment)
         }
         return segment
     }
 
     private fun buildWebSegment(segment: Segment): WebSegment {
-        val websegment = WebSegment()
+        val websegment =  Gson().fromJson(segment.data, WebSegment::class.java)
         with(websegment) {
             id = segment.id
             name = segment.name
