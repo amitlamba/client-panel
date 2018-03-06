@@ -22,11 +22,14 @@ export const CKEDITOR_VALUE_ACCESSOR: any = {
 
 @Component({
   selector: 'ck-editor',
-  template: `<textarea #ck [mention]="items" [mentionConfig]="{triggerChar:'$',maxItems:10,labelKey:'name'}" contenteditable="true"></textarea>`,
+  template: `<textarea #ck 
+                       [mention]="suggestedList" 
+                       [mentionConfig]="{triggerChar:'@',maxItems:10,labelKey:'name'}" 
+                       contenteditable="true"></textarea>`,
   providers: [CKEDITOR_VALUE_ACCESSOR]
 })
 export class CkEditorComponent implements OnInit, OnDestroy, OnChanges, AfterViewInit, ControlValueAccessor {
-
+  suggestedList:string[]=["laksh","kamal","a","b","c"];
   items = UserParams.params;
 
   @ViewChild(MentionDirective) mention: MentionDirective;

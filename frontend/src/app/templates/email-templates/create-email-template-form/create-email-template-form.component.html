@@ -1,18 +1,21 @@
 <form (ngSubmit)="onSave(f)" #f="ngForm">
   <div class="form-group col-sm-12">
     <label for="name">Name</label>
-    <input type="text" class="form-control" maxlength="100" id="name" name="name" placeholder="Name (Will help you in searching templates)"  [(ngModel)]="emailTemplate.name">
+    <input type="text" class="form-control" maxlength="100" id="name" name="name"
+           placeholder="Name (Will help you in searching templates)" [(ngModel)]="emailTemplate.name">
   </div>
   <div class="form-group col-sm-8 col-md-6 col-lg-5">
     <label for="messageType">Email Message Type</label>
-    <select type="text" class="form-control" id="messageType" name="messageType" [(ngModel)]="emailTemplate.messageType">
+    <select type="text" class="form-control" id="messageType" name="messageType"
+            [(ngModel)]="emailTemplate.messageType">
       <option value="PROMOTIONAL">PROMOTIONAL</option>
       <option value="TRANSACTIONAL">TRANSACTIONAL</option>
     </select>
   </div>
   <div class="form-group col-sm-8 col-md-6 col-lg-5">
     <label for="fromEmailAddress">From Email address</label>
-    <select type="email" class="form-control" id="fromEmailAddress" name="fromEmailAddress" [(ngModel)]="emailTemplate.from">
+    <select type="email" class="form-control" id="fromEmailAddress" name="fromEmailAddress"
+            [(ngModel)]="emailTemplate.from">
       <option>amit@userndot.com</option>
       <option>shiv@userndot.com</option>
     </select>
@@ -27,15 +30,28 @@
   </div>
   <div class="form-group col-sm-12">
     <label for="emailSubject">Email Subject</label>
-    <input type="text" class="form-control" id="emailSubject" name="emailSubject" placeholder="Email Subject" [(ngModel)]="emailTemplate.emailTemplateSubject">
+    <input type="text" class="form-control" id="emailSubject" name="emailSubject" placeholder="Email Subject"
+           [(ngModel)]="emailTemplate.emailTemplateSubject">
   </div>
   <div class="form-group col-sm-12">
     <label for="emailBody">Email Body</label>
-    <textarea *ngIf="!showRichTextEditor" type="text" class="form-control" id="emailBody" name="emailBody" placeholder="Email Body" rows="8" [(ngModel)]="emailTemplate.emailTemplateBody" [mention]="items" [mentionConfig]="{triggerChar:'$',maxItems:10,labelKey:'name'}"></textarea>
-    <ck-editor *ngIf="showRichTextEditor" type="text" placeholder="Email Body" rows="8" name="emailBody" [(ngModel)]="emailTemplate.emailTemplateBody" skin="moono-lisa" lang="en" [fullPage]="false"></ck-editor>
-<!--
-    <app-simple-tiny *ngIf="showRichTextEditor" [elementId]="'my-editor-id'" (onEditorKeyup)="keyupHandlerFunction($event)"></app-simple-tiny>
--->
+    <textarea *ngIf="!showRichTextEditor" type="text" class="form-control" id="emailBody" name="emailBody"
+              placeholder="Email Body" rows="8" [(ngModel)]="emailTemplate.emailTemplateBody" [mention]="items"
+              [mentionConfig]="{triggerChar:'$',maxItems:10,labelKey:'name'}"></textarea>
+    <ck-editor *ngIf="showRichTextEditor"
+               type="text"
+               placeholder="Email Body"
+               rows="8"
+               name="emailBody"
+               [(ngModel)]="emailTemplate.emailTemplateBody"
+               skin="moono-lisa"
+               lang="en"
+               [fullPage]="false"></ck-editor>
+    <!--[mention]="suggestedList"-->
+    <!--[mentionConfig]="{triggerChar:'@'}"-->
+    <!--
+        <app-simple-tiny *ngIf="showRichTextEditor" [elementId]="'my-editor-id'" (onEditorKeyup)="keyupHandlerFunction($event)"></app-simple-tiny>
+    -->
     <div class="text-right"><i class="fa fa-user" aria-hidden="true"></i></div>
   </div>
   <div class="text-right col-sm-12">
