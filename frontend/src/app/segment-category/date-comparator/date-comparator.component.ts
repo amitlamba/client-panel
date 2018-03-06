@@ -1,10 +1,8 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {SegmentService} from "../../_services/segment.service";
-import {IMyDrpOptions} from "mydaterangepicker";
 import {DaterangepickerConfig} from "ng2-daterangepicker";
 import * as moment from "moment";
 import {DateFilter, DateOperator} from "../../_models/segment";
-import {Operator} from "rxjs/Operator";
 
 @Component({
   selector: 'app-date-comparator',
@@ -101,8 +99,8 @@ export class DateComparatorComponent implements OnInit {
     console.log(value);
     console.log(daterange);
     let values = [];
-    values[0] = value;
-    values[1] = daterange;
+    values[0] = value.start;
+    values[1] = value.end;
     this.localValues = values;
     this.values = this.localValues;
   }
@@ -110,7 +108,7 @@ export class DateComparatorComponent implements OnInit {
   singleSelect(value: any) {
     console.log(value);
     let values = [];
-    values[0] = value;
+    values[0] = value.start;
     this.localValues = values;
     this.values = this.localValues;
   }
@@ -153,7 +151,7 @@ export class DateComparatorComponent implements OnInit {
       this.hideWasExactlyDaySelector = true;
       this.hideWillBeExactlyDaySelector = true;
     }
-    this.localOperator = DateOperator[val];
+    this.operator = DateOperator[val];
   }
 
 }

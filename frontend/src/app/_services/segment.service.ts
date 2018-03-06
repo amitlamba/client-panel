@@ -27,7 +27,7 @@ export class SegmentService {
     this.segments.push(this.createNewSegment());
     this.segments.push(this.createNewSegment());
     this.segments.push(this.createNewSegment());
-    this.editSegment = this.initSegment(new Segment());
+    // this.editSegment = this.initSegment(new Segment());
   }
   private createNewSegment(): Segment {
     var textArray = [
@@ -43,11 +43,12 @@ export class SegmentService {
     segment.creationDate = "2017-01-01";
     return segment;
   }
-  private initSegment(segment: Segment): Segment {
+  public initSegment(segment: Segment): Segment {
     segment.didEvents = this.initDidEvents(new DidEvents());
     segment.didNotEvents = this.initDidEvents(new DidEvents());
     segment.globalFilters = new Array<GlobalFilter>();
     segment.geographyFilters = [];
+    segment.type = "Behaviour";
     return segment;
   }
   private initDidEvents(didEvents: DidEvents): DidEvents {
@@ -61,6 +62,16 @@ export class SegmentService {
         tap(next => {
         })
       );
+  }
+
+  getSegments(): Observable<Segment[]> {
+    return this.httpClient.get<Segment[]>(AppSettings.API_ENDPOINT_CLIENT_SEGMENT_LIST).pipe(
+      tap(next => {})
+    );
+  }
+
+  saveSegment(segment: Segment): Observable<Segment> {
+    return this.httpClient.post<Segment>(AppSettings.API_ENDPOINT_CLIENT_SEGMENT_SAVE, segment);
   }
 
   getSampleEvents(): RegisteredEvent[] {

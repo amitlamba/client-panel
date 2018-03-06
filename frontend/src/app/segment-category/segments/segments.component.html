@@ -18,7 +18,13 @@
     <tbody>
     <tr *ngFor="let segment of segments">
       <th scope="row">{{segment.id}}</th>
-      <td>{{segment.name}}</td>
+      <td (click)="toggleSegmentDetail(segment.id)">
+        <span class="segment-name">{{segment.name}} <sup [hidden]="toggleSegmentDetails[segment.id]" data-toggle="tooltip" data-placement="bottom" title="Click to see details" style="color: #1e6abc; font-weight: normal;"><i class="far fa-question-circle"></i></sup></span>
+        <span [hidden]="!toggleSegmentDetails[segment.id]">
+          <br>
+          <app-segment-nlp [segment]="segment"></app-segment-nlp>
+        </span>
+      </td>
       <td>{{segment.type}}</td>
       <td>{{segment.creationDate}}</td>
       <td></td>

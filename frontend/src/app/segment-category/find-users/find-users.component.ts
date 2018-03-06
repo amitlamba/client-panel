@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import {SegmentService} from "../../_services/segment.service";
+import {Segment} from "../../_models/segment";
 
 @Component({
   selector: 'app-find-users',
@@ -7,7 +9,18 @@ import { Component, OnInit } from '@angular/core';
 })
 export class FindUsersComponent implements OnInit {
 
-  constructor() { }
+  newSegment: Segment;
+
+  constructor(private segmentService: SegmentService) {
+    this.newSegment = new Segment();
+    // this.newSegment.didEvents = new DidEvents();
+    // this.newSegment.didNotEvents = new DidEvents();
+    // this.newSegment.globalFilters = [];
+    // this.newSegment.geographyFilters = new Array<Geography>();
+    this.segmentService.initSegment(this.newSegment);
+    this.newSegment.type = "Behaviour";
+    this.segmentService.editSegment = this.newSegment;
+  }
 
   ngOnInit() {
   }

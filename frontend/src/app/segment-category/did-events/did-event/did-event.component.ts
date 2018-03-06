@@ -45,7 +45,7 @@ export class DidEventComponent implements OnInit {
   days = [];
   hideElementInput = true;
   public singleDate: any;
-  eventSelected: boolean = false;
+  eventSelected: boolean = true;
 
   _ref:any;
   _parentRef: DidEventsComponent;
@@ -91,7 +91,7 @@ export class DidEventComponent implements OnInit {
     this.eventSelected = true;
     this.didEvent.name = this.registeredEvents[val].name;
     this.didEvent.dateFilter = new DateFilter();
-    this.didEvent.dateFilter.operator = DateOperator.After;
+    this.didEvent.dateFilter.operator = DateOperator.Before;
     this.didEvent.dateFilter.values = [];
     this.didEvent.propertyFilters = [];
     this.didEvent.whereFilter = new WhereFilter();
@@ -136,6 +136,7 @@ export class DidEventComponent implements OnInit {
     for (let i = 1; i <= 30; i++) {
       this.days.push(i);
     }
+    this.eventNameChanged(0);
   }
 
   singleSelect(value: any) {

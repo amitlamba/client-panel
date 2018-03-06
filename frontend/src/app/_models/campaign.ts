@@ -44,9 +44,32 @@ export class Schedule {
   scheduleEnd: ScheduleEnd;
 }
 
+//new
+export class Schedule1 {
+  oneTime: ScheduleOneTime;
+  multipleDates: ScheduleMultipleDates;
+  recurring: ScheduleRecurring;
+}
+
+export class ScheduleOneTime {
+  nowOrLater: Now;
+  campaignDateTime: CampaignTime;
+}
+
+export class ScheduleMultipleDates {
+  campaignDateTimeList: CampaignTime[];
+}
+
+export class ScheduleRecurring {
+  cronExpression: string;
+  scheduleStartDate: string;
+  scheduleEnd: ScheduleEnd;
+}
+//new end
+
 export class ScheduleEnd {
   endType: ScheduleEndType;
-  endsOn: any;
+  endsOn: string;
   occurrences: number;
 }
 
