@@ -30,9 +30,11 @@
            step="5"
            name="minutes"
            [(ngModel)]="campaignTime.minutes">
-    <select class="form-control col-4">
-      <option value="AM">AM</option>
-      <option value="PM">PM</option>
+    <select class="form-control col-4" [(ngModel)]="campaignTime.ampm">
+      <option name="ampm"
+              *ngFor="let AmPm of campaignTimeAmpPmList"
+              value="{{AmPm}}"
+              >{{AmPm}}</option>
     </select>
   </div>
   <button type="button"

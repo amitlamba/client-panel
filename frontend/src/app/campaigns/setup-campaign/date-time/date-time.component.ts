@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {CampaignTime} from "../../../_models/campaign";
+import {AmPm, CampaignTime} from "../../../_models/campaign";
 import * as moment from "moment";
 
 @Component({
@@ -12,6 +12,7 @@ export class DateTimeComponent implements OnInit {
   _ref: any;
   campaignTime: CampaignTime = new CampaignTime();
   date = new Date();
+  campaignTimeAmpPmList:string[];
   @Input() campaignTimes;
 
   // Date Picker Options
@@ -25,11 +26,14 @@ export class DateTimeComponent implements OnInit {
   };
 
   constructor() {
+    this.campaignTimeAmpPmList =Object.keys(AmPm);
   }
 
   ngOnInit() {
     this.campaignTime.hours = this.date.getHours() > 12 ? this.date.getHours() - 12 : this.date.getHours();
     this.campaignTime.minutes = this.date.getMinutes();
+    this.campaignTime.ampm=this.date.getHours()<12 ? AmPm.AM : AmPm.PM;
+    console.log(this.campaignTime.ampm);
     this.campaignTime.date = moment(Date.now()).format("YYYY-MM-DD");
     this.campaignTimes.push(this.campaignTime);
   }

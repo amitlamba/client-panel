@@ -2,12 +2,12 @@
   <select class="form-control"
           (change)="dropdownChanged($event.target.value)">
     <optgroup label="Absolute">
-      <option *ngFor="let abs of absoluteDateComparatorMetadata" value="{{abs}}">
+      <option *ngFor="let abs of absoluteDateComparatorMetadata" [value]="abs">
         {{dateComparatorMetadata["Absolute"][abs]["displayName"]}}
       </option>
     </optgroup>
     <optgroup label="Relative">
-      <option *ngFor="let abs of relativeDateComparatorMetadata" value="{{abs}}">
+      <option *ngFor="let abs of relativeDateComparatorMetadata" [value]="abs">
         {{dateComparatorMetadata["Relative"][abs]["displayName"]}}
       </option>
     </optgroup>
