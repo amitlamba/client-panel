@@ -2,7 +2,7 @@
   <div class="row d-flex flex-row ml-2">
     <div class="form-group m-2 mr-4">
       <select class="form-control" (change)="eventNameChanged($event.target.value)">
-        <option value="" disabled selected>--Select--</option>
+        <!--<option value="" disabled selected>&#45;&#45;Select&#45;&#45;</option>-->
         <option *ngFor="let regEvent of registeredEvents;let i=index" [value]="i">{{ regEvent.name }}</option>
       </select>
     </div>

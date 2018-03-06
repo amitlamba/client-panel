@@ -18,6 +18,7 @@ export class UsersByBehaviourComponent implements OnInit {
     this.segmentChange.emit(this.localSegment);
   }
   @Output() segmentChange = new EventEmitter();
+  showSegmentInNl: boolean = false;
 
   constructor(public segmentService: SegmentService) {
     this.localSegment = segmentService.editSegment;
@@ -27,6 +28,7 @@ export class UsersByBehaviourComponent implements OnInit {
   }
 
   find() {
+    this.showSegmentInNl = true;
     console.log(JSON.stringify(this.segment));
   }
 }

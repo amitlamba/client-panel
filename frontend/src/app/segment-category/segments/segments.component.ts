@@ -11,19 +11,18 @@ import {SegmentService} from "../../_services/segment.service";
 export class SegmentsComponent implements OnInit {
 
   segments: Segment[] = [];
+  toggleSegmentDetails: any = {};
 
   constructor(private router: Router, public segmentService:SegmentService) {
-    this.segments.push(this.createNewSegment());
-    this.segments.push(this.createNewSegment());
-    this.segments.push(this.createNewSegment());
-    this.segments.push(this.createNewSegment());
-    this.segments.push(this.createNewSegment());
-    this.segments.push(this.createNewSegment());
-    this.segments.push(this.createNewSegment());
   }
 
   ngOnInit() {
-    this.segments=this.segmentService.segments;
+    this.segmentService.getSegments().subscribe(
+      (segments) => {
+        this.segmentService.segments = segments;
+        this.segments = this.segmentService.segments;
+      }
+    );
   }
 
   private createNewSegment(): Segment {
@@ -43,5 +42,9 @@ export class SegmentsComponent implements OnInit {
 
   onCreateNew() {
     this.router.navigate(["segment","create-new-segment"]);
+  }
+
+  toggleSegmentDetail(id: number) {
+    this.toggleSegmentDetails[id] = !this.toggleSegmentDetails[id];
   }
 }
