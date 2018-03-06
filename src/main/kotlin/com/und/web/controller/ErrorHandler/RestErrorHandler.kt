@@ -33,6 +33,15 @@ class RestErrorHandler {
 
     }
 
+    @ExceptionHandler(AccessDeniedException::class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ResponseBody
+    fun processAuthEroor(ex: Exception) {
+        logger.debug("Handling INTERNAL SEREVR error")
+        logger.error("error occured",ex)
+
+    }
+
     @ExceptionHandler(UndBusinessValidationException::class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ResponseBody
@@ -75,7 +84,9 @@ class RestErrorHandler {
         //You can remove this check if you prefer to get the default error message.
         if (localizedErrorMessage == fieldError.defaultMessage) {
             val fieldErrorCodes = fieldError.codes
-            localizedErrorMessage = fieldErrorCodes[0]?:""
+            if(fieldErrorCodes != null) {
+                localizedErrorMessage = fieldErrorCodes[0] ?: ""
+            }
         }
 
         return localizedErrorMessage

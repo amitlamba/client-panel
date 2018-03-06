@@ -14,9 +14,8 @@ class QuartzTest {
 
     @Test
     fun testQuartz() {
-        val cronSchedule = CronScheduleBuilder.cronSchedule("0/5 * * * * ?")
-        println(cronSchedule)
-        var trigger = TriggerBuilder.newTrigger().withSchedule(cronSchedule).build()
+        //val cronSchedule = CronScheduleBuilder.cronSchedule("0/5 * * * * ?")
+        //var trigger = TriggerBuilder.newTrigger().withSchedule(cronSchedule).build()
 //        TriggerUtils.computeFireTimes(trigger, null, 5)
     }
 }

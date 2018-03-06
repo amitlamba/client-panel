@@ -7,40 +7,37 @@ class Segment {
 
     var id: Long? = null
 
-
-    var clientID: Long? = null
-
     var name: String = ""
     var type: String = ""
     var creationDate: LocalDateTime = LocalDateTime.now()
-    var conversionEvent: String = ""
-    var didEvents: DidEvents = DidEvents()
-    var didNotEvents: DidEvents = DidEvents()
-    var globalFilters: Array<GlobalFilter> = arrayOf()
-    var geographyFilters: Array<Geography> = arrayOf()
+    var conversionEvent: String? = null
+    var didEvents: DidEvents? = null
+    var didNotEvents: DidEvents? = null
+    var globalFilters: List<GlobalFilter> = listOf()
+    var geographyFilters: List<Geography> = listOf()
 }
 
 class DidEvents {
-    var description: String = ""
+    var description: String? = null
     var joinCondition: JoinCondition = JoinCondition()
-    var events: Array<Event> = arrayOf()
+    var events: List<Event> = listOf()
 }
 
 class JoinCondition {
-    var anyOfCount: Long = 0
-    var conditionType: String = "AllOf"// AllOf / AnyOf
+    var anyOfCount: Long? = null
+    var conditionType: String? = null// AllOf / AnyOf
 }
 
 class Event {
     var name: String = ""
     var dateFilter: DateFilter = DateFilter()
-    var propertyFilters: Array<PropertyFilter> = arrayOf()
+    var propertyFilters: List<PropertyFilter> = listOf()
     var whereFilter: WhereFilter = WhereFilter()
 }
 
 class DateFilter {
     var operator: DateOperator = DateOperator.After
-    var values: Array<String> = arrayOf()
+    var values: List<String> = listOf()
     var valueUnit: String = ""
 }
 
@@ -49,7 +46,7 @@ class PropertyFilter {
     var type: PropertyType = PropertyType.String
     var filterType: PropertyFilterType = PropertyFilterType.UTM
     var operator: String = ""
-    var values: Array<String> = arrayOf()
+    var values: List<String> = listOf()
     var valueUnit: String = ""
 }
 
@@ -69,7 +66,7 @@ class WhereFilter {
     var whereFilterName: WhereFilterName = WhereFilterName.Count
     var propertyName: String = ""
     var operator: NumberOperator = NumberOperator.Between
-    var values: Array<Long> = arrayOf()
+    var values: List<Long> = listOf()
 }
 
 enum class WhereFilterName {
@@ -109,7 +106,7 @@ enum class StringOperator {
 }
 
 class GlobalFilter {
-    var globalFilterType: GlobalFilterType = GlobalFilterType.APPFIELDS
+    var globalFilterType: GlobalFilterType = GlobalFilterType.AppFields
     var name: String = ""
     var type: String = ""
     var operator: String = ""
@@ -118,11 +115,11 @@ class GlobalFilter {
 }
 
 enum class GlobalFilterType(val type: String) {
-    USERPROPERTIES("UserProperties"),
-    DEMOGRAPHICS("Demographics"),
-    TECHNOGRAPHICS("Technographics"),
-    REACHABILITY("Reachability"),
-    APPFIELDS("appFields")
+    UserProperties("UserProperties"),
+    Demographics("Demographics"),
+    Technographics("Technographics"),
+    Reachability("Reachability"),
+    AppFields("appFields")
 }
 
 class Geography {
@@ -148,7 +145,7 @@ class City {
 
 class RegisteredEvent {
     var name: String = ""
-    var properties: Array<RegisteredEventProperties> = arrayOf()
+    var properties: List<RegisteredEventProperties> = listOf()
 }
 
 class RegisteredEventProperties {

@@ -8,22 +8,24 @@ import org.springframework.web.bind.annotation.*
 
 @CrossOrigin
 @RestController
+@RequestMapping("/campaign")
 class CampaignController {
 
     @Autowired
     lateinit var campaignService: CampaignService
 
-    @RequestMapping(value = "/client/get-campaigns", method = arrayOf(RequestMethod.GET))
+    @GetMapping(value = ["list/"])
     fun getCampaigns(@RequestParam(value = "id", required = false) id: Long? = null): List<Campaign> {
         return campaignService.getCampaigns(AuthenticationUtils.clientID!!, id)
     }
 
-    @RequestMapping(value = "/client/get-email-campaigns", method = arrayOf(RequestMethod.GET))
+    @GetMapping(value = ["/email/list"])
     fun getEmailCampaigns(@RequestParam(value = "id", required = false) id: Long? = null): List<Campaign> {
         return campaignService.getEmailCampaigns(AuthenticationUtils.clientID!!, id)
     }
 
-    fun saveCampaign(campaign: Campaign): Long {
+    @PostMapping(value = ["/save"])
+    fun saveCampaign(@RequestBody campaign: Campaign): Long {
         //TODO - Complete
         return 0
     }

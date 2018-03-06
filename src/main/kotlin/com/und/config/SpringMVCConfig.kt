@@ -34,13 +34,13 @@ class SpringMVCConfig : WebMvcConfigurer {
         return resolver
     }
 
-    @Bean
+/*    @Bean
     fun messageSource(): ResourceBundleMessageSource {
         val source = ResourceBundleMessageSource()
         source.setBasenames("i18/users", "i18/errormsg")
         source.setUseCodeAsDefaultMessage(true)
         return source
-    }
+    }*/
 
     @Bean
     fun taskScheduler(): TaskScheduler {

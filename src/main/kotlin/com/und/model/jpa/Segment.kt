@@ -1,5 +1,9 @@
 package com.und.model.jpa
 
+import com.und.web.model.DidEvents
+import com.und.web.model.Geography
+import com.und.web.model.GlobalFilter
+import java.time.LocalDateTime
 import javax.persistence.*
 import javax.validation.constraints.NotNull
 
@@ -17,6 +21,10 @@ class Segment {
     @NotNull
     var clientID: Long? = null
 
+    @Column(name = "appuser_id")
+    @NotNull
+    var appuserID: Long? = null
+
     @Column(name = "name")
     @NotNull
     var name: String = ""
@@ -25,9 +33,25 @@ class Segment {
     @NotNull
     var type: String = ""
 
+    @Column(name = "date_created")
+    @NotNull
+    var creationDate: LocalDateTime = LocalDateTime.now()
+
+    @Column(name = "conversion_event")
+    @NotNull
+    var conversionEvent: String = ""
+
     @Column(name = "data")
     @NotNull
     var data: String = "{}"
 
 
+}
+
+class SegmentData {
+    var conversionEvent: String = ""
+    var didEvents: DidEvents = DidEvents()
+    var didNotEvents: DidEvents = DidEvents()
+    var globalFilters: List<GlobalFilter> = listOf()
+    var geographyFilters: List<Geography> = listOf()
 }
