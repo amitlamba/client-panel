@@ -19,7 +19,7 @@ class SegmentController {
     private lateinit var eventMetadataService: EventMetadataService
 
     @Autowired
-    private lateinit var segmentationService: SegmentService
+    private lateinit var segmentService: SegmentService
 
     @GetMapping(value = ["/metadata"])
     fun getEventMetadta(): List<EventMetadata> {
@@ -33,14 +33,14 @@ class SegmentController {
 
     @PostMapping(value = ["/save"])
     fun save(@RequestBody segment: Segment): ResponseEntity<Segment> {
-        //FIXME Validate for unique name for a client
-        val persistedSegment = segmentationService.createSegment(segment)
+        //FIXME Validate for unique name of segment for a client
+        val persistedSegment = segmentService.createSegment(segment)
         return ResponseEntity( persistedSegment, HttpStatus.CREATED)
     }
 
     @GetMapping(value = ["/list"])
-    fun save(): ResponseEntity<List<Segment>> {
-        val allSegment = segmentationService.allSegment()
+    fun list(): ResponseEntity<List<Segment>> {
+        val allSegment = segmentService.allSegment()
         return ResponseEntity( allSegment, HttpStatus.OK)
     }
 

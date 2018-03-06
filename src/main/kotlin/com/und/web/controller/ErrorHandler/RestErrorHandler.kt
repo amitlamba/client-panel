@@ -33,6 +33,15 @@ class RestErrorHandler {
 
     }
 
+    @ExceptionHandler(AccessDeniedException::class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ResponseBody
+    fun processAuthEroor(ex: Exception) {
+        logger.debug("Handling INTERNAL SEREVR error")
+        logger.error("error occured",ex)
+
+    }
+
     @ExceptionHandler(UndBusinessValidationException::class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ResponseBody
