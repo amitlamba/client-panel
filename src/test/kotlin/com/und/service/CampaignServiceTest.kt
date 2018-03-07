@@ -1,11 +1,6 @@
 package com.und.service
 
-import com.und.model.*
-import com.und.model.jpa.Campaign
-import com.und.model.jpa.EmailCampaign
-import com.und.model.jpa.EmailTemplate
 import org.junit.Ignore
-import org.junit.Test
 import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
@@ -22,7 +17,7 @@ class CampaignServiceTest {
     @Autowired
     lateinit private var emailTemplateService: EmailTemplateService
 
-    @Test
+ /*   @Test
     fun testCreateDummyCampaign() {
         var campaign = createDummyCampaign()
         campaignService.saveCampaign(campaign.clientID!!, campaign)
@@ -56,5 +51,5 @@ class CampaignServiceTest {
         emailTemplate.from = "amit@userndot.com"
         emailTemplate.messageType = MessageType.PROMOTIONAL
         emailTemplateService.saveEmailTemplate(emailTemplate)
-    }
+    }*/
 }

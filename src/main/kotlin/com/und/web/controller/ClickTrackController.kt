@@ -16,7 +16,7 @@ class ClickTrackController {
     @Autowired
     private lateinit var clickTrackService: ClickTrackService
 
-    @RequestMapping(value = "/track", method = arrayOf(RequestMethod.GET))
+    @GetMapping(value = ["/track"])
     @ResponseBody
     fun trackClick(@RequestParam url: String, @RequestParam event: String, @RequestParam clientID: String,
                    @RequestParam undUid: String, @RequestParam emailUid: String,
@@ -28,7 +28,7 @@ class ClickTrackController {
         response.setHeader("Connection", "close")
     }
 
-    @RequestMapping(value = "/create-link", method = arrayOf(RequestMethod.GET))
+    @GetMapping(value = ["/create-link"])
     @ResponseBody
     fun createTrackLink(@RequestParam url: String, @RequestParam source: String, @RequestParam event: String, @RequestParam clientID: String): String {
         return "http://localhost:8080/click/track?url=${url}&event=${event}&clientID=${clientID}&undUid=1&emailUid=1"

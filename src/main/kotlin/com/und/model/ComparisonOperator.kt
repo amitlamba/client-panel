@@ -1,6 +1,17 @@
 package com.und.model
 
 class ComparisonOperator {
+    enum class OperatorType {
+        greaterThan,
+        lessThan,
+        greaterThanEqualTo,
+        lessThanEqualTo,
+        notEqualTo,
+        between,
+        notBetween,
+        containsAValue,
+        doesNotContainAValue
+    }
 
     companion object {
 
@@ -32,18 +43,5 @@ class ComparisonOperator {
     }
 }
 
-enum class OperatorType {
-    greaterThan,
-    lessThan,
-    greaterThanEqualTo,
-    lessThanEqualTo,
-    notEqualTo,
-    between,
-    notBetween,
-    containsAValue,
-    doesNotContainAValue
-}
 
-class DateComparisonOperator {
 
-}

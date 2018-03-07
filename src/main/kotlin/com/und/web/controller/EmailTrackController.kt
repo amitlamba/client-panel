@@ -22,7 +22,7 @@ class EmailTrackController {
     @Autowired
     private lateinit var emailService: EmailService
 
-    @RequestMapping(value = "/image/{id}", headers = arrayOf("Accept=image/jpeg, image/jpg, image/png, image/gif"), method = arrayOf(RequestMethod.GET))
+    @GetMapping(value = ["/image/{id}"], headers = arrayOf("Accept=image/jpeg, image/jpg, image/png, image/gif"))
     @ResponseBody
     fun getImage(@PathVariable id: String): ByteArray {
         try {
@@ -42,7 +42,7 @@ class EmailTrackController {
         }
     }
 
-    @RequestMapping(value = "/create-image/{id}", method = arrayOf(RequestMethod.GET))
+    @GetMapping(value = ["/create-image/{id}"])
     @ResponseBody
     fun getImagePath(@PathVariable id: String): String {
         return "http://localhost:8080/email/image/${URLEncoder.encode(URLEncoder.encode(encrypt(id),"UTF-8"),"UTF-8")}.jpg"

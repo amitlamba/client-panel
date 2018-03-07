@@ -20,25 +20,25 @@ class EmailTemplateController {
     @Autowired
     private lateinit var emailTemplateService: EmailTemplateService
 
-    @RequestMapping(value = "/default-templates", method = arrayOf(RequestMethod.GET))
+    @GetMapping(value =[ "/default-templates"])
     fun getDefaultEmailTemplates(): List<EmailTemplate> {
         logger.debug("Inside getDefaultEmailTemplates method")
         return emailTemplateService.getDefaultEmailTemplates()
     }
 
-    @RequestMapping(value = "/templates", method = arrayOf(RequestMethod.GET))
+    @GetMapping(value = ["/templates"])
     fun getClientEmailTemplates(@RequestParam(value = "id", required = false) id: Long? = null): List<EmailTemplate> {
         return emailTemplateService.getClientEmailTemplates(AuthenticationUtils.clientID!!, id)//TODO - Insert a valid clientID
     }
 
-    @RequestMapping(value = "/save-template", method = arrayOf(RequestMethod.POST))
+    @PostMapping(value = ["/save-template"])
     fun saveEmailTemplate(@RequestBody emailTemplate: EmailTemplate): Long {
         emailTemplate.clientID=AuthenticationUtils.clientID
         emailTemplate.appuserID=AuthenticationUtils.principal.id
         return emailTemplateService.saveEmailTemplate(emailTemplate)
     }
 
-    @RequestMapping(value = "/user-event-attributes", method = arrayOf(RequestMethod.GET))
+    @GetMapping(value = ["/user-event-attributes"])
     fun getUserEventAttributes() {
         emailTemplateService.getUserEventAttributes()
     }

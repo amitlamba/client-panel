@@ -19,25 +19,25 @@ class SmsTemplateController {
     @Autowired
     private lateinit var smsTemplateService: SmsTemplateService
 
-    @RequestMapping(value = "/default-templates", method = arrayOf(RequestMethod.GET))
+    @GetMapping(value = ["/default-templates"])
     fun getDefaultSmsTemplates(): List<SmsTemplate> {
         logger.debug("Inside getDefaultSmsTemplates method")
         return smsTemplateService.getDefaultSmsTemplates()
     }
 
-    @RequestMapping(value = "/templates", method = arrayOf(RequestMethod.GET))
+    @GetMapping(value = ["/templates"])
     fun getClientSmsTemplates(@RequestParam(value = "id", required = false) id: Long? = null): List<SmsTemplate> {
         return smsTemplateService.getClientSmsTemplates(AuthenticationUtils.clientID!!, id)
     }
 
-    @RequestMapping(value = "/save-template", method = arrayOf(RequestMethod.POST))
+    @PostMapping(value = ["/save-template"])
     fun saveSmsTemplate(@RequestBody smsTemplate: SmsTemplate): Long {
         smsTemplate.clientID = AuthenticationUtils.clientID
         smsTemplate.appuserID=AuthenticationUtils.principal.id
         return smsTemplateService.saveSmsTemplate(smsTemplate)
     }
 
-    @RequestMapping(value = "/user-event-attributes", method = arrayOf(RequestMethod.GET))
+    @GetMapping(value = ["/user-event-attributes"])
     fun getUserEventAttributes() {
         smsTemplateService.getUserEventAttributes()
     }

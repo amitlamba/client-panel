@@ -1,8 +1,7 @@
 package com.und.model.jpa
 
-import com.und.model.CampaignType
-import com.und.model.EmailDeliveryStatus
-import com.und.model.FrequencyType
+
+import java.time.LocalDate
 import javax.persistence.*
 import javax.validation.constraints.NotNull
 
@@ -24,6 +23,10 @@ open class Campaign {
     @NotNull
     var appuserID: Long? = null
 
+    @Column(name = "name")
+    @NotNull
+    var name: String = ""
+
     @Column(name = "campaign_type") //Email / SMS / Notifications etc
     @NotNull
     @Enumerated(EnumType.STRING)
@@ -33,26 +36,79 @@ open class Campaign {
     @NotNull
     var segmentationID: Long? = null
 
-    @Column(name = "frequency_type") //Repetitive or Onetime
-    @NotNull
-    @Enumerated(EnumType.STRING)
-    var frequencyType: FrequencyType? = null
 
     @Column(name = "schedule")
     @NotNull
     var schedule: String? = null
 
-    @Column(name = "campaign_status") //TODO enum EmailDeliveryStatus or what?
-    @NotNull
-    @Enumerated(EnumType.STRING)
-    var campaignStatus: EmailDeliveryStatus? = null
 
     @OneToOne(mappedBy = "campaign",
             cascade = arrayOf(CascadeType.ALL),
             orphanRemoval = true)
-    var emailCampaign: EmailCampaign = EmailCampaign()
+    var emailCampaign: EmailCampaign? = null
         set(value) {
             field = value
-            field.campaign = this
+            field?.campaign = this
         }
+
+    //TODO add sms, and push campaign later
+}
+
+enum class CampaignType {
+    EMAIL,
+    SMS,
+    MOBILE_PUSH_NOTIFICATION
+}
+
+
+class Schedule {
+    var oneTime: ScheduleOneTime? = null
+    var multipleDates: ScheduleMultipleDates? = null
+    var recurring: ScheduleRecurring? = null
+}
+
+class ScheduleOneTime {
+    var nowOrLater: Now? = Now.Later
+    var campaignDateTime: CampaignTime? = null
+}
+
+class ScheduleMultipleDates {
+    var campaignDateTimeList: List<CampaignTime> = mutableListOf()
+}
+
+class ScheduleRecurring {
+    lateinit var cronExpression: String
+    var scheduleStartDate: String? = null
+    var scheduleEnd: ScheduleEnd? = null
+}
+
+
+class ScheduleEnd {
+    var endType: ScheduleEndType? = null
+    var endsOn: Any? = null
+    var occurrences: Int = 0
+}
+
+enum class ScheduleEndType {
+    NeverEnd,
+    EndsOnDate,
+    Occurrences
+}
+
+
+class CampaignTime {
+    lateinit var date: LocalDate
+    var hours: Int? = null
+    var minutes: Int? = null
+    lateinit var ampm: AmPm
+}
+
+enum class Now {
+    Now,
+    Later
+}
+
+enum class AmPm {
+    AM,
+    PM
 }
