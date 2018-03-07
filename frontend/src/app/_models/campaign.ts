@@ -3,7 +3,7 @@ import {EmailCampaign} from "./email";
 export class Campaign {
   id: number;
   name: string;
-  schedule: Schedule;
+  schedule: Schedule1;
   campaignType: CampaignType;
   segmentationID: number;
   templateID: number;
@@ -53,7 +53,7 @@ export class Schedule1 {
 
 export class ScheduleOneTime {
   nowOrLater: Now;
-  campaignDateTime: CampaignTime;
+  campaignTime: CampaignTime;
 }
 
 export class ScheduleMultipleDates {

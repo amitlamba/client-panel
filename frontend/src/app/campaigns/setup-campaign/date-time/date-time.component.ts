@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {AmPm, CampaignTime} from "../../../_models/campaign";
 import * as moment from "moment";
 
@@ -12,8 +12,18 @@ export class DateTimeComponent implements OnInit {
   _ref: any;
   campaignTime: CampaignTime = new CampaignTime();
   date = new Date();
-  campaignTimeAmpPmList:string[];
-  @Input() campaignTimes;
+  campaignTimeAmpPmList: string[];
+
+  @Input() campaignTimesList:CampaignTime[] = [];
+  localCampaignLaterTime;
+  @Input() get campaignLaterTime(): CampaignTime {
+    return this.localCampaignLaterTime;
+  }
+  set campaignLaterTime(campaignLaterTime: CampaignTime) {
+    this.localCampaignLaterTime = campaignLaterTime;
+    this.campaignLaterTimeChange.emit(this.localCampaignLaterTime);
+  }
+  @Output() campaignLaterTimeChange = new EventEmitter();
 
   // Date Picker Options
   public singlePicker = {
@@ -26,16 +36,16 @@ export class DateTimeComponent implements OnInit {
   };
 
   constructor() {
-    this.campaignTimeAmpPmList =Object.keys(AmPm);
+    this.campaignTimeAmpPmList = Object.keys(AmPm);
   }
 
   ngOnInit() {
     this.campaignTime.hours = this.date.getHours() > 12 ? this.date.getHours() - 12 : this.date.getHours();
     this.campaignTime.minutes = this.date.getMinutes();
-    this.campaignTime.ampm=this.date.getHours()<12 ? AmPm.AM : AmPm.PM;
-    console.log(this.campaignTime.ampm);
+    this.campaignTime.ampm = this.date.getHours() < 12 ? AmPm.AM : AmPm.PM;
     this.campaignTime.date = moment(Date.now()).format("YYYY-MM-DD");
-    this.campaignTimes.push(this.campaignTime);
+    this.campaignTimesList.push(this.campaignTime);
+    this.campaignLaterTime=this.campaignTime;
   }
 
   singleSelect(val: any): void {
@@ -48,9 +58,10 @@ export class DateTimeComponent implements OnInit {
   }
 
   removeCampaignTime(): void {
-    this.campaignTimes.forEach((data, index) => {
-      if (data == this.campaignTime)
-        this.campaignTimes.splice(index, 1);
+    this.campaignTimesList.forEach((data, index) => {
+      if (this.campaignTime == data) {
+        this.campaignTimesList.splice(index, 1);
+      }
     })
   }
 
