@@ -1,5 +1,6 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {CampaignTime} from "../../../_models/campaign";
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {AmPm, CampaignTime} from "../../../_models/campaign";
+import * as moment from "moment";
 
 @Component({
   selector: 'app-date-time',
@@ -7,39 +8,60 @@ import {CampaignTime} from "../../../_models/campaign";
   styleUrls: ['./date-time.component.css']
 })
 export class DateTimeComponent implements OnInit {
-  showCloseButton:boolean;
-  _ref:any;
-  campaignTime=new CampaignTime();
-  date=new Date();
-  @Input() campaignTimes;
-  //Date Picker
-  public singleDate: any;
+  showCloseButton: boolean;
+  _ref: any;
+  campaignTime: CampaignTime = new CampaignTime();
+  date = new Date();
+  campaignTimeAmpPmList: string[];
+
+  @Input() campaignTimesList:CampaignTime[] = [];
+  localCampaignLaterTime;
+  @Input() get campaignLaterTime(): CampaignTime {
+    return this.localCampaignLaterTime;
+  }
+  set campaignLaterTime(campaignLaterTime: CampaignTime) {
+    this.localCampaignLaterTime = campaignLaterTime;
+    this.campaignLaterTimeChange.emit(this.localCampaignLaterTime);
+  }
+  @Output() campaignLaterTimeChange = new EventEmitter();
+
+  // Date Picker Options
   public singlePicker = {
     singleDatePicker: true,
     showDropdowns: true,
-    opens: "right"
+    opens: "right",
+    locale: {
+      format: "DD/MM/YYYY"
+    }
   };
 
   constructor() {
-    this.singleDate = Date.now();
+    this.campaignTimeAmpPmList = Object.keys(AmPm);
   }
+
   ngOnInit() {
-    this.campaignTime.hours= this.date.getHours() > 12 ? this.date.getHours() - 12 : this.date.getHours();
-    this.campaignTime.minutes=this.date.getMinutes();
-    this.campaignTime.date=this.singleDate;
-    this.campaignTimes.push(this.campaignTime);
+    this.campaignTime.hours = this.date.getHours() > 12 ? this.date.getHours() - 12 : this.date.getHours();
+    this.campaignTime.minutes = this.date.getMinutes();
+    this.campaignTime.ampm = this.date.getHours() < 12 ? AmPm.AM : AmPm.PM;
+    this.campaignTime.date = moment(Date.now()).format("YYYY-MM-DD");
+    this.campaignTimesList.push(this.campaignTime);
+    this.campaignLaterTime=this.campaignTime;
   }
-  singleSelect(value: any) {
-    this.singleDate = value.start;
+
+  singleSelect(val: any): void {
+    this.campaignTime.date = moment(val.end.valueOf()).format("YYYY-MM-DD");
   }
-  removeObject(){
+
+  removeObject(): void {
     this.removeCampaignTime();
     this._ref.destroy();
   }
-  removeCampaignTime() {
-    this.campaignTimes.forEach((data, index)=>{
-      if(data == this.campaignTime)
-        this.campaignTimes.splice(index,1);
+
+  removeCampaignTime(): void {
+    this.campaignTimesList.forEach((data, index) => {
+      if (this.campaignTime == data) {
+        this.campaignTimesList.splice(index, 1);
+      }
     })
   }
 

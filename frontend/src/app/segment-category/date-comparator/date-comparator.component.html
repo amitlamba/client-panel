@@ -2,12 +2,12 @@
   <select class="form-control"
           (change)="dropdownChanged($event.target.value)">
     <optgroup label="Absolute">
-      <option *ngFor="let abs of absoluteDateComparatorMetadata" value="{{abs}}">
+      <option *ngFor="let abs of absoluteDateComparatorMetadata" [value]="abs">
         {{dateComparatorMetadata["Absolute"][abs]["displayName"]}}
       </option>
     </optgroup>
     <optgroup label="Relative">
-      <option *ngFor="let abs of relativeDateComparatorMetadata" value="{{abs}}">
+      <option *ngFor="let abs of relativeDateComparatorMetadata" [value]="abs">
         {{dateComparatorMetadata["Relative"][abs]["displayName"]}}
       </option>
     </optgroup>
@@ -15,7 +15,10 @@
 </div>
 <div class="form-group m-2 d-inline-flex" *ngIf="!hideElementDatepicker" style="position: relative;">
   <span class="input-group-btn datepicker">
-    <input type="text" class="form-control" name="daterange" daterangepicker [options]="singlePicker"
+    <input type="text" class="form-control"
+           name="daterange"
+           daterangepicker
+           [options]="singlePicker"
            (selected)="singleSelect($event)"/>
   </span>
   <span class="ml-1 calendar-icon"><i class="far fa-calendar-alt"></i></span>

@@ -21,9 +21,8 @@
           <select class="form-control"
                   name="segmentName"
                   #segmentID
-                  (change)="saveSegmentID(segmentID.value)"
-                  required>
-            <option value="" selected>Choose from a list of Segments . . .</option>
+                  (change)="saveSegmentID(segmentID.value)">
+            <option value="selectSegment" selected>Choose from a list of Segments . . .</option>
             <option *ngFor="let segment of segmentsList"
                     [value]="segment.id">{{segment.name}}
             </option>
@@ -34,16 +33,27 @@
           <select class="form-control"
                   #templateID
                   (change)="saveTemplateID(templateID.value)">
-            <option value="" selected>Choose from a list of Templates . . .</option>
-            <option *ngFor="let smsTemplate of smsTemplatesList"
-                    [value]="smsTemplate.id">{{smsTemplate.name}}
-            </option>
+            <option value="selectTemplate" selected>Choose from a list of Templates . . .</option>
+            <ng-container
+              *ngIf="currentPath==='sms'">
+              <option *ngFor="let smsTemplate of smsTemplatesList"
+                      [value]="smsTemplate.id">{{smsTemplate.name}}
+              </option>
+            </ng-container>
+            <ng-container
+              *ngIf="currentPath==='email'">
+              <option *ngFor="let emailTemplate of emailTemplatesList"
+                      [value]="emailTemplate.id">{{emailTemplate.name}}
+              </option>
+            </ng-container>
           </select>
+
         </div>
         <button class="btn btn-primary ml-3 px-4"
                 (click)="continueToSchedule()"
                 type="button"
-                [disabled]="f.invalid">Continue
+                [disabled]='f.invalid || templateID.value=="selectTemplate" || segmentID.value=="selectSegment"'>
+          Continue
         </button>
       </form>
     </div>
@@ -66,8 +76,8 @@
                  value="oneTime"
                  id="oneTime"
                  required
-                 [(ngModel)]="schedule.scheduleType"
-                 (click)="emptyCampaignTimesArray()">
+                 [(ngModel)]="scheduleType"
+                 (click)="makeOneTimeDateObject()">
           <label for="oneTime">One Time</label>
 
           <input class="ml-2 mr-1"
@@ -76,8 +86,8 @@
                  value="multipleDates"
                  id="multipleDates"
                  required
-                 [(ngModel)]="schedule.scheduleType"
-                 (click)="emptyCampaignTimesArray()">
+                 [(ngModel)]="scheduleType"
+                 (click)="makeMultipleDateObject()">
           <label for="multipleDates">On Multiple Dates</label>
 
           <input class="ml-2 mr-1"
@@ -86,12 +96,12 @@
                  value="recurring"
                  id="recurring"
                  required
-                 [(ngModel)]="schedule.scheduleType"
-                 (click)="emptyCampaignTimesArray()">
+                 [(ngModel)]="scheduleType"
+                 (click)="makeRecurringObject()">
           <label for="recurring">Recurring</label>
         </div>
         <div class="col-9 mt-2"
-             *ngIf="schedule.scheduleType==='oneTime'">
+             *ngIf="scheduleType==='oneTime'">
           <label class="card-title h5">Campaign start date and time</label>
           <br>
           <input class="mr-1"
@@ -100,7 +110,7 @@
                  value="Now"
                  id="now"
                  required
-                 [(ngModel)]="schedule.startTime">
+                 [(ngModel)]="schedule1.oneTime.nowOrLater">
           <label for="now">Now</label>
           <input class="mr-1 ml-2"
                  type="radio"
@@ -108,18 +118,18 @@
                  value="Later"
                  id="later"
                  required
-                 [(ngModel)]="schedule.startTime"
+                 [(ngModel)]="schedule1.oneTime.nowOrLater"
                  (click)="emptyCampaignTimesArray()">
           <label for="later">Later</label>
-          <app-date-time *ngIf="schedule.startTime==='Later'"
-                         [campaignTimes]="schedule.campaignTimeList"></app-date-time>
+          <app-date-time *ngIf="schedule1.oneTime.nowOrLater==='Later'"
+                         [(campaignLaterTime)]="schedule1.oneTime.campaignTime"></app-date-time>
 
         </div>
         <div class="col-9 mt-2"
-             *ngIf="schedule.scheduleType==='multipleDates'">
+             *ngIf="scheduleType==='multipleDates'">
           <label class="card-title mb-0 h5">Pick Dates</label>
           <br>
-          <app-date-time [campaignTimes]="schedule.campaignTimeList"></app-date-time>
+          <app-date-time [campaignTimesList]="schedule1.multipleDates.campaignDateTimeList"></app-date-time>
           <div #parent></div>
           <button type="button"
                   class="btn btn-link py-0 pl-0 mb-2"
@@ -128,7 +138,7 @@
             Add another date
           </button>
         </div>
-        <div *ngIf="schedule.scheduleType==='recurring'">
+        <div *ngIf="scheduleType==='recurring'">
           <div class="col-12 mt-3">
             <label class="card-title mb-0 h5">Campaign Start</label>
             <div class="input-group col-md-5 col-sm-6 col-xs-6 pl-0 mt-3 mb-4"
@@ -137,7 +147,7 @@
                  (selected)="campaignStartDateSelect($event)">
               <span class="form-control uneditable-input pr-2 col-6"
                     name="daterange">
-                  {{ schedule.startDateTime | date:'dd/M/y' }}
+                {{ schedule1.recurring.scheduleStartDate | date:'dd/M/y'}}
               </span>
               <span class="input-group-btn">
                 <a type="button" class="btn btn-default"><i class="far fa-calendar-alt"></i></a>
@@ -152,14 +162,14 @@
                    name="campaignEnd"
                    id="neverEnd"
                    value="NeverEnd"
-                   [(ngModel)]="schedule.scheduleEnd.endType"
+                   [(ngModel)]="schedule1.recurring.scheduleEnd.endType"
                    required>
             <label for="neverEnd">Never End</label>
             <input class="ml-2 mr-1"
                    type="radio"
                    name="campaignEnd"
                    value="EndsOnDate"
-                   [(ngModel)]="schedule.scheduleEnd.endType"
+                   [(ngModel)]="schedule1.recurring.scheduleEnd.endType"
                    id="selectDate"
                    required>
             <label for="selectDate">Select Date</label>
@@ -167,7 +177,7 @@
                    type="radio"
                    name="campaignEnd"
                    value="Occurrences"
-                   [(ngModel)]="schedule.scheduleEnd.endType"
+                   [(ngModel)]="schedule1.recurring.scheduleEnd.endType"
                    id="afterOccurences"
                    required>
             <label for="afterOccurences"
@@ -177,17 +187,17 @@
                      name="occurences"
                      min="1"
                      class="form-control col-1"
-                     [(ngModel)]="schedule.scheduleEnd.occurrences">
+                     [(ngModel)]="schedule1.recurring.scheduleEnd.occurrences">
               occurences
             </label>
-            <div *ngIf="schedule.scheduleEnd.endType==='EndsOnDate'"
+            <div *ngIf="schedule1.recurring.scheduleEnd.endType==='EndsOnDate'"
                  class="input-group col-md-5 col-sm-6 col-xs-6 pl-0 mt-3 mb-4"
                  daterangepicker
                  [options]="singlePicker"
                  (selected)="campaignEndDateSelect($event)">
               <span class="form-control uneditable-input pr-2 col-6"
                     name="daterange">
-                  {{ schedule.scheduleEnd.endsOn | date:'dd/M/y' }}
+                  {{ schedule1.recurring.scheduleEnd.endsOn | date:'dd/M/y' }}
               </span>
               <span class="input-group-btn">
                 <a type="button" class="btn btn-default"><i class="far fa-calendar-alt"></i></a>
@@ -196,7 +206,10 @@
           </div>
           <div class="col-12 mb-2">
             <label class="card-title h5">Repeat </label>
-            <cron-editor [(cron)]="cronExpression" [disabled]="isCronDisabled" [(options)]="cronOptions">Cron here...
+            <cron-editor [(cron)]="cronExpression"
+                         [disabled]="isCronDisabled"
+                         [(options)]="cronOptions"
+                          >Cron here...
             </cron-editor>
           </div>
         </div>
@@ -216,7 +229,7 @@
               {{campaignTime.date|date}} at {{campaignTime.hours}}:{{campaignTime.minutes}}
             </span>
           </p>
-          <p *ngIf="schedule.scheduleType==='recurring'">
+          <p *ngIf="scheduleType=='recurring'">
             <b> {{cronExpression}} </b>
           </p>
         </div>

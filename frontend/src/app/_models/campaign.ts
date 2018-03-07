@@ -3,7 +3,7 @@ import {EmailCampaign} from "./email";
 export class Campaign {
   id: number;
   name: string;
-  schedule: Schedule;
+  schedule: Schedule1;
   campaignType: CampaignType;
   segmentationID: number;
   templateID: number;
@@ -30,9 +30,9 @@ export enum FrequencyType {
 }
 
 export enum CampaignType {
-  EMAIL = "EMAIL",
-  SMS = "SMS",
-  MOBILE_PUSH_NOTIFICATION = "MOBILE_PUSH_NOTIFICATION"
+  EMAIL="EMAIL",
+  SMS="SMS",
+  MOBILE_PUSH_NOTIFICATION="MOBILE_PUSH_NOTIFICATION"
 }
 
 export class Schedule {
@@ -40,7 +40,7 @@ export class Schedule {
   startTime: Now;
   campaignTimeList: CampaignTime[];
   cronExpression: string;
-  startDateTime: Date;
+  startDateTime: string;
   scheduleEnd: ScheduleEnd;
 }
 
@@ -53,7 +53,7 @@ export class Schedule1 {
 
 export class ScheduleOneTime {
   nowOrLater: Now;
-  campaignDateTime: CampaignTime;
+  campaignTime: CampaignTime;
 }
 
 export class ScheduleMultipleDates {

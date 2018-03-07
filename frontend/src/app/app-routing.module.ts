@@ -47,7 +47,8 @@ const routes: Routes = [
   ]},
   {path: 'campaigns', component:CampaignsListComponent, canActivate: [AuthGuard], pathMatch:"full"},
   {path: 'campaigns', component:CampaignsComponent, canActivate: [AuthGuard],children: [
-      {path: 'setup',component:SetupCampaignComponent}
+      {path: 'sms',component:SetupCampaignComponent},
+      {path: 'email',component:SetupCampaignComponent}
     ]},
   { path: '**', component: PageNotFoundComponent }
 ];
