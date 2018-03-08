@@ -30,8 +30,8 @@ export class CreateNewSegmentComponent implements OnInit {
     this.segmentService.saveSegment(this.newSegment).subscribe(
       (segment) => {
         this.segmentService.segments.push(segment);
+        this.router.navigate(['segment/segments']);
       }
-    );
-    this.router.navigate(['segment/segments']);
+    )
   }
 }

@@ -47,4 +47,8 @@ export class SegmentsComponent implements OnInit {
   toggleSegmentDetail(id: number) {
     this.toggleSegmentDetails[id] = !this.toggleSegmentDetails[id];
   }
+
+  segmentTrackBy(index: number, segment: Segment) {
+    return segment.id;
+  }
 }
