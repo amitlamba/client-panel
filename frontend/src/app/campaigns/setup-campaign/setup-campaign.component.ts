@@ -106,20 +106,20 @@ export class SetupCampaignComponent implements OnInit {
   }
 
   onSubmit(): void {
-    if(this.scheduleType==="recurring"){
+    if (this.scheduleType === "recurring") {
       this.schedule1.recurring.cronExpression = this.cronExpression;
     }
 
     this.campaign.name = this.campaignName;
     this.campaign.schedule = this.schedule1;
-    console.log(this.campaign);
+    // console.log(this.campaign);
     if (this.currentPath === 'sms') {
       this.campaign.campaignType = CampaignType.SMS;
     }
     else {
       this.campaign.campaignType = CampaignType.EMAIL;
     }
-    // console.log(JSON.stringify(this.campaign));
+    console.log(JSON.stringify(this.campaign));
   }
 
   saveSegmentID(segmentID: number): void {
@@ -131,13 +131,12 @@ export class SetupCampaignComponent implements OnInit {
   }
 
   campaignStartDateSelect(value: any): void {
-    // this.schedule.startDateTime = moment(value.end.valueOf()).format("YYYY-MM-DD");
     this.schedule1.recurring.scheduleStartDate = moment(value.end.valueOf()).format("YYYY-MM-DD");
   }
 
   campaignEndDateSelect(value: any): void {
-    // this.schedule.scheduleEnd.endsOn = moment(value.end.valueOf()).format("YYYY-MM-DD");
-    this.schedule1.recurring.scheduleEnd.endsOn=moment(value.end.valueOf()).format("YYYY-MM-DD");;
+    this.schedule1.recurring.scheduleEnd.endsOn = moment(value.end.valueOf()).format("YYYY-MM-DD");
+    ;
   }
 
   addAnotherDateTime(): void {
@@ -151,33 +150,38 @@ export class SetupCampaignComponent implements OnInit {
     dateTimeComponent.instance.campaignTimesList = this.schedule1.multipleDates.campaignDateTimeList;
   }
 
-  emptyCampaignTimesArray(): void {
-    this.schedule.campaignTimeList = [];
-  }
-
   makeOneTimeDateObject() {
-    this.scheduleType = ScheduleType.oneTime;
-    this.schedule1 = new Schedule1();
-    this.schedule1.oneTime = new ScheduleOneTime();
-    this.schedule1.oneTime.nowOrLater = Now.Now;
-    this.schedule1.oneTime.campaignTime = new CampaignTime();
+    if (this.scheduleType !== ScheduleType.oneTime) {
+      this.scheduleType = ScheduleType.oneTime;
+      this.schedule1 = new Schedule1();
+      this.schedule1.oneTime = new ScheduleOneTime();
+      this.schedule1.oneTime.nowOrLater = Now.Now;
+      this.schedule1.oneTime.campaignTime = new CampaignTime();
+    }
   }
 
   makeMultipleDateObject() {
-    this.scheduleType = ScheduleType.multipleDates;
-    this.schedule1 = new Schedule1();
-    this.schedule1.multipleDates = new ScheduleMultipleDates();
-    this.schedule1.multipleDates.campaignDateTimeList = new Array<CampaignTime>();
+    if (this.scheduleType !== ScheduleType.multipleDates) {
+      this.scheduleType = ScheduleType.multipleDates;
+      this.schedule1 = new Schedule1();
+      this.schedule1.multipleDates = new ScheduleMultipleDates();
+      this.schedule1.multipleDates.campaignDateTimeList = new Array<CampaignTime>();
+    }
   }
-  makeRecurringObject(){
-    this.scheduleType = ScheduleType.recurring;
-    this.schedule1=new Schedule1();
-    this.schedule1.recurring = new ScheduleRecurring();
-    this.schedule1.recurring.scheduleStartDate=moment(Date.now()).format("YYYY-MM-DD");
-    this.schedule1.recurring.scheduleEnd = new ScheduleEnd();
-    this.schedule1.recurring.scheduleEnd.endType = ScheduleEndType.NeverEnd;
-    this.schedule1.recurring.scheduleEnd.endsOn = moment(Date.now()).format("YYYY-MM-DD");
-    this.schedule1.recurring.cronExpression=this.cronExpression;
+
+  makeRecurringObject() {
+    if (this.scheduleType !== ScheduleType.recurring) {
+      this.scheduleType = ScheduleType.recurring;
+      this.schedule1 = new Schedule1();
+      this.schedule1.recurring = new ScheduleRecurring();
+      this.schedule1.recurring.scheduleStartDate = moment(Date.now()).format("YYYY-MM-DD");
+      this.schedule1.recurring.scheduleEnd = new ScheduleEnd();
+      this.schedule1.recurring.scheduleEnd.endType = ScheduleEndType.NeverEnd;
+      this.schedule1.recurring.scheduleEnd.endsOn = moment(Date.now()).format("YYYY-MM-DD");
+      this.schedule1.recurring.cronExpression = this.cronExpression;
+      this.schedule1.recurring.scheduleEnd.occurrences = 2;
+    }
+
   }
 }
 

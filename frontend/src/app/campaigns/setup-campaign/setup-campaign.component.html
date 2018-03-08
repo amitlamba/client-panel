@@ -118,8 +118,7 @@
                  value="Later"
                  id="later"
                  required
-                 [(ngModel)]="schedule1.oneTime.nowOrLater"
-                 (click)="emptyCampaignTimesArray()">
+                 [(ngModel)]="schedule1.oneTime.nowOrLater">
           <label for="later">Later</label>
           <app-date-time *ngIf="schedule1.oneTime.nowOrLater==='Later'"
                          [(campaignLaterTime)]="schedule1.oneTime.campaignTime"></app-date-time>
@@ -209,7 +208,7 @@
             <cron-editor [(cron)]="cronExpression"
                          [disabled]="isCronDisabled"
                          [(options)]="cronOptions"
-                          >Cron here...
+            >Cron here...
             </cron-editor>
           </div>
         </div>
@@ -217,14 +216,20 @@
           <span class="font-weight-bold">
             Summary &#58;
           </span>
-          Send {{schedule.scheduleType}}
-          <span *ngIf="schedule.scheduleType=='oneTime'">
-            {{schedule.startTime}}
+          Send {{scheduleType}}
+          <span *ngIf="schedule1 && schedule1.oneTime">
+            {{schedule1.oneTime.nowOrLater}}
           </span>
-          <p *ngIf="schedule.startTime==='Later' || schedule.scheduleType==='multipleDates'"
+          <p *ngIf="schedule1 && schedule1.oneTime && schedule1.oneTime.nowOrLater==='Later'"
              class="d-inline">
             On
-            <span *ngFor="let campaignTime of schedule.campaignTimeList"
+            <span class="mr-3">
+              {{schedule1.oneTime.campaignTime.date|date}} at {{schedule1.oneTime.campaignTime.hours}}:{{schedule1.oneTime.campaignTime.minutes}}
+            </span>
+          </p>
+          <p *ngIf="schedule1 && schedule1.multipleDates" class="d-inline">
+            On
+            <span *ngFor="let campaignTime of schedule1.multipleDates.campaignDateTimeList"
                   class="mr-3">
               {{campaignTime.date|date}} at {{campaignTime.hours}}:{{campaignTime.minutes}}
             </span>
