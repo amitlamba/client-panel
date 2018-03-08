@@ -27,5 +27,12 @@
         </li>
       </ul>
     </li>
+    <li *ngIf="segment.geographyFilters && segment.geographyFilters.length > 0">With Geography filters
+      <ul>
+        <li *ngFor="let filter of segment.geographyFilters">
+          <span *ngIf="filter.city && filter.city.name">{{filter.city.name}}, </span><span *ngIf="filter.state && filter.state.name">{{filter.state.name}}, </span>{{filter.country.name}}
+        </li>
+      </ul>
+    </li>
   </ul>
 </div>

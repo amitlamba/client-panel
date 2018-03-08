@@ -16,11 +16,11 @@ class EmailCampaign {
 
     @Column(name = "client_id")
     @NotNull
-    var emailCampaignClientID: Long? = null
+    var clientID: Long? = null
 
     @Column(name = "appuser_id")
     @NotNull
-    var appuserID: Long? = null
+    var appuserId: Long? = null
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "campaign_id")
@@ -29,6 +29,6 @@ class EmailCampaign {
 
     @Column(name = "email_template_id")
     @NotNull
-    var emailTemplateID: Long? = null
+    var templateId: Long? = null
 
 }

@@ -15,17 +15,17 @@ class LocationController {
     @Autowired
     private lateinit var locationService: LocationService
 
-    @RequestMapping(value = "/countries", method = arrayOf(RequestMethod.GET))
+    @GetMapping(value = ["/countries"])
     fun getCountriesList(): List<Countries> {
         return locationService.getCountriesList()
     }
 
-    @RequestMapping(value = "/states/{countryId}", method = arrayOf(RequestMethod.GET))
+    @GetMapping(value = ["/states/{countryId}"])
     fun getStatesByCountryId(@PathVariable countryId: Int): List<States> {
         return locationService.getStatesByCountryId(countryId)
     }
 
-    @RequestMapping(value = "/cities/{stateId}", method = arrayOf(RequestMethod.GET))
+    @GetMapping(value = ["/cities/{stateId}"])
     fun getCitiesByStateId(@PathVariable stateId: Int): List<Cities> {
         return locationService.getCitiesByStateId(stateId)
     }

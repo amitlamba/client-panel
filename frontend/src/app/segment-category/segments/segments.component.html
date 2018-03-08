@@ -16,19 +16,27 @@
     </tr>
     </thead>
     <tbody>
-    <tr *ngFor="let segment of segments">
-      <th scope="row">{{segment.id}}</th>
-      <td (click)="toggleSegmentDetail(segment.id)">
-        <span class="segment-name">{{segment.name}} <sup [hidden]="toggleSegmentDetails[segment.id]" data-toggle="tooltip" data-placement="bottom" title="Click to see details" style="color: #1e6abc; font-weight: normal;"><i class="far fa-question-circle"></i></sup></span>
-        <span [hidden]="!toggleSegmentDetails[segment.id]">
-          <br>
+    <ng-template ngFor let-segment [ngForOf]="segments.reverse()">
+      <tr>
+        <th scope="row">{{segment.id}}</th>
+        <td (click)="toggleSegmentDetail(segment.id)">
+          <span class="segment-name text-primary">{{segment.name}} &nbsp;&nbsp;&nbsp;
+            <span *ngIf="toggleSegmentDetails[segment.id]"><i class="far fa-minus-square"></i>
+            </span>
+            <span *ngIf="!toggleSegmentDetails[segment.id]"><i class="far fa-plus-square"></i>
+            </span>
+          </span>
+        </td>
+        <td>{{segment.type}}</td>
+        <td>{{segment.creationDate}}</td>
+        <td></td>
+      </tr>
+      <tr *ngIf="toggleSegmentDetails[segment.id]">
+        <td colspan="5">
           <app-segment-nlp [segment]="segment"></app-segment-nlp>
-        </span>
-      </td>
-      <td>{{segment.type}}</td>
-      <td>{{segment.creationDate}}</td>
-      <td></td>
-    </tr>
+        </td>
+      </tr>
+    </ng-template>
     </tbody>
   </table>
 </div>

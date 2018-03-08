@@ -13,49 +13,49 @@ import org.springframework.web.bind.annotation.*
 class UserSettingsController {
 
     @Autowired
-    lateinit private var userSettingsService: UserSettingsService
+    private lateinit var userSettingsService: UserSettingsService
 
-    @RequestMapping(value = "/email-service-providers", method = arrayOf(RequestMethod.GET))
+    @GetMapping(value = ["/email-service-providers"])
     fun getEmailServiceProviders(): List<ServiceProviderCredentials> {
         val clientID = AuthenticationUtils.clientID
         return userSettingsService.getEmailServiceProvider(clientID!!)
     }
 
-    @RequestMapping(value = "/email-service-provider/{id}", method = arrayOf(RequestMethod.GET))
+    @GetMapping(value = ["/email-service-provider/{id}"])
     fun getEmailServiceProvider(@PathVariable id: Long): ServiceProviderCredentials? {
         val clientID = AuthenticationUtils.clientID
         return userSettingsService.getEmailServiceProvider(clientID!!, id)
     }
 
-    @RequestMapping(value = "/email-service-provider/save", method = arrayOf(RequestMethod.POST))
+    @PostMapping(value = ["/email-service-provider/save"])
     fun saveEmailServiceProvider(@RequestBody serviceProviderCredentials: ServiceProviderCredentials): Long? {
         val clientID = AuthenticationUtils.clientID
         val userID = AuthenticationUtils.principal.id
-        serviceProviderCredentials.appuserID=userID
-        serviceProviderCredentials.clientID=clientID
-        serviceProviderCredentials.serviceProviderType= ServiceProviderType.EMAIL_SERVICE_PROVIDER
+        serviceProviderCredentials.appuserID = userID
+        serviceProviderCredentials.clientID = clientID
+        serviceProviderCredentials.serviceProviderType = ServiceProviderType.EMAIL_SERVICE_PROVIDER
         return userSettingsService.saveEmailServiceProvider(serviceProviderCredentials)
     }
 
-    @RequestMapping(value = "/sms-service-providers", method = arrayOf(RequestMethod.GET))
+    @GetMapping(value = ["/sms-service-providers"])
     fun getSmsServiceProviders(): List<ServiceProviderCredentials> {
         val clientID = AuthenticationUtils.clientID
         return userSettingsService.getSmsServiceProvider(clientID!!)
     }
 
-    @RequestMapping(value = "/sms-service-provider/{id}", method = arrayOf(RequestMethod.GET))
+    @GetMapping(value = ["/sms-service-provider/{id}"])
     fun getSmsServiceProvider(@PathVariable id: Long): ServiceProviderCredentials? {
         val clientID = AuthenticationUtils.clientID
         return userSettingsService.getSmsServiceProvider(clientID!!, id)
     }
 
-    @RequestMapping(value = "/sms-service-provider/save", method = arrayOf(RequestMethod.POST))
+    @PostMapping(value = ["/sms-service-provider/save"])
     fun saveSmsServiceProvider(@RequestBody serviceProviderCredentials: ServiceProviderCredentials): Long? {
         val clientID = AuthenticationUtils.clientID
         val userID = AuthenticationUtils.principal.id
-        serviceProviderCredentials.appuserID=userID
-        serviceProviderCredentials.clientID=clientID
-        serviceProviderCredentials.serviceProviderType= ServiceProviderType.SMS_SERVICE_PROVIDER
+        serviceProviderCredentials.appuserID = userID
+        serviceProviderCredentials.clientID = clientID
+        serviceProviderCredentials.serviceProviderType = ServiceProviderType.SMS_SERVICE_PROVIDER
         return userSettingsService.saveSmsServiceProvider(serviceProviderCredentials)
     }
 }

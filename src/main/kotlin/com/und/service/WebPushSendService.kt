@@ -47,6 +47,7 @@ class WebPushSendService {
     }
 
     private fun shouldUseGcm(sub: Subscription): Boolean {
+        //sub.key = "122"
         return false
     }
 
