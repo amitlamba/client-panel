@@ -27,7 +27,14 @@
   </div>
   <div class="form-group col-sm-12">
     <label for="emailSubject">Email Subject</label>
-    <input type="text" class="form-control" id="emailSubject" name="emailSubject" placeholder="Email Subject" [(ngModel)]="emailTemplate.emailTemplateSubject">
+    <input type="text"
+           class="form-control"
+           id="emailSubject"
+           name="emailSubject"
+           placeholder="Email Subject"
+           [(ngModel)]="emailTemplate.emailTemplateSubject">
+    <!--[mention]="suggested"-->
+    <!--[mentionConfig]="{triggerChar:'@'}" -->
   </div>
   <div class="form-group col-sm-12">
     <label for="emailBody">Email Body</label>
@@ -41,6 +48,7 @@
               <!--[(ngModel)]="emailTemplate.emailTemplateBody"-->
               <!--[mention]="suggestedList"-->
               <!--[mentionConfig]="{triggerChar:'$',maxItems:10,labelKey:'name'}"></textarea>-->
+
     <ck-editor *ngIf="showRichTextEditor"
                type="text"
                placeholder="Email Body"

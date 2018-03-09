@@ -35,14 +35,7 @@ export enum CampaignType {
   MOBILE_PUSH_NOTIFICATION="MOBILE_PUSH_NOTIFICATION"
 }
 
-export class Schedule {
-  scheduleType: ScheduleType;
-  startTime: Now;
-  campaignTimeList: CampaignTime[];
-  cronExpression: string;
-  startDateTime: string;
-  scheduleEnd: ScheduleEnd;
-}
+
 
 //new
 export class Schedule1 {

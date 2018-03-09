@@ -20,7 +20,7 @@ export class CreateEmailTemplateFormComponent implements OnInit, OnChanges {
 
   userFields = UserFields.USER_DETAIILS;
   items = UserParams.params;
-  // suggestedList:string[]=["laksh","kamal","a","b","c"];
+  suggested:string[]=["laksh","kamal","a","b","c"];
 
   constructor(private templatesService: TemplatesService, private messageService: MessageService) {
   }

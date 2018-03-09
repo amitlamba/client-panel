@@ -3,7 +3,7 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {SegmentService} from "../../_services/segment.service";
 import {DateTimeComponent} from "./date-time/date-time.component";
 import {
-  Campaign, CampaignTime, CampaignType, Now, Schedule, Schedule1, ScheduleEnd, ScheduleEndType, ScheduleMultipleDates,
+  Campaign, CampaignTime, CampaignType, Now, Schedule1, ScheduleEnd, ScheduleEndType, ScheduleMultipleDates,
   ScheduleOneTime, ScheduleRecurring,
   ScheduleType
 } from "../../_models/campaign";
@@ -28,7 +28,6 @@ export class SetupCampaignComponent implements OnInit {
   isCronDisabled: boolean = false;
   smsTemplatesList: SmsTemplate[] = [];
   emailTemplatesList: EmailTemplate[] = [];
-  schedule: Schedule = new Schedule();
   schedule1: Schedule1 = new Schedule1();
   campaign: Campaign = new Campaign();
 
@@ -79,9 +78,12 @@ export class SetupCampaignComponent implements OnInit {
 
   ngOnInit() {
     //Segments List
-    for (let i = 0; i < this.segmentService.segments.length; i++) {
-      this.segmentsList.push(this.segmentService.segments[i]);
-    }
+    this.segmentService.getSegments().subscribe(
+      (segments) => {
+        this.segmentService.segments = segments;
+        this.segmentsList = this.segmentService.segments;
+      }
+    );
     //SmsTemplates List
     this.templatesService.getSmsTemplates().subscribe(
       (response) => {

@@ -22,9 +22,9 @@ export const CKEDITOR_VALUE_ACCESSOR: any = {
 
 @Component({
   selector: 'ck-editor',
-  template: `<textarea #ck 
-                       [mention]="suggestedList" 
-                       [mentionConfig]="{triggerChar:'$',maxItems:10,labelKey:'name'}" 
+  template: `<textarea #ck
+                       [mention]="suggestedList"
+                       [mentionConfig]="{triggerChar:'$',maxItems:10,labelKey:'name'}"
                        contenteditable="true"></textarea>`,
   providers: [CKEDITOR_VALUE_ACCESSOR]
 })
