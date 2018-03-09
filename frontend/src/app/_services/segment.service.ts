@@ -20,13 +20,6 @@ export class SegmentService {
   countries: Country[];
 
   constructor(private httpClient: HttpClient) {
-    this.segments.push(this.createNewSegment());
-    this.segments.push(this.createNewSegment());
-    this.segments.push(this.createNewSegment());
-    this.segments.push(this.createNewSegment());
-    this.segments.push(this.createNewSegment());
-    this.segments.push(this.createNewSegment());
-    this.segments.push(this.createNewSegment());
     // this.editSegment = this.initSegment(new Segment());
   }
   private createNewSegment(): Segment {

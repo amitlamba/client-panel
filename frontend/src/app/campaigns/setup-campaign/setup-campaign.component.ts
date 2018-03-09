@@ -26,10 +26,16 @@ export class SetupCampaignComponent implements OnInit {
   showCloseButton: boolean = false;
   cronExpression = '4 3 2 1 1/1 ? *';
   isCronDisabled: boolean = false;
+  schedule1: Schedule1 = new Schedule1();
+  scheduleType: ScheduleType = ScheduleType.oneTime;
+
+  //Campaign
   smsTemplatesList: SmsTemplate[] = [];
   emailTemplatesList: EmailTemplate[] = [];
-  schedule1: Schedule1 = new Schedule1();
   campaign: Campaign = new Campaign();
+  campaignName: string = "";
+  segmentsList: Segment[] = [];
+
 
   cronOptions: CronOptions = {
     formInputClass: 'form-control cron-editor-input',
@@ -58,11 +64,6 @@ export class SetupCampaignComponent implements OnInit {
     opens: "right"
   };
 
-  //Campaign Name
-  campaignName: string = "";
-  segmentsList: Segment[] = [];
-  scheduleType: ScheduleType = ScheduleType.oneTime;
-
   @ViewChild('parent', {read: ViewContainerRef}) container: ViewContainerRef;
 
   constructor(private _cfr: ComponentFactoryResolver,
@@ -85,22 +86,21 @@ export class SetupCampaignComponent implements OnInit {
       }
     );
     //SmsTemplates List
-    this.templatesService.getSmsTemplates().subscribe(
-      (response) => {
-        for (let i = 0; i < response.length; i++) {
-          this.smsTemplatesList.push(response[i]);
+    if (this.currentPath === 'sms') {
+      this.templatesService.getSmsTemplates().subscribe(
+        (response) => {
+          this.smsTemplatesList = response;
         }
-      }
-    );
-
+      );
+    }
     //EmailTemplates List
-    this.templatesService.getEmailTemplates().subscribe(
-      (response) => {
-        for (let i = 0; i < response.length; i++) {
-          this.emailTemplatesList.push(response[i]);
+    else {
+      this.templatesService.getEmailTemplates().subscribe(
+        (response) => {
+          this.emailTemplatesList = response;
         }
-      }
-    );
+      );
+    }
   }
 
   continueToSchedule(): void {
