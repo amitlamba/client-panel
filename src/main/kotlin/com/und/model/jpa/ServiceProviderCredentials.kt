@@ -62,8 +62,8 @@ class ServiceProviderCredentials {
     lateinit var status: Status
 
     @Column(name = "credentials")
-    @NotNull
-    lateinit var credentialsMap: HashMap<String, String>
+//    @NotNull
+    var credentialsMap: HashMap<String, String> = HashMap<String, String>();
 }
 
 enum class ServiceProvider(val value: Short) {
