@@ -13,15 +13,14 @@ export class ServiceprovidersComponent implements OnInit {
 
   @ViewChild("f") form: any;
   serviceProviderCredentials: ServiceProviderCredentials = new ServiceProviderCredentials();
-
   serviceProviderTypes: string[];
-  serviceProviders: string[];
+  serviceProviders: string[]=[];
   serviceProviderFields: any = {};
 
   constructor(private messageService: MessageService, private authenticationService: AuthenticationService,
               public settingsService: SettingsService) {
     this.initServiceProviderTypes();
-    this.initServiceProviders();
+    // this.initServiceProviders();
   }
 
   ngOnInit() {
@@ -38,17 +37,19 @@ export class ServiceprovidersComponent implements OnInit {
   }
 
   initServiceProviders() {
-    this.setServiceProviders(this.serviceProviderCredentials.serviceProviderType);
+    // this.setServiceProviders(this.serviceProviderCredentials.serviceProviderType);
   }
 
   setServiceProviderTypes() {
     let spTypes = Object.keys(this.settingsService.serviceProviders);
-    if (!this.serviceProviderCredentials.serviceProviderType)
-      this.serviceProviderCredentials.serviceProviderType = spTypes[0];
-    console.log(spTypes);
+    // if (!this.serviceProviderCredentials.serviceProviderType)
+    //   this.serviceProviderCredentials.serviceProviderType = spTypes[0];
+    // console.log(spTypes);
     this.serviceProviderTypes = spTypes;
   }
-
+  setServiceProviderType(data){
+    this.serviceProviderCredentials.serviceProviderType=data;
+  }
   setServiceProviders(serviceProviderType: string) {
     let sp = Object.keys(this.settingsService.serviceProviders[serviceProviderType]);
     this.serviceProviderCredentials.serviceProvider = sp[0];
@@ -57,9 +58,12 @@ export class ServiceprovidersComponent implements OnInit {
     this.serviceProviderCredentials.credentialsMap = {};
   }
 
-  onChangeServiceProviderType() {
+  onChangeServiceProviderType(data:string) {
+    // console.log(data);
+    this.setServiceProviderType(data);
     console.log(this.serviceProviderCredentials.serviceProviderType);
-    let sp = this.setServiceProviders(this.serviceProviderCredentials.serviceProviderType);
+    this.setServiceProviders(this.serviceProviderCredentials.serviceProviderType);
+    // let sp = this.setServiceProviders(this.serviceProviderCredentials.serviceProviderType);
   }
 
   onChangeServiceProvider() {
