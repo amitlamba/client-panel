@@ -1,5 +1,6 @@
 <h3 class="text-center">Service Providers</h3>
 
+
 <!--appuserID: number;
 serviceProviderType: ServiceProviderType;
 serviceProvider: ServiceProvider;
@@ -7,45 +8,113 @@ url: string;
 port: number;
 username: string;
 password: string;-->
-<div class="row justify-content-center">
-  <div class="col-sm-6">
-    <form novalidate (ngSubmit)="onSave(f)" #f="ngForm">
-      <div class="form-group">
-        <label for="serviceProviderType">Service Provider Type</label>
-        <select required class="form-control" id="serviceProviderType" name="serviceProviderType" [(ngModel)]="serviceProviderCredentials.serviceProviderType" (change)="onChangeServiceProviderType()">
-          <option *ngFor="let serviceProviderType of serviceProviderTypes" value="{{serviceProviderType}}">
-            {{serviceProviderType}}
-          </option>
-        </select>
+
+<!-- Button trigger modal -->
+<div class="text-right my-2 col-sm-11">
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#serviceProviderModal">
+  + Add Service Provider
+</button>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="serviceProviderModal" tabindex="-1" role="dialog" aria-labelledby="serviceProviderModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="serviceProviderModalLabel">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
       </div>
-      <div class="form-group">
-        <label for="serviceProvider">Service Provider</label>
-        <select required class="form-control" id="serviceProvider" name="serviceProvider" [(ngModel)]="serviceProviderCredentials.serviceProvider" (change)="onChangeServiceProvider()">
-          <option *ngFor="let serviceProvider of serviceProviders" value="{{serviceProvider}}">{{serviceProvider}}
-          </option>
-        </select>
-      </div>
-      <div *ngFor="let field of serviceProviderFields" class="form-group">
-        <label for="{{field.fieldName}}">{{field.fieldDisplayName}}</label>
-        <input required type="text" placeholder="{{field.fieldDisplayName}}" class="form-control" id="{{field.fieldName}}" name="{{field.fieldName}}" [(ngModel)]="serviceProviderCredentials.credentialsMap[field.fieldName]">
-      </div>
-      <div class="text-right">
-        <button type="submit" class="btn btn-primary" [disabled]="f.invalid">Save</button>
-      </div>
-    </form>
-    <!--<div *ngFor="let serviceproviderType of getServiceProviderTypes()">-->
-      <!--<div>-->
-        <!--{{serviceproviderType}}-->
-        <!--<div *ngFor="let serviceProvider of getServiceProviders(serviceproviderType)">-->
+      <div class="modal-body">
+        <div>
+          <form novalidate (ngSubmit)="onSave(f)" #f="ngForm">
+            <div class="form-group">
+              <label for="serviceProviderType">Service Provider Type</label>
+              <select required class="form-control" id="serviceProviderType" name="serviceProviderType"
+                      [(ngModel)]="serviceProviderCredentials.serviceProviderType" (change)="onChangeServiceProviderType()">
+                <option *ngFor="let serviceProviderType of serviceProviderTypes" value="{{serviceProviderType}}">
+                  {{serviceProviderType}}
+                </option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="serviceProvider">Service Provider</label>
+              <select required class="form-control" id="serviceProvider" name="serviceProvider"
+                      [(ngModel)]="serviceProviderCredentials.serviceProvider" (change)="onChangeServiceProvider()">
+                <option *ngFor="let serviceProvider of serviceProviders" value="{{serviceProvider}}">{{serviceProvider}}
+                </option>
+              </select>
+            </div>
+            <div *ngFor="let field of serviceProviderFields" class="form-group">
+              <label for="{{field.fieldName}}">{{field.fieldDisplayName}}</label>
+              <input required type="text" placeholder="{{field.fieldDisplayName}}" class="form-control"
+                     id="{{field.fieldName}}" name="{{field.fieldName}}"
+                     [(ngModel)]="serviceProviderCredentials.credentialsMap[field.fieldName]">
+            </div>
+            <!--<div class="text-right">-->
+              <!--<button type="submit" class="btn btn-primary" [disabled]="f.invalid">Save</button>-->
+            <!--</div>-->
+          </form>
+          <!--<div *ngFor="let serviceproviderType of getServiceProviderTypes()">-->
+          <!--<div>-->
+          <!--{{serviceproviderType}}-->
+          <!--<div *ngFor="let serviceProvider of getServiceProviders(serviceproviderType)">-->
           <!-- -&#45;&#45; {{serviceProvider}}-->
           <!--<form novalidate>-->
-            <!--<div *ngFor="let field of getServiceProviderFields(serviceProvider, serviceproviderType)" class="form-group">-->
-              <!--<label for="{{field.fieldName}}">{{field.fieldDisplayName}}</label>-->
-              <!--<input required type="text" placeholder="{{field.fieldDisplayName}}" class="form-control" id="{{field.fieldName}}" name="{{field.fieldName}}">-->
-            <!--</div>-->
+          <!--<div *ngFor="let field of getServiceProviderFields(serviceProvider, serviceproviderType)" class="form-group">-->
+          <!--<label for="{{field.fieldName}}">{{field.fieldDisplayName}}</label>-->
+          <!--<input required type="text" placeholder="{{field.fieldDisplayName}}" class="form-control" id="{{field.fieldName}}" name="{{field.fieldName}}">-->
+          <!--</div>-->
           <!--</form>-->
-        <!--</div>-->
-      <!--</div>-->
-    <!--</div>-->
+          <!--</div>-->
+          <!--</div>-->
+          <!--</div>-->
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary" [disabled]="f.invalid">Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row justify-content-center">
+
+  <div class="col-sm-10">
+    <table class="table">
+      <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Service Provider Type</th>
+        <th scope="col">Service Provider</th>
+        <th scope="col">Status</th>
+        <th scope="col">Action</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <th scope="row">1</th>
+        <td>Mark</td>
+        <td>Otto</td>
+        <td>@mdo</td>
+        <td>@mdo</td>
+      </tr>
+      <tr>
+        <th scope="row">2</th>
+        <td>Jacob</td>
+        <td>Thornton</td>
+        <td>@fat</td>
+        <td>@mdo</td>
+      </tr>
+      <tr>
+        <th scope="row">3</th>
+        <td>Larry</td>
+        <td>the Bird</td>
+        <td>@twitter</td>
+        <td>@mdo</td>
+      </tr>
+      </tbody>
+    </table>
   </div>
 </div>
