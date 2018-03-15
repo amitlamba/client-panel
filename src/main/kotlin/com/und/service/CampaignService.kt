@@ -2,15 +2,12 @@ package com.und.service
 
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import com.und.model.jpa.Campaign
-import com.und.model.jpa.CampaignType
-import com.und.model.jpa.EmailCampaign
-import com.und.model.jpa.Schedule
+import com.und.model.jpa.*
 import com.und.repository.CampaignRepository
 import com.und.security.utils.AuthenticationUtils
-import com.und.web.model.Segment
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import org.springframework.util.MultiValueMap
 import com.und.web.model.Campaign as WebCampaign
 
 @Service
@@ -19,14 +16,15 @@ class CampaignService {
     @Autowired
     private lateinit var campaignRepository: CampaignRepository
 
-    fun getCampaigns(clientID: Long, id: Long? = null): List<Campaign> {
-        var campaigns: List<Campaign>
-        if (id == null) {
+    fun getCampaigns(): List<WebCampaign> {
+        val clientID = AuthenticationUtils.clientID
+        var campaigns = listOf<Campaign>()
+        if(clientID != null) {
             campaigns = campaignRepository.findByClientID(clientID)
-        } else {
-            campaigns = listOf(campaignRepository.findByIdAndClientID(id, clientID))
         }
-        return campaigns
+        val webCampaigns = mutableListOf<WebCampaign>()
+        campaigns.forEach { webCampaigns.add(buildWebCampaign(it)) }
+        return webCampaigns
     }
 
     fun getEmailCampaigns(clientID: Long, id: Long? = null): List<Campaign> {
@@ -43,8 +41,9 @@ class CampaignService {
     fun save(webCampaign: WebCampaign): WebCampaign {
         val campaign = buildCampaign(webCampaign)
 
-        campaignRepository.save(campaign)
-        return webCampaign
+        val persistedCampaign = campaignRepository.save(campaign)
+        webCampaign.id = persistedCampaign.id
+        return buildWebCampaign(campaign)
     }
 
     fun buildCampaign(webCampaign: WebCampaign): Campaign {
@@ -60,6 +59,8 @@ class CampaignService {
             schedule = GsonBuilder().create().toJson(webCampaign.schedule)
         }
 
+
+
         if (webCampaign.campaignType == CampaignType.EMAIL) {
             //FIXME check if same template is in usage
             val emailcampaign = EmailCampaign()
@@ -67,6 +68,13 @@ class CampaignService {
             emailcampaign.clientID = campaign.clientID
             emailcampaign.templateId = webCampaign.templateID
             campaign.emailCampaign = emailcampaign
+        } else  if (webCampaign.campaignType == CampaignType.SMS) {
+            //FIXME check if same template is in usage
+            val smscampaign = SmsCampaign()
+            smscampaign.appuserId = campaign.appuserID
+            smscampaign.clientID = campaign.clientID
+            smscampaign.templateId = webCampaign.templateID
+            campaign.smsCampaign = smscampaign
         }
         return campaign
     }
@@ -88,8 +96,16 @@ class CampaignService {
             val emailcampaign = campaign.emailCampaign
             webCampaign.templateID = emailcampaign?.templateId
             webCampaign.campaignType = CampaignType.EMAIL
+        } else if (campaign.smsCampaign != null) {
+            val smsCampaign = campaign.smsCampaign
+            webCampaign.templateID = smsCampaign?.templateId
+            webCampaign.campaignType = CampaignType.SMS
         }
         return webCampaign
+    }
+
+    fun pause(campaignId: Long): Long? {
+        return null
     }
 
 }

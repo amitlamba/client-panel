@@ -17,12 +17,12 @@ class CampaignController {
     @Autowired
     lateinit var campaignService: CampaignService
 
-/*    @GetMapping(value = ["list/all"])
+    @GetMapping(value = ["list/all"])
     fun getCampaigns(@RequestParam(value = "id", required = false) id: Long? = null): List<Campaign> {
-        return campaignService.getCampaigns(AuthenticationUtils.clientID!!, id)
+        return campaignService.getCampaigns()
     }
 
-    @GetMapping(value = ["/list/email"])
+    /*@GetMapping(value = ["/list/email"])
     fun getEmailCampaigns(@RequestParam(value = "id", required = false) id: Long? = null): List<Campaign> {
         return campaignService.getEmailCampaigns(AuthenticationUtils.clientID!!, id)
     }*/
@@ -36,5 +36,16 @@ class CampaignController {
         }
 
         return ResponseEntity(campaign,HttpStatus.EXPECTATION_FAILED)
+    }
+
+    @PatchMapping(value = ["/pause/{campaignId}"])
+    fun pauseCampaign(@PathVariable campaignId: Long): ResponseEntity<*> {
+        val clientId = AuthenticationUtils.clientID
+        if (clientId != null) {
+            val status = campaignService.pause(campaignId)
+            return ResponseEntity(status, HttpStatus.OK)
+        }
+
+        return ResponseEntity(campaignId,HttpStatus.EXPECTATION_FAILED)
     }
 }

@@ -51,6 +51,15 @@ open class Campaign {
             field?.campaign = this
         }
 
+    @OneToOne(mappedBy = "campaign",
+            cascade = arrayOf(CascadeType.ALL),
+            orphanRemoval = true)
+    var smsCampaign: SmsCampaign? = null
+        set(value) {
+            field = value
+            field?.campaign = this
+        }
+
     //TODO add sms, and push campaign later
 }
 
