@@ -74,6 +74,7 @@ export class MentionListComponent implements OnInit {
     el.style.position = "absolute";
     el.style.left = coords.left + 'px';
     el.style.top = coords.top + 'px';
+    el.style.zIndex = "1";
   }
 
   get activeItem() {

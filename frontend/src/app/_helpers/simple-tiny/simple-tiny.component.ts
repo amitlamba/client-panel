@@ -5,6 +5,8 @@ import {
 import {MentionDirective} from "../mention/mention.directive";
 import {UserParams} from "../../_models/user";
 
+declare var tinymce: any;
+
 @Component({
   selector: 'app-simple-tiny',
   templateUrl: './simple-tiny.component.html',
@@ -26,16 +28,25 @@ export class SimpleTinyComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngAfterViewInit() {
     tinymce.init({
+      mode: 'exact',
+      height: 100,
+      theme: 'modern',
+      branding: false,
       selector: '#' + this.elementId,
-      plugins: ['link', 'paste', 'table'],
-      skin_url: '../../assets/skins/lightgray',
-      setup: editor => {
-        this.editor = editor;
-        editor.on('keyup', () => {
-          const content = editor.getContent();
-          this.onEditorKeyup.emit(content);
-        });
-      },
+      plugins: ['advlist autolink lists link image charmap print preview anchor',
+        'searchreplace visualblocks code fullscreen',
+        'insertdatetime media table contextmenu paste code'],
+      toolbar: 'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image',
+      // skin_url: '../../assets/skins/lightgray',
+      // setup: editor => {
+      //   this.editor = editor;
+      //   editor.on('keyup', () => {
+      //     const content = editor.getContent();
+      //     this.onEditorKeyup.emit(content);
+      //   });
+      // },
+      elements: "tmce",
+      setup: this.tinySetup.bind(this)
     });
   }
 
