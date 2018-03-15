@@ -12,8 +12,9 @@ import {TemplatesService} from "../../_services/templates.service";
 import {SmsTemplate} from "../../_models/sms";
 import {Segment} from "../../_models/segment";
 import * as moment from "moment";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {Email, EmailTemplate} from "../../_models/email";
+import {CampaignService} from "../../_services/campaign.service";
 
 @Component({
   selector: 'app-setup-campaign',
@@ -69,8 +70,9 @@ export class SetupCampaignComponent implements OnInit {
   constructor(private _cfr: ComponentFactoryResolver,
               public segmentService: SegmentService,
               private templatesService: TemplatesService,
-              private route: ActivatedRoute) {
-
+              private route: ActivatedRoute,
+              private router: Router,
+              private campaignService: CampaignService) {
     this.schedule1.oneTime = new ScheduleOneTime();
     this.schedule1.oneTime.nowOrLater = Now.Now;
     this.schedule1.oneTime.campaignTime = new CampaignTime();
@@ -111,17 +113,21 @@ export class SetupCampaignComponent implements OnInit {
     if (this.scheduleType === "recurring") {
       this.schedule1.recurring.cronExpression = this.cronExpression;
     }
-
     this.campaign.name = this.campaignName;
     this.campaign.schedule = this.schedule1;
-    // console.log(this.campaign);
     if (this.currentPath === 'sms') {
       this.campaign.campaignType = CampaignType.SMS;
     }
     else {
       this.campaign.campaignType = CampaignType.EMAIL;
     }
-    console.log(JSON.stringify(this.campaign));
+    // console.log(JSON.stringify(this.campaign));
+    this.campaignService.saveCampaign(this.campaign).subscribe(
+      (campaign) => {
+        this.campaignService.campaigns.push(campaign);
+        this.router.navigate(["/campaigns"]);
+      }
+    );
   }
 
   saveSegmentID(segmentID: number): void {

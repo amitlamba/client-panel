@@ -36,6 +36,11 @@ export class AppSettings {
   public static API_ENDPOINT_CLIENT_SEGMENT_LIST = AppSettings.API_ENDPOINT_CLIENT_SEGMENT + "/list";
   public static API_ENDPOINT_CLIENT_SEGMENT_SAVE = AppSettings.API_ENDPOINT_CLIENT_SEGMENT + "/save";
 
+  public static API_ENDPOINT_CLIENT_CAMPAIGN = AppSettings.API_ENDPOINT_CLIENT + "/campaign";
+  public static API_ENDPOINT_CLIENT_CAMPAIGN_SAVE = AppSettings.API_ENDPOINT_CLIENT_CAMPAIGN + "/save";
+  public static API_ENDPOINT_CLIENT_CAMPAIGN_LIST = AppSettings.API_ENDPOINT_CLIENT_CAMPAIGN + "/list/all";
+
+
   public static API_ENDPOINT_CLIENT_LOCATION = AppSettings.API_ENDPOINT_CLIENT + "/location";
   public static API_ENDPOINT_CLIENT_LOCATION_COUNTRIES = AppSettings.API_ENDPOINT_CLIENT_LOCATION + "/countries";
   public static API_ENDPOINT_CLIENT_LOCATION_STATES = AppSettings.API_ENDPOINT_CLIENT_LOCATION + "/states";

@@ -13,10 +13,12 @@
         New Campaign
       </button>
       <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-        <a class="dropdown-item" [routerLink]="['sms']" [routerLinkActive]="['active']"><i class="fas fa-mobile-alt "></i>  SMS</a>
-        <a class="dropdown-item" [routerLink]="['email']" [routerLinkActive]="['active']"><i class="far fa-envelope"></i>  Email</a>
-        <a class="dropdown-item" href="#"><i class="fal fa-mobile"></i>  Mobile Push</a>
-        <a class="dropdown-item" href="#"><i class="fab fa-chrome"></i>  Web Push</a>
+        <a class="dropdown-item" [routerLink]="['sms']" [routerLinkActive]="['active']"><i
+          class="fas fa-mobile-alt "></i> SMS</a>
+        <a class="dropdown-item" [routerLink]="['email']" [routerLinkActive]="['active']"><i
+          class="far fa-envelope"></i> Email</a>
+        <a class="dropdown-item" href="#"><i class="fal fa-mobile"></i> Mobile Push</a>
+        <a class="dropdown-item" href="#"><i class="fab fa-chrome"></i> Web Push</a>
       </div>
     </div>
   </div>
@@ -32,31 +34,22 @@
         <th scope="col">Sent</th>
         <th scope="col">Conversion Rate</th>
         <th scope="col">Status</th>
-        <th scope="col">Delivery</th>
       </tr>
       </thead>
       <tbody>
-      <tr>
-        <th scope="row">12314</th>
-        <td>Campaign 1</td>
-        <td>Push</td>
-        <td>01/01/2018</td>
-        <td>Weekly</td>
-        <td>24,125</td>
-        <td>13%</td>
+      <tr *ngFor="let campaignItem of campaigns">
+        <th scope="row">{{campaignItem.id}}</th>
+        <td>{{campaignItem.name}}</td>
+        <td>{{campaignItem.campaignType}}</td>
+        <td>15/03/2018</td>
+        <td>
+          <span *ngIf="campaignItem.schedule.oneTime!==null">One Time</span>
+          <span *ngIf="campaignItem.schedule.multipleDates!==null">Multiple Dates</span>
+          <span *ngIf="campaignItem.schedule.recurring!==null">Recurring</span>
+        </td>
+        <td>NA</td>
+        <td>NA</td>
         <td>Completed</td>
-        <td>One time</td>
-      </tr>
-      <tr>
-        <th scope="row">12314</th>
-        <td>Campaign 1</td>
-        <td>Push</td>
-        <td>01/01/2018</td>
-        <td>Weekly</td>
-        <td>24,125</td>
-        <td>13%</td>
-        <td>Completed</td>
-        <td>One time</td>
       </tr>
       </tbody>
     </table>

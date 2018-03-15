@@ -70,6 +70,8 @@ import {CampaignsListComponent} from './campaigns/campaigns-list/campaigns-list.
 import {DateTimeComponent} from './campaigns/setup-campaign/date-time/date-time.component';
 import {CronEditorModule} from "./cron-editor/cron-editor.module";
 import {SegmentNlpComponent} from './segment-category/segment-nlp/segment-nlp.component';
+import {HttpModule} from "@angular/http";
+import {CampaignService} from "./_services/campaign.service";
 
 @NgModule({
   imports: [
@@ -85,7 +87,7 @@ import {SegmentNlpComponent} from './segment-category/segment-nlp/segment-nlp.co
     OwlDateTimeModule,
     OwlNativeDateTimeModule,
     Select2Module,
-    CronEditorModule,
+    CronEditorModule
   ],
   declarations: [
     AppComponent,
@@ -139,13 +141,11 @@ import {SegmentNlpComponent} from './segment-category/segment-nlp/segment-nlp.co
     AuthGuard,
     AuthenticationService,
     UserService,
-    // fakeBackendProvider,
-    MockBackend,
-    // BaseRequestOptions
     MessageService,
     TemplatesService,
     SettingsService,
     SegmentService,
+    CampaignService
   ],
   entryComponents: [
     DidEventComponent,

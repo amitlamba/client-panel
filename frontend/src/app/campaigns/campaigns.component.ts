@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {IMyDrpOptions} from "mydaterangepicker";
 import {Campaign} from "../_models/campaign";
+import {CampaignService} from "../_services/campaign.service";
 
 @Component({
   selector: 'app-campaigns',
@@ -8,9 +9,11 @@ import {Campaign} from "../_models/campaign";
   styleUrls: ['./campaigns.component.css']
 })
 export class CampaignsComponent implements OnInit {
-  constructor() { }
-  ngOnInit() {
+  constructor() {
   }
 
+  ngOnInit() {
+
+  }
 
 }
