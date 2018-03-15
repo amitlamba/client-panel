@@ -136,6 +136,7 @@ import {CampaignService} from "./_services/campaign.service";
     UsersByBehaviourComponent,
     DateTimeComponent,
     SegmentNlpComponent,
+    DemoTinymceComponent,
   ],
   providers: [
     AuthGuard,
@@ -148,6 +149,7 @@ import {CampaignService} from "./_services/campaign.service";
     TemplatesService,
     SettingsService,
     SegmentService,
+    CampaignService
   ],
   entryComponents: [
     DidEventComponent,
