@@ -42,4 +42,8 @@ class UserSettingsService {
         val saved = serviceProviderCredentialsRepository.save(serviceProviderCredentials)
         return saved.id!!
     }
+
+    fun getServiceProviders(clientID: Long): List<ServiceProviderCredentials> {
+        return serviceProviderCredentialsRepository.findAllByClientID(clientID)
+    }
 }

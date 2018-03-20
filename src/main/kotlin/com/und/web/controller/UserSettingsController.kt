@@ -15,6 +15,12 @@ class UserSettingsController {
     @Autowired
     private lateinit var userSettingsService: UserSettingsService
 
+    @GetMapping(value = ["/service-providers"])
+    fun getServiceProviders(): List<ServiceProviderCredentials> {
+        val clientID = AuthenticationUtils.clientID
+        return userSettingsService.getServiceProviders(clientID!!)
+    }
+
     @GetMapping(value = ["/email-service-providers"])
     fun getEmailServiceProviders(): List<ServiceProviderCredentials> {
         val clientID = AuthenticationUtils.clientID

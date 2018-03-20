@@ -11,4 +11,5 @@ interface ServiceProviderCredentialsRepository : JpaRepository<ServiceProviderCr
     fun findAllByClientIDAndServiceProviderTypeAndStatus(clientID: Long, serviceProviderType: ServiceProviderType, status: Status): List<ServiceProviderCredentials>
     fun findAllByClientIDAndServiceProviderType(clientID: Long, serviceProviderType: ServiceProviderType): List<ServiceProviderCredentials>
     fun findAllByClientIDAndIdAndServiceProviderType(clientID: Long, id: Long, serviceProviderType: ServiceProviderType): ServiceProviderCredentials?
+    fun findAllByClientID(clientID: Long): List<ServiceProviderCredentials>
 }
