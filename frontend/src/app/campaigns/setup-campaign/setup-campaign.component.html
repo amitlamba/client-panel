@@ -14,17 +14,19 @@
                  placeholder="Campaign Name"
                  name="campaignName"
                  [(ngModel)]="campaignName"
-                 pattern="[A-Za-z][A-Za-z\\d_-\s]*"
+                 pattern="[A-Za-z][A-Za-z0-9\s-_]*"
                  #campaignN="ngModel"
                  required>
-          <div *ngIf=" campaignN.errors.invalid && (campaignN.dirty || campaignN.touched)"
-               class="alert alert-danger">
-
+          <!--<div class="feedback text-danger"-->
+          <!--*ngIf= " firstName.errors && (firstName.dirty || firstName.touched) ">-->
+          <!--<p *ngIf=" firstName.errors.required ">First name is required</p>-->
+          <!--</div>-->
+          <div class="feedback text-danger" *ngIf="campaignN.errors && (campaignN.dirty || campaignN.touched)">
             <div *ngIf="campaignN.errors.required">
               Name is required.
             </div>
             <div *ngIf="campaignN.errors.pattern">
-              Name cannot contain any speical characters.
+              Name cannot contain any special characters.
             </div>
 
           </div>
