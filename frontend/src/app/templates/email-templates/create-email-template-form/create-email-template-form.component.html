@@ -1,30 +1,33 @@
 <form (ngSubmit)="onSave(f)" #f="ngForm">
   <div class="form-group col-sm-12">
     <label for="name">Name</label>
-    <input type="text" class="form-control" maxlength="100" id="name" name="name" placeholder="Name (Will help you in searching templates)"  [(ngModel)]="emailTemplate.name">
+    <input type="text" class="form-control" maxlength="100" id="name" name="name"
+           placeholder="Name (Will help you in searching templates)" [(ngModel)]="emailTemplate.name">
   </div>
   <div class="form-group col-sm-8 col-md-6 col-lg-5">
     <label for="messageType">Email Message Type</label>
-    <select type="text" class="form-control" id="messageType" name="messageType" [(ngModel)]="emailTemplate.messageType">
+    <select type="text" class="form-control" id="messageType" name="messageType"
+            [(ngModel)]="emailTemplate.messageType">
       <option value="PROMOTIONAL">PROMOTIONAL</option>
       <option value="TRANSACTIONAL">TRANSACTIONAL</option>
     </select>
   </div>
   <div class="form-group col-sm-8 col-md-6 col-lg-5">
     <label for="fromEmailAddress">From Email address</label>
-    <select type="email" class="form-control" id="fromEmailAddress" name="fromEmailAddress" [(ngModel)]="emailTemplate.from">
+    <select type="email" class="form-control" id="fromEmailAddress" name="fromEmailAddress"
+            [(ngModel)]="emailTemplate.from">
       <option>amit@userndot.com</option>
       <option>shiv@userndot.com</option>
     </select>
   </div>
-  <div class="form-group col-sm-8 col-md-6 col-lg-5">
-    <label for="toSegment">To (Segment)</label>
-    <select type="text" class="form-control" id="toSegment" name="toSegment">
-      <option>segment 1</option>
-      <option>segment 2</option>
-    </select>
-    <a href="#">Create Segment</a>
-  </div>
+  <!--<div class="form-group col-sm-8 col-md-6 col-lg-5">-->
+    <!--<label for="toSegment">To (Segment)</label>-->
+    <!--<select type="text" class="form-control" id="toSegment" name="toSegment">-->
+      <!--<option>segment 1</option>-->
+      <!--<option>segment 2</option>-->
+    <!--</select>-->
+    <!--<a href="#">Create Segment</a>-->
+  <!--</div>-->
   <div class="form-group col-sm-12">
     <label for="emailSubject">Email Subject</label>
     <input type="text"
@@ -33,35 +36,39 @@
            name="emailSubject"
            placeholder="Email Subject"
            [(ngModel)]="emailTemplate.emailTemplateSubject">
-    <!--[mention]="suggested"-->
-    <!--[mentionConfig]="{triggerChar:'@'}" -->
   </div>
   <div class="form-group col-sm-12">
     <label for="emailBody">Email Body</label>
-    <!--<textarea *ngIf="!showRichTextEditor"-->
-              <!--type="text"-->
-              <!--class="form-control"-->
-              <!--id="emailBody"-->
-              <!--name="emailBody"-->
-              <!--placeholder="Email Body"-->
-              <!--rows="8"-->
-              <!--[(ngModel)]="emailTemplate.emailTemplateBody"-->
-              <!--[mention]="suggestedList"-->
-              <!--[mentionConfig]="{triggerChar:'$',maxItems:10,labelKey:'name'}"></textarea>-->
-
-    <!--<ck-editor *ngIf="showRichTextEditor"-->
-               <!--type="text"-->
-               <!--placeholder="Email Body"-->
-               <!--rows="8"-->
-               <!--name="emailBody"-->
-               <!--[(ngModel)]="emailTemplate.emailTemplateBody"-->
-               <!--skin="moono-lisa"-->
-               <!--lang="en"-->
-               <!--[fullPage]="false"-->
-               <!--&gt;</ck-editor>-->
-    <!--<app-simple-tiny id="emailBody" *ngIf="showRichTextEditor"></app-simple-tiny>-->
-    <div>{{emailTemplate.emailTemplateBody}}</div>
-    <app-demo-tinymce id="emailBody" [(htmlContent)]="emailTemplate.emailTemplateBody"></app-demo-tinymce>
+    <br>
+    <div class="custom-control custom-radio custom-control-inline">
+      <input type="radio"
+             id="emailBodyHtml"
+             name="emailBody"
+             class="custom-control"
+             value="emailBodyHtml"
+             [ngModel]="emailBodyHtml"
+             (change)="htmlOptionActive()">
+      <label class="custom-control-label" for="emailBodyHtml">Add HTML Code</label>
+    </div>
+    <div class="custom-control custom-radio custom-control-inline">
+      <input type="radio"
+             id="emailBodyTextEditor"
+             name="emailBody"
+             class="custom-control"
+            (change)="addSomeText()">
+      <label class="custom-control-label" for="emailBodyTextEditor">Use Editor</label>
+    </div>
+    <!--<div>{{ emailTemplate.emailTemplateBody }}</div>-->
+    <textarea cols="60" rows="4" class="form-control" *ngIf="showTextArea" id="htmlCode" contentEditable="true">
+    </textarea>
+    <button class="btn btn-primary" *ngIf="showTextArea" (click)="addUnsubscribeLink($event)" type="button">Add Unsubscribe</button>
+    <app-demo-tinymce id="emailBody"
+                      (onEditorContentChange)="keyupHandler($event)"
+                      [hidden]="!showTinymceEditor"></app-demo-tinymce>
+    <!--[(htmlContent)]="emailTemplate.emailTemplateBody"-->
+    <!--name="tinymceContent"-->
+    <!--[(ngModel)]="emailTemplate.emailTemplateBody"-->
+    <!--ngDefaultControl-->
     <div class="text-right"><i class="fa fa-user" aria-hidden="true"></i></div>
   </div>
   <div class="text-right col-sm-12">
