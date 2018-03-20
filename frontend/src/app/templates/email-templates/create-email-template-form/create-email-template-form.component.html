@@ -45,9 +45,8 @@
              id="emailBodyHtml"
              name="emailBody"
              class="custom-control"
-             value="emailBodyHtml"
-             [ngModel]="emailBodyHtml"
-             (change)="htmlOptionActive()">
+             (click)="showTinymceEditor = false;"
+             [checked]="!showTinymceEditor">
       <label class="custom-control-label" for="emailBodyHtml">Add HTML Code</label>
     </div>
     <div class="custom-control custom-radio custom-control-inline">
@@ -55,15 +54,17 @@
              id="emailBodyTextEditor"
              name="emailBody"
              class="custom-control"
-            (change)="addSomeText()">
+             (click)="showTinymceEditor = true;"
+             [checked]="showTinymceEditor">
       <label class="custom-control-label" for="emailBodyTextEditor">Use Editor</label>
     </div>
     <!--<div>{{ emailTemplate.emailTemplateBody }}</div>-->
-    <textarea cols="60" rows="4" class="form-control" *ngIf="showTextArea" id="htmlCode" contentEditable="true">
+    <textarea cols="60" rows="4" class="form-control" *ngIf="!showTinymceEditor" id="htmlCode" contentEditable="true"
+      name="htmlCode" [(ngModel)]="emailTemplate.emailTemplateBody">
     </textarea>
-    <button class="btn btn-primary" *ngIf="showTextArea" (click)="addUnsubscribeLink($event)" type="button">Add Unsubscribe</button>
+    <button class="btn btn-primary" *ngIf="!showTinymceEditor" (click)="addUnsubscribeLink($event)" type="button">Add Unsubscribe</button>
     <app-demo-tinymce id="emailBody"
-                      (onEditorContentChange)="keyupHandler($event)"
+                      [(htmlContent)]="emailTemplate.emailTemplateBody"
                       [hidden]="!showTinymceEditor"></app-demo-tinymce>
     <!--[(htmlContent)]="emailTemplate.emailTemplateBody"-->
     <!--name="tinymceContent"-->

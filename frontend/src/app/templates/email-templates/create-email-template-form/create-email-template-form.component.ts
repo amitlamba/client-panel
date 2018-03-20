@@ -14,9 +14,7 @@ import {UserParams} from "../../../_models/user";
 })
 export class CreateEmailTemplateFormComponent implements OnInit, OnChanges {
   emailBodyHtml: string = 'emailBodyHtml';
-  showTextArea: boolean = true;
-  showTinymceEditor: boolean = false;
-  showRichTextEditor: boolean = true;
+  showTinymceEditor: boolean = true;
   emailTemplate: EmailTemplate = new EmailTemplate();
   @ViewChild("f") form: any;
 
@@ -58,25 +56,6 @@ export class CreateEmailTemplateFormComponent implements OnInit, OnChanges {
           );
       }
     }
-  }
-
-  keyupHandler(event: any) {
-    let val: string = "";
-    console.log(event);
-    val = event;
-    console.log(val);
-    this.emailTemplate.emailTemplateBody = val;
-    console.log(this.emailTemplate.emailTemplateBody);
-  }
-
-  htmlOptionActive() {
-    this.showTextArea = true;
-    this.showTinymceEditor = false;
-  }
-
-  addSomeText() {
-    this.showTinymceEditor = true;
-    this.showTextArea = false;
   }
 
   addUnsubscribeLink(event) {

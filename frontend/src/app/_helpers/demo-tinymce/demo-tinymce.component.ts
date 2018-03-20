@@ -17,7 +17,7 @@ declare var tinymce: any;
     <div class="form-group" style="position:relative">
       <div [mention]="items"></div>
       <div>
-        <textarea class="hidden" cols="60" rows="4" id="tmce" [(ngModel)]="htmlContent">{{htmlContent}}
+        <textarea class="hidden" cols="60" rows="4" id="tmce" >{{localHtmlContent}}
         </textarea>
         <button class="btn btn-primary" (click)="addUnsubscribeLink($event)" type="button">Add Unsubscribe</button>
       </div>
@@ -25,20 +25,17 @@ declare var tinymce: any;
 })
 export class DemoTinymceComponent {
   @ViewChild('tmce') tmce: ElementRef;
+
   localHtmlContent: string = "Text";
-
   @Input() get htmlContent(): string {
-    return this.localHtmlContent
+    return this.localHtmlContent;
   };
-
   set htmlContent(htmlContent: string) {
     this.localHtmlContent = htmlContent;
     this.htmlContentChange.emit(this.localHtmlContent);
   }
-
-  @Input() content: String;
   @Output() htmlContentChange = new EventEmitter();
-  @Output() onEditorContentChange: EventEmitter<any> = new EventEmitter<any>();
+
   @ViewChild(MentionDirective) mention: MentionDirective;
   public items: string[] = UserParams.params;
 
@@ -76,13 +73,12 @@ export class DemoTinymceComponent {
       mention.setIframe(ed.iframeElement);
       // ed.setContent(this.htmlContent);
       // console.log(args.target.getInnerHTML);
-      this.htmlContent = e.target.innerHTML;
-      this.onEditorContentChange.emit(e.target.innerHTML);
+      // this.htmlContent = e.target.innerHTML;
+      e.target.innerHTML = this.htmlContent;
     });
     ed.on('keyup', (e) => {
       let frame = <any>window.frames[ed.iframeElement.id];
       this.htmlContent = e.target.innerHTML;
-      this.onEditorContentChange.emit(this.localHtmlContent);
       console.log(this.localHtmlContent);
     });
 
@@ -91,11 +87,14 @@ export class DemoTinymceComponent {
     if(event.srcElement.innerHTML==='Add Unsubscribe'){
       // http://archive.tinymce.com/wiki.php/API3:method.tinymce.dom.DOMUtils.add  "Below Line Definition."
       tinymce.activeEditor.dom.add(tinymce.activeEditor.getBody(), 'a', {href : '#' ,id : 'unsubscribe'} , 'Unsubscribe');
+      this.htmlContent = tinymce.activeEditor.getBody().innerHTML;
       event.srcElement.innerHTML='Remove Unsubscribe';
     }
    else {
       tinymce.activeEditor.dom.remove(tinymce.activeEditor.dom.select('#unsubscribe'));
+      this.htmlContent = tinymce.activeEditor.getBody().innerHTML;
       event.srcElement.innerHTML='Add Unsubscribe';
     }
+    console.log(this.htmlContent);
   }
 }
