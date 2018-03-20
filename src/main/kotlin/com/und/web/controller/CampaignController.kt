@@ -48,4 +48,18 @@ class CampaignController {
 
         return ResponseEntity(campaignId,HttpStatus.EXPECTATION_FAILED)
     }
+
+    @PatchMapping(value = ["/resume/{campaignId}"])
+    fun resumeCampaign(@PathVariable campaignId: Long): ResponseEntity<*> {
+        val clientId = AuthenticationUtils.clientID
+        if (clientId != null) {
+            val status = campaignService.resume(campaignId)
+            return ResponseEntity(status, HttpStatus.OK)
+        }
+
+        return ResponseEntity(campaignId,HttpStatus.EXPECTATION_FAILED)
+    }
+
+
+
 }
