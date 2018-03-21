@@ -48,6 +48,7 @@ export class DemoTinymceComponent {
       height: 100,
       theme: 'modern',
       branding: false,
+      menubar: false,
       plugins: [
         'advlist autolink lists link image charmap print preview anchor',
         'searchreplace visualblocks code fullscreen',
