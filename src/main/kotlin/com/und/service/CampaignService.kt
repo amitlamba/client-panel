@@ -2,10 +2,13 @@ package com.und.service
 
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+//import com.und.config.EventStream
 import com.und.model.jpa.*
 import com.und.repository.CampaignRepository
 import com.und.security.utils.AuthenticationUtils
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.cloud.stream.annotation.StreamListener
+import org.springframework.messaging.handler.annotation.SendTo
 import org.springframework.stereotype.Service
 import org.springframework.util.MultiValueMap
 import com.und.web.model.Campaign as WebCampaign
@@ -15,6 +18,9 @@ class CampaignService {
 
     @Autowired
     private lateinit var campaignRepository: CampaignRepository
+
+/*    @Autowired
+    private lateinit var eventStream: EventStream*/
 
     fun getCampaigns(): List<WebCampaign> {
         val clientID = AuthenticationUtils.clientID
@@ -42,6 +48,9 @@ class CampaignService {
         val campaign = buildCampaign(webCampaign)
 
         val persistedCampaign = campaignRepository.save(campaign)
+        //FIXME remove it later
+        processSchedule(persistedCampaign.name)
+
         webCampaign.id = persistedCampaign.id
         return buildWebCampaign(campaign)
     }
@@ -106,6 +115,23 @@ class CampaignService {
 
     fun pause(campaignId: Long): Long? {
         return null
+    }
+
+
+    fun resume(campaignId: Long): Long? {
+        return null
+    }
+
+
+    //@SendTo("createschedule")
+    fun processSchedule(campaign: String): String {
+        return campaign
+    }
+
+    //@StreamListener("createschedule")
+    fun processSchedule2(campaign: String) {
+        println(campaign)
+        //return campaign
     }
 
 }

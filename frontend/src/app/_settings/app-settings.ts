@@ -2,8 +2,8 @@ export class AppSettings {
   public static API_ENDPOINT = "http://nestros.com:8080";
 
 
-  // public static API_ENDPOINT_CLIENT = AppSettings.API_ENDPOINT + "/client";
-  public static API_ENDPOINT_CLIENT = "http://nestros.com:9191"
+  public static API_ENDPOINT_CLIENT = AppSettings.API_ENDPOINT + "/client";
+  // public static API_ENDPOINT_CLIENT = "http://localhost:9191";
 
   public static API_ENDPOINT_CLIENT_CLIENT = AppSettings.API_ENDPOINT_CLIENT + "/client";
   public static API_ENDPOINT_CLIENT_CLIENT_EMAIL = AppSettings.API_ENDPOINT_CLIENT_CLIENT + "/email";
@@ -23,6 +23,7 @@ export class AppSettings {
   public static API_ENDPOINT_CLIENT_CLIENT_USERS_GETUSEREVENTS = AppSettings.API_ENDPOINT_CLIENT_CLIENT_USERS + "/get-user-events"
 
   public static API_ENDPOINT_CLIENT_SETTING = AppSettings.API_ENDPOINT_CLIENT + "/setting";
+  public static API_ENDPOINT_CLIENT_SETTING_ALL_SERVICE_PROVIDERS = AppSettings.API_ENDPOINT_CLIENT_SETTING + "/service-providers";
   public static API_ENDPOINT_CLIENT_SETTING_EMAIL_SERVICE_PROVIDERS = AppSettings.API_ENDPOINT_CLIENT_SETTING + "/email-service-providers";
   public static API_ENDPOINT_CLIENT_SETTING_EMAIL_SERVICE_PROVIDER = AppSettings.API_ENDPOINT_CLIENT_SETTING + "/email-service-provider";
   public static API_ENDPOINT_CLIENT_SETTING_EMAIL_SERVICE_PROVIDER_SAVE = AppSettings.API_ENDPOINT_CLIENT_SETTING + "/email-service-provider/save";

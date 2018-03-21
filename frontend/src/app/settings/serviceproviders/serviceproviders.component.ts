@@ -51,7 +51,7 @@ export class ServiceprovidersComponent implements OnInit {
     this.serviceProviderCredentials.serviceProviderType=data;
   }
   setServiceProviders(serviceProviderType: string) {
-    let sp = Object.keys(this.settingsService.serviceProviders[serviceProviderType]);
+    let sp = Object.keys(this.settingsService.serviceProviders[serviceProviderType]['providers']);
     this.serviceProviderCredentials.serviceProvider = sp[0];
     this.setServiceProviderFields();
     this.serviceProviders = sp;
@@ -61,7 +61,7 @@ export class ServiceprovidersComponent implements OnInit {
   onChangeServiceProviderType(data:string) {
     // console.log(data);
     this.setServiceProviderType(data);
-    // console.log(this.serviceProviderCredentials.serviceProviderType);
+    console.log(this.serviceProviderCredentials.serviceProviderType);
     this.setServiceProviders(this.serviceProviderCredentials.serviceProviderType);
     // let sp = this.setServiceProviders(this.serviceProviderCredentials.serviceProviderType);
   }
@@ -71,8 +71,8 @@ export class ServiceprovidersComponent implements OnInit {
   }
 
   setServiceProviderFields() {
-    let f = this.settingsService.serviceProviders[this.serviceProviderCredentials.serviceProviderType][this.serviceProviderCredentials.serviceProvider]["fields"];
-    // console.log(f);
+    let f = this.settingsService.serviceProviders[this.serviceProviderCredentials.serviceProviderType]['providers'][this.serviceProviderCredentials.serviceProvider]["fields"];
+    console.log(f);
     this.serviceProviderFields = f;
   }
 

@@ -97,13 +97,13 @@ dependencies {
     compile('org.springframework.cloud:spring-cloud-starter-netflix-eureka-client')
     compile('org.springframework.cloud:spring-cloud-starter-netflix-eureka-server')
     compile('org.springframework.cloud:spring-cloud-starter-openfeign')
+    compile('org.springframework.cloud:spring-cloud-starter-stream-kafka')
     compile('org.springframework.boot:spring-boot-starter-data-jpa')
     compile('org.springframework.boot:spring-boot-starter-data-mongodb')
     compile('org.springframework.boot:spring-boot-starter-data-rest')
     compile("org.springframework.boot:spring-boot-starter-mobile:1.5.9.RELEASE")
     compile('org.flywaydb:flyway-core:5.0.7')
     compile('org.springframework.boot:spring-boot-starter-mail')
-    compile('org.springframework.boot:spring-boot-starter-quartz')
     compile('org.springframework.boot:spring-boot-starter-security')
     compile("org.jetbrains.kotlin:kotlin-reflect:${kotlinVersion}")
     compile("org.jetbrains.kotlin:kotlin-stdlib:${kotlinVersion}")
@@ -111,8 +111,6 @@ dependencies {
     compile('com.fasterxml.jackson.datatype:jackson-datatype-jsr310')
     compile group: 'com.fasterxml.jackson.module', name: 'jackson-module-kotlin', version: '2.9.4.1'
 
-    compile("org.springframework.kafka:spring-kafka")
-    compile("org.springframework.kafka:spring-kafka-test")
     compile ("com.und:auth-client:0.4.0-SNAPSHOT")
     compile group: 'commons-io', name: 'commons-io', version: '2.6'
     runtime('org.springframework.boot:spring-boot-devtools')
