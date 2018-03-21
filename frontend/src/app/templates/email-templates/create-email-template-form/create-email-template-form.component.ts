@@ -13,7 +13,7 @@ import {UserParams} from "../../../_models/user";
   styleUrls: ['./create-email-template-form.component.css']
 })
 export class CreateEmailTemplateFormComponent implements OnInit, OnChanges {
-  emailBodyHtml: string = 'emailBodyHtml';
+  // emailBodyHtml: string = 'emailBodyHtml';
   showTinymceEditor: boolean = true;
   emailTemplate: EmailTemplate = new EmailTemplate();
   @ViewChild("f") form: any;

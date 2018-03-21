@@ -46,7 +46,7 @@
              name="emailBody"
              class="custom-control"
              (click)="showTinymceEditor = false;"
-             [checked]="!showTinymceEditor">
+             [checked]="(!showTinymceEditor)">
       <label class="custom-control-label" for="emailBodyHtml">Add HTML Code</label>
     </div>
     <div class="custom-control custom-radio custom-control-inline">
@@ -55,7 +55,7 @@
              name="emailBody"
              class="custom-control"
              (click)="showTinymceEditor = true;"
-             [checked]="showTinymceEditor">
+             [checked]="(showTinymceEditor)">
       <label class="custom-control-label" for="emailBodyTextEditor">Use Editor</label>
     </div>
     <!--<div>{{ emailTemplate.emailTemplateBody }}</div>-->

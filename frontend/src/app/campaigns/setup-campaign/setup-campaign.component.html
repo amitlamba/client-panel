@@ -14,7 +14,7 @@
                  placeholder="Campaign Name"
                  name="campaignName"
                  [(ngModel)]="campaignName"
-                 pattern="[A-Za-z][A-Za-z0-9\s-_]*"
+                 pattern="[A-Za-z0-9-_][A-Za-z0-9\s-_]*"
                  #campaignN="ngModel"
                  required>
           <!--<div class="feedback text-danger"-->
@@ -26,7 +26,7 @@
               Name is required.
             </div>
             <div *ngIf="campaignN.errors.pattern">
-              Name cannot contain any special characters.
+              Name cannot contain any special characters and cannot start with the space.
             </div>
 
           </div>
@@ -177,7 +177,8 @@
                    id="neverEnd"
                    value="NeverEnd"
                    [(ngModel)]="schedule1.recurring.scheduleEnd.endType"
-                   required>
+                   required
+                  (change)="occurencesValueFalse=false;disableSubmit=false;">
             <label for="neverEnd">Never End</label>
             <input class="ml-2 mr-1"
                    type="radio"
@@ -185,6 +186,7 @@
                    value="EndsOnDate"
                    [(ngModel)]="schedule1.recurring.scheduleEnd.endType"
                    id="selectDate"
+                   (change)="occurencesValueFalse=false;disableSubmit=false;"
                    required>
             <label for="selectDate">Select Date</label>
             <input class="ml-2 mr-1"
@@ -193,19 +195,22 @@
                    value="Occurrences"
                    [(ngModel)]="schedule1.recurring.scheduleEnd.endType"
                    id="afterOccurences"
-                   required>
+                   (change)="checkOccurencesValue()">
             <label for="afterOccurences"
                    class="form-inline d-inline">
               After
               <input type="number"
                      name="occurences"
-                     min="1"
                      class="form-control col-1"
-                     [(ngModel)]="schedule1.recurring.scheduleEnd.occurrences">
+                     [(ngModel)]="schedule1.recurring.scheduleEnd.occurrences"
+                    (change)="checkOccurencesValue()">
               occurences
             </label>
+            <div class="text-danger" *ngIf="occurencesValueFalse">
+                <span>Occurences Value should Lie in the range 1-1000.</span>
+            </div>
             <div *ngIf="schedule1.recurring.scheduleEnd.endType==='EndsOnDate'"
-                 class="input-group col-md-5 col-sm-6 col-xs-6 pl-0 mt-3 mb-4"
+                 class="input-group col-md-5 col-sm-6 col-xs-6 pl-0 mt-3 mb-2"
                  daterangepicker
                  [options]="singlePicker"
                  (selected)="campaignEndDateSelect($event)">
@@ -216,6 +221,10 @@
               <span class="input-group-btn">
                 <a type="button" class="btn btn-default"><i class="far fa-calendar-alt"></i></a>
               </span>
+            </div>
+            <div class="text-danger"
+                 *ngIf="schedule1.recurring.scheduleEnd.endsOn<schedule1.recurring.scheduleStartDate && schedule1.recurring.scheduleEnd.endType==='EndsOnDate'">
+              <span>Campaign End Date should be equal to or greater than Start date.</span>
             </div>
           </div>
           <div class="col-12 mb-2">
@@ -254,7 +263,8 @@
           </p>
         </div>
         <button class="btn btn-primary ml-3 px-4"
-                type="submit">Continue
+                type="submit"
+                [disabled]="disableSubmit">Continue
         </button>
       </form>
     </div>

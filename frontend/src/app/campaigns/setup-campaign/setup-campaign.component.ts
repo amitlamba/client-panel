@@ -25,6 +25,8 @@ export class SetupCampaignComponent implements OnInit {
   currentPath: string;
   showScheduleForm: boolean = false;
   showCloseButton: boolean = false;
+  disableSubmit: boolean = false;
+  occurencesValueFalse: boolean = false;
   cronExpression = '4 3 2 1 1/1 ? *';
   isCronDisabled: boolean = false;
   schedule1: Schedule1 = new Schedule1();
@@ -80,14 +82,14 @@ export class SetupCampaignComponent implements OnInit {
   }
 
   ngOnInit() {
-    //Segments List
+    // Segments List
     this.segmentService.getSegments().subscribe(
       (segments) => {
         this.segmentService.segments = segments;
         this.segmentsList = this.segmentService.segments;
       }
     );
-    //SmsTemplates List
+    // SmsTemplates List
     if (this.currentPath === 'sms') {
       this.templatesService.getSmsTemplates().subscribe(
         (response) => {
@@ -95,7 +97,7 @@ export class SetupCampaignComponent implements OnInit {
         }
       );
     }
-    //EmailTemplates List
+    // EmailTemplates List
     else {
       this.templatesService.getEmailTemplates().subscribe(
         (response) => {
@@ -144,7 +146,12 @@ export class SetupCampaignComponent implements OnInit {
 
   campaignEndDateSelect(value: any): void {
     this.schedule1.recurring.scheduleEnd.endsOn = moment(value.end.valueOf()).format("YYYY-MM-DD");
-    ;
+    if (this.schedule1.recurring.scheduleEnd.endsOn >= this.schedule1.recurring.scheduleStartDate) {
+      this.disableSubmit = false;
+    }
+    else {
+      this.disableSubmit = true;
+    }
   }
 
   addAnotherDateTime(): void {
@@ -191,6 +198,18 @@ export class SetupCampaignComponent implements OnInit {
     }
 
   }
+
+  checkOccurencesValue() {
+    if (this.schedule1.recurring.scheduleEnd.occurrences > 1000 || this.schedule1.recurring.scheduleEnd.occurrences < 1) {
+      this.occurencesValueFalse = true;
+      this.disableSubmit = true;
+    }
+    else {
+      this.occurencesValueFalse = false;
+      this.disableSubmit = false;
+    }
+  }
+
 }
 
 

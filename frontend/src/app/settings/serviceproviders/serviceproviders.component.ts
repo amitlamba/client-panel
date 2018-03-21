@@ -61,7 +61,7 @@ export class ServiceprovidersComponent implements OnInit {
   onChangeServiceProviderType(data:string) {
     // console.log(data);
     this.setServiceProviderType(data);
-    console.log(this.serviceProviderCredentials.serviceProviderType);
+    // console.log(this.serviceProviderCredentials.serviceProviderType);
     this.setServiceProviders(this.serviceProviderCredentials.serviceProviderType);
     // let sp = this.setServiceProviders(this.serviceProviderCredentials.serviceProviderType);
   }
@@ -72,7 +72,7 @@ export class ServiceprovidersComponent implements OnInit {
 
   setServiceProviderFields() {
     let f = this.settingsService.serviceProviders[this.serviceProviderCredentials.serviceProviderType][this.serviceProviderCredentials.serviceProvider]["fields"];
-    console.log(f);
+    // console.log(f);
     this.serviceProviderFields = f;
   }
 
