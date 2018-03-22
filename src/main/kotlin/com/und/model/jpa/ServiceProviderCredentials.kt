@@ -26,13 +26,11 @@ class ServiceProviderCredentials {
 
     @Column(name = "service_provider_type")
     @NotNull
-    @Enumerated(EnumType.STRING)
-    lateinit var serviceProviderType: ServiceProviderType
+    lateinit var serviceProviderType: String
 
     @Column(name = "service_provider")
     @NotNull
-    @Enumerated(EnumType.STRING)
-    lateinit var serviceProvider: ServiceProvider
+    lateinit var serviceProvider: String
 
     @Column(name = "url")
     lateinit var url: String
@@ -66,24 +64,3 @@ class ServiceProviderCredentials {
     var credentialsMap: HashMap<String, String> = HashMap<String, String>();
 }
 
-enum class ServiceProvider(val value: Short) {
-    AWS_SES(1),
-    AWS_SNS(2),
-    GOOGLE_FCM(3);
-
-    companion object {
-        private val map = ServiceProvider.values().associateBy(ServiceProvider::value)
-        fun fromValue(type: Short) = map[type]
-    }
-}
-
-enum class ServiceProviderType(val value: Short) {
-    EMAIL_SERVICE_PROVIDER(1),
-    SMS_SERVICE_PROVIDER(2),
-    NOTIFICATIONS_SERVICE_PROVIDER(3);
-
-    companion object {
-        private val map = ServiceProviderType.values().associateBy(ServiceProviderType::value)
-        fun fromValue(type: Short) = map[type]
-    }
-}

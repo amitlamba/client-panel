@@ -1,7 +1,6 @@
 package com.und.web.controller
 
 import com.und.model.jpa.ServiceProviderCredentials
-import com.und.model.jpa.ServiceProviderType
 import com.und.security.utils.AuthenticationUtils
 import com.und.service.UserSettingsService
 import org.springframework.beans.factory.annotation.Autowired
@@ -39,7 +38,7 @@ class UserSettingsController {
         val userID = AuthenticationUtils.principal.id
         serviceProviderCredentials.appuserID = userID
         serviceProviderCredentials.clientID = clientID
-        serviceProviderCredentials.serviceProviderType = ServiceProviderType.EMAIL_SERVICE_PROVIDER
+        serviceProviderCredentials.serviceProviderType = "Email Service Provider"
         return userSettingsService.saveEmailServiceProvider(serviceProviderCredentials)
     }
 
@@ -61,7 +60,7 @@ class UserSettingsController {
         val userID = AuthenticationUtils.principal.id
         serviceProviderCredentials.appuserID = userID
         serviceProviderCredentials.clientID = clientID
-        serviceProviderCredentials.serviceProviderType = ServiceProviderType.SMS_SERVICE_PROVIDER
+        serviceProviderCredentials.serviceProviderType = "Sms Service Provider"
         return userSettingsService.saveSmsServiceProvider(serviceProviderCredentials)
     }
 }
