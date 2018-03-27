@@ -32,18 +32,6 @@ class ServiceProviderCredentials {
     @NotNull
     lateinit var serviceProvider: String
 
-    @Column(name = "url")
-    lateinit var url: String
-
-    @Column(name = "port")
-    var port: Int? = null
-
-    @Column(name = "username")
-    lateinit var username: String
-
-    @Column(name = "password")
-    lateinit var password: String
-
     @Column(name = "date_created")
     @Temporal(TemporalType.TIMESTAMP)
     @NotNull
@@ -60,7 +48,7 @@ class ServiceProviderCredentials {
     lateinit var status: Status
 
     @Column(name = "credentials")
-//    @NotNull
-    var credentialsMap: HashMap<String, String> = HashMap<String, String>();
+    @NotNull
+    lateinit var credentialsMap: String
 }
 

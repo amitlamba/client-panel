@@ -1,8 +1,8 @@
 package com.und.web.controller
 
-import com.und.model.jpa.ServiceProviderCredentials
 import com.und.security.utils.AuthenticationUtils
 import com.und.service.UserSettingsService
+import com.und.web.model.ServiceProviderCredentials
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
 
