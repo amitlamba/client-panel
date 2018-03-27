@@ -112,18 +112,18 @@ export class SetupCampaignComponent implements OnInit {
   }
 
   onSubmit(): void {
+    this.campaign.name = this.campaignName;
+    this.campaign.schedule = this.schedule1;
     if (this.scheduleType === "recurring") {
       this.schedule1.recurring.cronExpression = this.cronExpression;
     }
-    this.campaign.name = this.campaignName;
-    this.campaign.schedule = this.schedule1;
+
     if (this.currentPath === 'sms') {
       this.campaign.campaignType = CampaignType.SMS;
     }
     else {
       this.campaign.campaignType = CampaignType.EMAIL;
     }
-    // console.log(JSON.stringify(this.campaign));
     this.campaignService.saveCampaign(this.campaign).subscribe(
       (campaign) => {
         this.campaignService.campaigns.push(campaign);

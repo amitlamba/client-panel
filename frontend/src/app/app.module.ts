@@ -72,6 +72,9 @@ import {CronEditorModule} from "./cron-editor/cron-editor.module";
 import {SegmentNlpComponent} from './segment-category/segment-nlp/segment-nlp.component';
 import {DemoTinymceComponent} from "./_helpers/demo-tinymce/demo-tinymce.component";
 import {CampaignService} from "./_services/campaign.service";
+import { AccountSettingsComponent } from './settings/account-settings/account-settings.component';
+import { TimezonePickerModule } from 'ng2-timezone-selector';
+import { EmailListComponent } from './settings/email-list/email-list.component';
 
 @NgModule({
   imports: [
@@ -88,6 +91,7 @@ import {CampaignService} from "./_services/campaign.service";
     OwlNativeDateTimeModule,
     Select2Module,
     CronEditorModule,
+    TimezonePickerModule
   ],
   declarations: [
     AppComponent,
@@ -137,6 +141,8 @@ import {CampaignService} from "./_services/campaign.service";
     DateTimeComponent,
     SegmentNlpComponent,
     DemoTinymceComponent,
+    AccountSettingsComponent,
+    EmailListComponent,
   ],
   providers: [
     AuthGuard,

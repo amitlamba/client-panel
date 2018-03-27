@@ -17,7 +17,7 @@ declare var tinymce: any;
     <div class="form-group" style="position:relative">
       <div [mention]="items"></div>
       <div>
-        <textarea class="hidden" cols="60" rows="4" id="tmce" >{{localHtmlContent}}
+        <textarea class="hidden" cols="60" rows="4" id="tmce" [(ngModel)]="htmlContent">{{htmlContent}}
         </textarea>
         <button class="btn btn-primary" (click)="addUnsubscribeLink($event)" type="button">Add Unsubscribe</button>
       </div>
@@ -72,21 +72,20 @@ export class DemoTinymceComponent {
     });
     ed.on('init', (e) => {
       mention.setIframe(ed.iframeElement);
-      // ed.setContent(this.htmlContent);
-      // console.log(args.target.getInnerHTML);
-      // this.htmlContent = e.target.innerHTML;
+      this.htmlContent = e.target.innerHTML;
       e.target.innerHTML = this.htmlContent;
     });
     ed.on('keyup', (e) => {
       let frame = <any>window.frames[ed.iframeElement.id];
       this.htmlContent = e.target.innerHTML;
-      console.log(this.localHtmlContent);
+      // console.log(this.localHtmlContent);
     });
 
   }
   addUnsubscribeLink(event) {
     if(event.srcElement.innerHTML==='Add Unsubscribe'){
-      // http://archive.tinymce.com/wiki.php/API3:method.tinymce.dom.DOMUtils.add  "Below Line Definition."
+      // http://archive.tinymce.com/wiki.php/API3:method.tinymce.dom.DOMUtils.add  "Below Line Definition."\
+
       tinymce.activeEditor.dom.add(tinymce.activeEditor.getBody(), 'a', {href : '#' ,id : 'unsubscribe'} , 'Unsubscribe');
       this.htmlContent = tinymce.activeEditor.getBody().innerHTML;
       event.srcElement.innerHTML='Remove Unsubscribe';
@@ -96,6 +95,6 @@ export class DemoTinymceComponent {
       this.htmlContent = tinymce.activeEditor.getBody().innerHTML;
       event.srcElement.innerHTML='Add Unsubscribe';
     }
-    console.log(this.htmlContent);
+    // console.log(this.htmlContent);
   }
 }

@@ -40,32 +40,33 @@
   <div class="form-group col-sm-12">
     <label for="emailBody">Email Body</label>
     <br>
-    <div class="custom-control custom-radio custom-control-inline">
-      <input type="radio"
-             id="emailBodyHtml"
-             name="emailBody"
-             class="custom-control"
-             (click)="showTinymceEditor = false;"
-             [checked]="(!showTinymceEditor)">
-      <label class="custom-control-label" for="emailBodyHtml">Add HTML Code</label>
-    </div>
-    <div class="custom-control custom-radio custom-control-inline">
-      <input type="radio"
-             id="emailBodyTextEditor"
-             name="emailBody"
-             class="custom-control"
-             (click)="showTinymceEditor = true;"
-             [checked]="(showTinymceEditor)">
-      <label class="custom-control-label" for="emailBodyTextEditor">Use Editor</label>
-    </div>
-    <!--<div>{{ emailTemplate.emailTemplateBody }}</div>-->
-    <textarea cols="60" rows="4" class="form-control" *ngIf="!showTinymceEditor" id="htmlCode" contentEditable="true"
-      name="htmlCode" [(ngModel)]="emailTemplate.emailTemplateBody">
-    </textarea>
-    <button class="btn btn-primary" *ngIf="!showTinymceEditor" (click)="addUnsubscribeLink($event)" type="button">Add Unsubscribe</button>
+    <!--<div class="custom-control custom-radio custom-control-inline">-->
+      <!--<input type="radio"-->
+             <!--id="emailBodyHtml"-->
+             <!--name="emailBody"-->
+             <!--class="custom-control"-->
+             <!--(click)="showTinymceEditor = false;"-->
+             <!--[checked]="(!showTinymceEditor)">-->
+      <!--<label class="custom-control-label" for="emailBodyHtml">Add HTML Code</label>-->
+    <!--</div>-->
+    <!--<div class="custom-control custom-radio custom-control-inline">-->
+      <!--<input type="radio"-->
+             <!--id="emailBodyTextEditor"-->
+             <!--name="emailBody"-->
+             <!--class="custom-control"-->
+             <!--(click)="showTinymceEditor = true;"-->
+             <!--[checked]="(showTinymceEditor)">-->
+      <!--<label class="custom-control-label" for="emailBodyTextEditor">Use Editor</label>-->
+    <!--</div>-->
+    <!--&lt;!&ndash;<div>{{ emailTemplate.emailTemplateBody }}</div>&ndash;&gt;-->
+    <!--<textarea cols="60" rows="4" class="form-control" *ngIf="!showTinymceEditor" id="htmlCode" contentEditable="true"-->
+      <!--name="htmlCode" [(ngModel)]="emailTemplate.emailTemplateBody">-->
+    <!--</textarea>-->
+    <!--<button class="btn btn-primary" *ngIf="!showTinymceEditor" (click)="addUnsubscribeLink($event)" type="button">Add Unsubscribe</button>-->
     <app-demo-tinymce id="emailBody"
                       [(htmlContent)]="emailTemplate.emailTemplateBody"
-                      [hidden]="!showTinymceEditor"></app-demo-tinymce>
+                      ></app-demo-tinymce>
+    <!--[hidden]="!showTinymceEditor"-->
     <!--[(htmlContent)]="emailTemplate.emailTemplateBody"-->
     <!--name="tinymceContent"-->
     <!--[(ngModel)]="emailTemplate.emailTemplateBody"-->

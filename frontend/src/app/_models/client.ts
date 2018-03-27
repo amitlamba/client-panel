@@ -38,3 +38,9 @@ export class UserProfileRequest {
   phone: string;
   eventUserToken: string;
 }
+export class AccountSettings {
+  email: string[];
+  url: string;
+  timezone: string;
+  codegenerated: string;
+}
