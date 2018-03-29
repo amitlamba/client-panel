@@ -1,10 +1,9 @@
 package com.und.model.jpa
 
 import com.und.model.Status
-import java.util.*
+import java.time.LocalDateTime
 import javax.persistence.*
 import javax.validation.constraints.NotNull
-import kotlin.collections.HashMap
 
 @Entity
 @Table(name = "service_provider_credentials")
@@ -32,15 +31,14 @@ class ServiceProviderCredentials {
     @NotNull
     lateinit var serviceProvider: String
 
+    @Transient
     @Column(name = "date_created")
-    @Temporal(TemporalType.TIMESTAMP)
     @NotNull
-    lateinit var dateCreated: Date
+    lateinit var dateCreated: LocalDateTime
 
     @Column(name = "date_modified")
-    @Temporal(TemporalType.TIMESTAMP)
     @NotNull
-    lateinit var dateModified: Date
+    lateinit var dateModified: LocalDateTime
 
     @Column(name = "status")
     @NotNull

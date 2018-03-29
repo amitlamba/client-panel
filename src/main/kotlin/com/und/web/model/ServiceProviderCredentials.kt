@@ -1,6 +1,7 @@
 package com.und.web.model
 
 import com.und.model.Status
+import java.time.LocalDateTime
 import java.util.*
 
 class ServiceProviderCredentials {
@@ -9,8 +10,8 @@ class ServiceProviderCredentials {
     var appuserID: Long? = null
     lateinit var serviceProviderType: String
     lateinit var serviceProvider: String
-    lateinit var dateCreated: Date
-    lateinit var dateModified: Date
+    lateinit var dateCreated: LocalDateTime
+    lateinit var dateModified: LocalDateTime
     lateinit var status: Status
     var credentialsMap: HashMap<String, String> = HashMap<String, String>()
 }

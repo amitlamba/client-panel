@@ -4,17 +4,26 @@ import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.und.common.utils.DateUtils
 import com.und.model.Status
+import com.und.model.jpa.ClientSettings
 import com.und.model.jpa.ServiceProviderCredentials
+import com.und.repository.ClientSettingsRepository
 import com.und.web.model.ServiceProviderCredentials as WebServiceProviderCredentials
 import com.und.repository.ServiceProviderCredentialsRepository
+import com.und.web.model.AccountSettings
+import com.und.web.model.EmailAddress
+import org.springframework.beans.BeanUtils
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
+import java.time.LocalDateTime
 
 @Service
 class UserSettingsService {
 
     @Autowired
     lateinit private var serviceProviderCredentialsRepository: ServiceProviderCredentialsRepository
+    @Autowired
+    lateinit private var clientSettingsRepository: ClientSettingsRepository
 
     private val emailServiceProvider = "Email Service Provider"
     private val smsServiceProvider = "Sms Service Provider"
@@ -33,9 +42,9 @@ class UserSettingsService {
 
     fun saveEmailServiceProvider(webServiceProviderCredentials: WebServiceProviderCredentials): Long? {
         webServiceProviderCredentials.status = Status.ACTIVE
-        webServiceProviderCredentials.dateModified = DateUtils().now()
+        webServiceProviderCredentials.dateModified = LocalDateTime.now()
         if (webServiceProviderCredentials.id == null)
-            webServiceProviderCredentials.dateCreated = DateUtils().now() //FIXME: Date Created should be for the first time only
+            webServiceProviderCredentials.dateCreated = LocalDateTime.now() //FIXME: Date Created should be for the first time only
 
         val serviceProviderCredentials = buildServiceProviderCredentials(webServiceProviderCredentials)
         val saved = serviceProviderCredentialsRepository.save(serviceProviderCredentials)
@@ -56,9 +65,9 @@ class UserSettingsService {
 
     fun saveSmsServiceProvider(webServiceProviderCredentials: WebServiceProviderCredentials): Long? {
         webServiceProviderCredentials.status = Status.ACTIVE
-        webServiceProviderCredentials.dateModified = DateUtils().now()
+        webServiceProviderCredentials.dateModified = LocalDateTime.now()
         if (webServiceProviderCredentials.id == null)
-            webServiceProviderCredentials.dateCreated = DateUtils().now() //FIXME: Date Created should be for the first time only
+            webServiceProviderCredentials.dateCreated = LocalDateTime.now() //FIXME: Date Created should be for the first time only
 
         val serviceProviderCredentials = buildServiceProviderCredentials(webServiceProviderCredentials)
         val saved = serviceProviderCredentialsRepository.save(serviceProviderCredentials)
@@ -99,5 +108,43 @@ class UserSettingsService {
             wspCreds.credentialsMap = Gson().fromJson<HashMap<String, String>>(serviceProviderCredentials.credentialsMap, HashMap<String, String>().javaClass)
         }
         return wspCreds
+    }
+
+    fun saveAccountSettings(accountSettings: AccountSettings, clientID: Long?, userID: Long?) {
+        //FIXME: Validate Timezone and Email Addresses
+        var clientSettings = ClientSettings()
+        clientSettings.clientID = clientID
+        clientSettings.authorizedUrls = GsonBuilder().create().toJson(accountSettings.urls)
+        clientSettings.timezone = accountSettings.timezone
+        clientSettings.dateCreated = LocalDateTime.now()
+        clientSettings.dateModified = LocalDateTime.now()
+        clientSettingsRepository.save(clientSettings)
+    }
+
+    @Transactional
+    fun addSenderEmailAddress(emailAddress: EmailAddress, clientID: Long) {
+        var emailAddressesJson: String? = clientSettingsRepository.findSenderEmailAddressesByClientId(clientID)
+        if (emailAddressesJson == null) emailAddressesJson = "[]"
+        var emailAddresses: ArrayList<EmailAddress> = Gson().fromJson<ArrayList<EmailAddress>>(emailAddressesJson, ArrayList<EmailAddress>().javaClass)
+        emailAddresses.add(emailAddress)
+        clientSettingsRepository.saveSenderEmailAddresses(GsonBuilder().create().toJson(emailAddresses), clientID)
+    }
+
+    @Transactional
+    fun removeSenderEmailAddress(emailAddress: EmailAddress, clientID: Long) {
+        var emailAddressesJson: String? = clientSettingsRepository.findSenderEmailAddressesByClientId(clientID)
+        if (emailAddressesJson == null) emailAddressesJson = "[]"
+        var emailAddresses = Gson().fromJson(emailAddressesJson, ArrayList<EmailAddress>().javaClass)
+        println("Email Addresses" + emailAddresses)
+        println("Email Address" + emailAddress)
+        emailAddresses.removeIf { emailAddress.address.equals(it.address) && emailAddress.personal.equals(it.personal) }
+        clientSettingsRepository.saveSenderEmailAddresses(GsonBuilder().create().toJson(emailAddresses), clientID)
+    }
+
+    fun getSenderEmailAddresses(clientID: Long): List<EmailAddress> {
+        var emailAddressesJson: String? = clientSettingsRepository.findSenderEmailAddressesByClientId(clientID)
+        if (emailAddressesJson == null) emailAddressesJson = "[]"
+        val emailAddresses: List<EmailAddress> = Gson().fromJson<ArrayList<EmailAddress>>(emailAddressesJson, ArrayList<EmailAddress>().javaClass)
+        return emailAddresses
     }
 }

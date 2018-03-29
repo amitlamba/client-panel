@@ -2,9 +2,13 @@ package com.und.web.controller
 
 import com.und.security.utils.AuthenticationUtils
 import com.und.service.UserSettingsService
+import com.und.web.model.AccountSettings
+import com.und.web.model.EmailAddress
 import com.und.web.model.ServiceProviderCredentials
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
+import java.time.LocalDate
+import java.util.*
 
 @CrossOrigin
 @RestController
@@ -62,5 +66,27 @@ class UserSettingsController {
         serviceProviderCredentials.clientID = clientID
         serviceProviderCredentials.serviceProviderType = "Sms Service Provider"
         return userSettingsService.saveSmsServiceProvider(serviceProviderCredentials)
+    }
+
+    @PostMapping(value = ["/senders-email/save"])
+    fun saveSendEmail(@RequestBody email: EmailAddress) {
+
+    }
+
+    @GetMapping(value = ["/senders-email/list"])
+    fun getSendEmailList(): List<EmailAddress> {
+        return null!!
+    }
+
+    @GetMapping(value = ["/timezones"])
+    fun getTimezones(): Any {
+        return null!!
+    }
+
+    @PostMapping(value = ["/account-settings/save"])
+    fun saveAccountSettings(@RequestBody accountSettings: AccountSettings) {
+        val clientID = AuthenticationUtils.clientID
+        val userID = AuthenticationUtils.principal.id
+        return userSettingsService.saveAccountSettings(accountSettings, clientID, userID)
     }
 }
