@@ -18,36 +18,30 @@ export class ServiceprovidersComponent implements OnInit {
   serviceProviderTypes: string[];
   serviceProviders: string[] = [];
   serviceProviderFields: any = {};
+  serviceProviderCredentialsList: ServiceProviderCredentials[] = [];
 
   constructor(private messageService: MessageService,
               private authenticationService: AuthenticationService,
               public settingsService: SettingsService,
-              private router:Router) {
+              private router: Router) {
     this.initServiceProviderTypes();
-    // this.initServiceProviders();
   }
 
   ngOnInit() {
-    this.settingsService.getServiceProvidersList().subscribe(
-      response => {
-        console.log(response);
-      }
-    );
+    // if(!this.settingsService.serviceProviderListLoaded) {
+    //   this.getServiceProvidersList();
+    //   this.settingsService.serviceProviderListLoaded = true;
+    // }
+    this.getServiceProvidersList();
+    //   this.settingsService.serviceProviderListLoaded = true;
   }
 
   initServiceProviderTypes() {
     this.setServiceProviderTypes();
   }
 
-  initServiceProviders() {
-    // this.setServiceProviders(this.serviceProviderCredentials.serviceProviderType);
-  }
-
   setServiceProviderTypes() {
     let spTypes = Object.keys(this.settingsService.serviceProviders);
-    // if (!this.serviceProviderCredentials.serviceProviderType)
-    //   this.serviceProviderCredentials.serviceProviderType = spTypes[0];
-    // console.log(spTypes);
     this.serviceProviderTypes = spTypes;
   }
 
@@ -75,20 +69,30 @@ export class ServiceprovidersComponent implements OnInit {
     this.serviceProviderCredentials.credentialsMap = {};
   }
 
+  getServiceProvidersList() {
+    this.settingsService.getServiceProvidersList().subscribe(
+      (serviceProviderCredentialsList) => {
+        this.serviceProviderCredentialsList = serviceProviderCredentialsList;
+      }
+    );
+  }
+
   onSave(form: FormData) {
-    console.log(JSON.stringify(this.serviceProviderCredentials));
     if (this.form.valid) {
-      this.settingsService.saveServiceProviderCredentialEmail(this.serviceProviderCredentials).subscribe();
-      this.settingsService.getServiceProvidersList().subscribe(
-        response =>{
-          console.log(response);
-        }
-      )
-      // if (this.serviceProviderCredentials.serviceProviderType === 'Email Service Provider')
-      //   this.settingsService.saveServiceProviderCredentialEmail(this.serviceProviderCredentials).subscribe();
-      // if (this.serviceProviderCredentials.serviceProviderType === 'SMS Service Provider')
+      if (this.serviceProviderCredentials.serviceProviderType === 'Email Service Provider') {
+        this.settingsService.saveServiceProviderCredentialEmail(this.serviceProviderCredentials).subscribe(
+          (serviceProviderCredentials) => {
+            this.settingsService.serviceProvidersList.push(serviceProviderCredentials);
+            this.getServiceProvidersList();
+          }
+        );
+
+      }
+      // if (this.serviceProviderCredentials.serviceProviderType === 'SMS Service Provider') {
       //   this.settingsService.saveServiceProviderCredentialsSms(this.serviceProviderCredentials).subscribe();
+      //   this.router.navigate(["settings"]);
+      // }
     }
-    this.router.navigate(["settings/service-provider-settings"]);
+
   }
 }

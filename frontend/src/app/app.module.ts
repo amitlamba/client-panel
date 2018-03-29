@@ -75,6 +75,7 @@ import {CampaignService} from "./_services/campaign.service";
 import { AccountSettingsComponent } from './settings/account-settings/account-settings.component';
 import { TimezonePickerModule } from 'ng2-timezone-selector';
 import { EmailListComponent } from './settings/email-list/email-list.component';
+import {ClipboardModule} from "ngx-clipboard";
 
 @NgModule({
   imports: [
@@ -91,7 +92,8 @@ import { EmailListComponent } from './settings/email-list/email-list.component';
     OwlNativeDateTimeModule,
     Select2Module,
     CronEditorModule,
-    TimezonePickerModule
+    TimezonePickerModule,
+    ClipboardModule
   ],
   declarations: [
     AppComponent,

@@ -10,6 +10,7 @@ import {catchError, tap} from "rxjs/operators";
 export class SettingsService {
 
   serviceProvidersList: ServiceProviderCredentials[] = [];
+  serviceProviderListLoaded :boolean = false;
 
   constructor(private httpClient: HttpClient) {
   }
