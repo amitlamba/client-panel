@@ -2,29 +2,55 @@
   <div class="col-sm-5">
     <form novalidate >
       <div class="form-group">
-        <label for="website-url">Enter Website's URL</label>
+        <label for="website-url">Website's URL</label>
         <div class="input-group">
-          <span class="input-group-addon">https://</span>
-          <input type="text" class="form-control" id="website-url" placeholder="www.facebook.com">
+          <select class="input-group-addon protocols" name="protocol" [(ngModel)]="protocol">
+            <span class="caret"></span>
+            <option value="http://">http://</option>
+            <option value="https://">https://</option>
+          </select>
+          <input type="text" class="form-control"
+                 id="website-url"
+                 placeholder="Example: http://www.mywebsite.com"
+                 name="websiteURL"
+                [(ngModel)]="websiteURL"
+                 #siteURL="ngModel"
+                required>
+        </div>
+        <div class="feedback text-danger" *ngIf="siteURL.errors && (siteURL.touched || siteURL.dirty)">
+          <div *ngIf="siteURL.errors.required">
+                URL is required.
+          </div>
+          <!--<div *ngIf="">-->
+                <!--Invalid URL-->
+          <!--</div>-->
         </div>
       </div>
       <div class="form-group">
         <label for="timezoneInput">Country's Time Zone</label>
         <ng2-timezone-picker
           id="timezoneInput"
-          [(timezone)]="user.timezone"
+          [(timezone)]="accountSettings.timezone"
           [placeholder]="placeholderString"
           (change)="changeTimezone($event)"
           showOffset="true">
         </ng2-timezone-picker>
       </div>
       <div class="float-right">
-        <button class="btn btn-info" (click)="showCodeBlock=!showCodeBlock">Get JS Integration Code</button>
+        <button class="btn btn-info" (click)="getJSIntegrationCode()">Get JS Integration Code</button>
       </div>
       <br>
       <figure class="mt-5" style="background: #EBEBE4;" *ngIf="showCodeBlock">
+        <button class="btn btn-outline-primary mt-2 mr-2 btn-sm float-right"
+                (click)="changeTooltipText()"
+                id="copyCode"
+                data-toggle="tooltip"
+                title="Copy to Clipboard"
+                data-placement="top"
+                [cbContent]="jsCodeSnippet"
+                ngxClipboard>Copy</button>
         <pre>
-           <code>
+           <code id="codeValue">
       <!-- your code here -->
              var h1=document.querySelector(".h1");
              h1.style.background="blue";
