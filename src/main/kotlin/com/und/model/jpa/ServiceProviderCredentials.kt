@@ -1,10 +1,9 @@
 package com.und.model.jpa
 
 import com.und.model.Status
-import java.util.*
+import java.time.LocalDateTime
 import javax.persistence.*
 import javax.validation.constraints.NotNull
-import kotlin.collections.HashMap
 
 @Entity
 @Table(name = "service_provider_credentials")
@@ -26,35 +25,20 @@ class ServiceProviderCredentials {
 
     @Column(name = "service_provider_type")
     @NotNull
-    @Enumerated(EnumType.STRING)
-    lateinit var serviceProviderType: ServiceProviderType
+    lateinit var serviceProviderType: String
 
     @Column(name = "service_provider")
     @NotNull
-    @Enumerated(EnumType.STRING)
-    lateinit var serviceProvider: ServiceProvider
+    lateinit var serviceProvider: String
 
-    @Column(name = "url")
-    lateinit var url: String
-
-    @Column(name = "port")
-    var port: Int? = null
-
-    @Column(name = "username")
-    lateinit var username: String
-
-    @Column(name = "password")
-    lateinit var password: String
-
+    @Transient
     @Column(name = "date_created")
-    @Temporal(TemporalType.TIMESTAMP)
     @NotNull
-    lateinit var dateCreated: Date
+    lateinit var dateCreated: LocalDateTime
 
     @Column(name = "date_modified")
-    @Temporal(TemporalType.TIMESTAMP)
     @NotNull
-    lateinit var dateModified: Date
+    lateinit var dateModified: LocalDateTime
 
     @Column(name = "status")
     @NotNull
@@ -62,28 +46,7 @@ class ServiceProviderCredentials {
     lateinit var status: Status
 
     @Column(name = "credentials")
-//    @NotNull
-    var credentialsMap: HashMap<String, String> = HashMap<String, String>();
+    @NotNull
+    lateinit var credentialsMap: String
 }
 
-enum class ServiceProvider(val value: Short) {
-    AWS_SES(1),
-    AWS_SNS(2),
-    GOOGLE_FCM(3);
-
-    companion object {
-        private val map = ServiceProvider.values().associateBy(ServiceProvider::value)
-        fun fromValue(type: Short) = map[type]
-    }
-}
-
-enum class ServiceProviderType(val value: Short) {
-    EMAIL_SERVICE_PROVIDER(1),
-    SMS_SERVICE_PROVIDER(2),
-    NOTIFICATIONS_SERVICE_PROVIDER(3);
-
-    companion object {
-        private val map = ServiceProviderType.values().associateBy(ServiceProviderType::value)
-        fun fromValue(type: Short) = map[type]
-    }
-}
