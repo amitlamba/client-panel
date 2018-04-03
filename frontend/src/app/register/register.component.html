@@ -1,7 +1,7 @@
 <div class="container">
   <div class="row justify-content-center">
     <div class="col-sm-6">
-      <h2 class="text-center">Sign up for Userndot</h2>
+      <h2 class="text-center">Sign Up for Userndot</h2>
 
       <!--suppress ALL -->
       <form novalidate (ngSubmit)="onSubmit(f)" #f="ngForm">
@@ -82,7 +82,7 @@
 
 
         <div class="form-group">
-          <label>Password {{(password.dirty || password.touched) && password.invalid}}</label>
+          <label>Password</label>
           <input type="password" class="form-control" name="password" [(ngModel)]="model.password"
                  required
                  minlength="8"
@@ -101,7 +101,7 @@
           <input type="text" class="form-control" name="address" [(ngModel)]="model.address"
                  required
                  #address="ngModel">
-          <div class="feedback"
+          <div class="feedback text-danger"
                *ngIf="address.errors && (address.dirty || address.touched)">
             <p *ngIf="address.errors.required">Address required</p>
           </div>
