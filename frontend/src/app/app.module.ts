@@ -76,6 +76,7 @@ import { AccountSettingsComponent } from './settings/account-settings/account-se
 import { TimezonePickerModule } from 'ng2-timezone-selector';
 import { EmailListComponent } from './settings/email-list/email-list.component';
 import {ClipboardModule} from "ngx-clipboard";
+import { LandingPageUndComponent } from './landing-page-und/landing-page-und.component';
 
 @NgModule({
   imports: [
@@ -145,6 +146,7 @@ import {ClipboardModule} from "ngx-clipboard";
     DemoTinymceComponent,
     AccountSettingsComponent,
     EmailListComponent,
+    LandingPageUndComponent,
   ],
   providers: [
     AuthGuard,

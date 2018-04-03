@@ -23,6 +23,7 @@ import {SetupCampaignComponent} from "./campaigns/setup-campaign/setup-campaign.
 import {CampaignsListComponent} from "./campaigns/campaigns-list/campaigns-list.component";
 import {AccountSettingsComponent} from "./settings/account-settings/account-settings.component";
 import {EmailListComponent} from "./settings/email-list/email-list.component";
+import {LandingPageUndComponent} from "./landing-page-und/landing-page-und.component";
 
 const routes: Routes = [
   {path: 'login', component: LoginComponent},
@@ -62,7 +63,8 @@ const routes: Routes = [
       {path: 'email', component: SetupCampaignComponent}
     ]
   },
-  {path: '**', component: PageNotFoundComponent}
+  {path: 'webpage', component: LandingPageUndComponent},
+  {path: '**', component: PageNotFoundComponent},
 ];
 
 @NgModule({
