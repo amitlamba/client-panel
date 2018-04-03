@@ -7,7 +7,7 @@ import {DateFilter, DateOperator} from "../../_models/segment";
 @Component({
   selector: 'app-date-comparator',
   templateUrl: './date-comparator.component.html',
-  styleUrls: ['./date-comparator.component.css']
+  styleUrls: ['./date-comparator.component.scss']
 })
 export class DateComparatorComponent implements OnInit {
 

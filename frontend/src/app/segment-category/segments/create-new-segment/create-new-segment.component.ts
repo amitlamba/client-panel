@@ -6,7 +6,7 @@ import {Router} from "@angular/router";
 @Component({
   selector: 'app-create-new-segment',
   templateUrl: './create-new-segment.component.html',
-  styleUrls: ['./create-new-segment.component.css']
+  styleUrls: ['./create-new-segment.component.scss']
 })
 export class CreateNewSegmentComponent implements OnInit {
 

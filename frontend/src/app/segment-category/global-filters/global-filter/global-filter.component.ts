@@ -6,7 +6,7 @@ import {GlobalFiltersComponent} from "../global-filters.component";
 @Component({
   selector: 'app-global-filter',
   templateUrl: './global-filter.component.html',
-  styleUrls: ['./global-filter.component.css']
+  styleUrls: ['./global-filter.component.scss']
 })
 export class GlobalFilterComponent implements OnInit {
 

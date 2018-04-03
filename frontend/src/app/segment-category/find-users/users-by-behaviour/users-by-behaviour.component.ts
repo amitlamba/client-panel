@@ -5,7 +5,7 @@ import {DidEvents, Segment} from "../../../_models/segment";
 @Component({
   selector: 'app-users-by-behaviour',
   templateUrl: './users-by-behaviour.component.html',
-  styleUrls: ['./users-by-behaviour.component.css']
+  styleUrls: ['./users-by-behaviour.component.scss']
 })
 export class UsersByBehaviourComponent implements OnInit {
 

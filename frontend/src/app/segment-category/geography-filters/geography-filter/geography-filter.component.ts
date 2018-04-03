@@ -6,7 +6,7 @@ import {GeographyFiltersComponent} from "../geography-filters.component";
 @Component({
   selector: 'app-geography-filter',
   templateUrl: './geography-filter.component.html',
-  styleUrls: ['./geography-filter.component.css']
+  styleUrls: ['./geography-filter.component.scss']
 })
 export class GeographyFilterComponent implements OnInit {
 

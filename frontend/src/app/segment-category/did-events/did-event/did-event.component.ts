@@ -16,7 +16,7 @@ import {DidEventsComponent} from "../did-events.component";
 @Component({
   selector: 'app-did-event',
   templateUrl: './did-event.component.html',
-  styleUrls: ['./did-event.component.css']
+  styleUrls: ['./did-event.component.scss']
 })
 export class DidEventComponent implements OnInit {
 

@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 @Component({
   selector: 'app-und-editor',
   templateUrl: './und-editor.component.html',
-  styleUrls: ['./und-editor.component.css']
+  styleUrls: ['./und-editor.component.scss']
 })
 export class UndEditorComponent implements OnInit {
 

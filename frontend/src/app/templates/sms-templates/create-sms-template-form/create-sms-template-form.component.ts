@@ -6,7 +6,7 @@ import {MessageService} from "../../../_services/message.service";
 @Component({
   selector: 'app-create-sms-template-form',
   templateUrl: './create-sms-template-form.component.html',
-  styleUrls: ['./create-sms-template-form.component.css']
+  styleUrls: ['./create-sms-template-form.component.scss']
 })
 export class CreateSmsTemplateFormComponent implements OnInit {
 

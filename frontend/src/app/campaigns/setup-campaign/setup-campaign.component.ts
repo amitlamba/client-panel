@@ -19,7 +19,7 @@ import {CampaignService} from "../../_services/campaign.service";
 @Component({
   selector: 'app-setup-campaign',
   templateUrl: './setup-campaign.component.html',
-  styleUrls: ['./setup-campaign.component.css']
+  styleUrls: ['./setup-campaign.component.scss']
 })
 export class SetupCampaignComponent implements OnInit {
   currentPath: string;

@@ -12,7 +12,7 @@ import {Select2OptionData} from "ng2-select2";
 @Component({
   selector: 'app-filter',
   templateUrl: './filter.component.html',
-  styleUrls: ['./filter.component.css']
+  styleUrls: ['./filter.component.scss']
 })
 export class FilterComponent implements OnInit {
   @ViewChild('filterWidget') filterWidget: ViewContainerRef;

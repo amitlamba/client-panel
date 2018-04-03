@@ -6,7 +6,7 @@ import {SegmentService} from "../../_services/segment.service";
 @Component({
   selector: 'app-segments',
   templateUrl: './segments.component.html',
-  styleUrls: ['./segments.component.css']
+  styleUrls: ['./segments.component.scss']
 })
 export class SegmentsComponent implements OnInit {
 

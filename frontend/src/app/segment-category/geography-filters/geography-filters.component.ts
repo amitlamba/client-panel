@@ -9,7 +9,7 @@ import {Country, Geography} from "../../_models/segment";
 @Component({
   selector: 'app-geography-filters',
   templateUrl: './geography-filters.component.html',
-  styleUrls: ['./geography-filters.component.css']
+  styleUrls: ['./geography-filters.component.scss']
 })
 export class GeographyFiltersComponent implements OnInit {
 

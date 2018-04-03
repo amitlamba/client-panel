@@ -9,7 +9,7 @@ import {GlobalFilterComponent} from "./global-filter/global-filter.component";
 @Component({
   selector: 'app-global-filters',
   templateUrl: './global-filters.component.html',
-  styleUrls: ['./global-filters.component.css']
+  styleUrls: ['./global-filters.component.scss']
 })
 export class GlobalFiltersComponent implements OnInit {
 

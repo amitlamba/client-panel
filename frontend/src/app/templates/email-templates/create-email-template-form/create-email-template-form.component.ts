@@ -10,7 +10,7 @@ import {UserParams} from "../../../_models/user";
 @Component({
   selector: 'app-create-email-template-form',
   templateUrl: './create-email-template-form.component.html',
-  styleUrls: ['./create-email-template-form.component.css']
+  styleUrls: ['./create-email-template-form.component.scss']
 })
 export class CreateEmailTemplateFormComponent implements OnInit, OnChanges {
 

@@ -5,7 +5,7 @@ import {StringOperator} from "../../_models/segment";
 @Component({
   selector: 'app-string-comparator',
   templateUrl: './string-comparator.component.html',
-  styleUrls: ['./string-comparator.component.css']
+  styleUrls: ['./string-comparator.component.scss']
 })
 export class StringComparatorComponent implements OnInit {
 

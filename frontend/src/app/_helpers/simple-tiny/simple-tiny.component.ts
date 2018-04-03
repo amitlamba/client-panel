@@ -10,7 +10,7 @@ declare var tinymce: any;
 @Component({
   selector: 'app-simple-tiny',
   templateUrl: './simple-tiny.component.html',
-  styleUrls: ['./simple-tiny.component.css']
+  styleUrls: ['./simple-tiny.component.scss']
 })
 export class SimpleTinyComponent implements OnInit, AfterViewInit, OnDestroy {
 
