@@ -14,7 +14,7 @@ import {SegmentService} from "../../_services/segment.service";
 @Component({
   selector: 'app-did-events',
   templateUrl: './did-events.component.html',
-  styleUrls: ['./did-events.component.css']
+  styleUrls: ['./did-events.component.scss']
 })
 export class DidEventsComponent implements OnInit {
 

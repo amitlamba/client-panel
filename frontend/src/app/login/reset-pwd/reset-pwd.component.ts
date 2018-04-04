@@ -7,7 +7,7 @@ import {HttpErrorResponse} from "@angular/common/http";
 @Component({
   selector: 'app-reset-pwd',
   templateUrl: './reset-pwd.component.html',
-  styleUrls: ['./reset-pwd.component.css']
+  styleUrls: ['./reset-pwd.component.scss']
 })
 export class ResetPwdComponent implements OnInit {
   @ViewChild('f') resetForm: NgForm;

@@ -5,7 +5,7 @@ import {Segment} from "../../_models/segment";
 @Component({
   selector: 'app-find-users',
   templateUrl: './find-users.component.html',
-  styleUrls: ['./find-users.component.css']
+  styleUrls: ['./find-users.component.scss']
 })
 export class FindUsersComponent implements OnInit {
 

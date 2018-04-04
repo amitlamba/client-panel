@@ -5,7 +5,7 @@ import * as moment from "moment";
 @Component({
   selector: 'app-date-time',
   templateUrl: './date-time.component.html',
-  styleUrls: ['./date-time.component.css']
+  styleUrls: ['./date-time.component.scss']
 })
 export class DateTimeComponent implements OnInit {
   showCloseButton: boolean;

@@ -4,7 +4,7 @@ import {Segment} from "../../_models/segment";
 @Component({
   selector: 'app-segment-nlp',
   templateUrl: './segment-nlp.component.html',
-  styleUrls: ['./segment-nlp.component.css']
+  styleUrls: ['./segment-nlp.component.scss']
 })
 export class SegmentNlpComponent implements OnInit {
 

@@ -5,7 +5,7 @@ import {TemplatesService} from "../../_services/templates.service";
 @Component({
   selector: 'app-sms-templates',
   templateUrl: './sms-templates.component.html',
-  styleUrls: ['./sms-templates.component.css']
+  styleUrls: ['./sms-templates.component.scss']
 })
 export class SmsTemplatesComponent implements OnInit {
 

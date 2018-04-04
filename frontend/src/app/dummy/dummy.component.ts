@@ -4,7 +4,7 @@ import {HttpClient} from "@angular/common/http";
 @Component({
   selector: 'app-dummy',
   templateUrl: './dummy.component.html',
-  styleUrls: ['./dummy.component.css']
+  styleUrls: ['./dummy.component.scss']
 })
 export class DummyComponent implements OnInit {
 

@@ -9,7 +9,7 @@ import {parseHttpResponse} from "selenium-webdriver/http";
 @Component({
   selector: 'app-profile-serviceproviders',
   templateUrl: './serviceproviders.component.html',
-  styleUrls: ['./serviceproviders.component.css']
+  styleUrls: ['./serviceproviders.component.scss']
 })
 export class ServiceprovidersComponent implements OnInit {
 

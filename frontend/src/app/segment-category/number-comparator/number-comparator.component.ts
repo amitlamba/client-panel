@@ -5,7 +5,7 @@ import {NumberOperator} from "../../_models/segment";
 @Component({
   selector: 'app-number-comparator',
   templateUrl: './number-comparator.component.html',
-  styleUrls: ['./number-comparator.component.css']
+  styleUrls: ['./number-comparator.component.scss']
 })
 export class NumberComparatorComponent implements OnInit {
 
