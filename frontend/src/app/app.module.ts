@@ -77,6 +77,7 @@ import { TimezonePickerModule } from 'ng2-timezone-selector';
 import { EmailListComponent } from './settings/email-list/email-list.component';
 import {ClipboardModule} from "ngx-clipboard";
 import { LandingPageUndComponent } from './landing-page-und/landing-page-und.component';
+import { BsDropdownModule } from  'ngx-bootstrap/dropdown'
 
 @NgModule({
   imports: [
@@ -94,7 +95,8 @@ import { LandingPageUndComponent } from './landing-page-und/landing-page-und.com
     Select2Module,
     CronEditorModule,
     TimezonePickerModule,
-    ClipboardModule
+    ClipboardModule,
+    BsDropdownModule.forRoot()
   ],
   declarations: [
     AppComponent,
