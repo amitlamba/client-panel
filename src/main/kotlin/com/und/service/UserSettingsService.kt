@@ -2,6 +2,7 @@ package com.und.service
 
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import com.google.gson.reflect.TypeToken
 import com.und.common.utils.DateUtils
 import com.und.model.Status
 import com.und.model.jpa.ClientSettings
@@ -134,9 +135,8 @@ class UserSettingsService {
     fun removeSenderEmailAddress(emailAddress: EmailAddress, clientID: Long) {
         var emailAddressesJson: String? = clientSettingsRepository.findSenderEmailAddressesByClientId(clientID)
         if (emailAddressesJson == null) emailAddressesJson = "[]"
-        var emailAddresses = Gson().fromJson(emailAddressesJson, ArrayList<EmailAddress>().javaClass)
-        println("Email Addresses" + emailAddresses)
-        println("Email Address" + emailAddress)
+        val eaListType = object : TypeToken<List<EmailAddress>>() {}.type
+        var emailAddresses: ArrayList<EmailAddress> = Gson().fromJson(emailAddressesJson, eaListType)
         emailAddresses.removeIf { emailAddress.address.equals(it.address) && emailAddress.personal.equals(it.personal) }
         clientSettingsRepository.saveSenderEmailAddresses(GsonBuilder().create().toJson(emailAddresses), clientID)
     }

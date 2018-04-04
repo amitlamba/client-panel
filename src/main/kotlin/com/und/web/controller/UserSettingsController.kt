@@ -78,9 +78,9 @@ class UserSettingsController {
         return null!!
     }
 
-    @GetMapping(value = ["/timezones"])
-    fun getTimezones(): Any {
-        return null!!
+    @PostMapping(value = ["/senders-email/delete"])
+    fun deleteSendEmail(@RequestBody email: EmailAddress) {
+
     }
 
     @PostMapping(value = ["/account-settings/save"])
