@@ -68,19 +68,22 @@ class UserSettingsController {
         return userSettingsService.saveSmsServiceProvider(serviceProviderCredentials)
     }
 
-    @PostMapping(value = ["/senders-email/save"])
-    fun saveSendEmail(@RequestBody email: EmailAddress) {
-
+    @PostMapping(value = ["/senders-email/add"])
+    fun addSendersEmail(@RequestBody email: EmailAddress) {
+        val clientID = AuthenticationUtils.clientID
+        userSettingsService.addSenderEmailAddress(email, clientID!!)
     }
 
     @GetMapping(value = ["/senders-email/list"])
-    fun getSendEmailList(): List<EmailAddress> {
-        return null!!
+    fun getSendersEmailList(): List<EmailAddress> {
+        val clientID = AuthenticationUtils.clientID
+        return userSettingsService.getSenderEmailAddresses(clientID!!)
     }
 
     @PostMapping(value = ["/senders-email/delete"])
-    fun deleteSendEmail(@RequestBody email: EmailAddress) {
-
+    fun deleteSendersEmail(@RequestBody email: EmailAddress) {
+        val clientID = AuthenticationUtils.clientID
+        userSettingsService.removeSenderEmailAddress(email, clientID!!)
     }
 
     @PostMapping(value = ["/account-settings/save"])

@@ -30,6 +30,10 @@ export class AppSettings {
   public static API_ENDPOINT_CLIENT_SETTING_SMS_SERVICE_PROVIDERS = AppSettings.API_ENDPOINT_CLIENT_SETTING + "/sms-service-providers";
   public static API_ENDPOINT_CLIENT_SETTING_SMS_SERVICE_PROVIDER = AppSettings.API_ENDPOINT_CLIENT_SETTING + "/sms-service-provider";
   public static API_ENDPOINT_CLIENT_SETTING_SMS_SERVICE_PROVIDER_SAVE = AppSettings.API_ENDPOINT_CLIENT_SETTING + "/sms-service-providers/save";
+  public static API_ENDPOINT_CLIENT_SETTING_SENDERS_EMAIL_ADD = AppSettings.API_ENDPOINT_CLIENT_SETTING + "/senders-email/add";
+  public static API_ENDPOINT_CLIENT_SETTING_SENDERS_EMAIL_LIST = AppSettings.API_ENDPOINT_CLIENT_SETTING + "/senders-email/list";
+  public static API_ENDPOINT_CLIENT_SETTING_SENDERS_EMAIL_DELETE = AppSettings.API_ENDPOINT_CLIENT_SETTING + "/senders-email/delete";
+  public static API_ENDPOINT_CLIENT_SETTING_ACCOUNT_SETTINGS_SAVE = AppSettings.API_ENDPOINT_CLIENT_SETTING + "/account-settings/save";
 
   public static API_ENDPOINT_CLIENT_SEGMENT = AppSettings.API_ENDPOINT_CLIENT + "/segment";
   public static API_ENDPOINT_CLIENT_SEGMENT_METADATA = AppSettings.API_ENDPOINT_CLIENT_SEGMENT + "/metadata";
