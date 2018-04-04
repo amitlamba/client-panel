@@ -27,6 +27,12 @@ class UserSettingsServiceTest {
     }
 
     @Test
+    fun testgetAccountSettings() {
+        val accountSettings = userSettingsService.getAccountSettings(clientID = clientID, userID = userID)
+        println(accountSettings)
+    }
+
+    @Test
     fun testAddEmailAddress() {
         val emailAddress = EmailAddress("amit@userndot.com", "Amit Lamba")
         userSettingsService.addSenderEmailAddress(emailAddress = emailAddress, clientID = clientID)

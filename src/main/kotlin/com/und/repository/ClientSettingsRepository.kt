@@ -15,4 +15,6 @@ interface ClientSettingsRepository : JpaRepository<ClientSettings, Int> {
     @Modifying
     @Query(value = "Update client_settings set sender_email_addresses = :senderEmailAddresses where client_id = :clientId", nativeQuery = true)
     fun saveSenderEmailAddresses(senderEmailAddresses: String, clientId: Long)
+
+    fun findByClientID(clientId: Long): ClientSettings
 }

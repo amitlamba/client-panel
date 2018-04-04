@@ -92,4 +92,11 @@ class UserSettingsController {
         val userID = AuthenticationUtils.principal.id
         return userSettingsService.saveAccountSettings(accountSettings, clientID, userID)
     }
+
+    @GetMapping(value = ["/account-settings/get"])
+    fun getAccountSettings(): AccountSettings {
+        val clientID = AuthenticationUtils.clientID
+        val userID = AuthenticationUtils.principal.id
+        return userSettingsService.getAccountSettings(clientID, userID)
+    }
 }

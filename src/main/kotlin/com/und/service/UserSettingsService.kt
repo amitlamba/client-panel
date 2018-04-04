@@ -122,6 +122,13 @@ class UserSettingsService {
         clientSettingsRepository.save(clientSettings)
     }
 
+    fun getAccountSettings(clientID: Long?, userID: Long?): AccountSettings {
+        val clientSettings = clientSettingsRepository.findByClientID(clientID!!)
+        val tokenType = object : TypeToken<Array<String>>() {}.type
+        val accountSettings = AccountSettings(Gson().fromJson<Array<String>>(clientSettings.authorizedUrls, tokenType),clientSettings.timezone!!)
+        return accountSettings
+    }
+
     @Transactional
     fun addSenderEmailAddress(emailAddress: EmailAddress, clientID: Long) {
         var emailAddressesJson: String? = clientSettingsRepository.findSenderEmailAddressesByClientId(clientID)

@@ -34,6 +34,7 @@ export class AppSettings {
   public static API_ENDPOINT_CLIENT_SETTING_SENDERS_EMAIL_LIST = AppSettings.API_ENDPOINT_CLIENT_SETTING + "/senders-email/list";
   public static API_ENDPOINT_CLIENT_SETTING_SENDERS_EMAIL_DELETE = AppSettings.API_ENDPOINT_CLIENT_SETTING + "/senders-email/delete";
   public static API_ENDPOINT_CLIENT_SETTING_ACCOUNT_SETTINGS_SAVE = AppSettings.API_ENDPOINT_CLIENT_SETTING + "/account-settings/save";
+  public static API_ENDPOINT_CLIENT_SETTING_ACCOUNT_SETTINGS_GET = AppSettings.API_ENDPOINT_CLIENT_SETTING + "/account-settings/get";
 
   public static API_ENDPOINT_CLIENT_SEGMENT = AppSettings.API_ENDPOINT_CLIENT + "/segment";
   public static API_ENDPOINT_CLIENT_SEGMENT_METADATA = AppSettings.API_ENDPOINT_CLIENT_SEGMENT + "/metadata";
