@@ -24,11 +24,12 @@ import {CampaignsListComponent} from "./campaigns/campaigns-list/campaigns-list.
 import {AccountSettingsComponent} from "./settings/account-settings/account-settings.component";
 import {EmailListComponent} from "./settings/email-list/email-list.component";
 import {LandingPageUndComponent} from "./landing-page-und/landing-page-und.component";
+import {AboutUsComponent} from "./about-us/about-us.component";
 
 const routes: Routes = [
   {path: 'login', component: LoginComponent},
   {path: 'test', component: TestComponent},
-  {path: '', component: HomeComponent, canActivate: [AuthGuard]},
+  {path: '', component: LandingPageUndComponent},
   {path: 'register', component: RegisterComponent},
   {path: 'resetpwd/:code', component: ResetPwdComponent},
   {path: 'dummyJson', component: DummyComponent},
@@ -63,7 +64,7 @@ const routes: Routes = [
       {path: 'email', component: SetupCampaignComponent}
     ]
   },
-  {path: 'webpage', component: LandingPageUndComponent},
+  {path:'aboutus', component: AboutUsComponent},
   {path: '**', component: PageNotFoundComponent},
 ];
 

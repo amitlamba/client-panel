@@ -77,7 +77,10 @@ import { TimezonePickerModule } from 'ng2-timezone-selector';
 import { EmailListComponent } from './settings/email-list/email-list.component';
 import {ClipboardModule} from "ngx-clipboard";
 import { LandingPageUndComponent } from './landing-page-und/landing-page-und.component';
-import { BsDropdownModule } from  'ngx-bootstrap/dropdown'
+import { BsDropdownModule } from  'ngx-bootstrap/dropdown';
+import { NgxIntlTelInputModule } from 'ngx-intl-tel-input';
+import { DemoFormComponent } from './demo-form/demo-form.component';
+import { AboutUsComponent } from './about-us/about-us.component';
 
 @NgModule({
   imports: [
@@ -96,7 +99,8 @@ import { BsDropdownModule } from  'ngx-bootstrap/dropdown'
     CronEditorModule,
     TimezonePickerModule,
     ClipboardModule,
-    BsDropdownModule.forRoot()
+    BsDropdownModule.forRoot(),
+    NgxIntlTelInputModule
   ],
   declarations: [
     AppComponent,
@@ -149,6 +153,8 @@ import { BsDropdownModule } from  'ngx-bootstrap/dropdown'
     AccountSettingsComponent,
     EmailListComponent,
     LandingPageUndComponent,
+    DemoFormComponent,
+    AboutUsComponent,
   ],
   providers: [
     AuthGuard,
