@@ -1,28 +1,30 @@
-<div class="container my-5">
-  <div class="row">
-    <div class="form-group col-sm">
+<div class="container-fluid campaigns">
+  <div class="row mt-4">
+    <div class="form-group col-6">
       <form #myForm="ngForm" novalidate>
+        <!--FIXME: Use the common daterange picker we are using everywhere else-->
         <my-date-range-picker name="mydaterange" [options]="myDateRangePickerOptions"
                               [(ngModel)]="model" required></my-date-range-picker>
       </form>
     </div>
-    <div class="dropdown col-sm text-center">
+    <div class="dropdown col-6 text-right">
       <button class="btn btn-primary dropdown-toggle"
               type="button"
               id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        New Campaign
+       + Create New Campaign
       </button>
-      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-        <a class="dropdown-item" [routerLink]="['sms']" [routerLinkActive]="['active']"><i
+      <div class="dropdown-menu dropdown list-group fade py-0" aria-labelledby="dropdownMenuButton">
+        <a class="dropdown-item list-group-item list-group-item-action" [routerLink]="['sms']" [routerLinkActive]="['active']"><i
           class="fas fa-mobile-alt "></i> SMS</a>
-        <a class="dropdown-item" [routerLink]="['email']" [routerLinkActive]="['active']"><i
+        <a class="dropdown-item list-group-item list-group-item-action" [routerLink]="['email']" [routerLinkActive]="['active']"><i
           class="far fa-envelope"></i> Email</a>
-        <a class="dropdown-item" href="#"><i class="fal fa-mobile"></i> Mobile Push</a>
-        <a class="dropdown-item" href="#"><i class="fab fa-chrome"></i> Web Push</a>
+        <!--FIXME: USE Bootstrap class disabled-->
+        <a class="dropdown-item list-group-item list-group-item-action disabled"  disabled><i class="fal fa-mobile"></i> Mobile Push</a>
+        <a class="dropdown-item list-group-item list-group-item-action disabled"  disabled><i class="fab fa-chrome"></i> Web Push</a>
       </div>
     </div>
   </div>
-  <div class="table-responsive mt-5">
+  <div class="table-responsive mt-1">
     <table class="table table-bordered my-3">
       <thead style="background-color: rgba(0, 0, 0, .03);">
       <tr>
@@ -39,7 +41,7 @@
       <tbody>
       <tr *ngFor="let campaignItem of campaigns">
         <th scope="row">{{campaignItem.id}}</th>
-        <td>{{campaignItem.name}}</td>
+        <td>{{campaignItem.name.charAt(0).toUpperCase()+ campaignItem.name.slice(1).toLowerCase()}}</td>
         <td>{{campaignItem.campaignType}}</td>
         <td>15/03/2018</td>
         <td>
@@ -47,8 +49,8 @@
           <span *ngIf="campaignItem.schedule.multipleDates!==null">Multiple Dates</span>
           <span *ngIf="campaignItem.schedule.recurring!==null">Recurring</span>
         </td>
-        <td>NA</td>
-        <td>NA</td>
+        <td>Coming Soon</td>
+        <td>Coming Soon</td>
         <td>Completed</td>
       </tr>
       </tbody>

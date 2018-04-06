@@ -33,7 +33,8 @@ export class EmailTemplatesComponent implements OnInit {
   }
 
   onEdit(emailTemplate: EmailTemplate) {
-      this.templatesService.emailTemplateForEdit.next(JSON.parse(JSON.stringify(emailTemplate)));
+    console.log(JSON.parse(JSON.stringify(emailTemplate)));
+    this.templatesService.emailTemplateForEdit.next(JSON.parse(JSON.stringify(emailTemplate)));
   }
 
   onCancel() {

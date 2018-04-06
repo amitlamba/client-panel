@@ -11,6 +11,7 @@ export class ServiceProviderCredentials {
   port: number;
   username: string;
   password: string;
+  status: string;
   credentialsMap: any = {}; // store the map, key value pairs
 }
 
@@ -37,4 +38,11 @@ export class UserProfileRequest {
   address: string;
   phone: string;
   eventUserToken: string;
+}
+export class AccountSettings {
+  url: string[];
+  timezone: string;
+}
+export class SendersEmail {
+  email: string[];
 }

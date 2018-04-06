@@ -57,18 +57,20 @@ export class AuthenticationService {
   forgotpassword(email: string): Observable<any> {
     return this.httpClient.get(AppSettings.API_ENDPOINT_AUTH_REGISTER_FORGOTPASSWORD + "/" + email)
       .pipe(
-        tap(next => this.messageService.addSuccessMessage("Please see your email " +email + " to reset password.")),
+        tap(next => this.messageService.addSuccessMessage("Please see your email " + email + " to reset password.")),
         catchError(this.handleError<any>('Failed To Forgot Password'))
       );
   }
+
   resetpassword(code: string): Observable<any> {
-    return this.httpClient.get(AppSettings.API_ENDPOINT_AUTH_REGISTER_RESETPASSWORD + "/" + code +'/');
-      // .pipe(
-      //   tap(next => this.messageService.addSuccessMessage("Password Reset Successfully")),
-      //   catchError(this.handleError<any>('Error!'))
-      // );
+    return this.httpClient.get(AppSettings.API_ENDPOINT_AUTH_REGISTER_RESETPASSWORD + "/" + code + '/');
+    // .pipe(
+    //   tap(next => this.messageService.addSuccessMessage("Password Reset Successfully")),
+    //   catchError(this.handleError<any>('Error!'))
+    // );
   }
-  resetpasswordupdate(code: string,password: string): Observable<any> {
+
+  resetpasswordupdate(code: string, password: string): Observable<any> {
     return this.httpClient.post(AppSettings.API_ENDPOINT_AUTH_REGISTER_RESETPASSWORD + "/" + code + "/",
       {password: password})
       .pipe(
@@ -91,22 +93,6 @@ export class AuthenticationService {
       .pipe(
         tap(next => this.messageService.addSuccessMessage("User Details updated successfully")),
         catchError(this.handleError<any>('User Details Update'))
-      );
-  }
-
-  getServiceProviderCredentialsEmail(): Observable<ServiceProviderCredentials[]> {
-    return this.httpClient.get(AppSettings.API_ENDPOINT_CLIENT_SETTING_EMAIL_SERVICE_PROVIDERS)
-      .pipe(
-        tap(next => this.messageService.addSuccessMessage("Got Service Provider Credentials For Email successfully")),
-        catchError(this.handleError<any>('Get Service Provider Credentials For Email'))
-      );
-  }
-
-  saveServiceProviderCredentialEmail(serviceProviderCredentials: ServiceProviderCredentials): Observable<any> {
-    return this.httpClient.post(AppSettings.API_ENDPOINT_CLIENT_SETTING_EMAIL_SERVICE_PROVIDER_SAVE, serviceProviderCredentials)
-      .pipe(
-        tap(next => this.messageService.addSuccessMessage("Saved Service Provider Credentials For Email successfully")),
-        catchError(this.handleError<any>('Save Service Provider Credentials For Email'))
       );
   }
 

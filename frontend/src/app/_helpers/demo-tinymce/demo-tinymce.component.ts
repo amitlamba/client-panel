@@ -17,13 +17,19 @@ declare var tinymce: any;
     <div class="form-group" style="position:relative">
       <div [mention]="items"></div>
       <div>
-        <textarea class="hidden" cols="60" rows="4" id="tmce" [(ngModel)]="htmlContent">{{htmlContent}}</textarea>
+        <textarea class="hidden" cols="60" rows="4" id="tmce" [(ngModel)]="htmlContent">{{htmlContent}}
+        </textarea>
+        <button class="btn btn-primary" (click)="addUnsubscribeLink($event)" type="button">Add Unsubscribe</button>
       </div>
     </div>`
 })
 export class DemoTinymceComponent {
+  @ViewChild('tmce') tmce: ElementRef;
+
   localHtmlContent: string = "Text";
-  @Input() get htmlContent(): string {return this.localHtmlContent};
+  @Input() get htmlContent(): string {
+    return this.localHtmlContent;
+  };
   set htmlContent(htmlContent: string) {
     this.localHtmlContent = htmlContent;
     this.htmlContentChange.emit(this.localHtmlContent);
@@ -31,14 +37,18 @@ export class DemoTinymceComponent {
   @Output() htmlContentChange = new EventEmitter();
 
   @ViewChild(MentionDirective) mention: MentionDirective;
-  public items:string[] = UserParams.params;
-  constructor(private _elementRef: ElementRef, private _zone: NgZone) {}
+  public items: string[] = UserParams.params;
+
+  constructor(private _elementRef: ElementRef, private _zone: NgZone) {
+  }
+
   ngAfterViewInit() {
     tinymce.init({
       mode: 'exact',
       height: 100,
       theme: 'modern',
       branding: false,
+      menubar: false,
       plugins: [
         'advlist autolink lists link image charmap print preview anchor',
         'searchreplace visualblocks code fullscreen',
@@ -47,29 +57,44 @@ export class DemoTinymceComponent {
       toolbar: 'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image',
       elements: "tmce",
       setup: this.tinySetup.bind(this)
-    }
-    );
+    });
   }
+
   tinySetup(ed) {
     let comp = this;
     let mention = this.mention;
-    ed.on('keydown', function(e) {
+    ed.on('keydown', function (e) {
       let frame = <any>window.frames[ed.iframeElement.id];
       let contentEditable = frame.contentDocument.getElementById('tinymce');
       comp._zone.run(() => {
         comp.mention.keyHandler(e, contentEditable);
       });
     });
-    ed.on('init', function(args) {
+    ed.on('init', (e) => {
       mention.setIframe(ed.iframeElement);
-      // ed.setContent(this.htmlContent);
-    });
-    ed.on('keyup change', (e) => {
-      let frame = <any>window.frames[ed.iframeElement.id];
-      console.log(frame.contentDocument.getElementById('tinymce'));
       this.htmlContent = e.target.innerHTML;
-      console.log(e.target.innerHTML);
-      console.log(this.htmlContent);
+      e.target.innerHTML = this.htmlContent;
     });
+    ed.on('keyup', (e) => {
+      let frame = <any>window.frames[ed.iframeElement.id];
+      this.htmlContent = e.target.innerHTML;
+      // console.log(this.localHtmlContent);
+    });
+
+  }
+  addUnsubscribeLink(event) {
+    if(event.srcElement.innerHTML==='Add Unsubscribe'){
+      // http://archive.tinymce.com/wiki.php/API3:method.tinymce.dom.DOMUtils.add  "Below Line Definition."\
+
+      tinymce.activeEditor.dom.add(tinymce.activeEditor.getBody(), 'a', {href : '#' ,id : 'unsubscribe'} , 'Unsubscribe');
+      this.htmlContent = tinymce.activeEditor.getBody().innerHTML;
+      event.srcElement.innerHTML='Remove Unsubscribe';
+    }
+   else {
+      tinymce.activeEditor.dom.remove(tinymce.activeEditor.dom.select('#unsubscribe'));
+      this.htmlContent = tinymce.activeEditor.getBody().innerHTML;
+      event.srcElement.innerHTML='Add Unsubscribe';
+    }
+    // console.log(this.htmlContent);
   }
 }

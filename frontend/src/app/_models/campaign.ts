@@ -3,7 +3,7 @@ import {EmailCampaign} from "./email";
 export class Campaign {
   id: number;
   name: string;
-  schedule: Schedule1;
+  schedule: Schedule;
   campaignType: CampaignType;
   segmentationID: number;
   templateID: number;
@@ -38,7 +38,7 @@ export enum CampaignType {
 
 
 //new
-export class Schedule1 {
+export class Schedule {
   oneTime: ScheduleOneTime;
   multipleDates: ScheduleMultipleDates;
   recurring: ScheduleRecurring;

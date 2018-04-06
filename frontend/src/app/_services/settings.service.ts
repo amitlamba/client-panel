@@ -1,20 +1,33 @@
 import {Injectable} from '@angular/core';
+import {ServiceProviderCredentials} from "../_models/client";
+import {Campaign} from "../_models/campaign";
+import {Observable} from "rxjs/Observable";
+import {AppSettings} from "../_settings/app-settings";
+import {HttpClient} from "@angular/common/http";
+import {catchError, tap} from "rxjs/operators";
 
 @Injectable()
 export class SettingsService {
-  /*
-  export enum ServiceProvider {
-    AWS_SES,
-    AWS_SNS,
-    GOOGLE_FCM
+
+  serviceProvidersList: ServiceProviderCredentials[] = [];
+  serviceProviderListLoaded :boolean = false;
+
+  constructor(private httpClient: HttpClient) {
   }
 
-  export enum ServiceProviderType {
-    EMAIL_SERVICE_PROVIDER,
-    SMS_SERVICE_PROVIDER,
-    NOTIFICATIONS_SERVICE_PROVIDER
+  saveServiceProviderCredentialEmail(serviceProviderCredentials: ServiceProviderCredentials): Observable<any> {
+    return this.httpClient.post(AppSettings.API_ENDPOINT_CLIENT_SETTING_EMAIL_SERVICE_PROVIDER_SAVE, serviceProviderCredentials);
   }
-   */
+
+  saveServiceProviderCredentialsSms(serviceProviderCredentials: ServiceProviderCredentials): Observable<any> {
+    return this.httpClient.post(AppSettings.API_ENDPOINT_CLIENT_SETTING_SMS_SERVICE_PROVIDER_SAVE, serviceProviderCredentials);
+  }
+
+  getServiceProvidersList(): Observable<ServiceProviderCredentials[]> {
+    return this.httpClient.get<ServiceProviderCredentials[]>(AppSettings.API_ENDPOINT_CLIENT_SETTING_ALL_SERVICE_PROVIDERS);
+  }
+
+
   readonly serviceProviders: any = {
     "Email Service Provider": {
       "name": "EmailServiceProvider",
@@ -166,7 +179,17 @@ export class SettingsService {
   }
   ;
 
-  constructor() {
-  }
+  /*
+ export enum ServiceProvider {
+   AWS_SES,
+   AWS_SNS,
+   GOOGLE_FCM
+ }
 
+ export enum ServiceProviderType {
+   EMAIL_SERVICE_PROVIDER,
+   SMS_SERVICE_PROVIDER,
+   NOTIFICATIONS_SERVICE_PROVIDER
+ }
+  */
 }

@@ -18,7 +18,7 @@ export class CampaignsListComponent implements OnInit {
   ngOnInit() {
     this.campaignService.getCampaignList().subscribe((campaigns) => {
       this.campaigns = campaigns;
-      console.log(campaigns);
+      // console.log(campaigns);
     });
 
   }

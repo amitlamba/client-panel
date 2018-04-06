@@ -13,14 +13,12 @@ import {UserParams} from "../../../_models/user";
   styleUrls: ['./create-email-template-form.component.scss']
 })
 export class CreateEmailTemplateFormComponent implements OnInit, OnChanges {
-
-  showRichTextEditor: boolean = true;
+  showTinymceEditor: boolean = true;
   emailTemplate: EmailTemplate = new EmailTemplate();
   @ViewChild("f") form: any;
 
   userFields = UserFields.USER_DETAIILS;
   items = UserParams.params;
-  suggested:string[]=["laksh","kamal","a","b","c"];
 
   constructor(private templatesService: TemplatesService, private messageService: MessageService) {
   }
@@ -30,11 +28,12 @@ export class CreateEmailTemplateFormComponent implements OnInit, OnChanges {
 
   ngOnInit() {
     this.templatesService.castEmailTemplateForEdit.subscribe((emailTemplateForEdit) => {
-      this.emailTemplate=emailTemplateForEdit;
+      this.emailTemplate = emailTemplateForEdit;
     });
   }
 
   onSave(form: FormData) {
+    console.log(this.emailTemplate);
     if (this.form.valid) {
       if (this.emailTemplate.id) {
         this.templatesService.saveEmailTemplate(this.emailTemplate)
@@ -49,7 +48,7 @@ export class CreateEmailTemplateFormComponent implements OnInit, OnChanges {
           .subscribe(
             response => {
               console.log(response);
-              this.emailTemplate.id=response
+              this.emailTemplate.id = response
               this.templatesService.addEmailTemplate(this.emailTemplate);
               this.messageService.addSuccessMessage("Email Template Created Successfully");
             }
@@ -58,8 +57,14 @@ export class CreateEmailTemplateFormComponent implements OnInit, OnChanges {
     }
   }
 
-  keyupHandlerFunction(event: any) {
-
+  addUnsubscribeLink(event) {
+    if (event.srcElement.textContent === 'Add Unsubscribe') {
+      document.querySelector('textarea').value = document.querySelector('textarea').value + '<a href="#">Unsubscribe</a>';
+      event.srcElement.textContent = 'Remove Unsubscribe';
+    }
+    else {
+      document.querySelector('textarea').value = document.querySelector('textarea').value.replace('<a href="#">Unsubscribe</a>', '');
+      event.srcElement.textContent = 'Add Unsubscribe';
+    }
   }
-
 }

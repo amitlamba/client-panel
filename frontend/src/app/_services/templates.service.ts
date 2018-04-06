@@ -9,7 +9,6 @@ import {forEach} from "@angular/router/src/utils/collection";
 
 @Injectable()
 export class TemplatesService {
-
   private emailTemplates = new BehaviorSubject<EmailTemplate[]>(new Array<EmailTemplate>());
   castEmailTemplates = this.emailTemplates.asObservable();
   emailTemplateForEdit = new BehaviorSubject<EmailTemplate>(new EmailTemplate());
