@@ -31,7 +31,8 @@ class ServiceProviderCredentials {
     @NotNull
     lateinit var serviceProvider: String
 
-    @Transient
+//    @Transient
+// FIXME: This date should not be modified on subsequent changes
     @Column(name = "date_created")
     @NotNull
     lateinit var dateCreated: LocalDateTime
