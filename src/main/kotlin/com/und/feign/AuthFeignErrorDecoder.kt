@@ -30,7 +30,7 @@ class AuthFeignErrorDecoder : ErrorDecoder {
         }
 
         if (response.status() >= 400 && response.status() <= 499) {
-            return HttpClientErrorException(statusCode, statusText, responseHeaders, responseBody, null)
+            throw HttpClientErrorException(statusCode, statusText, responseHeaders, responseBody, null)
         }
 
         return if (response.status() >= 500 && response.status() <= 599) {

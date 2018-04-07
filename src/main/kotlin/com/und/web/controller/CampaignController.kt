@@ -1,8 +1,9 @@
 package com.und.web.controller
 
-import com.und.web.model.Campaign
+import com.und.common.utils.loggerFor
 import com.und.security.utils.AuthenticationUtils
 import com.und.service.CampaignService
+import com.und.web.model.Campaign
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -14,6 +15,12 @@ import javax.validation.Valid
 @RequestMapping("/campaign")
 class CampaignController {
 
+    companion object {
+
+        protected val logger = loggerFor(CampaignController::class.java)
+    }
+
+
     @Autowired
     lateinit var campaignService: CampaignService
 
@@ -22,19 +29,16 @@ class CampaignController {
         return campaignService.getCampaigns()
     }
 
-    /*@GetMapping(value = ["/list/email"])
-    fun getEmailCampaigns(@RequestParam(value = "id", required = false) id: Long? = null): List<Campaign> {
-        return campaignService.getEmailCampaigns(AuthenticationUtils.clientID!!, id)
-    }*/
 
     @PostMapping(value = ["/save"])
     fun saveCampaign(@Valid @RequestBody campaign: Campaign): ResponseEntity<Campaign> {
+        logger.info("campaign save request inititated ${campaign.name}")
         val clientId = AuthenticationUtils.clientID
         if (clientId != null) {
             val persistedCampaign = campaignService.save(campaign)
             return ResponseEntity(persistedCampaign, HttpStatus.CREATED)
         }
-
+        logger.info("campaign saved with name ${campaign.name}")
         return ResponseEntity(campaign,HttpStatus.EXPECTATION_FAILED)
     }
 

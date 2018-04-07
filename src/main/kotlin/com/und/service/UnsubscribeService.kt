@@ -14,7 +14,7 @@ class UnsubscribeService {
     private val separator = "|||"
 
 
-    @Value("\${encryption-decryption.key.unsubscribe}")
+    //@Value("\${encryption-decryption.key.unsubscribe}")
     lateinit private var encryptDecryptKey: String
 
     fun createUnsubscribeLink(unsubscribeLinkParams: UnsubscribeLinkParams): String {

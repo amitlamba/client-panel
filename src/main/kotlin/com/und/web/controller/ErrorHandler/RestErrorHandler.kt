@@ -11,6 +11,7 @@ import org.springframework.validation.FieldError
 import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.*
 import java.lang.Exception
+import javax.naming.AuthenticationException
 
 
 @RestControllerAdvice
@@ -33,12 +34,13 @@ class RestErrorHandler {
 
     }
 
-    @ExceptionHandler(AccessDeniedException::class)
+    @ExceptionHandler(AccessDeniedException::class, AuthenticationException::class)
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     @ResponseBody
-    fun processAuthEroor(ex: Exception) {
+    fun processAuthEroor(ex: Exception) :String{
         logger.debug("Handling INTERNAL SEREVR error")
         logger.error("error occured",ex)
+        return "Access Denied!"
 
     }
 

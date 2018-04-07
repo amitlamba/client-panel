@@ -2,12 +2,14 @@ package com.und.model.jpa
 
 
 import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.LocalTime
 import javax.persistence.*
 import javax.validation.constraints.NotNull
 
 @Entity
 @Table(name = "campaign")
-open class Campaign {
+class Campaign {
 
     @Id
     @Column(name = "id")
@@ -87,14 +89,14 @@ class ScheduleMultipleDates {
 
 class ScheduleRecurring {
     lateinit var cronExpression: String
-    var scheduleStartDate: String? = null
+    var scheduleStartDate: LocalDate? = null
     var scheduleEnd: ScheduleEnd? = null
 }
 
 
 class ScheduleEnd {
     var endType: ScheduleEndType? = null
-    var endsOn: Any? = null
+    var endsOn: LocalDate? = null
     var occurrences: Int = 0
 }
 
@@ -107,9 +109,18 @@ enum class ScheduleEndType {
 
 class CampaignTime {
     lateinit var date: LocalDate
-    var hours: Int? = null
-    var minutes: Int? = null
+    var hours: Int? = 0
+    var minutes: Int? = 0
     lateinit var ampm: AmPm
+
+    fun toLocalDateTime(): LocalDateTime {
+        var hours = hours?:0
+        val minutes = minutes?:0
+
+        ampm.let{if(it==AmPm.PM){hours+=12}}
+        val localTime = LocalTime.of(hours, minutes)
+        return  LocalDateTime.of(date,localTime )
+    }
 }
 
 enum class Now {

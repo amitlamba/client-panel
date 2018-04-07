@@ -19,7 +19,7 @@ class EmailService {
     @Autowired
     private lateinit var kafkaTemplateEmailRead: KafkaTemplate<String, EmailRead>
 
-    @Value(value = "\${kafka.topic.email}")
+    //@Value(value = "\${kafka.topic.email}")
     private var topic: String = "Email"
 
     private var emailReadTopic: String = "EmailRead"

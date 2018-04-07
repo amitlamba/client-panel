@@ -1,6 +1,6 @@
 buildscript {
     ext {
-        kotlinVersion = '1.2.30'
+        kotlinVersion = '1.2.31'
         springBootVersion = '2.0.0.RELEASE'
     }
     repositories {
@@ -65,7 +65,7 @@ tasks.withType(FindBugs) {
 
 ext {
     swaggerVersion = '2.7.0'
-    springCloudVersion = 'Finchley.M8'
+    springCloudVersion = 'Finchley.M9'
 }
 
 sourceCompatibility = 1.8
@@ -95,9 +95,11 @@ dependencies {
     compile('org.springframework.cloud:spring-cloud-starter-config')
     compile('org.springframework.cloud:spring-cloud-config-client')
     compile('org.springframework.cloud:spring-cloud-starter-netflix-eureka-client')
-    compile('org.springframework.cloud:spring-cloud-starter-netflix-eureka-server')
     compile('org.springframework.cloud:spring-cloud-starter-openfeign')
+    compile('org.springframework.cloud:spring-cloud-starter-sleuth')
+    compile('org.springframework.cloud:spring-cloud-starter-zipkin')
     compile('org.springframework.cloud:spring-cloud-starter-stream-kafka')
+    compile('org.springframework.cloud:spring-cloud-stream-binder-kafka')
     compile('org.springframework.boot:spring-boot-starter-data-jpa')
     compile('org.springframework.boot:spring-boot-starter-data-mongodb')
     compile('org.springframework.boot:spring-boot-starter-data-rest')
@@ -113,6 +115,9 @@ dependencies {
 
     compile ("com.und:auth-client:0.4.0-SNAPSHOT")
     compile group: 'commons-io', name: 'commons-io', version: '2.6'
+    // https://mvnrepository.com/artifact/com.github.danielwegener/logback-kafka-appender
+    compile group: 'com.github.danielwegener', name: 'logback-kafka-appender', version: '0.2.0-RC1'
+
     runtime('org.springframework.boot:spring-boot-devtools')
     runtime('org.postgresql:postgresql')
     testCompile('org.springframework.boot:spring-boot-starter-test') {
@@ -126,6 +131,8 @@ dependencies {
     compile group: 'nl.martijndwars', name: 'web-push', version: '3.0.1'
     compile group: 'de.bytefish.fcmjava', name: 'fcmjava-core', version: '2.4'
     compile group: 'de.bytefish.fcmjava', name: 'fcmjava-client', version: '2.4'
+    compile group: 'org.codehaus.janino', name: 'janino', version: '3.0.8'
+
 }
 
 

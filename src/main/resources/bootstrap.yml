@@ -1,7 +1,4 @@
 spring:
-  profiles:
-    active:
-      default
   cloud:
     config:
       uri: http://nestros.com:8888
