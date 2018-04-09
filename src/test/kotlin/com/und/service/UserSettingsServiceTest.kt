@@ -22,7 +22,7 @@ class UserSettingsServiceTest {
 
     @Test
     fun testSaveAccountSettings() {
-        val accountSettings = AccountSettings(arrayOf("http://userndot.com"),"Asia/Kolkata")
+        val accountSettings = AccountSettings(urls = arrayOf("http://userndot.com"),timezone = "Asia/Kolkata")
         userSettingsService.saveAccountSettings(accountSettings = accountSettings, clientID = clientID, userID = userID)
     }
 
