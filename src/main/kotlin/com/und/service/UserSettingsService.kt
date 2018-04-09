@@ -151,7 +151,8 @@ class UserSettingsService {
     fun getSenderEmailAddresses(clientID: Long): List<EmailAddress> {
         var emailAddressesJson: String? = clientSettingsRepository.findSenderEmailAddressesByClientId(clientID)
         if (emailAddressesJson == null) emailAddressesJson = "[]"
-        val emailAddresses: List<EmailAddress> = Gson().fromJson<ArrayList<EmailAddress>>(emailAddressesJson, ArrayList<EmailAddress>().javaClass)
+        val eaListType = object : TypeToken<List<EmailAddress>>() {}.type
+        var emailAddresses: ArrayList<EmailAddress> = Gson().fromJson(emailAddressesJson, eaListType)
         return emailAddresses
     }
 }
