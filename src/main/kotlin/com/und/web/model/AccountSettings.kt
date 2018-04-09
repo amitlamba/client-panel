@@ -2,7 +2,7 @@ package com.und.web.model
 
 import java.util.*
 
-data class AccountSettings(val urls: Array<String>, val timezone: String) {
+data class AccountSettings(val id: Long? = null, val urls: Array<String>, val timezone: String) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false

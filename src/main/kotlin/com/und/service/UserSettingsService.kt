@@ -114,6 +114,7 @@ class UserSettingsService {
     fun saveAccountSettings(accountSettings: AccountSettings, clientID: Long?, userID: Long?) {
         //FIXME: Validate Timezone and Email Addresses
         var clientSettings = ClientSettings()
+        clientSettings.id = accountSettings.id
         clientSettings.clientID = clientID
         clientSettings.authorizedUrls = GsonBuilder().create().toJson(accountSettings.urls)
         clientSettings.timezone = accountSettings.timezone
@@ -125,7 +126,7 @@ class UserSettingsService {
     fun getAccountSettings(clientID: Long?, userID: Long?): AccountSettings {
         val clientSettings = clientSettingsRepository.findByClientID(clientID!!)
         val tokenType = object : TypeToken<Array<String>>() {}.type
-        val accountSettings = AccountSettings(Gson().fromJson<Array<String>>(clientSettings.authorizedUrls, tokenType),clientSettings.timezone!!)
+        val accountSettings = AccountSettings(clientSettings.id, Gson().fromJson<Array<String>>(clientSettings.authorizedUrls, tokenType),clientSettings.timezone!!)
         return accountSettings
     }
 
