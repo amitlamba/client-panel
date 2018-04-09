@@ -18,6 +18,7 @@ class ClientSettings {
     @NotNull
     var clientID: Long? = null
 
+    @Transient
     @Column(name = "sender_email_addresses")
     var senderEmailAddresses: String? = null
 
