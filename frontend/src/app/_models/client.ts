@@ -39,10 +39,14 @@ export class UserProfileRequest {
   phone: string;
   eventUserToken: string;
 }
+
 export class AccountSettings {
-  url: string[];
+  id: number;
+  urls: string[];
   timezone: string;
 }
-export class SendersEmail {
-  email: string[];
+
+export class SendersInfo {
+  personal: string;
+  address: string;
 }

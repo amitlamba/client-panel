@@ -1,32 +1,55 @@
 import {Injectable} from '@angular/core';
-import {ServiceProviderCredentials} from "../_models/client";
+import {AccountSettings, SendersInfo, ServiceProviderCredentials} from "../_models/client";
 import {Campaign} from "../_models/campaign";
 import {Observable} from "rxjs/Observable";
 import {AppSettings} from "../_settings/app-settings";
-import {HttpClient} from "@angular/common/http";
-import {catchError, tap} from "rxjs/operators";
+import {HttpClient, HttpHeaders} from "@angular/common/http";
 
 @Injectable()
 export class SettingsService {
 
   serviceProvidersList: ServiceProviderCredentials[] = [];
-  serviceProviderListLoaded :boolean = false;
 
   constructor(private httpClient: HttpClient) {
   }
 
   saveServiceProviderCredentialEmail(serviceProviderCredentials: ServiceProviderCredentials): Observable<any> {
-    return this.httpClient.post(AppSettings.API_ENDPOINT_CLIENT_SETTING_EMAIL_SERVICE_PROVIDER_SAVE, serviceProviderCredentials);
+    return this.httpClient.post<ServiceProviderCredentials>(AppSettings.API_ENDPOINT_CLIENT_SETTING_EMAIL_SERVICE_PROVIDER_SAVE, serviceProviderCredentials);
   }
 
   saveServiceProviderCredentialsSms(serviceProviderCredentials: ServiceProviderCredentials): Observable<any> {
-    return this.httpClient.post(AppSettings.API_ENDPOINT_CLIENT_SETTING_SMS_SERVICE_PROVIDER_SAVE, serviceProviderCredentials);
+    return this.httpClient.post<ServiceProviderCredentials>(AppSettings.API_ENDPOINT_CLIENT_SETTING_SMS_SERVICE_PROVIDER_SAVE, serviceProviderCredentials);
   }
 
   getServiceProvidersList(): Observable<ServiceProviderCredentials[]> {
     return this.httpClient.get<ServiceProviderCredentials[]>(AppSettings.API_ENDPOINT_CLIENT_SETTING_ALL_SERVICE_PROVIDERS);
   }
 
+  saveAccountSettings(accountSettings: AccountSettings): Observable<any> {
+    return this.httpClient.post<AccountSettings>(AppSettings.API_ENDPOINT_CLIENT_SETTING_ACCOUNT_SETTINGS_SAVE, accountSettings);
+  }
+
+  getAccountSettings(): Observable<any> {
+    return this.httpClient.get<AccountSettings>(AppSettings.API_ENDPOINT_CLIENT_SETTING_ACCOUNT_SETTINGS_GET);
+  }
+
+  refreshToken(): Observable<any> {
+    return this.httpClient.post<null>(AppSettings.API_ENDPOINT_AUTH_SETTING_REFRESHTOKEN, null);
+  }
+
+  saveSendersInfo(sendersInfo): Observable<any> {
+    const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8');
+    return this.httpClient.post<SendersInfo>(AppSettings.API_ENDPOINT_CLIENT_SETTING_SENDERS_EMAIL_ADD, sendersInfo, {headers: headers});
+  }
+
+  getSendersInfoList(): Observable<any> {
+    return this.httpClient.get<SendersInfo>(AppSettings.API_ENDPOINT_CLIENT_SETTING_SENDERS_EMAIL_LIST);
+  }
+
+  deleteSendersInfo(sendersInfo): Observable<any> {
+    const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8');
+    return this.httpClient.post<SendersInfo>(AppSettings.API_ENDPOINT_CLIENT_SETTING_SENDERS_EMAIL_DELETE, sendersInfo, {headers: headers});
+  }
 
   readonly serviceProviders: any = {
     "Email Service Provider": {

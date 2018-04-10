@@ -1,5 +1,6 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {AccountSettings} from "../../_models/client";
+import {SettingsService} from "../../_services/settings.service";
 
 @Component({
   selector: 'app-account-settings',
@@ -12,8 +13,7 @@ export class AccountSettingsComponent implements OnInit {
   accountSettings: AccountSettings = new AccountSettings();
   protocol: string = 'https://';
   websiteURL: string;
-  // invalidWebsiteUrl
-  // websiteUrlRegex:any=/^((https?|ftp|smtp):\/\/)?(www.)?[a-z0-9]+(\.[a-z]{2,}){1,3}(#?\/?[a-zA-Z0-9#]+)*\/?(\?[a-zA-Z0-9-_]+=[a-zA-Z0-9-%]+&?)?$/;
+  myArray: string[] = ['http://', 'https://'];
 
   // ng2-timezone-picker is used from https://samuelnygaard.github.io/ng2-timezone-selector/docs/
   placeholderString = 'Select timezone';
@@ -22,27 +22,43 @@ export class AccountSettingsComponent implements OnInit {
     this.accountSettings.timezone = timezone;
   }
 
-  constructor() {
+  constructor(private settingsService: SettingsService) {
   }
 
   ngOnInit() {
     this.accountSettings.timezone = "Asia/Kolkata";
-    this.accountSettings.url=[];
-    let a=["www.facebook.com","www.sample.gov.bd","https://www.sample.com#","http://www.sample.com/xyz","http://www.sample.com/#xyz","www.sample.com","www.sample.com/xyz/#/xyz","sample.com","sample.com?name=foo","http://www.sample.com#xyz","http://www.sample.c"];
-    let re=/^((https?|ftp|smtp):\/\/)?(www.)?[a-z0-9]+(\.[a-z]{2,}){1,3}(#?\/?[a-zA-Z0-9#]+)*\/?(\?[a-zA-Z0-9-_]+=[a-zA-Z0-9-%]+&?)?$/;
-    a.map(x=>console.log(x+" => "+re.test(x)));
+    this.accountSettings.urls = [];
+    this.settingsService.getAccountSettings()
+      .subscribe(
+        (accountSettings) => {
+          this.accountSettings.id = accountSettings.id;
+          if (accountSettings.urls[0].substring(0, accountSettings.urls[0].indexOf("/") + 2 == 'https://')) {
+            this.protocol = accountSettings.urls[0].substring(0, accountSettings.urls[0].indexOf("/") + 2);
+          }
+          else {
+            this.protocol = accountSettings.urls[0].substring(0, accountSettings.urls[0].indexOf("/") + 2)
+          }
+
+          this.websiteURL = accountSettings.urls[0].substring(accountSettings.urls[0].indexOf("/") + 2);
+        }
+      );
   }
 
-  changeTooltipText() {
-    // (<any>$('#copyCode')).on('show.bs.tooltip', function(){
-    //   // console.log("hello");
-    //   (<any>$('#copyCode')).tooltip('show').attr('data-original-title','Copied') ;
-    // });
-  }
 
   getJSIntegrationCode() {
     this.showCodeBlock = !this.showCodeBlock;
-    this.accountSettings.url.push(this.protocol + this.websiteURL);
+    this.accountSettings.urls.push(this.protocol + this.websiteURL);
+    // this.accountSettings.id = 1;
     console.log(this.accountSettings);
+    this.settingsService.saveAccountSettings(this.accountSettings)
+      .subscribe(
+        (response) => {
+          this.settingsService.refreshToken().subscribe(
+            (response) => {
+              console.log(response);
+            }
+          )
+        }
+      );
   }
 }

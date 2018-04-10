@@ -1,29 +1,27 @@
 <div class="row justify-content-center">
   <div class="col-sm-5">
-    <form novalidate >
+    <form novalidate>
       <div class="form-group">
         <label for="website-url">Website's URL</label>
         <div class="input-group">
-          <select class="input-group-addon protocols" name="protocol" [(ngModel)]="protocol">
+          <select class="input-group-addon protocols rounded p-2" name="protocol" [(ngModel)]="protocol">
             <span class="caret"></span>
-            <option value="http://">http://</option>
-            <option value="https://">https://</option>
+            <option *ngFor="let pr of myArray" [ngValue]="pr">{{pr}}</option>
+            <!--<option value="http://">http://</option>-->
+            <!--<option value="https://">https://</option>-->
           </select>
           <input type="text" class="form-control"
                  id="website-url"
                  placeholder="Example: http://www.mywebsite.com"
                  name="websiteURL"
-                [(ngModel)]="websiteURL"
+                 [(ngModel)]="websiteURL"
                  #siteURL="ngModel"
-                required>
+                 required>
         </div>
         <div class="feedback text-danger" *ngIf="siteURL.errors && (siteURL.touched || siteURL.dirty)">
           <div *ngIf="siteURL.errors.required">
-                URL is required.
+            URL is required.
           </div>
-          <!--<div *ngIf="">-->
-                <!--Invalid URL-->
-          <!--</div>-->
         </div>
       </div>
       <div class="form-group">
@@ -48,7 +46,8 @@
                 title="Copy to Clipboard"
                 data-placement="top"
                 [cbContent]="jsCodeSnippet"
-                ngxClipboard>Copy</button>
+                ngxClipboard>Copy
+        </button>
         <pre>
            <code id="codeValue">
       <!-- your code here -->

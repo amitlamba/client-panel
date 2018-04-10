@@ -69,16 +69,18 @@ export class AppSettings {
   public static API_ENDPOINT_AUTH_SETTING_USERDETAILS = AppSettings.API_ENDPOINT_AUTH_SETTING + "/userDetails";
   public static API_ENDPOINT_AUTH_SETTING_UPDATEUSERDETAILS = AppSettings.API_ENDPOINT_AUTH_SETTING + "/updateUserDetails";
   public static API_ENDPOINT_AUTH_SETTING_REFRESHTOKEN = AppSettings.API_ENDPOINT_AUTH_SETTING + "/refreshToken";
+  // publi
 }
 
 export class UserField {
   fieldDisplayName: string;
   fieldVariableString: string;
   fieldCategory: string;
+
   constructor(fieldDisplayName: string, fieldVariableString: string, fieldCategory: string) {
-    this.fieldDisplayName=fieldDisplayName;
-    this.fieldVariableString=fieldVariableString;
-    this.fieldCategory=fieldCategory;
+    this.fieldDisplayName = fieldDisplayName;
+    this.fieldVariableString = fieldVariableString;
+    this.fieldCategory = fieldCategory;
   }
 }
 

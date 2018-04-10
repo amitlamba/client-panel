@@ -16,8 +16,7 @@
     <label for="fromEmailAddress">From Email address</label>
     <select type="email" class="form-control" id="fromEmailAddress" name="fromEmailAddress"
             [(ngModel)]="emailTemplate.from">
-      <option>amit@userndot.com</option>
-      <option>shiv@userndot.com</option>
+      <option *ngFor="let sendersInfo of sendersInfoList">{{sendersInfo.address}}</option>
     </select>
   </div>
   <!--<div class="form-group col-sm-8 col-md-6 col-lg-5">-->

@@ -6,6 +6,8 @@ import {Router} from "@angular/router";
 import {MessageService} from "../../../_services/message.service";
 import {UserFields} from "../../../_settings/app-settings";
 import {UserParams} from "../../../_models/user";
+import {SettingsService} from "../../../_services/settings.service";
+import {SendersInfo} from "../../../_models/client";
 
 @Component({
   selector: 'app-create-email-template-form',
@@ -15,12 +17,14 @@ import {UserParams} from "../../../_models/user";
 export class CreateEmailTemplateFormComponent implements OnInit, OnChanges {
   showTinymceEditor: boolean = true;
   emailTemplate: EmailTemplate = new EmailTemplate();
+  sendersInfoList: SendersInfo[] = [];
   @ViewChild("f") form: any;
 
   userFields = UserFields.USER_DETAIILS;
   items = UserParams.params;
 
-  constructor(private templatesService: TemplatesService, private messageService: MessageService) {
+  constructor(private templatesService: TemplatesService, private messageService: MessageService,
+              private settingsService: SettingsService) {
   }
 
   ngOnChanges() {
@@ -30,6 +34,11 @@ export class CreateEmailTemplateFormComponent implements OnInit, OnChanges {
     this.templatesService.castEmailTemplateForEdit.subscribe((emailTemplateForEdit) => {
       this.emailTemplate = emailTemplateForEdit;
     });
+    this.settingsService.getSendersInfoList().subscribe(
+      (sendersInfoList)=>{
+        this.sendersInfoList = sendersInfoList;
+      }
+    )
   }
 
   onSave(form: FormData) {
