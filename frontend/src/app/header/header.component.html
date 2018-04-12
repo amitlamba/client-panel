@@ -6,15 +6,15 @@
       <span class="navbar-toggler-icon"></span>
     </button>
 
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <div class="collapse navbar-collapse text-md-start text-right" id="navbarSupportedContent">
       <ul class="navbar-nav mr-auto">
         <li class="nav-item" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact: true}">
-          <a class="nav-link" [routerLink]="['/']">Home</a>
+          <a class="nav-link" [routerLink]="['/']"><i class="fa fa-home"></i> Home</a>
         </li>
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownTemplates" role="button" data-toggle="dropdown"
              aria-haspopup="true" aria-expanded="false" [routerLinkActive]="['active']">
-            Templates
+            <i class="fa fa-file"></i> Templates
           </a>
           <div class="dropdown-menu dropdown-menu-left" aria-labelledby="navbarDropdown" [routerLinkActive]="['active']">
             <a class="dropdown-item" [routerLink]="['/templates/email']" [routerLinkActive]="['active']">Email Templates</a>
@@ -25,7 +25,7 @@
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownSegments" role="button" data-toggle="dropdown"
              aria-haspopup="true" aria-expanded="false" [routerLinkActive]="['active']">
-            Segments
+            <i class="fas fa-wrench"></i> Segments
           </a>
           <div class="dropdown-menu dropdown-menu-left" aria-labelledby="navbarDropdownSegments" [routerLinkActive]="['active']">
             <a class="dropdown-item" [routerLink]="['/segment/find-users']" [routerLinkActive]="['active']">Find Users</a>
@@ -34,7 +34,7 @@
         </li>
 
         <li class="nav-item" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact: true}">
-          <a class="nav-link" [routerLink]="['/campaigns']">Campaigns</a>
+          <a class="nav-link" [routerLink]="['/campaigns']"><i class="fas fa-share-square"></i> Campaigns</a>
         </li>
         <li class="nav-item">
           <a class="nav-link disabled">Disabled</a>

@@ -30,7 +30,7 @@ class ClientSettings {
 
     @Transient
     @Column(name = "date_created")
-    @NotNull
+//    @NotNull
     var dateCreated: LocalDateTime? = null
 
     @Column(name = "date_modified")

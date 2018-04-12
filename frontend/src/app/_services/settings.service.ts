@@ -53,7 +53,7 @@ export class SettingsService {
 
   readonly serviceProviders: any = {
     "Email Service Provider": {
-      "name": "EmailServiceProvider",
+      "name": "Email Service Provider",
       "displayName": "Email Service Provider",
       "providers": {
         "SMTP": {
@@ -143,12 +143,12 @@ export class SettingsService {
       }
     },
     "SMS Service Provider": {
-      "name": "SMSServiceProvider",
+      "name": "SMS Service Provider",
       "displayName": "SMS Service Provider",
       "providers": {
-        "AWS - Simple Email Service": {
-          "name": "AWS - Simple Email Service",
-          "displayName": "AWS - Simple Email Service",
+        "AWS - Simple Notification Service": {
+          "name": "AWS - Simple Notification Service",
+          "displayName": "AWS - Simple Notification Service",
           "fields": [
             {
               "fieldName": "AWS_REGION",
@@ -173,7 +173,7 @@ export class SettingsService {
       }
     },
     "Notification Service Provider": {
-      "name": "NotificationServiceProvider",
+      "name": "Notification Service Provider",
       "displayName": "Notification Service Provider",
       "providers": {
         "Google - FCM": {
