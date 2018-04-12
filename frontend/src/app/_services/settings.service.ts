@@ -32,9 +32,9 @@ export class SettingsService {
   getAccountSettings(): Observable<any> {
     return this.httpClient.get<AccountSettings>(AppSettings.API_ENDPOINT_CLIENT_SETTING_ACCOUNT_SETTINGS_GET);
   }
-
+  // Do Check my Post Call
   refreshToken(): Observable<any> {
-    return this.httpClient.post<null>(AppSettings.API_ENDPOINT_AUTH_SETTING_REFRESHTOKEN, null);
+    return this.httpClient.post<null>(AppSettings.API_ENDPOINT_AUTH_SETTING_REFRESHTOKEN +"/false", null);
   }
 
   saveSendersInfo(sendersInfo): Observable<any> {

@@ -1,34 +1,50 @@
 <div class="row justify-content-center">
-  <div class="col-lg-6 col-md-8 col-sm-10">
+  <div class="col-xl-7  col-lg-8 col-md-11 col-sm-10 px-5">
     <form class="form-row mx-0" novalidate>
       <input type="text"
              name="name"
-             placeholder="Name" class="form-control col-md-4 mr-4 mt-2"
-             [(ngModel)]="sendersInfo.personal">
+             placeholder="Name"
+             class="form-control  col-md-4 mr-4 mt-2"
+             [ngClass]="{'border-danger':name.invalid && (name.touched || name.dirty)}"
+             [(ngModel)]="sendersInfo.personal"
+             pattern="[A-Za-z0-9-_][A-Za-z0-9\s-_]*"
+             #name="ngModel"
+             required>
       <input type="email"
              name="email"
-             placeholder="Email" class="form-control col-md-5 mr-auto mt-2"
-            [(ngModel)]="sendersInfo.address">
+             placeholder="Email"
+             class="form-control col-md-5 mr-auto mt-2"
+            [(ngModel)]="sendersInfo.address"
+            >
       <button class="btn btn-primary mt-2 info-add"
               type="add"
+              style="color: rgba(255, 255, 255, 0.5);"
               (click)="addSendersInfo()">Add Info</button>
     </form>
+    <div class="feedback text-danger" *ngIf="name.invalid && (name.touched || name.dirty)">
+      <div *ngIf="name.errors.required">
+        Name is required
+      </div>
+      <div *ngIf="name.errors.pattern">
+        Name cannot contain any special characters and cannot start with the space.
+      </div>
+    </div>
     <div class="table-responsive-sm mt-4">
-      <table class="table table-hover">
+      <table class="table table-bordered">
         <thead>
-          <tr class="bg-dark text-light">
-            <th scope="col">Name</th>
-            <th scope="col">Email Id</th>
+          <tr class="bg-primary">
+            <th scope="col" style="color: rgba(255, 255, 255, 0.5);">Name</th>
+            <th scope="col" style="color: rgba(255, 255, 255, 0.5);">Email Id</th>
+            <th scope="col" style="color: rgba(255, 255, 255, 0.5);">Action</th>
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let senderInfo of sendersInfoList">
             <td>{{senderInfo.personal}}</td>
             <td>{{senderInfo.address}}
-              <div class="pull-right">
-                <button class="btn btn-danger btn-sm pull-right" (click)="deleteSendersInfo(senderInfo)">Delete</button>
-              </div>
-            </td>
+             <td>
+              <button class="border-0" (click)="deleteSendersInfo(senderInfo)" id="deleteButton"><i class="far fa-trash-alt"></i></button>
+             </td>
           </tr>
         </tbody>
       </table>

@@ -1,14 +1,13 @@
 <div class="row justify-content-center">
-  <div class="col-sm-5">
-    <form novalidate>
+  <div class="col-lg-6 col-md-7 col-sm-8 px-5">
+    <form novalidate
+          #accountSettingsForm="ngForm">
       <div class="form-group">
         <label for="website-url">Website's URL</label>
         <div class="input-group">
           <select class="input-group-addon protocols rounded p-2" name="protocol" [(ngModel)]="protocol">
             <span class="caret"></span>
-            <option *ngFor="let pr of myArray" [ngValue]="pr">{{pr}}</option>
-            <!--<option value="http://">http://</option>-->
-            <!--<option value="https://">https://</option>-->
+            <option *ngFor="let pr of protocolsArray" [ngValue]="pr">{{pr}}</option>
           </select>
           <input type="text" class="form-control"
                  id="website-url"
@@ -16,11 +15,15 @@
                  name="websiteURL"
                  [(ngModel)]="websiteURL"
                  #siteURL="ngModel"
+                 pattern="[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)"
                  required>
         </div>
-        <div class="feedback text-danger" *ngIf="siteURL.errors && (siteURL.touched || siteURL.dirty)">
+        <div class="feedback text-danger" *ngIf="siteURL.invalid && (siteURL.touched || siteURL.dirty)">
           <div *ngIf="siteURL.errors.required">
             URL is required.
+          </div>
+          <div *ngIf="siteURL.errors.pattern">
+            Invalid URL.
           </div>
         </div>
       </div>
@@ -35,33 +38,20 @@
         </ng2-timezone-picker>
       </div>
       <div class="float-right">
-        <button class="btn btn-info" (click)="getJSIntegrationCode()">Get JS Integration Code</button>
-      </div>
-      <br>
-      <figure class="mt-5" style="background: #EBEBE4;" *ngIf="showCodeBlock">
-        <button class="btn btn-outline-primary mt-2 mr-2 btn-sm float-right"
-                (click)="changeTooltipText()"
-                id="copyCode"
-                data-toggle="tooltip"
-                title="Copy to Clipboard"
-                data-placement="top"
-                [cbContent]="jsCodeSnippet"
-                ngxClipboard>Copy
+        <button class="btn btn-primary"
+                (click)="getJSIntegrationCode()"
+                [disabled]="accountSettingsForm.invalid">Get JS Integration Code
         </button>
-        <pre>
-           <code id="codeValue">
-      <!-- your code here -->
-             var h1=document.querySelector(".h1");
-             h1.style.background="blue";
-             var p = document.querySelector("#p");
-             p.style.color="red";
-             var h1=document.querySelector(".h1");
-             h1.style.background="blue";
-             var p = document.querySelector("#p");
-             p.style.color="red";
-          </code>
-        </pre>
-      </figure>
+      </div>
     </form>
+    <br>
+    <figure class="mt-5" style="background: #EBEBE4;" *ngIf="showCodeBlock">
+      <pre>
+           <code id="codeValue">
+             {{codeSnippet}}
+          </code>
+
+        </pre>
+    </figure>
   </div>
 </div>

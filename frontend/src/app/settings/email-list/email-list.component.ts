@@ -30,12 +30,12 @@ export class EmailListComponent implements OnInit {
           this.settingsService.getSendersInfoList().subscribe(
             (sendersInfoList) => {
               this.sendersInfoList = sendersInfoList;
-              // console.log(this.sendersInfoList);
+              this.sendersInfo = new SendersInfo();
             }
           )
         }
       );
-    this.sendersInfo = new SendersInfo();
+
   }
 
   deleteSendersInfo(senderInfo) {
