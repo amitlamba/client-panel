@@ -78,9 +78,9 @@ import { EmailListComponent } from './settings/email-list/email-list.component';
 import {ClipboardModule} from "ngx-clipboard";
 import { LandingPageUndComponent } from './landing-page-und/landing-page-und.component';
 import { BsDropdownModule } from  'ngx-bootstrap/dropdown';
-import { NgxIntlTelInputModule } from 'ngx-intl-tel-input';
 import { DemoFormComponent } from './demo-form/demo-form.component';
 import { AboutUsComponent } from './about-us/about-us.component';
+import {NgxIntlTelInputModule} from "./ngx-intl-tel-input/src";
 
 @NgModule({
   imports: [

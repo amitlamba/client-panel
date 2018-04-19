@@ -21,11 +21,15 @@ export class DemoFormComponent implements OnInit {
   submitDemoForm() {
     this.demoRequest.firstName = this.visitorName.substring(0,this.visitorName.indexOf(" "));
     this.demoRequest.lastName = this.visitorName.substring(this.visitorName.indexOf(" ")+1);
+    // Fix Me (Below fields should not be filled before submitting)
     this.demoRequest.password='aAbBcC123@!';
+    this.demoRequest.country = 'India';
+    this.demoRequest.address = 'Demo Admin address';
     this.authenticationService.register(this.demoRequest)
       .subscribe(
         (response) => {
           console.log(response);
+          this.demoRequest = new RegistrationRequest();
         }
       )
   }

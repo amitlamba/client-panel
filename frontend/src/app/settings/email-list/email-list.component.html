@@ -15,11 +15,13 @@
              placeholder="Email"
              class="form-control col-md-5 mr-auto mt-2"
             [(ngModel)]="sendersInfo.address"
-            >
+             [ngClass]="{'border-danger':email.invalid && (email.touched || email.dirty)}"
+             #email="ngModel"
+             email>
       <button class="btn btn-primary mt-2 info-add"
               type="add"
-              style="color: rgba(255, 255, 255, 0.5);"
-              (click)="addSendersInfo()">Add Info</button>
+              (click)="addSendersInfo()"
+              [disabled]="email.invalid || name.invalid">Add Info</button>
     </form>
     <div class="feedback text-danger" *ngIf="name.invalid && (name.touched || name.dirty)">
       <div *ngIf="name.errors.required">
@@ -43,7 +45,7 @@
             <td>{{senderInfo.personal}}</td>
             <td>{{senderInfo.address}}
              <td>
-              <button class="border-0" (click)="deleteSendersInfo(senderInfo)" id="deleteButton"><i class="far fa-trash-alt"></i></button>
+              <button class="border-0" (click)="deleteSendersInfo(senderInfo)" id="deleteButton"><i class="far fa-trash-alt text-primary"></i></button>
              </td>
           </tr>
         </tbody>

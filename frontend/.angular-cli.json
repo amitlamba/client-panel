@@ -20,8 +20,8 @@
       "prefix": "app",
       "styles": [
         "../node_modules/select2/dist/css/select2.min.css",
-        "styles.scss",
-        "../node_modules/ngx-intl-tel-input/resource/intl-tel-input.css"
+        "app/ngx-intl-tel-input/src/resource/intl-tel-input.css",
+        "styles.scss"
       ],
       "scripts": [
         "../node_modules/jquery/dist/jquery.slim.min.js",
