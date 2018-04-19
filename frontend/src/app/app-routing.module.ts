@@ -25,6 +25,7 @@ import {AccountSettingsComponent} from "./settings/account-settings/account-sett
 import {EmailListComponent} from "./settings/email-list/email-list.component";
 import {LandingPageUndComponent} from "./landing-page-und/landing-page-und.component";
 import {AboutUsComponent} from "./about-us/about-us.component";
+import {TermsOfServiceComponent} from "./terms-of-service/terms-of-service.component";
 
 const routes: Routes = [
   {path: 'login', component: LoginComponent},
@@ -65,6 +66,7 @@ const routes: Routes = [
     ]
   },
   {path:'aboutus', component: AboutUsComponent},
+  {path:'terms-of-service', component: TermsOfServiceComponent},
   {path: '**', component: PageNotFoundComponent},
 ];
 
