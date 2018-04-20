@@ -34,6 +34,7 @@ const routes: Routes = [
   {path: 'register', component: RegisterComponent},
   {path: 'resetpwd/:code', component: ResetPwdComponent},
   {path: 'dummyJson', component: DummyComponent},
+  {path: 'dashboard', component: HomeComponent, canActivate: [AuthGuard]},
   {path: 'settings', redirectTo: "settings/profile", pathMatch: "full", canActivate: [AuthGuard]},
   {
     path: 'settings', component: SettingsComponent, canActivate: [AuthGuard], children: [
