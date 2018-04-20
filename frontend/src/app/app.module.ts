@@ -81,6 +81,7 @@ import { BsDropdownModule } from  'ngx-bootstrap/dropdown';
 import { NgxIntlTelInputModule } from 'ngx-intl-tel-input';
 import { DemoFormComponent } from './demo-form/demo-form.component';
 import { AboutUsComponent } from './about-us/about-us.component';
+import { TermsOfServiceComponent } from './terms-of-service/terms-of-service.component';
 
 @NgModule({
   imports: [
@@ -155,6 +156,7 @@ import { AboutUsComponent } from './about-us/about-us.component';
     LandingPageUndComponent,
     DemoFormComponent,
     AboutUsComponent,
+    TermsOfServiceComponent,
   ],
   providers: [
     AuthGuard,
