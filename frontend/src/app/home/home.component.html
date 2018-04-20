@@ -8,4 +8,7 @@
       <li *ngFor="let user of users">{{user.standardInfo.firstName}} {{user.standardInfo.lastName}}</li>
     </ul>
   </div>
+  <div [hidden]="!chart">
+    <canvas id="canvas">{{ chart }}</canvas>
+  </div>
 </div>
