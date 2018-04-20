@@ -72,15 +72,17 @@ import {CronEditorModule} from "./cron-editor/cron-editor.module";
 import {SegmentNlpComponent} from './segment-category/segment-nlp/segment-nlp.component';
 import {DemoTinymceComponent} from "./_helpers/demo-tinymce/demo-tinymce.component";
 import {CampaignService} from "./_services/campaign.service";
-import { AccountSettingsComponent } from './settings/account-settings/account-settings.component';
-import { TimezonePickerModule } from 'ng2-timezone-selector';
-import { EmailListComponent } from './settings/email-list/email-list.component';
+import {AccountSettingsComponent} from './settings/account-settings/account-settings.component';
+import {TimezonePickerModule} from 'ng2-timezone-selector';
+import {EmailListComponent} from './settings/email-list/email-list.component';
 import {ClipboardModule} from "ngx-clipboard";
-import { LandingPageUndComponent } from './landing-page-und/landing-page-und.component';
-import { BsDropdownModule } from  'ngx-bootstrap/dropdown';
-import { DemoFormComponent } from './demo-form/demo-form.component';
-import { AboutUsComponent } from './about-us/about-us.component';
+import {LandingPageUndComponent} from './landing-page-und/landing-page-und.component';
+import {BsDropdownModule} from 'ngx-bootstrap/dropdown';
+import {DemoFormComponent} from './demo-form/demo-form.component';
+import {AboutUsComponent} from './about-us/about-us.component';
+import {TermsOfServiceComponent} from './terms-of-service/terms-of-service.component';
 import {NgxIntlTelInputModule} from "./ngx-intl-tel-input/src";
+import { ContactUsComponent } from './contact-us/contact-us.component';
 
 @NgModule({
   imports: [
@@ -155,6 +157,8 @@ import {NgxIntlTelInputModule} from "./ngx-intl-tel-input/src";
     LandingPageUndComponent,
     DemoFormComponent,
     AboutUsComponent,
+    TermsOfServiceComponent,
+    ContactUsComponent,
   ],
   providers: [
     AuthGuard,

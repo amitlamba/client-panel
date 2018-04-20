@@ -1,23 +1,8 @@
-//@import '../demo-form/demo-form.component';
-
-#homepage {
-  margin-top:-1.5em;
-  font-weight: 400;
-  color: #555555 !important;
-  background: white;
-}
 header {
-  background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url("../../assets/img/und-about-us.jpg");
-  background-position: 55%;
-  background-attachment: fixed;
-  height: 50vh;
-  background-size: cover;
-  position: relative;
+  background-image: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.9)), url("../../assets/img/und-about-us.jpg")!important;
+  background-position: 55% !important;
+  height: 50vh !important;
 }
-.display-4 {
-  font-size: 3rem;
-}
-//New
 .about-us-heading {
   position: absolute;
   top: 50%;
