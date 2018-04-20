@@ -78,10 +78,11 @@ import { EmailListComponent } from './settings/email-list/email-list.component';
 import {ClipboardModule} from "ngx-clipboard";
 import { LandingPageUndComponent } from './landing-page-und/landing-page-und.component';
 import { BsDropdownModule } from  'ngx-bootstrap/dropdown';
-import { NgxIntlTelInputModule } from 'ngx-intl-tel-input';
 import { DemoFormComponent } from './demo-form/demo-form.component';
 import { AboutUsComponent } from './about-us/about-us.component';
 import { TermsOfServiceComponent } from './terms-of-service/terms-of-service.component';
+import {NgxIntlTelInputModule} from "./ngx-intl-tel-input/src";
+import {ContactUsComponent} from "./contact-us/contact-us.component";
 
 @NgModule({
   imports: [
@@ -157,6 +158,7 @@ import { TermsOfServiceComponent } from './terms-of-service/terms-of-service.com
     DemoFormComponent,
     AboutUsComponent,
     TermsOfServiceComponent,
+    ContactUsComponent
   ],
   providers: [
     AuthGuard,
