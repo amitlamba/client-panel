@@ -40,7 +40,7 @@ export class LoginComponent implements OnInit {
       (response) => {
         console.log(response);
         this.loginEvent.emit();
-        this.router.navigate(['/']);
+        this.router.navigate(['/dashboard']);
       },
       (error: HttpErrorResponse) => {
         this.error = 'Username or password is incorrect';
