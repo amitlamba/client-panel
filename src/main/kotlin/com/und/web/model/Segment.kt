@@ -25,7 +25,12 @@ class DidEvents {
 
 class JoinCondition {
     var anyOfCount: Long? = null
-    var conditionType: String? = null// AllOf / AnyOf
+    var conditionType: ConditionType = ConditionType.AllOf // AnyOf
+}
+
+enum class ConditionType {
+    AllOf,
+    AnyOf
 }
 
 class Event {

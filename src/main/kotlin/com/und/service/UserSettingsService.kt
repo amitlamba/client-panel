@@ -84,8 +84,6 @@ class UserSettingsService {
         with(spCreds) {
             spCreds.appuserID = webServiceProviderCredentials.appuserID
             spCreds.clientID = webServiceProviderCredentials.clientID
-            spCreds.dateCreated = webServiceProviderCredentials.dateCreated
-            spCreds.dateModified = webServiceProviderCredentials.dateModified
             spCreds.id = webServiceProviderCredentials.id
             spCreds.serviceProvider = webServiceProviderCredentials.serviceProvider
             spCreds.serviceProviderType = webServiceProviderCredentials.serviceProviderType
@@ -100,8 +98,7 @@ class UserSettingsService {
         with(wspCreds) {
             wspCreds.appuserID = serviceProviderCredentials.appuserID
             wspCreds.clientID = serviceProviderCredentials.clientID
-            wspCreds.dateCreated = serviceProviderCredentials.dateCreated
-            wspCreds.dateModified = serviceProviderCredentials.dateModified
+
             wspCreds.id = serviceProviderCredentials.id
             wspCreds.serviceProvider = serviceProviderCredentials.serviceProvider
             wspCreds.serviceProviderType = serviceProviderCredentials.serviceProviderType
@@ -118,8 +115,6 @@ class UserSettingsService {
         clientSettings.clientID = clientID
         clientSettings.authorizedUrls = GsonBuilder().create().toJson(accountSettings.urls)
         clientSettings.timezone = accountSettings.timezone
-        clientSettings.dateCreated = LocalDateTime.now()
-        clientSettings.dateModified = LocalDateTime.now()
         clientSettingsRepository.save(clientSettings)
     }
 

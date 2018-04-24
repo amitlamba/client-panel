@@ -1,6 +1,8 @@
 package com.und.model.jpa
 
 
+import org.hibernate.annotations.CreationTimestamp
+import org.hibernate.annotations.UpdateTimestamp
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
@@ -62,6 +64,14 @@ class Campaign {
             field?.campaign = this
         }
 
+    @field:CreationTimestamp
+    @Column(name = "date_created")
+    lateinit var dateCreated: LocalDateTime
+
+    @field:UpdateTimestamp
+    @Column(name = "date_modified")
+    lateinit var dateModified: LocalDateTime
+
     //TODO add sms, and push campaign later
 }
 
@@ -114,12 +124,16 @@ class CampaignTime {
     lateinit var ampm: AmPm
 
     fun toLocalDateTime(): LocalDateTime {
-        var hours = hours?:0
-        val minutes = minutes?:0
+        var hours = hours ?: 0
+        val minutes = minutes ?: 0
 
-        ampm.let{if(it==AmPm.PM){hours+=12}}
+        ampm.let {
+            if (it == AmPm.PM) {
+                hours += 12
+            }
+        }
         val localTime = LocalTime.of(hours, minutes)
-        return  LocalDateTime.of(date,localTime )
+        return LocalDateTime.of(date, localTime)
     }
 }
 
