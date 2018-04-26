@@ -13,7 +13,7 @@
           <option *ngFor="let prop of secondDropDown" value="{{prop['propertyName']}}">{{prop['propertyName']}}</option>
         </select>
       </div>
-      <app-string-comparator [values]="globalFilter.values" [(operator)]="globalFilter.operator" *ngIf="maxOrder>1" [options]="options"></app-string-comparator>
+      <app-string-comparator [(values)]="globalFilter.values" [(operator)]="globalFilter.operator" *ngIf="maxOrder>1" [options]="options"></app-string-comparator>
       <button type="button" class="close ml-auto mr-4 pos" aria-label="Close" (click)="removeObject()">
         <span aria-hidden="true">&times;</span>
       </button>
