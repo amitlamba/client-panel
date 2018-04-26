@@ -12,6 +12,7 @@ import {SegmentService} from "../../../_services/segment.service";
 import {FilterComponent} from "./filter/filter.component";
 import index from "@angular/cli/lib/cli";
 import {DidEventsComponent} from "../did-events.component";
+import * as moment from "moment";
 
 @Component({
   selector: 'app-did-event',
@@ -85,19 +86,25 @@ export class DidEventComponent implements OnInit {
     this.eventProperties = this.registeredEvents[0].properties;
   }
 
-  eventNameChanged(val:any){
+  eventNameChanged(val:any) {
     this.eventProperties = this.registeredEvents[val].properties;
     this.removeAllPropertyFilters();
     this.eventSelected = true;
     this.didEvent.name = this.registeredEvents[val].name;
     this.didEvent.dateFilter = new DateFilter();
     this.didEvent.dateFilter.operator = DateOperator.Before;
-    this.didEvent.dateFilter.values = [];
+    this.didEvent.dateFilter.values = [this.getCurrentFormattedDate()];
     this.didEvent.propertyFilters = [];
-    this.didEvent.whereFilter = new WhereFilter();
-    this.didEvent.whereFilter.operator = NumberOperator.GreaterThan;
-    this.didEvent.whereFilter.values = [];
-    this.countDropdown("Count");
+    if (!this.hideWhere) {
+      this.didEvent.whereFilter = new WhereFilter();
+      this.didEvent.whereFilter.operator = NumberOperator.GreaterThan;
+      this.didEvent.whereFilter.values = [];
+      this.countDropdown("Count");
+    }
+  }
+
+  private getCurrentFormattedDate(): string {
+    return moment().format('YYYY-MM-DD')
   }
 
   addPropertyFilter() {
