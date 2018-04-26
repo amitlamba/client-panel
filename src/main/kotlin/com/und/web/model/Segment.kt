@@ -37,7 +37,7 @@ class Event {
     var name: String = ""
     var dateFilter: DateFilter = DateFilter()
     var propertyFilters: List<PropertyFilter> = listOf()
-    var whereFilter: WhereFilter = WhereFilter()
+    var whereFilter: WhereFilter? = null
 }
 
 class DateFilter {
@@ -48,35 +48,53 @@ class DateFilter {
 
 class PropertyFilter {
     var name: String = ""
-    var type: PropertyType = PropertyType.String
-    var filterType: PropertyFilterType = PropertyFilterType.UTM
+    var type: PropertyType = PropertyType.string
+    private var _filterType: PropertyFilterType? = null
+    var filterType: PropertyFilterType? = null
+        get() {
+            if (_filterType == null) {
+                val genericProperties = listOf("First Time", "Time of day",
+                        "Day of the week",
+                        "Day of the month")
+                val UTMProperties = listOf("UTM Source",
+                        "UTM Visited")
+                _filterType = when{
+                    genericProperties.contains(name) -> PropertyFilterType.genericproperty
+                    UTMProperties.contains(name) -> PropertyFilterType.UTM
+                    else ->  PropertyFilterType.eventproperty
+                }
+
+            }
+            return _filterType
+        }
+
     var operator: String = ""
     var values: List<String> = listOf()
     var valueUnit: String = ""
 }
 
 enum class PropertyType {
-     String ,
-     number,
-     date
+    string,
+    number,
+    date
 }
 
 enum class PropertyFilterType {
-     eventproperty,
-     genericproperty,
-     UTM
+    eventproperty,
+    genericproperty,
+    UTM
 }
 
 class WhereFilter {
-    var whereFilterName: WhereFilterName = WhereFilterName.Count
+    var whereFilterName: WhereFilterName? = null
     var propertyName: String = ""
-    var operator: NumberOperator = NumberOperator.Between
-    var values: List<Long> = listOf()
+    var operator: NumberOperator? = null
+    var values: List<Long>? = null
 }
 
 enum class WhereFilterName {
-     Count,
-     SumOfValuesOf
+    Count,
+    SumOfValuesOf
 }
 
 enum class DateOperator {
@@ -92,7 +110,7 @@ enum class DateOperator {
 }
 
 enum class NumberOperator {
-    Equals ,
+    Equals,
     Between,
     GreaterThan,
     LessThan,
@@ -102,10 +120,10 @@ enum class NumberOperator {
 }
 
 enum class StringOperator {
-    Equals ,
+    Equals,
     NotEquals,
     Contains,
-    DoesNotContain ,
+    DoesNotContain,
     Exists,
     DoesNotExist
 }

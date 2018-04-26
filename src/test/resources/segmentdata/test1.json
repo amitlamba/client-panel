@@ -1,0 +1,76 @@
+{
+  "didEvents": {
+    "events": [
+      {
+        "name": "Added to cart",
+        "dateFilter": {
+          "operator": "Before",
+          "values": []
+        },
+        "propertyFilters": [
+          {
+            "values": [
+              "hello"
+            ],
+            "name": "Category",
+            "type": "string",
+            "operator": "Contains"
+          },
+          {
+            "values": [
+              "test"
+            ],
+            "name": "Product",
+            "type": "string",
+            "operator": "DoesNotContain"
+
+          }
+        ],
+        "whereFilter": {
+          "operator": "Equals",
+          "values": [
+            2
+          ],
+          "whereFilterName": "Count"
+        }
+      },
+      {
+        "name": "Charged",
+        "dateFilter": {
+          "operator": "Before",
+          "values": []
+        },
+        "propertyFilters": [
+          {
+            "values": [
+              200
+            ],
+            "name": "Amount",
+            "type": "number",
+            "operator": "Equals"
+          }
+        ],
+        "whereFilter": {
+          "operator": "Equals",
+          "values": [
+            23
+          ],
+          "whereFilterName": "SumOfValuesOf"
+        }
+      }
+    ],
+    "joinCondition": {
+      "conditionType": "AllOf"
+    }
+  },
+  "didNotEvents": {
+    "events": [],
+    "joinCondition": {
+      "conditionType": "AnyOf"
+    }
+  },
+  "globalFilters": [],
+  "geographyFilters": [],
+  "type": "Behaviour",
+  "name": "t"
+}
