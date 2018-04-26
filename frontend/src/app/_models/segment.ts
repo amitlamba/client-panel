@@ -104,7 +104,7 @@ export class GlobalFilter {
   name: string;
   type: string;
   operator: string;
-  values: any[];
+  values: any[] = [];
   valueUnit: string;
 }
 
