@@ -75,7 +75,7 @@ export class GlobalFilterComponent implements OnInit {
     this.secondFilterSelected = name;
     this.globalFilter.name = name;
     this.globalFilter.values = [];
-    for(var filter in this.globalFiltersMetadata[this.firstFilterSelected]) {
+    for(let filter of this.globalFiltersMetadata[this.firstFilterSelected]) {
       if(filter["propertyName"] == this.secondFilterSelected) {
         this.secondFilterDataType = filter["propertyType"];
         this.options = filter["options"];
