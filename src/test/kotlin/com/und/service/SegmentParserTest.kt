@@ -7,14 +7,9 @@ import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import com.und.web.model.Segment
 import org.hamcrest.MatcherAssert
-import org.jetbrains.spek.api.Spek
-import org.jetbrains.spek.api.dsl.given
-import org.jetbrains.spek.api.dsl.it
-import org.jetbrains.spek.api.dsl.on
 import org.junit.Before
 import org.junit.Test
 import org.springframework.util.ResourceUtils
-import java.io.File
 import org.hamcrest.CoreMatchers.`is` as Is
 
 class SegmentParserTest {
@@ -36,7 +31,7 @@ class SegmentParserTest {
     fun readFileText(fileName: String): String = ResourceUtils.getFile("classpath:$fileName").readText(Charsets.UTF_8)
 
     @Test
-    fun testSegmentParser() {
+    fun testSegmentParser1() {
 
         val testData = readFileText("$testDataBase/test1.json")
         val segment = mapper.readValue(testData, Segment::class.java)
@@ -53,6 +48,7 @@ class SegmentParserTest {
         val parsedResponse = SegmentParser().userList(segment)
         MatcherAssert.assertThat(2, Is(2))
     }
+
     @Test
     fun testSegmentParser3() {
 
@@ -70,6 +66,7 @@ class SegmentParserTest {
         val parsedResponse = SegmentParser().userList(segment)
         MatcherAssert.assertThat(2, Is(2))
     }
+
     @Test
     fun testSegmentParser5() {
 
@@ -78,6 +75,39 @@ class SegmentParserTest {
         val parsedResponse = SegmentParser().userList(segment)
         MatcherAssert.assertThat(2, Is(2))
     }
+
+    @Test
+    fun testSegmentParser6() {
+
+        val testData = readFileText("$testDataBase/test6.json")
+        val segment = mapper.readValue(testData, Segment::class.java)
+        val parsedResponse = SegmentParser().userList(segment)
+        MatcherAssert.assertThat(2, Is(2))
+
+    }
+
+
+
+
+@Test
+fun testSegmentParser7() {
+
+    val dir = ResourceUtils.getFile("classpath:$testDataBase")
+    val files = dir.list { dir, name -> true }
+    files.forEach {
+        val testData = readFileText("$testDataBase/$it")
+        val segment = mapper.readValue(testData, Segment::class.java)
+        val parsedResponse = SegmentParser().userList(segment)
+        println("************")
+        println("************")
+        println("************")
+        println("************")
+
+    }
+
+
+    MatcherAssert.assertThat(2, Is(2))
+}
 
 }
 

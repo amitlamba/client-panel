@@ -43,7 +43,80 @@
       "conditionType": "AnyOf"
     }
   },
-  "globalFilters": [],
+  "globalFilters": [
+    {
+      "values": [
+        "25"
+      ],
+      "globalFilterType": "UserProperties",
+      "name": "User Property Name",
+      "type": "date/string/number",
+      "operator": "Contains"
+    },
+    {
+      "values": [
+        "40"
+      ],
+      "globalFilterType": "UserProperties",
+      "name": "User Property Name",
+      "type": "date/string/number",
+      "operator": "Contains"
+    },
+    {
+      "values": [
+        "25-35"
+      ],
+      "globalFilterType": "Demographics",
+      "name": "age",
+      "type": "string",
+      "operator": "NotEquals"
+    },
+    {
+      "values": [
+        "Chrome"
+      ],
+      "globalFilterType": "Technographics",
+      "name": "Browser",
+      "type": "string",
+      "operator": "Contains"
+    },
+    {
+      "values": [
+        "Firefox"
+      ],
+      "globalFilterType": "Technographics",
+      "name": "Browser",
+      "type": "string",
+      "operator": "Contains"
+    },
+    {
+      "values": [
+        "Mobile"
+      ],
+      "globalFilterType": "Technographics",
+      "name": "Device",
+      "type": "string",
+      "operator": "Equals"
+    },
+    {
+      "values": [
+        "Tablet"
+      ],
+      "globalFilterType": "Technographics",
+      "name": "Device",
+      "type": "string",
+      "operator": "Contains"
+    },
+    {
+      "values": [
+        "9.1"
+      ],
+      "globalFilterType": "AppFields",
+      "name": "OS Version",
+      "type": "string",
+      "operator": "Equals"
+    }
+  ],
   "geographyFilters": [],
   "type": "Behaviour"
 }

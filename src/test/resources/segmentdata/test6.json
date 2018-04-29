@@ -5,40 +5,88 @@
         "name": "Added to cart",
         "dateFilter": {
           "operator": "Before",
-          "values": []
+          "values": [
+            "2018-04-28T18:30:00.000Z"
+          ]
         },
         "propertyFilters": [
           {
             "values": [
-              "category1"
+              "hello"
             ],
             "name": "Category",
             "type": "string",
             "operator": "Contains"
+          },
+          {
+            "values": [
+              23
+            ],
+            "name": "Amount",
+            "type": "number",
+            "operator": "Equals"
+          },
+          {
+            "values": [
+              "world"
+            ],
+            "name": "Category",
+            "type": "string",
+            "operator": "Contains"
+          },
+          {
+            "values": [
+              "Wednesday"
+            ],
+            "name": "Day of week"
+          },
+          {
+            "values": [
+              "Yes"
+            ],
+            "name": "First Time"
+          },
+          {
+            "values": [],
+            "name": "Time of day"
+          },
+          {
+            "values": [
+              "5"
+            ],
+            "name": "Day of month"
+          },
+          {
+            "values": [
+              "Book"
+            ],
+            "name": "Product",
+            "type": "string",
+            "operator": "Equals"
           }
         ],
         "whereFilter": {
           "operator": "Equals",
           "values": [
-            200
+            25
           ],
           "whereFilterName": "SumOfValuesOf"
         }
       },
       {
-        "name": "Charged",
+        "name": "App Uninstalled",
         "dateFilter": {
           "operator": "Before",
-          "values": []
+          "values": [
+            "2018-04-29"
+          ]
         },
         "propertyFilters": [
           {
             "values": [
-              "credit Card"
+              "Yes"
             ],
-            "name": "Payment Mode",
-            "type": "string",
-            "operator": "Contains"
+            "name": "First Time"
           }
         ],
         "whereFilter": {
@@ -57,57 +105,35 @@
   "didNotEvents": {
     "events": [
       {
-        "name": "App Uninstalled",
-        "dateFilter": {
-          "operator": "Before",
-          "values": []
-        },
-        "propertyFilters": [
-          {
-            "values": [],
-            "name": "Time of day"
-          },
-          {
-            "values": [],
-            "name": "Day of week"
-          }
-        ],
-        "whereFilter": {
-          "operator": "GreaterThan",
-          "values": [],
-          "whereFilterName": "Count"
-        }
-      },
-      {
         "name": "Added to cart",
         "dateFilter": {
           "operator": "Before",
-          "values": []
+          "values": [
+            "2018-04-01T18:30:00.000Z"
+          ]
         },
         "propertyFilters": [
           {
             "values": [
-              "wed"
+              "test"
             ],
-            "name": "Category",
+            "name": "Product",
             "type": "string",
-            "operator": "NotEquals"
+            "operator": "DoesNotContain"
           },
           {
             "values": [
-              2,
-              5
+              "hello"
             ],
-            "name": "Quantity",
-            "type": "number",
-            "operator": "Between"
+            "name": "Product",
+            "type": "string",
+            "operator": "Contains"
+          },
+          {
+            "values": [],
+            "name": "Time of day"
           }
-        ],
-        "whereFilter": {
-          "operator": "GreaterThan",
-          "values": [],
-          "whereFilterName": "Count"
-        }
+        ]
       }
     ],
     "joinCondition": {
@@ -189,6 +215,5 @@
     }
   ],
   "geographyFilters": [],
-  "type": "Behaviour",
-  "name": "ttt"
+  "type": "Behaviour"
 }
