@@ -15,7 +15,7 @@ import java.time.LocalDateTime
 8. combine results of both
 9. cache and store parsed query
  */
-class SegmentParser {
+class SegmentParserMongo {
 
     private val newLine = "\n"
     private val and = " and "

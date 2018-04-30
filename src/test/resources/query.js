@@ -15,3 +15,6 @@ and (UserProperties.User Property Name Contains [25] or UserProperties.User Prop
  and (Technographics.Device Equals [Mobile] or Technographics.Device Contains [Tablet])
  and (AppFields.OS Version Equals [9.1])
  */
+
+
+
