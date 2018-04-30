@@ -83,6 +83,7 @@ import { AboutUsComponent } from './about-us/about-us.component';
 import { TermsOfServiceComponent } from './terms-of-service/terms-of-service.component';
 import {NgxIntlTelInputModule} from "./ngx-intl-tel-input/src";
 import {ContactUsComponent} from "./contact-us/contact-us.component";
+import { NewVsExistingUsersGraphComponent } from './new-vs-existing-users-graph/new-vs-existing-users-graph.component';
 
 @NgModule({
   imports: [
@@ -102,7 +103,8 @@ import {ContactUsComponent} from "./contact-us/contact-us.component";
     TimezonePickerModule,
     ClipboardModule,
     BsDropdownModule.forRoot(),
-    NgxIntlTelInputModule
+    NgxIntlTelInputModule,
+    BrowserModule
   ],
   declarations: [
     AppComponent,
@@ -158,7 +160,8 @@ import {ContactUsComponent} from "./contact-us/contact-us.component";
     DemoFormComponent,
     AboutUsComponent,
     TermsOfServiceComponent,
-    ContactUsComponent
+    ContactUsComponent,
+    NewVsExistingUsersGraphComponent
   ],
   providers: [
     AuthGuard,

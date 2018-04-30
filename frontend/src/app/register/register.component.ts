@@ -45,7 +45,9 @@ export class RegisterComponent implements OnInit {
 
 
   ngOnInit() {
-
+    var onloadCallback = function() {
+      alert("grecaptcha is ready!");
+    };
   }
 
 }
