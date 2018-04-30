@@ -1,10 +1,14 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {
+  AfterViewChecked, AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnInit,
+  Output
+} from '@angular/core';
 import {SegmentService} from "../../_services/segment.service";
 import {DaterangepickerConfig} from "ng2-daterangepicker";
 import * as moment from "moment";
 import {DateFilter, DateOperator} from "../../_models/segment";
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.Default,
   selector: 'app-date-comparator',
   templateUrl: './date-comparator.component.html',
   styleUrls: ['./date-comparator.component.scss']
@@ -53,7 +57,8 @@ export class DateComparatorComponent implements OnInit {
   relativeDateComparatorMetadata: string[];
   timePeriodVars: string[];
 
-  constructor(public segmentService: SegmentService, private daterangepickerOptions: DaterangepickerConfig) {
+  constructor(public segmentService: SegmentService, private daterangepickerOptions: DaterangepickerConfig,
+              private changeDetectorRef: ChangeDetectorRef) {
 
     this.dateComparatorMetadata = this.segmentService.dateComparatorMetadata;
     this.absoluteDateComparatorMetadata = Object.keys(this.segmentService.dateComparatorMetadata.Absolute);
@@ -68,6 +73,9 @@ export class DateComparatorComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.operator = DateOperator.Before;
+    this.values = [moment().startOf('day')];
+    this.changeDetectorRef.detectChanges();
   }
 
   public singlePicker = {
@@ -87,11 +95,11 @@ export class DateComparatorComponent implements OnInit {
     startDate: moment(),
     endDate: moment(),
     ranges: {
-      "Today": [moment(), moment()],
-      "Yesterday": [moment().subtract("1","day"), moment().subtract("1","day")],
+      "Today": [moment(), moment().add("1","day")],
+      "Yesterday": [moment().subtract("1","day"), moment()],
       "Last 7 Days": [moment().subtract("7","day"), moment()],
       "Last 30 Days": [moment().subtract("30","day"), moment()],
-      "Last Month": [moment().subtract("1","month"), moment()],
+      "Last Month": [moment().subtract("1","month").subtract(moment().date()-1, "day"), moment().subtract(moment().date()-1, "day")],
     }
   };
 

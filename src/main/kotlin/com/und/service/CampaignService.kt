@@ -1,7 +1,6 @@
 package com.und.service
 
-import com.google.gson.Gson
-import com.google.gson.GsonBuilder
+import com.fasterxml.jackson.databind.ObjectMapper
 import com.und.common.utils.loggerFor
 import com.und.config.EventStream
 import com.und.model.JobDescriptor
@@ -9,11 +8,11 @@ import com.und.model.TriggerDescriptor
 import com.und.model.jpa.*
 import com.und.repository.CampaignRepository
 import com.und.security.utils.AuthenticationUtils
-import com.und.web.controller.CampaignController
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.messaging.support.MessageBuilder
 import org.springframework.stereotype.Service
 import com.und.web.model.Campaign as WebCampaign
+
 
 @Service
 class CampaignService {
@@ -29,6 +28,9 @@ class CampaignService {
 
     @Autowired
     private lateinit var eventStream: EventStream
+
+    @Autowired
+    private lateinit var objectMapper:ObjectMapper
 
     fun getCampaigns(): List<WebCampaign> {
         val campaigns = AuthenticationUtils.clientID?.let { campaignRepository.findByClientID(it) }
@@ -46,7 +48,7 @@ class CampaignService {
         logger.info("sending request to scheduler ${campaign.name}")
         val jobDescriptor = buildJobDescriptor(webCampaign, JobDescriptor.Action.CREATE)
         sendToKafka(jobDescriptor)
-        return buildWebCampaign(campaign)
+        return buildWebCampaign(persistedCampaign)
     }
 
     private fun buildJobDescriptor(campaign: WebCampaign, action: JobDescriptor.Action): JobDescriptor {
@@ -101,26 +103,27 @@ class CampaignService {
             campaignType = webCampaign.campaignType
             segmentationID = webCampaign.segmentationID
 
-            schedule = GsonBuilder().create().toJson(webCampaign.schedule)
+
+            schedule =objectMapper.writeValueAsString(webCampaign.schedule)
         }
 
-
-
-        if (webCampaign.campaignType == CampaignType.EMAIL) {
-            //FIXME check if same template is in usage
-            val emailcampaign = EmailCampaign()
-            emailcampaign.appuserId = campaign.appuserID
-            emailcampaign.clientID = campaign.clientID
-            emailcampaign.templateId = webCampaign.templateID
-            campaign.emailCampaign = emailcampaign
-        } else if (webCampaign.campaignType == CampaignType.SMS) {
-            //FIXME check if same template is in usage
-            val smscampaign = SmsCampaign()
-            smscampaign.appuserId = campaign.appuserID
-            smscampaign.clientID = campaign.clientID
-            smscampaign.templateId = webCampaign.templateID
-            campaign.smsCampaign = smscampaign
+        when (webCampaign.campaignType) {
+            CampaignType.EMAIL -> {
+                val emailcampaign = EmailCampaign()
+                emailcampaign.appuserId = campaign.appuserID
+                emailcampaign.clientID = campaign.clientID
+                emailcampaign.templateId = webCampaign.templateID
+                campaign.emailCampaign = emailcampaign
+            }
+            CampaignType.SMS -> {
+                val smscampaign = SmsCampaign()
+                smscampaign.appuserId = campaign.appuserID
+                smscampaign.clientID = campaign.clientID
+                smscampaign.templateId = webCampaign.templateID
+                campaign.smsCampaign = smscampaign
+            }
         }
+
         return campaign
     }
 
@@ -133,8 +136,12 @@ class CampaignService {
 
             campaignType = campaign.campaignType
             segmentationID = campaign.segmentationID
+            dateCreated = campaign.dateCreated
+            dateModified = campaign.dateModified
 
-            schedule = Gson().fromJson(campaign.schedule, Schedule::class.java)
+
+
+             schedule = objectMapper.readValue(campaign.schedule, Schedule::class.java)
         }
 
         if (campaign.emailCampaign != null) {
@@ -153,7 +160,7 @@ class CampaignService {
         val jobDescriptor = JobDescriptor()
         jobDescriptor.clientId = AuthenticationUtils.clientID.toString()
         jobDescriptor.campaignId = campaignId.toString()
-        jobDescriptor.action= JobDescriptor.Action.PAUSE
+        jobDescriptor.action = JobDescriptor.Action.PAUSE
 
         sendToKafka(jobDescriptor)
         return campaignId
@@ -164,7 +171,7 @@ class CampaignService {
         val jobDescriptor = JobDescriptor()
         jobDescriptor.clientId = AuthenticationUtils.clientID.toString()
         jobDescriptor.campaignId = campaignId.toString()
-        jobDescriptor.action= JobDescriptor.Action.RESUME
+        jobDescriptor.action = JobDescriptor.Action.RESUME
 
         sendToKafka(jobDescriptor)
         return campaignId

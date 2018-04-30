@@ -1,6 +1,9 @@
 package com.und.model.jpa
 
 import com.und.model.MessageType
+import org.hibernate.annotations.CreationTimestamp
+import org.hibernate.annotations.UpdateTimestamp
+import java.time.LocalDateTime
 import javax.persistence.*
 //import javax.validation.constraints.Email
 import javax.validation.constraints.NotNull
@@ -51,6 +54,14 @@ class EmailTemplate {
 
     @Column(name = "tags")
     var tags: String? = null
+
+    @field:CreationTimestamp
+    @Column(name = "date_created")
+    lateinit var dateCreated: LocalDateTime
+
+    @field:UpdateTimestamp
+    @Column(name = "date_modified")
+    lateinit var dateModified: LocalDateTime
 
 //    @Column(name = "status")
 //    @NotNull

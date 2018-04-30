@@ -1,5 +1,7 @@
 package com.und.model.jpa
 
+import org.hibernate.annotations.CreationTimestamp
+import org.hibernate.annotations.UpdateTimestamp
 import java.time.LocalDateTime
 import javax.persistence.*
 import javax.validation.constraints.NotNull
@@ -29,11 +31,11 @@ class ClientSettings {
     var timezone: String? = null
 
     @Transient
+    @field:CreationTimestamp
     @Column(name = "date_created")
-//    @NotNull
-    var dateCreated: LocalDateTime? = null
+    lateinit var dateCreated: LocalDateTime
 
+    @field:UpdateTimestamp
     @Column(name = "date_modified")
-    @NotNull
-    var dateModified: LocalDateTime? = null
+    lateinit var dateModified: LocalDateTime
 }

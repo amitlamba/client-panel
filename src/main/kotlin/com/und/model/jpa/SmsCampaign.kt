@@ -1,6 +1,9 @@
 package com.und.model.jpa
 
 import com.und.model.jpa.Campaign
+import org.hibernate.annotations.CreationTimestamp
+import org.hibernate.annotations.UpdateTimestamp
+import java.time.LocalDateTime
 import javax.persistence.*
 import javax.validation.constraints.NotNull
 
@@ -30,5 +33,13 @@ class SmsCampaign {
     @Column(name = "sms_template_id")
     @NotNull
     var templateId: Long? = null
+
+    @field:CreationTimestamp
+    @Column(name = "date_created")
+    lateinit var dateCreated: LocalDateTime
+
+    @field:UpdateTimestamp
+    @Column(name = "date_modified")
+    lateinit var dateModified: LocalDateTime
 
 }

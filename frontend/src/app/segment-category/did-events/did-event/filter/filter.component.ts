@@ -77,6 +77,7 @@ export class FilterComponent implements OnInit {
     this.selectedProperty = this.getPropertyByName(val);
     this.localPropertyFilter.name = this.selectedProperty.name;
     this.localPropertyFilter.type = PropertyType[this.selectedProperty.dataType];
+    this.localPropertyFilter.values = [];
   }
 
   getPropertyByName(propName: string): RegisteredEventProperties {
@@ -94,8 +95,13 @@ export class FilterComponent implements OnInit {
   getSelectedPropertyOptions(): any[] {
     let options = this.selectedProperty.options
       .map((option, index) => {
-        return {'id': index, 'text': option}
+        return {'id': option, 'text': option}
       });
     return options;
+  }
+
+  select2ValueChanged(val: any, selectedProperty: any) {
+    console.log("Select 2 Value Changed: "+ JSON.stringify(val) + ", Selected Property: "+JSON.stringify(this.selectedProperty));
+    this.propertyFilter.values = val["value"];
   }
 }

@@ -2,6 +2,9 @@ package com.und.model.jpa
 
 import com.und.model.MessageType
 import com.und.model.Status
+import org.hibernate.annotations.CreationTimestamp
+import org.hibernate.annotations.UpdateTimestamp
+import java.time.LocalDateTime
 import javax.persistence.*
 import javax.validation.constraints.NotNull
 import javax.validation.constraints.Null
@@ -52,5 +55,13 @@ class SmsTemplate {
     @NotNull
     @Enumerated(EnumType.STRING)
     lateinit var status: Status
+
+    @field:CreationTimestamp
+    @Column(name = "date_created")
+    lateinit var dateCreated: LocalDateTime
+
+    @field:UpdateTimestamp
+    @Column(name = "date_modified")
+    lateinit var dateModified: LocalDateTime
 }
 

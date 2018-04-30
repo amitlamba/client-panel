@@ -1,0 +1,194 @@
+{
+  "didEvents": {
+    "events": [
+      {
+        "name": "Added to cart",
+        "dateFilter": {
+          "operator": "Before",
+          "values": []
+        },
+        "propertyFilters": [
+          {
+            "values": [
+              "category1"
+            ],
+            "name": "Category",
+            "type": "string",
+            "operator": "Contains"
+          }
+        ],
+        "whereFilter": {
+          "operator": "Equals",
+          "values": [
+            200
+          ],
+          "whereFilterName": "SumOfValuesOf"
+        }
+      },
+      {
+        "name": "Charged",
+        "dateFilter": {
+          "operator": "Before",
+          "values": []
+        },
+        "propertyFilters": [
+          {
+            "values": [
+              "credit Card"
+            ],
+            "name": "Payment Mode",
+            "type": "string",
+            "operator": "Contains"
+          }
+        ],
+        "whereFilter": {
+          "operator": "Equals",
+          "values": [
+            2
+          ],
+          "whereFilterName": "Count"
+        }
+      }
+    ],
+    "joinCondition": {
+      "conditionType": "AllOf"
+    }
+  },
+  "didNotEvents": {
+    "events": [
+      {
+        "name": "App Uninstalled",
+        "dateFilter": {
+          "operator": "Before",
+          "values": []
+        },
+        "propertyFilters": [
+          {
+            "values": [],
+            "name": "Time of day"
+          },
+          {
+            "values": [],
+            "name": "Day of week"
+          }
+        ],
+        "whereFilter": {
+          "operator": "GreaterThan",
+          "values": [],
+          "whereFilterName": "Count"
+        }
+      },
+      {
+        "name": "Added to cart",
+        "dateFilter": {
+          "operator": "Before",
+          "values": []
+        },
+        "propertyFilters": [
+          {
+            "values": [
+              "wed"
+            ],
+            "name": "Category",
+            "type": "string",
+            "operator": "NotEquals"
+          },
+          {
+            "values": [
+              2,
+              5
+            ],
+            "name": "Quantity",
+            "type": "number",
+            "operator": "Between"
+          }
+        ],
+        "whereFilter": {
+          "operator": "GreaterThan",
+          "values": [],
+          "whereFilterName": "Count"
+        }
+      }
+    ],
+    "joinCondition": {
+      "conditionType": "AnyOf"
+    }
+  },
+  "globalFilters": [
+    {
+      "values": [
+        "25"
+      ],
+      "globalFilterType": "UserProperties",
+      "name": "User Property Name",
+      "type": "date/string/number",
+      "operator": "Contains"
+    },
+    {
+      "values": [
+        "40"
+      ],
+      "globalFilterType": "UserProperties",
+      "name": "User Property Name",
+      "type": "date/string/number",
+      "operator": "Contains"
+    },
+    {
+      "values": [
+        "25-35"
+      ],
+      "globalFilterType": "Demographics",
+      "name": "age",
+      "type": "string",
+      "operator": "NotEquals"
+    },
+    {
+      "values": [
+        "Chrome"
+      ],
+      "globalFilterType": "Technographics",
+      "name": "Browser",
+      "type": "string",
+      "operator": "Contains"
+    },
+    {
+      "values": [
+        "Firefox"
+      ],
+      "globalFilterType": "Technographics",
+      "name": "Browser",
+      "type": "string",
+      "operator": "Contains"
+    },
+    {
+      "values": [
+        "Mobile"
+      ],
+      "globalFilterType": "Technographics",
+      "name": "Device",
+      "type": "string",
+      "operator": "Equals"
+    },
+    {
+      "values": [
+        "Tablet"
+      ],
+      "globalFilterType": "Technographics",
+      "name": "Device",
+      "type": "string",
+      "operator": "Contains"
+    },
+    {
+      "values": [
+        "9.1"
+      ],
+      "globalFilterType": "AppFields",
+      "name": "OS Version",
+      "type": "string",
+      "operator": "Equals"
+    }
+  ],
+  "geographyFilters": [],
+  "type": "Behaviour",
+  "name": "ttt"
+}
