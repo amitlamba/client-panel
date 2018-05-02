@@ -20,7 +20,7 @@ class Event {
         //var eventUser: EventUser = EventUser()
         var geoDetails: GeoDetails = GeoDetails()
         var systemDetails: SystemDetails = SystemDetails()
-        var creationTime: Long = LocalDateTime.now().toInstant(ZoneOffset.UTC).toEpochMilli()
+        var creationTime: LocalDateTime = LocalDateTime.now()
         var attributes: HashMap<String, Any> = hashMapOf()
         var userIdentified: Boolean = false
 }
