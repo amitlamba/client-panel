@@ -1,6 +1,6 @@
-import {NgModule} from '@angular/core';
+import {Injectable, NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
-import {FormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 //used to create fake backend
 import {MockBackend} from '@angular/http/testing';
 
@@ -84,6 +84,8 @@ import { TermsOfServiceComponent } from './terms-of-service/terms-of-service.com
 import {NgxIntlTelInputModule} from "./ngx-intl-tel-input/src";
 import {ContactUsComponent} from "./contact-us/contact-us.component";
 import { NewVsExistingUsersGraphComponent } from './new-vs-existing-users-graph/new-vs-existing-users-graph.component';
+import {ReCaptchaModule} from "angular2-recaptcha";
+
 
 @NgModule({
   imports: [
@@ -104,7 +106,8 @@ import { NewVsExistingUsersGraphComponent } from './new-vs-existing-users-graph/
     ClipboardModule,
     BsDropdownModule.forRoot(),
     NgxIntlTelInputModule,
-    BrowserModule
+    BrowserModule,
+    ReCaptchaModule
   ],
   declarations: [
     AppComponent,
@@ -174,7 +177,7 @@ import { NewVsExistingUsersGraphComponent } from './new-vs-existing-users-graph/
     TemplatesService,
     SettingsService,
     SegmentService,
-    CampaignService
+    CampaignService,
   ],
   entryComponents: [
     DidEventComponent,

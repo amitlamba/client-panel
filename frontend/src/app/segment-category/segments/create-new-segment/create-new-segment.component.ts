@@ -27,11 +27,12 @@ export class CreateNewSegmentComponent implements OnInit {
   }
 
   save() {
-    this.segmentService.saveSegment(this.newSegment).subscribe(
-      (segment) => {
-        this.segmentService.segments.push(segment);
-        this.router.navigate(['segment/segments']);
-      }
-    )
+    console.log(this.newSegment);
+    // this.segmentService.saveSegment(this.newSegment).subscribe(
+    //   (segment) => {
+    //     this.segmentService.segments.push(segment);
+    //     this.router.navigate(['segment/segments']);
+    //   }
+    // )
   }
 }
