@@ -139,7 +139,7 @@
             "name": "First Time"
           },
           {
-            "values": [],
+            "values": [11,15,23,15],
             "name": "Time of day"
           },
           {

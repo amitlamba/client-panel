@@ -97,11 +97,13 @@ fun testSegmentParser7() {
     files.forEach {
         val testData = readFileText("$testDataBase/$it")
         val segment = mapper.readValue(testData, Segment::class.java)
+        println("****$it********")
+        println("************")
+
         val parsedResponse = SegmentParser().userList(segment)
         println("************")
         println("************")
-        println("************")
-        println("************")
+
 
     }
 

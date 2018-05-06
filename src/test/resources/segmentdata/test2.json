@@ -5,7 +5,8 @@
         "name": "Added to cart",
         "dateFilter": {
           "operator": "Before",
-          "values": []
+          "type":"date",
+          "values": ["2014-05-07"]
         },
         "propertyFilters": [
           {
@@ -29,7 +30,8 @@
         "name": "Charged",
         "dateFilter": {
           "operator": "Before",
-          "values": []
+          "type":"date",
+          "values": ["2014-05-07"]
         },
         "propertyFilters": [
           {
@@ -60,17 +62,18 @@
         "name": "App Uninstalled",
         "dateFilter": {
           "operator": "Before",
-          "values": []
+          "type":"date",
+          "values": ["2014-05-07"]
         },
         "propertyFilters": [
           {
-            "values": [],
+            "values": [10,13,23,23],
             "name": "Time of day"
           }
         ],
         "whereFilter": {
           "operator": "GreaterThan",
-          "values": [],
+          "values": [10],
           "whereFilterName": "Count"
         }
       }

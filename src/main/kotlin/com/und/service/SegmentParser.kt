@@ -2,7 +2,6 @@ package com.und.service
 
 import com.und.model.mongo.eventapi.EventUser
 import com.und.web.model.*
-import java.time.LocalDateTime
 
 /*
 1. parse events, didn't do and do
@@ -16,35 +15,336 @@ import java.time.LocalDateTime
 9. cache and store parsed query
  */
 class SegmentParser {
+    val lt = "\$lt"
+    val gt = "\$gt"
+    val eq = "\$eq"
+    val neq = "\$neq"
+    val lte = "\$lte"
+    val gte = "\$gte"
+    val inarray = "\$in"
+    val nin = "\$nin"
+    val subtract = "\$subtract"
+    val add = "\$add"
+    val today = "new ISODate"
+    val exists = "\$exists"
+    val q_match = "\$match"
+    val q_addFields = "\$addFields"
+    val q_groups = "\$group"
+
+    val dayOfWeek = "\$dayOfWeek"
+    val dayOfMonth = "\$dayOfMonth"
+    val month = "\$month"
+    val hour = "\$hour"
+    val minute = "\$minute"
+    val second = "\$second"
+    val year = "\$year"
+    val creationTime = "\$creationTime"
+    val userId = "\$userId"
+    val sum = "\$sum"
+    val clientId = "\$clientId"
 
     private val newLine = "\n"
-    private val and = " and "
-    private val or = " or "
+    private val and = "\$and "
+    private val or = "\$or "
     private val space = " "
 
+    private val query = """
+
+    """.trimIndent()
+
     fun userList(segment: Segment): List<EventUser> {
+        fun parseCondition(conditionType: ConditionType) =
+                when (conditionType) {
+                    ConditionType.AllOf -> and
+                    ConditionType.AnyOf -> or
+                }
 
         //did
         val did = segment.didEvents
-        val didq = did?.let { if (it.events.isNotEmpty()) parseEvents(it) else null }
+        val didq = if (did != null) {
+            val didq = did.let { if (it.events.isNotEmpty()) parseEvents(it.events, true) else null }
+            val condition = parseCondition(did.joinCondition.conditionType)
+            didq
+        } else emptyList()
 
         //and not
         val didnot = segment.didNotEvents
-        val didnotq = didnot?.let { if (it.events.isNotEmpty()) " ( not ${parseEvents(it)} )" else null }
+        val didnotq = if (didnot != null) {
+            didnot.let { if (it.events.isNotEmpty()) parseEvents(it.events, false) else null }
+        } else emptyList()
+
+        didq?.forEach {
+            println(it)
+        }
+
+        println("******************")
+
+        didnotq?.forEach {
+            println(it)
+        }
 
 
-        //and
-        //for same properties use in/or
-        val filterq = filterGlobalQOr(segment.globalFilters)
-
-
-        //and
-        val geoFilters = segment.geographyFilters
-
-        val finalq = listOf(didq, didnotq, filterq).filterNotNull().joinToString(and)
-        println(finalq)
 
         return emptyList()
+    }
+
+
+    fun parseEvents(events: List<Event>, did: Boolean): List<String> = events.map {
+        val whereCond = it.whereFilter?.let { whereFilterParse(it) }
+        val matches = parsePropertyFilters(it)
+        matches.plus("{name:${it.name}}")
+        matches.plus(parseDateFilter(it.dateFilter))
+        """
+
+                        {
+                            $q_addFields: {
+                                weekday: {$dayOfWeek: "$creationTime"},
+                                monthday: {$dayOfMonth: "$creationTime"},
+                                month: {$month: "$creationTime"},
+                                hour: {$hour: "$creationTime"},
+                                minute: {$minute: "$creationTime"},
+                                second: {$second: "$creationTime"},
+                                year: {$year: "$creationTime"}
+                            }
+                        },
+                        {
+                            $q_match:
+                             {
+                                ${matches.joinToString(",$newLine")}
+                             }
+                         },
+                         {
+                            $q_groups:{
+                                _id: "$userId"
+                                ${if (did) ",${whereCond?.first}" else ""}
+
+                         }
+                     },
+                     {
+                         $q_match: {
+                          ${if (did) "${whereCond?.second}" else ""}
+                         }
+                     }
+            """
+
+    }
+
+
+    private fun parsePropertyFilters(event: Event): List<String> {
+        return event.propertyFilters.groupBy { it.name }.map {
+            eventPropertyQuery(it.value)
+        }.filter({ it -> it.isNotBlank() })
+
+    }
+
+
+    private fun eventPropertyQuery(eventProperties: List<PropertyFilter>): String {
+        fun parseProperty(propertyFilter: PropertyFilter): String {
+            return when (propertyFilter.filterType) {
+                PropertyFilterType.eventproperty -> {
+
+                    match(propertyFilter.values, propertyFilter.operator, "\"attributes.${propertyFilter.name}\"", propertyFilter.type, propertyFilter.valueUnit)
+                }
+                PropertyFilterType.genericproperty -> {
+                     val values = propertyFilter.values
+                    when (propertyFilter.name) {
+                        "Time of day" -> {
+                            val (startHour, startMinute, endHour, endMinute) = values
+
+                            """{$or:[hour:{$gt:$startHour, $lt:$endHour},
+                                    |       $and:[hour:{$eq:startHour}, minute:{$gt:startMinute}],
+                                    |       $and:[hour:{$eq:endHour}, minute:{$lt:startMinute}]
+                                    ]
+                                }
+                            """.trimMargin()
+                        }
+                        "First Time" -> {
+                            //FIXME how to do this?
+                            "{count of event == 1}"
+                        }
+                        "Day of Week" -> {
+                            "{weekday:{$inarray:[${values.joinToString(",")}]}}"
+                        }
+                        "Day Of Month" -> {
+                            "{month:{$inarray:[${values.joinToString(",")}]}}"
+                        }
+                        else -> "{Invalid generic Property ${propertyFilter.name}}"
+                    }
+
+
+                }
+                PropertyFilterType.UTM -> {
+                    //FIXME UTM are like generic property only but have special behaviour
+                    when (propertyFilter.name) {
+                        "UTM Source" -> listOf("attributes.${propertyFilter.name}", propertyFilter.operator, propertyFilter.values).joinToString(space)
+                        "UTM Visited" -> listOf("attributes.${propertyFilter.name}", propertyFilter.operator, propertyFilter.values).joinToString(space)
+                        else -> "Invalid UTM Property ${propertyFilter.name}"
+                    }
+                }
+                else -> {
+                    throw Exception("type of filter can be eventptoperty, genericproperty or UTM but is null")
+                }
+            }
+        }
+
+        val rs = eventProperties.map {
+            parseProperty(it)
+        }
+        val finalq = if (rs.size > 1) {
+            "$or:[${rs.map { "{$it}" }.joinToString(" , $newLine")}]"
+        } else rs.first()
+        //joined with or for same name properties of same event
+        return finalq
+    }
+
+    private fun parseDateFilter(dateFilters: DateFilter): String {
+
+        return match(dateFilters.values, dateFilters.operator.name, "creationTime", DataType.date, dateFilters.valueUnit)
+
+    }
+
+
+    private fun whereFilterParse(whereFilter: WhereFilter): Pair<String, String> {
+        val (groupOps, fieldName) = when (whereFilter.whereFilterName) {
+            WhereFilterName.Count -> {
+                Pair("count:{$sum:1}", "count")
+            }
+            WhereFilterName.SumOfValuesOf -> {
+                Pair("sumof:{$sum:\"\$${whereFilter.propertyName}\"}", "sumof")
+            }
+            else -> throw Exception("invalid aggregate expression can only be count or sum  but is ${whereFilter.whereFilterName}")
+        }
+
+        val values = whereFilter.values
+        return if (values != null) {
+            Pair(groupOps, matchNumber(values.map { it.toString() }, whereFilter.operator?.name ?: "Equals", fieldName))
+        } else Pair("", "")
+    }
+
+
+    private fun match(values: List<String>, operator: String, fieldName: String, type: DataType, unit: String): String {
+        return when (type) {
+            DataType.string -> matchString(values = values, operator = operator, fieldName = fieldName)
+            DataType.number -> matchNumber(values = values, operator = operator, fieldName = fieldName)
+            DataType.date -> matchDate(values = values, operator = operator, fieldName = fieldName, unit = unit)
+            else -> "{}"
+
+        }
+
+    }
+
+    private fun matchString(values: List<String>, operator: String, fieldName: String): String {
+        return when (operator) {
+            "Equals" -> "$fieldName:\"${values.first()}\""
+
+            "NotEquals" -> "$fieldName:{ $neq:\"${values.last()}}\""
+            "Contains" -> "$fieldName:{ $inarray:[\"${values.joinToString("\" , \"")}\"]}"
+            "DoesNotContain" -> "$fieldName:{ $nin:[\"${values.joinToString("\" , \"")}\"]}"
+
+            "Exists" -> "$fieldName:{$exists:true}"
+            "DoesNotExist" -> "$fieldName:{$exists:false}"
+
+            else -> space
+        }
+
+    }
+
+
+    private fun matchNumber(values: List<String>, operator: String, fieldName: String): String {
+        return when (operator) {
+            "Equals" -> "$fieldName:${values.first()}"
+            "Between" -> "$fieldName:{$gt:${values.first()}, $lt:${values.last()}}"
+            "GreaterThan" -> "$fieldName:{$gt:${values.first()}}}"
+            "LessThan" -> "$fieldName:{ $lt:${values.last()}}"
+            "NotEquals" -> "$fieldName:{ $neq:${values.last()}}"
+
+            "Exists" -> "$fieldName:{$exists:true}"
+            "DoesNotExist" -> "$fieldName:{$exists:false}"
+
+            else -> space
+        }
+
+    }
+
+    private fun matchDate(values: List<String>, operator: String, unit: String, fieldName: String): String {
+
+        return when (operator) {
+
+            "Before" -> {
+                val date = values.first()
+                "$fieldName:{$lt:new ISODate($date)}"
+            }
+            "After" -> {
+                val date = values.first()
+                "$fieldName:{$gt:new ISODate($date)}"
+            }
+            "On" -> {
+                val date = values.first()
+                "$fieldName:{$eq:new ISODate($date)}"
+            }
+            "Between" -> {
+                val startDate = "new ISODate(${values.first()})"
+                val endDate = "new ISODate(${values.last()})"
+                "$fieldName:{$lte:$endDate, $gte:new $startDate}"
+            }
+            "InThePast" -> {
+                val ms: Long = when (unit) {
+                    "day" -> 24 * 60 * 1000
+                    else -> 0
+                }
+                val (start, end) = if (values.size == 2)
+                    Pair(values.first().toLong() * ms, values.last().toLong() * ms)
+                else
+                    Pair(0L, values.first().toString().toLong() * ms)
+                val startDate = "dateDifference: { $subtract: [ $today,$start ] }"
+                val endDate = "dateDifference: { $subtract: [ $today,$end ] }"
+
+                "$fieldName:{$lte:$endDate, $gte:new $startDate}"
+
+            }
+            "WasExactly" -> {
+                val diff = values.first().toLong() * 24 * 60 * 1000
+                val startDate = "dateDifference: { $subtract: [ $today,$diff ] }"
+                "$fieldName:{$eq:$startDate}"
+            }
+            "Today" -> {
+                "{creationTime: new ISODate()}"
+            }
+            "InTheFuture" -> {
+                //FIXME this issue of dates
+                val ms: Long = when (unit) {
+                    "day" -> 24 * 3600000
+                    "week" -> 7 * 24 * 3600000
+                // "month" -> 30*24 * 3600000
+                //  "year" -> 365*30*24 * 3600000
+                    else -> 0
+                }
+                val (start, end) = if (values.size == 2)
+                    Pair(values.first().toLong() * ms, values.last().toLong() * ms)
+                else
+                    Pair(0L, values.first().toLong() * ms)
+                val startDate = "dateDifference: { $add: [ $today,$start ] }"
+                val endDate = "dateDifference: { $add: [ $today,$end ] }"
+
+                "$fieldName:{$lte:$endDate, $gte:new $startDate}"
+            }
+            "WillBeExactly" -> {
+
+                val diff = values.first().toLong() * 24 * 60 * 1000
+                val startDate = "dateDifference: { $add: [ $today,$diff ] }"
+                "$fieldName:{$eq:$startDate}"
+            }
+            "Exists" -> {
+                "$fieldName:{$exists:true}"
+            }
+            "DoesNotExist" -> {
+                "$fieldName:{$exists:false}"
+            }
+            else -> space
+
+
+        }
+
     }
 
     private fun filterGlobalQOr(globalFilters: List<GlobalFilter>): String {
@@ -55,7 +355,6 @@ class SegmentParser {
                 val glFilters = it.value
                 "(" + glFilters.map { filter ->
                     val type = filter.type
-                    val unit = filter.valueUnit
                     val filterString = when (type) {
                         "string" -> "[" + filter.values.mapNotNull { it.toString() }.joinToString(",") + "]"
                         "number" -> "[" + filter.values.mapNotNull { it.toString() }.joinToString(",") + "]"
@@ -76,118 +375,6 @@ class SegmentParser {
             val filter = it.value.groupBy { it.name }
             parse(filter)
         }.joinToString(and)
-    }
-
-
-    private fun parseEvents(did: DidEvents): String {
-
-         fun parseEvents(events: List<Event>, conditionType: ConditionType): String {
-            fun parseCondition(conditionType: ConditionType) =
-                    when (conditionType) {
-                        ConditionType.AllOf -> and
-                        ConditionType.AnyOf -> or
-                    }
-
-            val condition = parseCondition(conditionType)
-            val eventq = events.map {
-                val q = listOf("name==${it.name}", parsePropertyFilters(it), parseDateFilter(it.dateFilter), it.whereFilter?.let { whereFilterParse(it) })
-                        .filterNotNull()
-                        .joinToString(" $and $newLine")
-                "(where $q)"
-            }
-
-            return eventq.joinToString(condition)
-        }
-        return parseEvents(did.events, did.joinCondition.conditionType)
-    }
-
-
-    private fun parsePropertyFilters(event: Event): String =
-            event.propertyFilters.groupBy { it.name }.map {
-                val name: String = it.key
-                val eventProperties: List<PropertyFilter> = it.value
-
-                val eventPropertyQuery = eventPropertyQuery(eventProperties)
-
-                return "( $eventPropertyQuery )"
-
-
-            }.joinToString(and)
-
-    private fun eventPropertyQuery(eventProperties: List<PropertyFilter>): String {
-        /*            val propertName = it.name
-                    val operator = it.operator
-                    val type = it.type
-                    val valueUnit = it.valueUnit
-                    val values = it.values
-                    val propertiesPart = " ${it.name} ${it.filterType} ${it.operator} ${it.type} ${it.valueUnit} ${it.values}"*/
-        fun parseProperty(propertyFilter: PropertyFilter): String {
-            return when (propertyFilter.filterType) {
-                PropertyFilterType.eventproperty -> {
-                    //event property are like amount etc that comes with event custom
-                    //search in event attributes
-                    //check for type of operator and make query accordingly
-                    listOf("attributes.${propertyFilter.name}", propertyFilter.operator, propertyFilter.values).joinToString(space)
-                }
-                PropertyFilterType.genericproperty -> {
-                    // these are like firstTime, lastTime, time of day, day of week, day of month etc.
-                    //query them using time of event, e.g. for lastTime? firstTime
-                    //firstTime when a user has done event with this name and no more after(count should be one)
-                    //day of week is when occurrence is at that day of week
-                    when (propertyFilter.name) {
-                        "Time of day" -> {
-                            "creationTime.time between propertyFilter.values"
-                        }
-                        "First Time" -> {
-                            "count of event == 1"
-                        }
-                        "Day of Week" -> {
-                            "creationTime.week equals propertyFilter.values"
-                        }
-                        "Day Of Month" -> {
-                            "creationTime.date equals propertyFilter.values"
-                        }
-                        else -> "Invalid generic Property ${propertyFilter.name}"
-                    }
-
-
-                }
-                PropertyFilterType.UTM -> {
-                    //UTM are like generic property only but have special behaviour
-                    when (propertyFilter.name) {
-                        "UTM Source" -> listOf("attributes.${propertyFilter.name}", propertyFilter.operator, propertyFilter.values).joinToString(space)
-                        "UTM Visited" -> listOf("attributes.${propertyFilter.name}", propertyFilter.operator, propertyFilter.values).joinToString(space)
-                        else -> "Invalid UTM Property ${propertyFilter.name}"
-                    }
-                }
-                else -> {
-                    throw Exception("type of filter can be eventptoperty, genericproperty or UTM but is null")
-                }
-            }
-        }
-
-        val rs = eventProperties.map {
-            parseProperty(it)
-        }
-        return rs.joinToString(or)
-    }
-
-
-    private fun parseDateFilter(dateFilters: DateFilter): String {
-        return listOf("creationTime", dateFilters.operator, dateFilters.values).joinToString(space)
-
-    }
-
-    private fun whereFilterParse(whereFilter: WhereFilter): String {
-        return when (whereFilter.whereFilterName) {
-            WhereFilterName.Count -> {
-                listOf("count", whereFilter.operator, whereFilter.values).joinToString(space)
-            }
-            WhereFilterName.SumOfValuesOf -> {
-                listOf("sumof(${whereFilter.propertyName})", whereFilter.operator, whereFilter.values).joinToString(space)
-            }
-            else -> space
-        }
     }
 }
 
