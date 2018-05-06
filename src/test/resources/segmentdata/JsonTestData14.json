@@ -204,7 +204,7 @@
             "name": "Day of month"
           },
           {
-            "values": [],
+            "values": [12,13,16,17],
             "name": "Time of day"
           }
         ],
@@ -318,7 +318,7 @@
         ],
         "whereFilter": {
           "operator": "GreaterThan",
-          "values": [],
+          "values": [23],
           "whereFilterName": "Count"
         }
       }
