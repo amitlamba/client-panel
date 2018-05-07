@@ -67,5 +67,6 @@ export class NumberComparatorComponent implements OnInit {
     } else {
       this.field2Required = this.field1Required = false;
     }
+    this.values = [];
   }
 }

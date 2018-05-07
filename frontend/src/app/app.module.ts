@@ -85,6 +85,7 @@ import {NgxIntlTelInputModule} from "./ngx-intl-tel-input/src";
 import {ContactUsComponent} from "./contact-us/contact-us.component";
 import { NewVsExistingUsersGraphComponent } from './new-vs-existing-users-graph/new-vs-existing-users-graph.component';
 import {ReCaptchaModule} from "angular2-recaptcha";
+import {TimerangeComponent} from './segment-category/timerange/timerange.component';
 
 
 @NgModule({
@@ -164,7 +165,8 @@ import {ReCaptchaModule} from "angular2-recaptcha";
     AboutUsComponent,
     TermsOfServiceComponent,
     ContactUsComponent,
-    NewVsExistingUsersGraphComponent
+    NewVsExistingUsersGraphComponent,
+    TimerangeComponent
   ],
   providers: [
     AuthGuard,

@@ -86,8 +86,10 @@ export class StringComparatorComponent implements OnInit, OnChanges {
     if(this.singleFieldRequiredComparators.includes(comparator)) {
       this.fieldRequired = true;
     }
-    else
+    else {
       this.fieldRequired = false;
+    }
+    this.values = [];
   }
 
   select2ValueChanged(val: any) {

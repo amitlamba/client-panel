@@ -15,6 +15,12 @@ import {Select2OptionData} from "ng2-select2";
   styleUrls: ['./filter.component.scss']
 })
 export class FilterComponent implements OnInit {
+
+
+  _parentRef: DidEventComponent;
+  _ref: any;
+
+
   @ViewChild('filterWidget') filterWidget: ViewContainerRef;
 
   selectedProperty: RegisteredEventProperties = null;
@@ -30,21 +36,27 @@ export class FilterComponent implements OnInit {
     return this.localPropertyFilter;
   }
 
+  // the name is an Angular convention, @Input variable name + "Change" suffix
+  @Output() propertyFilterChange = new EventEmitter();
+
+  constructor(segmentService: SegmentService) {
+  }
+
   set propertyFilter(propertyFilter: PropertyFilter) {
     if (!propertyFilter.values)
       propertyFilter.values = [];
     this.localPropertyFilter = propertyFilter;
     this.propertyFilterChange.emit(this.localPropertyFilter);
+    this.localPropertyFilter.values = propertyFilter.values;
   }
 
-  // the name is an Angular convention, @Input variable name + "Change" suffix
-  @Output() propertyFilterChange = new EventEmitter();
-
-  _parentRef: DidEventComponent;
-  _ref: any;
-
-  constructor(segmentService: SegmentService) {
+  ngOnInit() {
+    this.select2Options = {
+      multiple: true,
+      placeholder: "Please Select a Value"
+    };
   }
+
 
   removeObject() {
     this.removeFromParentArr();
@@ -66,12 +78,6 @@ export class FilterComponent implements OnInit {
     }
   }
 
-  ngOnInit() {
-    this.select2Options = {
-      multiple: true,
-      placeholder:"Please Select a Value"
-    }
-  }
 
   filterFirstDropdown(val: any) {
     this.selectedProperty = this.getPropertyByName(val);
@@ -81,6 +87,7 @@ export class FilterComponent implements OnInit {
   }
 
   getPropertyByName(propName: string): RegisteredEventProperties {
+    console.log(propName);
     for (let prop of this.eventProperties) {
       if (prop.name == propName)
         return prop;
@@ -101,7 +108,12 @@ export class FilterComponent implements OnInit {
   }
 
   select2ValueChanged(val: any, selectedProperty: any) {
-    console.log("Select 2 Value Changed: "+ JSON.stringify(val) + ", Selected Property: "+JSON.stringify(this.selectedProperty));
+    console.log("Select 2 Value Changed: " + JSON.stringify(val) + ", Selected Property: " + JSON.stringify(this.selectedProperty));
     this.propertyFilter.values = val["value"];
+  }
+
+  timeRangeValueChanged($event) {
+    console.log($event);
+    this.propertyFilter.values = $event;
   }
 }
