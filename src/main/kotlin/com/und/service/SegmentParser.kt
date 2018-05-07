@@ -1,6 +1,5 @@
 package com.und.service
 
-import com.und.model.mongo.eventapi.EventUser
 import com.und.web.model.*
 
 /*

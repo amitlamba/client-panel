@@ -9,6 +9,8 @@ import com.und.web.model.Segment
 import org.hamcrest.MatcherAssert
 import org.junit.Before
 import org.junit.Test
+import org.springframework.data.mongodb.core.aggregation.Aggregation
+import org.springframework.data.mongodb.core.query.Criteria
 import org.springframework.util.ResourceUtils
 import org.hamcrest.CoreMatchers.`is` as Is
 
@@ -35,7 +37,7 @@ class SegmentParserTest {
 
         val testData = readFileText("$testDataBase/test1.json")
         val segment = mapper.readValue(testData, Segment::class.java)
-        val parsedResponse = SegmentParser().userList(segment)
+        val parsedResponse = SegmentParser().segmentQueries(segment)
         MatcherAssert.assertThat(2, Is(2))
     }
 
@@ -45,7 +47,7 @@ class SegmentParserTest {
 
         val testData = readFileText("$testDataBase/test2.json")
         val segment = mapper.readValue(testData, Segment::class.java)
-        val parsedResponse = SegmentParser().userList(segment)
+        val parsedResponse = SegmentParser().segmentQueries(segment)
         MatcherAssert.assertThat(2, Is(2))
     }
 
@@ -54,7 +56,16 @@ class SegmentParserTest {
 
         val testData = readFileText("$testDataBase/test3.json")
         val segment = mapper.readValue(testData, Segment::class.java)
-        val parsedResponse = SegmentParser().userList(segment)
+        val parsedResponse = SegmentParser().segmentQueries(segment)
+        //parsedResponse.didq.forEach { println(it) }
+        val matchStage = Aggregation.match(Criteria().orOperator(Criteria.where("event_‌​state").`is`("scheduled").and("schedule.start_time").gt("1"), Criteria.where("event_state").`is`("live")))
+        val matchStage2 = Aggregation.match(Criteria("foo").`is`("bar"))
+        val matchStage3 = Aggregation.match(Criteria("foo").`is`("bar"))
+        val projectStage = Aggregation.project("foo", "bar.baz")
+
+        val aggregation = Aggregation.newAggregation(matchStage, matchStage2, projectStage)
+        var v =  aggregation.toString()
+        print(v)
         MatcherAssert.assertThat(2, Is(2))
     }
 
@@ -63,7 +74,7 @@ class SegmentParserTest {
 
         val testData = readFileText("$testDataBase/test4.json")
         val segment = mapper.readValue(testData, Segment::class.java)
-        val parsedResponse = SegmentParser().userList(segment)
+        val parsedResponse = SegmentParser().segmentQueries(segment)
         MatcherAssert.assertThat(2, Is(2))
     }
 
@@ -72,7 +83,7 @@ class SegmentParserTest {
 
         val testData = readFileText("$testDataBase/test5.json")
         val segment = mapper.readValue(testData, Segment::class.java)
-        val parsedResponse = SegmentParser().userList(segment)
+        val parsedResponse = SegmentParser().segmentQueries(segment)
         MatcherAssert.assertThat(2, Is(2))
     }
 
@@ -81,7 +92,7 @@ class SegmentParserTest {
 
         val testData = readFileText("$testDataBase/test6.json")
         val segment = mapper.readValue(testData, Segment::class.java)
-        val parsedResponse = SegmentParser().userList(segment)
+        val parsedResponse = SegmentParser().segmentQueries(segment)
         MatcherAssert.assertThat(2, Is(2))
 
     }
@@ -100,7 +111,7 @@ fun testSegmentParser7() {
         println("****$it**${count++}******")
         println("************")
 
-        val parsedResponse = SegmentParser().userList(segment)
+        val parsedResponse = SegmentParser().segmentQueries(segment)
         println("************")
         println("************")
 
