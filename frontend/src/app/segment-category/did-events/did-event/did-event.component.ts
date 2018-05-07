@@ -43,7 +43,6 @@ export class DidEventComponent implements OnInit {
   hideElementDaterangepicker = true;
   hideElementDaySelector = true;
   removeElement = false;
-  days = [];
   hideElementInput = true;
   public singleDate: any;
   eventSelected: boolean = true;
@@ -140,15 +139,9 @@ export class DidEventComponent implements OnInit {
 
 
   ngOnInit() {
-    for (let i = 1; i <= 30; i++) {
-      this.days.push(i);
-    }
     this.eventNameChanged(0);
   }
 
-  singleSelect(value: any) {
-    this.singleDate = value.start;
-  }
 
   myDateRangePickerOptions: IMyDrpOptions = {
     dateFormat: 'dd.mm.yyyy',
@@ -158,35 +151,6 @@ export class DidEventComponent implements OnInit {
     beginDate: {year: 2018, month: 10, day: 9},
     endDate: {year: 2018, month: 10, day: 19}
   };
-
-  dropdownChanged(val: any) {
-    if (val == 'Between') {
-      this.hideElementDaterangepicker = false;
-      this.hideElementDatepicker = true;
-      this.hideElementDaySelector = true;
-    }
-    else if (val == 'In the Past') {
-      this.hideElementDaySelector = false;
-      this.hideElementDatepicker = true;
-      this.hideElementDaterangepicker = true;
-    }
-    else {
-      this.hideElementDaterangepicker = true;
-      this.hideElementDatepicker = false;
-      this.hideElementDaySelector = true;
-    }
-
-  }
-
-
-  whereDropdown(val: any) {
-    if (val == '≏  (Between)') {
-      this.hideElementInput = false;
-    }
-    else {
-      this.hideElementInput = true;
-    }
-  }
 
   hidePropertySumFilter = true;
 

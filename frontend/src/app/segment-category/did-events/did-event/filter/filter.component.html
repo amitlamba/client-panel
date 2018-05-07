@@ -8,65 +8,26 @@
     </select>
   </div>
   <div class="form-group col-3 my-0 pr-0" *ngIf="selectedProperty && selectedProperty.dataType=='string'">
-    <app-string-comparator [(operator)]="localPropertyFilter.operator" [(values)]="localPropertyFilter.values"></app-string-comparator>
+    <app-string-comparator [(operator)]="localPropertyFilter.operator"
+                           [(values)]="localPropertyFilter.values"></app-string-comparator>
   </div>
   <div class="form-group col-3 my-0 pr-0" *ngIf="selectedProperty && selectedProperty.dataType=='number'">
-    <app-number-comparator [(operator)]="localPropertyFilter.operator" [(values)]="localPropertyFilter.values"></app-number-comparator>
+    <app-number-comparator [(operator)]="localPropertyFilter.operator"
+                           [(values)]="localPropertyFilter.values"></app-number-comparator>
   </div>
   <div class="form-group col-3 my-0 pr-0" *ngIf="selectedProperty && selectedProperty.dataType=='date'">
     <app-date-comparator [(operator)]="localPropertyFilter.operator" [(values)]="localPropertyFilter.values"
                          [(valueUnit)]="localPropertyFilter.valueUnit"></app-date-comparator>
   </div>
-  <!--<div class="form-group col-1 ml-3 px-0" *ngIf="eventProperty" [hidden]="hideInputNumber">-->
-    <!--<input type="number" class="form-control col-12" value="1" min="1">-->
-  <!--</div>-->
-  <div *ngIf="selectedProperty && selectedProperty.dataType=='timerange'" class="d-flex flex-row flex-wrap">
-    <div class="mx-2 d-inline-flex">
-      <label class="pr-2">From :</label>
-      <div class="mr-1 ">
-        <input type="number"
-               class="form-control mr-3"
-               min="1"
-               max="12"
-               name="hours"
-        >
-        <span>&#58;</span>
-      </div>
-      <div class="ml-1">
-        <input type="number"
-               class="form-control ml-2 "
-               min="0"
-               max="55"
-               step="5"
-               name="minutes">
-      </div>
-    </div>
-    <div class="mx-2 d-inline-flex">
-      <label class="pr-2">To :</label>
-      <div class="mr-1 ">
-        <input type="number"
-               class="form-control mr-3"
-               min="1"
-               max="12"
-               name="hours"
-        >
-        <span>&#58;</span>
-      </div>
-      <div class="ml-1">
-        <input type="number"
-               class="form-control ml-2"
-               min="0"
-               max="55"
-               step="5"
-               name="minutes">
-      </div>
-    </div>
+  <div *ngIf="selectedProperty && selectedProperty.dataType=='timerange'">
+    <app-timerange [options]="selectedProperty.options"
+                   (values)="timeRangeValueChanged($event)"></app-timerange>
   </div>
   <div class="form-group" *ngIf="selectedProperty && selectedProperty.dataType==='select'">
-      <select class="form-control" *ngIf="selectedProperty.dataType==='select'" [(ngModel)]="propertyFilter.values[0]">
-        <option value="" disabled selected>--Select--</option>
-        <option *ngFor="let prop of selectedProperty.options" [value]="prop">{{prop}}</option>
-      </select>
+    <select class="form-control" *ngIf="selectedProperty.dataType==='select'" [(ngModel)]="propertyFilter.values[0]">
+      <option value="" disabled selected>--Select--</option>
+      <option *ngFor="let prop of selectedProperty.options" [value]="prop">{{prop}}</option>
+    </select>
   </div>
   <div *ngIf="selectedProperty && selectedProperty.dataType=='multiselect'">
     <select2 class="ml-2"
