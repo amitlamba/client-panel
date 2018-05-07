@@ -52,7 +52,7 @@ class SegmentParser {
 
     """.trimIndent()
 
-    fun userList(segment: Segment): List<EventUser> {
+    fun segmentQueries(segment: Segment): SegmentQ {
         fun parseCondition(conditionType: ConditionType) =
                 when (conditionType) {
                     ConditionType.AllOf -> and
@@ -64,28 +64,20 @@ class SegmentParser {
         val didq = if (did != null) {
             val didq = did.let { if (it.events.isNotEmpty()) parseEvents(it.events, true) else null }
             val condition = parseCondition(did.joinCondition.conditionType)
-            didq
+            didq?: emptyList()
         } else emptyList()
 
         //and not
         val didnot = segment.didNotEvents
         val didnotq = if (didnot != null) {
-            didnot.let { if (it.events.isNotEmpty()) parseEvents(it.events, false) else null }
+            didnot.let { if (it.events.isNotEmpty()) parseEvents(it.events, false) else null }?: emptyList()
         } else emptyList()
 
-        didq?.forEach {
-            println(it)
-        }
-
-        println("******************")
-
-        didnotq?.forEach {
-            println(it)
-        }
 
 
 
-        return emptyList()
+
+        return SegmentQ(didq,didnotq)
     }
 
 
@@ -146,7 +138,7 @@ class SegmentParser {
                     match(propertyFilter.values, propertyFilter.operator, "\"attributes.${propertyFilter.name}\"", propertyFilter.type, propertyFilter.valueUnit)
                 }
                 PropertyFilterType.genericproperty -> {
-                     val values = propertyFilter.values
+                    val values = propertyFilter.values
                     when (propertyFilter.name) {
                         "Time of day" -> {
                             val (startHour, startMinute, endHour, endMinute) = values
@@ -288,10 +280,7 @@ class SegmentParser {
                 "$fieldName:{$lte:$endDate, $gte:new $startDate}"
             }
             "InThePast" -> {
-                val ms: Long = when (unit) {
-                    "day" -> 24 * 60 * 1000
-                    else -> 0
-                }
+                val ms: Long = msIn(unit)
                 val (start, end) = if (values.size == 2)
                     Pair(values.first().toLong() * ms, values.last().toLong() * ms)
                 else
@@ -303,7 +292,8 @@ class SegmentParser {
 
             }
             "WasExactly" -> {
-                val diff = values.first().toLong() * 24 * 60 * 1000
+                //FIXME overflow issue
+                val diff = values.first().toLong() * msIn("day")
                 val startDate = "dateDifference: { $subtract: [ $today,$diff ] }"
                 "$fieldName:{$eq:$startDate}"
             }
@@ -312,13 +302,7 @@ class SegmentParser {
             }
             "InTheFuture" -> {
                 //FIXME this issue of dates
-                val ms: Long = when (unit) {
-                    "day" -> 24 * 3600000
-                    "week" -> 7 * 24 * 3600000
-                // "month" -> 30*24 * 3600000
-                //  "year" -> 365*30*24 * 3600000
-                    else -> 0
-                }
+                val ms: Long = msIn(unit)
                 val (start, end) = if (values.size == 2)
                     Pair(values.first().toLong() * ms, values.last().toLong() * ms)
                 else
@@ -329,8 +313,8 @@ class SegmentParser {
                 "$fieldName:{$lte:$endDate, $gte:new $startDate}"
             }
             "WillBeExactly" -> {
-
-                val diff = values.first().toLong() * 24 * 60 * 1000
+                //FIXME overflow issue
+                val diff = values.first().toLong() *  msIn("day")
                 val startDate = "dateDifference: { $add: [ $today,$diff ] }"
                 "$fieldName:{$eq:$startDate}"
             }
@@ -345,6 +329,17 @@ class SegmentParser {
 
         }
 
+    }
+
+    private fun msIn(unit: String): Long {
+        val ms: Long = when (unit) {
+            "day" -> 24L * 3600000L
+            "week" -> 7 * 24 * 3600000L
+            "month" -> 30L * 24L * 3600000L
+            "year" -> 365L * 30L * 24L * 3600000L
+            else -> 0L
+        }
+        return ms
     }
 
     private fun filterGlobalQOr(globalFilters: List<GlobalFilter>): String {
@@ -378,3 +373,4 @@ class SegmentParser {
     }
 }
 
+class SegmentQ(val didq:List<String>, val didntq: List<String>)

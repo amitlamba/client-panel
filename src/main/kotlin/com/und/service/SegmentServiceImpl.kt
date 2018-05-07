@@ -3,6 +3,8 @@ package com.und.service
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.und.eventapi.repository.SegmentRepository
 import com.und.model.jpa.Segment
+import com.und.model.mongo.eventapi.EventUser
+import com.und.repository.mongo.EventRepository
 import com.und.security.utils.AuthenticationUtils
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -11,8 +13,12 @@ import com.und.web.model.Segment as WebSegment
 @Service
 class SegmentServiceImpl : SegmentService {
 
+
     @Autowired
     lateinit var segmentRepository: SegmentRepository
+
+    @Autowired
+    lateinit var eventRepository: EventRepository
 
 
     @Autowired
@@ -32,12 +38,25 @@ class SegmentServiceImpl : SegmentService {
         val websegments = mutableListOf<WebSegment>()
         if (clientID != null) {
             val segments = segmentRepository.findByClientID(clientID)
-            if (segments != null) {
-                segments.forEach { websegments.add(buildWebSegment(it)) }
-            }
+            segments?.forEach { websegments.add(buildWebSegment(it)) }
         }
 
         return websegments
+    }
+
+    override fun segmentUsers(id: Long): List<EventUser> {
+        val segmentOption = segmentRepository.findById(id)
+        return if (segmentOption.isPresent) {
+            val segment = segmentOption.get()
+            buildWebSegment(segment)
+            val queries = SegmentParser().segmentQueries(buildWebSegment(segment))
+            queries.didq.forEach {
+               val id =  eventRepository.usersFromEvent(it, 2)
+
+            }
+            emptyList()
+
+        } else emptyList()
     }
 
     private fun buildSegment(websegment: WebSegment): Segment {
