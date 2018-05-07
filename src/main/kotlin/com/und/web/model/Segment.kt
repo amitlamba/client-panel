@@ -48,7 +48,7 @@ class DateFilter {
 
 class PropertyFilter {
     var name: String = ""
-    var type: PropertyType = PropertyType.string
+    var type: DataType = DataType.string
     private var _filterType: PropertyFilterType? = null
     var filterType: PropertyFilterType? = null
         get() {
@@ -73,11 +73,6 @@ class PropertyFilter {
     var valueUnit: String = ""
 }
 
-enum class PropertyType {
-    string,
-    number,
-    date
-}
 
 enum class PropertyFilterType {
     eventproperty,
@@ -173,7 +168,7 @@ class RegisteredEvent {
 
 class RegisteredEventProperties {
     var name: String = ""
-    var dataType: String = ""
+    var dataType:DataType  = DataType.string
     var regex: String = ""
     var options: Array<Any> = arrayOf()
 }
@@ -182,4 +177,13 @@ class GlobalFilterItem {
     var value: String = ""
     var displayName: String = ""
     var type: String = ""
+}
+
+
+enum class DataType{
+    string,
+    number,
+    date,
+    range,
+    boolean
 }

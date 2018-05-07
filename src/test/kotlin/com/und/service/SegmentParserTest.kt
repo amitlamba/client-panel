@@ -91,17 +91,19 @@ class SegmentParserTest {
 
 @Test
 fun testSegmentParser7() {
-
+    var count = 0
     val dir = ResourceUtils.getFile("classpath:$testDataBase")
     val files = dir.list { dir, name -> true }
     files.forEach {
         val testData = readFileText("$testDataBase/$it")
         val segment = mapper.readValue(testData, Segment::class.java)
+        println("****$it**${count++}******")
+        println("************")
+
         val parsedResponse = SegmentParser().userList(segment)
         println("************")
         println("************")
-        println("************")
-        println("************")
+
 
     }
 

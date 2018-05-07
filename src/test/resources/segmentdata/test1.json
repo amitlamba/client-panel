@@ -2,60 +2,40 @@
   "didEvents": {
     "events": [
       {
-        "name": "Added to cart",
-        "dateFilter": {
-          "operator": "Before",
-          "values": []
-        },
-        "propertyFilters": [
-          {
-            "values": [
-              "hello"
-            ],
-            "name": "Category",
-            "type": "string",
-            "operator": "Contains"
-          },
-          {
-            "values": [
-              "test"
-            ],
-            "name": "Product",
-            "type": "string",
-            "operator": "DoesNotContain"
-
-          }
-        ],
-        "whereFilter": {
-          "operator": "Equals",
-          "values": [
-            2
-          ],
-          "whereFilterName": "Count"
-        }
-      },
-      {
         "name": "Charged",
         "dateFilter": {
           "operator": "Before",
-          "values": []
+          "values": [
+            "2018-05-02"
+          ],
+          "valueUnit": "days"
         },
         "propertyFilters": [
           {
             "values": [
-              200
+              20
             ],
             "name": "Amount",
             "type": "number",
-            "operator": "Equals"
+            "operator": "GreaterThan",
+            "valueUnit": "days"
+          },
+          {
+            "values": [
+              30
+            ],
+            "name": "Amount",
+            "type": "number",
+            "operator": "Equals",
+            "valueUnit": "days"
           }
         ],
         "whereFilter": {
           "operator": "Equals",
           "values": [
-            23
+            5
           ],
-          "whereFilterName": "SumOfValuesOf"
+          "whereFilterName": "Count"
         }
       }
     ],
@@ -69,8 +49,49 @@
       "conditionType": "AnyOf"
     }
   },
-  "globalFilters": [],
+  "globalFilters": [
+    {
+      "values": [
+        "222"
+      ],
+      "globalFilterType": "UserProperties",
+      "name": "User Property Name",
+      "type": "date/string/number",
+      "operator": "DoesNotContain"
+    },
+    {
+      "values": [
+        "0-18",
+        "25-35"
+      ],
+      "globalFilterType": "Demographics",
+      "name": "age",
+      "type": "string",
+      "operator": "Contains"
+    },
+    {
+      "values": [
+        "Chrome",
+        "Firefox"
+      ],
+      "globalFilterType": "Technographics",
+      "name": "Browser",
+      "type": "string",
+      "operator": "DoesNotContain"
+    },
+    {
+      "values": [
+        "2"
+      ],
+      "globalFilterType": "UserProperties",
+      "name": "User Property Name",
+      "type": "date/string/number",
+      "operator": "NotEquals"
+    }
+  ],
   "geographyFilters": [],
-  "type": "Behaviour",
-  "name": "t"
+  "type": "Behaviour"
+},
+"geographyFilters": [],
+"type": "Behaviour"
 }

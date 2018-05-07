@@ -1,7 +1,7 @@
 package com.und.service
 
-import com.und.eventapi.repository.CommonMetadataRepository
-import com.und.eventapi.repository.EventMetadataRepository
+import com.und.repository.mongo.CommonMetadataRepository
+import com.und.repository.mongo.EventMetadataRepository
 import com.und.model.mongo.CommonMetadata
 import com.und.model.mongo.EventMetadata
 import org.springframework.beans.factory.annotation.Autowired

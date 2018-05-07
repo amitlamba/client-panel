@@ -79,7 +79,7 @@
             "name": "First Time"
           },
           {
-            "values": [],
+            "values": [10,12,13,14],
             "name": "Time of day"
           },
           {
@@ -144,7 +144,7 @@
             "name": "Day of month"
           },
           {
-            "values": [],
+            "values": [11,12,13,14],
             "name": "Time of day"
           }
         ],
@@ -258,7 +258,7 @@
         ],
         "whereFilter": {
           "operator": "GreaterThan",
-          "values": [],
+          "values": [23],
           "whereFilterName": "Count"
         }
       }
