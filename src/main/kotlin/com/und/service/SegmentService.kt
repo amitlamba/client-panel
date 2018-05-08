@@ -11,6 +11,6 @@ interface SegmentService {
 
     fun allSegment(): List<WebSegment>
 
-    fun segmentUsers(id:Long):List<EventUser>
+    fun segmentUsers(id: Long, clientId: Long): List<EventUser>
 }
 

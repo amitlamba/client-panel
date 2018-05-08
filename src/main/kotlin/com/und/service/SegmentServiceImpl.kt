@@ -5,8 +5,11 @@ import com.und.eventapi.repository.SegmentRepository
 import com.und.model.jpa.Segment
 import com.und.model.mongo.eventapi.EventUser
 import com.und.repository.mongo.EventRepository
+import com.und.repository.mongo.EventUserRepository
 import com.und.security.utils.AuthenticationUtils
+import com.und.web.model.ConditionType
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.data.mongodb.core.aggregation.Aggregation
 import org.springframework.stereotype.Service
 import com.und.web.model.Segment as WebSegment
 
@@ -19,6 +22,9 @@ class SegmentServiceImpl : SegmentService {
 
     @Autowired
     lateinit var eventRepository: EventRepository
+
+    @Autowired
+    lateinit var eventUserRepository: EventUserRepository
 
 
     @Autowired
@@ -44,19 +50,37 @@ class SegmentServiceImpl : SegmentService {
         return websegments
     }
 
-    override fun segmentUsers(id: Long): List<EventUser> {
-        val segmentOption = segmentRepository.findById(id)
-        return if (segmentOption.isPresent) {
-            val segment = segmentOption.get()
+    override fun segmentUsers(id: Long, clientId: Long): List<EventUser> {
+        val segment = segmentRepository.findByIdAndClientID(id, clientId)
+        return if (segment != null) {
             buildWebSegment(segment)
             val queries = SegmentParserCriteria().segmentQueries(buildWebSegment(segment))
-            queries.didq.forEach {
-               val id =  eventRepository.usersFromEvent(it, 2)
+            val userDidList = retrieveUsers(queries.didq.first, queries.didq.second,clientId)
+            val userDidNotList = retrieveUsers(queries.didntq.first, queries.didntq.second,clientId)
 
-            }
-            emptyList()
 
+            val userList = userDidList.intersect(userDidNotList)
+            val users = userList.map {
+                eventUserRepository.findUserById(it, clientId)
+
+            }.filterNotNull()
+
+
+            return users
         } else emptyList()
+    }
+
+    private fun retrieveUsers(queries: List<Aggregation>, conditionType: ConditionType, clientId: Long): MutableSet<String> {
+        val userDidList = mutableSetOf<String>()
+        queries.forEach {
+            val idList = eventRepository.usersFromEvent(it, clientId)
+            when (conditionType) {
+                ConditionType.AnyOf -> userDidList.addAll(idList)
+                ConditionType.AllOf -> userDidList.intersect(idList)
+            }
+
+        }
+        return userDidList
     }
 
     private fun buildSegment(websegment: WebSegment): Segment {

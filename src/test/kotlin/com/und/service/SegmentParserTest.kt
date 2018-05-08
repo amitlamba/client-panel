@@ -95,10 +95,10 @@ class SegmentParserTest {
         print(v)
 */
 
-        SegmentParserCriteria().segmentQueries(segment).didq.forEach {
+        SegmentParserCriteria().segmentQueries(segment).didq.first.forEach {
             println(it.toString())
         }
-        segmentServiceImpl.segmentUsers(37)
+        segmentServiceImpl.segmentUsers(37,2)
         MatcherAssert.assertThat(2, Is(2))
     }
 

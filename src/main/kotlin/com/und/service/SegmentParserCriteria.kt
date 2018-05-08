@@ -1,9 +1,10 @@
 package com.und.service
 
 import com.und.web.model.*
-import org.springframework.data.mongodb.core.aggregation.*
+import org.springframework.data.mongodb.core.aggregation.Aggregation
+import org.springframework.data.mongodb.core.aggregation.GroupOperation
+import org.springframework.data.mongodb.core.aggregation.MatchOperation
 import org.springframework.data.mongodb.core.query.Criteria
-import org.springframework.data.mongodb.core.query.Field
 import java.time.LocalDateTime
 
 /*
@@ -22,20 +23,15 @@ class SegmentParserCriteria {
 
     fun segmentQueries(segment: Segment): SegmentQuery {
 
-
         //did
         val did = segment.didEvents
-        val didq = if (did != null) {
-            val didq = did.let { if (it.events.isNotEmpty()) parseEvents(it.events, true, it.joinCondition.conditionType) else null }
-            didq ?: emptyList()
-        } else emptyList()
+        val didq =
+             did?.let { Pair(parseEvents(it.events, false), it.joinCondition.conditionType)}?:Pair(emptyList(), ConditionType.AllOf)
+
 
         //and not
         val didnot = segment.didNotEvents
-        val didnotq = if (didnot != null) {
-            didnot.let { if (it.events.isNotEmpty()) parseEvents(it.events, false, it.joinCondition.conditionType) else null }
-                    ?: emptyList()
-        } else emptyList()
+        val didnotq = didnot?.let { Pair(parseEvents(it.events, false), it.joinCondition.conditionType)}?:Pair(emptyList(), ConditionType.AnyOf)
 
 
 
@@ -45,7 +41,7 @@ class SegmentParserCriteria {
     }
 
 
-    fun parseEvents(events: List<Event>, did: Boolean, condition: ConditionType): List<Aggregation> {
+    fun parseEvents(events: List<Event>, did: Boolean): List<Aggregation> {
 
         return events.map {
             val whereCond = if (did) it.whereFilter?.let { whereFilterParse(it) } else null
@@ -54,10 +50,9 @@ class SegmentParserCriteria {
             matches.plus(Criteria.where("name").`is`(it.name))
             matches.plus(parseDateFilter(it.dateFilter))
             var fields = Aggregation.fields("userId", "creationTime", "clientId")
-            matches.forEach {
-                criteria ->
+            matches.forEach { criteria ->
                 val name = criteria.key
-                if(name!= null) {
+                if (name != null) {
                     fields = fields.and(name, name)
                 }
             }
@@ -70,19 +65,15 @@ class SegmentParserCriteria {
                     .and("creationTime").extractYear().`as`("year")
 
 
+            val matchOps = Aggregation.match(Criteria().andOperator(*matches.toTypedArray()))
 
-            val matchOps = when (condition) {
-                ConditionType.AllOf -> Aggregation.match(Criteria().andOperator(*matches.toTypedArray()))
-                ConditionType.AnyOf -> Aggregation.match(Criteria().orOperator(*matches.toTypedArray()))
-
-            }
             if (whereCond != null) {
                 val group = whereCond.first
                 val matchOnGroup = whereCond.second
-                Aggregation.newAggregation(project,matchOps, group, matchOnGroup)
+                Aggregation.newAggregation(project, matchOps, group, matchOnGroup)
             } else {
-                val group = Aggregation.group("userId")
-                Aggregation.newAggregation(project,matchOps, group)
+                val group = Aggregation.group(Aggregation.fields().and("userId", "userId"))
+                Aggregation.newAggregation(project, matchOps, group)
             }
 
 
@@ -174,14 +165,15 @@ class SegmentParserCriteria {
         return if (values != null) {
             return when (whereFilter.whereFilterName) {
                 WhereFilterName.Count -> {
-                    val group = Aggregation.group("userId").count().`as`("count")
+
+                    val group = Aggregation.group(Aggregation.fields().and("userId", "userId")).count().`as`("count")
                     val match = matchNumber(values.map { it.toString() }, whereFilter.operator?.name
                             ?: "Equals", "count")
                     Pair(group, Aggregation.match(match))
                 }
                 WhereFilterName.SumOfValuesOf -> {
 
-                    val group = Aggregation.group("userId").sum(whereFilter.propertyName).`as`("sumof")
+                    val group = Aggregation.group(Aggregation.fields().and("userId", "userId")).sum(whereFilter.propertyName).`as`("sumof")
                     val match = matchNumber(values.map { it.toString() }, whereFilter.operator?.name
                             ?: "Equals", "sumof")
 
@@ -236,7 +228,7 @@ class SegmentParserCriteria {
 
 
     private fun matchNumber(valuesString: List<String>, operator: String, fieldName: String): Criteria {
-        val values = valuesString.map{it.toLong()}
+        val values = valuesString.map { it.toLong() }
         return when (operator) {
             "Equals" -> {
                 Criteria.where(fieldName).`is`(values.first())
@@ -379,4 +371,4 @@ class SegmentParserCriteria {
 }
 */
 
-class SegmentQuery(val didq:List<Aggregation>, val didntq: List<Aggregation>)
+class SegmentQuery(val didq: Pair<List<Aggregation>, ConditionType>, val didntq: Pair<List<Aggregation>, ConditionType>)
