@@ -187,7 +187,8 @@ import {TimerangeComponent} from './segment-category/timerange/timerange.compone
     DateTimeComponent,
     FilterComponent,
     GeographyFilterComponent,
-    GlobalFilterComponent
+    GlobalFilterComponent,
+    CreateEmailTemplateFormComponent
   ],
   bootstrap: [AppComponent]
 })
