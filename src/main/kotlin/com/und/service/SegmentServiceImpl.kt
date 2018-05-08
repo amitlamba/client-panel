@@ -49,7 +49,7 @@ class SegmentServiceImpl : SegmentService {
         return if (segmentOption.isPresent) {
             val segment = segmentOption.get()
             buildWebSegment(segment)
-            val queries = SegmentParser().segmentQueries(buildWebSegment(segment))
+            val queries = SegmentParserCriteria().segmentQueries(buildWebSegment(segment))
             queries.didq.forEach {
                val id =  eventRepository.usersFromEvent(it, 2)
 

@@ -62,7 +62,8 @@ db['2_event'].aggregate([
             hour: {$hour: "$creationTime"},
             minute: {$minute: "$creationTime"},
             second: {$second: "$creationTime"},
-            year: {$year: "$creationTime"}
+            year: {$year: "$creationTime"},
+            counter:1
         }
     },
 
@@ -94,7 +95,7 @@ db['2_event'].aggregate([
     {
         $group: {
             _id: "$userId",
-            count: {$sum: 1},
+            count: {$sum: "$counter"},
             sumof: {$sum: "$clientId"}
         }
     },

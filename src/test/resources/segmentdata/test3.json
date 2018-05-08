@@ -6,7 +6,7 @@
         "dateFilter": {
           "operator": "Before",
           "type":"date",
-          "values": ["2014-05-07"]
+          "values": ["2018-05-01T10:40:02"]
         },
         "propertyFilters": [
           {
@@ -32,7 +32,7 @@
         "dateFilter": {
           "operator": "Before",
           "type":"date",
-          "values": ["2014-05-07"]
+          "values": ["2018-05-01T10:40:02"]
         },
         "propertyFilters": [
           {
@@ -65,7 +65,7 @@
         "dateFilter": {
           "operator": "Before",
           "type":"date",
-          "values": ["2014-05-07"]
+          "values": ["2018-05-01T10:40:02"]
         },
         "propertyFilters": [
           {
@@ -88,7 +88,7 @@
         "dateFilter": {
           "operator": "Before",
           "type":"date",
-          "values": ["2014-05-07"]
+          "values": ["2018-05-01T10:40:02"]
         },
         "propertyFilters": [
           {
