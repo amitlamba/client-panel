@@ -1,5 +1,6 @@
 package com.und.service
 
+import com.und.common.utils.DateUtils
 import com.und.web.model.*
 import org.springframework.data.mongodb.core.aggregation.Aggregation
 import org.springframework.data.mongodb.core.aggregation.GroupOperation
@@ -20,18 +21,22 @@ import java.time.LocalDateTime
  */
 class SegmentParserCriteria {
 
+    private val dateUtils = DateUtils()
+
 
     fun segmentQueries(segment: Segment): SegmentQuery {
 
         //did
         val did = segment.didEvents
         val didq =
-             did?.let { Pair(parseEvents(it.events, false), it.joinCondition.conditionType)}?:Pair(emptyList(), ConditionType.AllOf)
+                did?.let { Pair(parseEvents(it.events, false), it.joinCondition.conditionType) }
+                        ?: Pair(emptyList(), ConditionType.AllOf)
 
 
         //and not
         val didnot = segment.didNotEvents
-        val didnotq = didnot?.let { Pair(parseEvents(it.events, false), it.joinCondition.conditionType)}?:Pair(emptyList(), ConditionType.AnyOf)
+        val didnotq = didnot?.let { Pair(parseEvents(it.events, false), it.joinCondition.conditionType) }
+                ?: Pair(emptyList(), ConditionType.AnyOf)
 
 
 
@@ -262,21 +267,21 @@ class SegmentParserCriteria {
         return when (operator) {
 
             "Before" -> {
-                val date = LocalDateTime.parse(values.first())
+                val date = dateUtils.parseToDate(values.first())
                 Criteria.where(fieldName).lt(date)
             }
             "After" -> {
-                val date = LocalDateTime.parse(values.first())
+                val date = dateUtils.parseToDate(values.first())
                 Criteria.where(fieldName).gt(date)
             }
             "On" -> {
-                val date = LocalDateTime.parse(values.first())
+                val date = dateUtils.parseToDate(values.first())
                 Criteria.where(fieldName).`is`(date)
             }
             "Between" -> {
 
-                val startDate = LocalDateTime.parse(values.first())
-                val endDate = LocalDateTime.parse(values.last())
+                val startDate = dateUtils.parseToDate(values.first())
+                val endDate = dateUtils.parseToDate(values.last())
                 Criteria.where(fieldName).lte(startDate).gte(endDate)
             }
             "InThePast" -> {
@@ -337,6 +342,9 @@ class SegmentParserCriteria {
             else -> date
         }
     }
+
+
+
 }
 /*
     private fun filterGlobalQOr(globalFilters: List<GlobalFilter>): String {
