@@ -350,9 +350,9 @@ class SegmentParser {
                 "(" + glFilters.map { filter ->
                     val type = filter.type
                     val filterString = when (type) {
-                        "string" -> "[" + filter.values.mapNotNull { it.toString() }.joinToString(",") + "]"
-                        "number" -> "[" + filter.values.mapNotNull { it.toString() }.joinToString(",") + "]"
-                        "date" -> "[" + filter.values.mapNotNull { it.toString() }.joinToString(",") + "]"
+                        DataType.string -> "[" + filter.values.mapNotNull { it.toString() }.joinToString(",") + "]"
+                        DataType.number -> "[" + filter.values.mapNotNull { it.toString() }.joinToString(",") + "]"
+                        DataType.date -> "[" + filter.values.mapNotNull { it.toString() }.joinToString(",") + "]"
                         else -> "[" + filter.values.mapNotNull { it.toString() }.joinToString(",") + "]"
                     }
                     "${filter.globalFilterType}.${filter.name} ${filter.operator} $filterString"

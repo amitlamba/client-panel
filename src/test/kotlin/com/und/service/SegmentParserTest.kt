@@ -26,7 +26,7 @@ class SegmentParserTest {
     var testDataBase = "segmentdata"
 
     @Autowired
-    lateinit var segmentServiceImpl:SegmentServiceImpl
+    lateinit var segmentServiceImpl: SegmentServiceImpl
 
     @Before
     fun setup() {
@@ -63,42 +63,9 @@ class SegmentParserTest {
 
         val testData = readFileText("$testDataBase/test3.json")
         val segment = mapper.readValue(testData, Segment::class.java)
-/*
         val parsedResponse = SegmentParser().segmentQueries(segment)
-        //parsedResponse.didq.forEach { println(it) }
 
-        val matchStage = Aggregation.match(
-                Criteria().andOperator(
-                        Criteria.where("event_‌​state").`is`("scheduled"),
-                        Criteria.where("schedule.start_time").gt("1").lt("2"),
-                        Criteria.where("event_state").`is`("live")))
-        val fields = Aggregation.fields("userId", "creationTime")
 
-        val projectStage = Aggregation.project(fields)
-                .and("creationTime").extractMonth().`as`("month")
-                .and("creationTime").extractDayOfMonth().`as`("monthday")
-                .and("creationTime").extractDayOfWeek().`as`("weekday")
-                .and("creationTime").extractHour().`as`("hour")
-                .and("creationTime").extractMinute().`as`("minute")
-                .and("creationTime").extractYear().`as`("year")
-        //val group = Aggregation.group("userId").sum("s").`as`("count").min("dateTimeinMillis").`as`("time").push("sessionId").`as`("sessionId")
-       // val p1 = Aggregation.project("sessionId","time").and("time").minus(23).`as`("time")
-        //val p2 = Aggregation.project("sessionId","time").and("time").divide(1000*60*5).`as`("time")
-       //val p4 = Aggregation.project("sessionId").and("creationDate").extractMonth().`as`("month")
-        //val p3 = Aggregation.project("sessionId","time").and("time").mod(1).`as`("mod")
-        //val p4 = Aggregation.project("sessionId","time").and("time").minus("mod").`as`("time")
-        val g2 = Aggregation.group("userId").count().`as`("count")
-
-        val matchStage2 = Aggregation.match(Criteria.where("sum").gt(2))
-        val aggregation = Aggregation.newAggregation(projectStage,matchStage  ,g2,matchStage2)
-        var v = aggregation.toString()
-        print(v)
-*/
-
-        SegmentParserCriteria().segmentQueries(segment).didq.first.forEach {
-            println(it.toString())
-        }
-        segmentServiceImpl.segmentUsers(37,2)
         MatcherAssert.assertThat(2, Is(2))
     }
 

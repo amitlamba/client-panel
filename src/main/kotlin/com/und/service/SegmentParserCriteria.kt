@@ -39,6 +39,15 @@ class SegmentParserCriteria {
                 ?: Pair(emptyList(), ConditionType.AnyOf)
 
 
+        val gFilters = segment.globalFilters
+        val matches = filterGlobalQ(gFilters)
+        println("pair matches started")
+        if(matches!= null) {
+            println(Aggregation.newAggregation(matches.first).toString())
+            println(Aggregation.newAggregation(matches.second).toString())
+        }
+
+
 
 
 
@@ -86,12 +95,7 @@ class SegmentParserCriteria {
 
     }
 
-    private fun parsePropertyFilters(event: Event): List<Criteria> {
-        return event.propertyFilters.groupBy { it.name }.map {
-            eventPropertyQuery(it.value)
-        }.filter({ it -> true })
-
-    }
+    private fun parsePropertyFilters(event: Event): List<Criteria> = event.propertyFilters.groupBy { it.name }.map { eventPropertyQuery(it.value) }
 
 
     private fun eventPropertyQuery(eventProperties: List<PropertyFilter>): Criteria {
@@ -127,8 +131,6 @@ class SegmentParserCriteria {
                         }
                         else -> throw Exception("{Invalid generic Property ${propertyFilter.name}}")
                     }
-
-
                 }
                 PropertyFilterType.UTM -> {
                     //FIXME UTM are like generic property only but have special behaviour
@@ -147,15 +149,10 @@ class SegmentParserCriteria {
         val rs = eventProperties.map {
             parseProperty(it)
         }
-        val finalq = if (rs.size > 1) {
-
-            val x = rs.toTypedArray()
-            Criteria().orOperator(*x)
-
-
+        return if (rs.size > 1) {
+            Criteria().orOperator(*rs.toTypedArray())
         } else rs.first()
-        //joined with or for same name properties of same event
-        return finalq
+
     }
 
     private fun parseDateFilter(dateFilters: DateFilter): Criteria {
@@ -343,40 +340,59 @@ class SegmentParserCriteria {
         }
     }
 
+    private fun filterGlobalQ(globalFilters: List<GlobalFilter>): Pair<MatchOperation, MatchOperation>? {
+        fun parseGlobalFilter(filter: GlobalFilter): Criteria {
+            val fieldName = filter.name
+            val type = filter.type
+            val unit = filter.valueUnit
+            val values = filter.values
+            val operator = filter.operator
+            return match(values , operator, fieldName, type,unit )
+        }
 
+        fun parse(filters: Map<String, List<GlobalFilter>>): Criteria {
 
-}
-/*
-    private fun filterGlobalQOr(globalFilters: List<GlobalFilter>): String {
+            val criteriaList = filters.map { filterList ->
+                val criteriaList = filterList.value.map { filter ->
+                    parseGlobalFilter(filter)
 
+                }
+                Criteria().orOperator(*criteriaList.toTypedArray())
+            }
 
-        fun parse(filter: Map<String, List<GlobalFilter>>): String {
-            val q = filter.map {
-                val glFilters = it.value
-                "(" + glFilters.map { filter ->
-                    val type = filter.type
-                    val filterString = when (type) {
-                        "string" -> "[" + filter.values.mapNotNull { it.toString() }.joinToString(",") + "]"
-                        "number" -> "[" + filter.values.mapNotNull { it.toString() }.joinToString(",") + "]"
-                        "date" -> "[" + filter.values.mapNotNull { it.toString() }.joinToString(",") + "]"
-                        else -> "[" + filter.values.mapNotNull { it.toString() }.joinToString(",") + "]"
-                    }
-                    "${filter.globalFilterType}.${filter.name} ${filter.operator} $filterString"
-                }.joinToString(or) + ")$newLine"
-
-            }.joinToString(and)
-            return q
+            return Criteria().andOperator(*criteriaList.toTypedArray())
         }
 
         val gFilters = globalFilters
                 .groupBy { it.globalFilterType }
 
-        return gFilters.map { it ->
-            val filter = it.value.groupBy { it.name }
-            parse(filter)
-        }.joinToString(and)
+        val f = Pair(mutableListOf<Criteria>(), mutableListOf<Criteria>())
+        gFilters.forEach { gFilterType, gFilterList ->
+            val filter = gFilterList.groupBy { it.name }
+            val criteria = parse(filter)
+            when (gFilterType) {
+                GlobalFilterType.AppFields -> f.first.add(criteria)
+
+                GlobalFilterType.Demographics -> f.second.add(criteria)
+                GlobalFilterType.Reachability -> f.second.add(criteria)
+                GlobalFilterType.Technographics -> f.first.add(criteria)
+                GlobalFilterType.UserProperties -> f.second.add(criteria)
+            }
+        }
+
+        val eventCriteria = Criteria().andOperator(*f.first.toTypedArray())
+        val eventMatch = Aggregation.match(eventCriteria)
+
+        val userCriteria = Criteria().andOperator(*f.second.toTypedArray())
+        val userMatch = Aggregation.match(userCriteria)
+
+        return Pair(eventMatch, userMatch)
+
+
     }
+
+
 }
-*/
+
 
 class SegmentQuery(val didq: Pair<List<Aggregation>, ConditionType>, val didntq: Pair<List<Aggregation>, ConditionType>)

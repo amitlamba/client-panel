@@ -50,8 +50,8 @@ class SegmentServiceImpl : SegmentService {
         return websegments
     }
 
-    override fun segmentUsers(id: Long, clientId: Long): List<EventUser> {
-        val segment = segmentRepository.findByIdAndClientID(id, clientId)
+    override fun segmentUsers(segmentId: Long, clientId: Long): List<EventUser> {
+        val segment = segmentRepository.findByIdAndClientID(segmentId, clientId)
         return if (segment != null) {
             buildWebSegment(segment)
             val queries = SegmentParserCriteria().segmentQueries(buildWebSegment(segment))

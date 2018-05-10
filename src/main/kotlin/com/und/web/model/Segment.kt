@@ -126,9 +126,9 @@ enum class StringOperator {
 class GlobalFilter {
     var globalFilterType: GlobalFilterType = GlobalFilterType.AppFields
     var name: String = ""
-    var type: String = ""
+    var type: DataType = DataType.string
     var operator: String = ""
-    var values: Array<Any> = arrayOf()
+    var values: List<String> = mutableListOf()
     var valueUnit: String = ""
 }
 

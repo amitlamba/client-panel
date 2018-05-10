@@ -148,7 +148,7 @@
       ],
       "globalFilterType": "UserProperties",
       "name": "User Property Name",
-      "type": "date/string/number",
+      "type": "string",
       "operator": "Contains"
     },
     {
@@ -157,7 +157,7 @@
       ],
       "globalFilterType": "UserProperties",
       "name": "User Property Name",
-      "type": "date/string/number",
+      "type": "string",
       "operator": "Contains"
     },
     {

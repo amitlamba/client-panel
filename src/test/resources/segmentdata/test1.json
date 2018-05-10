@@ -56,7 +56,7 @@
       ],
       "globalFilterType": "UserProperties",
       "name": "User Property Name",
-      "type": "date/string/number",
+      "type": "string",
       "operator": "DoesNotContain"
     },
     {
@@ -85,7 +85,7 @@
       ],
       "globalFilterType": "UserProperties",
       "name": "User Property Name",
-      "type": "date/string/number",
+      "type": "string",
       "operator": "NotEquals"
     }
   ],
