@@ -6,7 +6,7 @@ import org.springframework.messaging.MessageChannel
 
 interface EventStream {
 
-    @Output("scheduleJob")
+    @Output("scheduleJobSend")
     fun scheduleJobSend(): MessageChannel
 
 }
