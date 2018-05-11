@@ -1,5 +1,5 @@
-<div class="form-inline mb-2">
-  <div class="form-group m-2 ml-4">
+<div class="form-inline ml-3 mt-1 mb-2">
+  <div class="form-group">
     <select class="form-control"
             (change)="filterFirstDropdown($event.target.value)">
       <option value="" disabled>--Select--</option>
@@ -19,18 +19,19 @@
     <app-date-comparator [(operator)]="localPropertyFilter.operator" [(values)]="localPropertyFilter.values"
                          [(valueUnit)]="localPropertyFilter.valueUnit"></app-date-comparator>
   </div>
-  <div *ngIf="selectedProperty && selectedProperty.dataType=='timerange'">
+  <div *ngIf="selectedProperty && selectedProperty.dataType=='timerange'" class="ml-3">
     <app-timerange [options]="selectedProperty.options"
                    (values)="timeRangeValueChanged($event)"></app-timerange>
   </div>
   <div class="form-group" *ngIf="selectedProperty && selectedProperty.dataType==='select'">
-    <select class="form-control" *ngIf="selectedProperty.dataType==='select'" [(ngModel)]="propertyFilter.values[0]">
+    <select class="form-control ml-4" *ngIf="selectedProperty.dataType==='select'"
+            [(ngModel)]="propertyFilter.values[0]">
       <option value="" disabled selected>--Select--</option>
       <option *ngFor="let prop of selectedProperty.options" [value]="prop">{{prop}}</option>
     </select>
   </div>
   <div *ngIf="selectedProperty && selectedProperty.dataType=='multiselect'">
-    <select2 class="ml-2"
+    <select2 class="ml-4"
              [data]="getSelectedPropertyOptions()"
              [options]="select2Options"
              (valueChanged)="select2ValueChanged($event, selectedProperty)"
