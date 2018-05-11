@@ -16,7 +16,7 @@ import {SendersInfo} from "../../../_models/client";
 })
 export class CreateEmailTemplateFormComponent implements OnInit, OnChanges {
   showTinymceEditor: boolean = true;
-  emailTemplate: EmailTemplate = new EmailTemplate();
+  emailTemplate: EmailTemplate;
   sendersInfoList: SendersInfo[] = [];
   @ViewChild("f") form: any;
 

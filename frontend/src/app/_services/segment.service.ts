@@ -214,12 +214,12 @@ export class SegmentService {
     "UserProperties": [
       {
         "propertyName": "User Property Name",
-        "propertyType": "date/string/number",
+        "propertyType": "string",
         "options": [],
       },
       {
         "propertyName": "User Property Name",
-        "propertyType": "date/string/number",
+        "propertyType": "string",
         "options": [],
       }
     ],
