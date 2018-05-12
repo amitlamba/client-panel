@@ -58,6 +58,7 @@ export class GlobalFilterComponent implements OnInit {
 
   ngOnInit() {
     this.firstDropDown = Object.keys(this.globalFiltersMetadata);
+    console.log(this.firstDropDown);
   }
 
   getSecondFilters(): string[] {
@@ -68,6 +69,8 @@ export class GlobalFilterComponent implements OnInit {
     this.firstFilterSelected = name;
     this.globalFilter.globalFilterType = GlobalFilterType[name];
     this.secondDropDown = this.getDropdownList(1);
+    this.secondFilterSelected = this.secondDropDown[0]['propertyName'];
+    this.globalFilter.name = this.secondFilterSelected;
     this.maxOrder = 1;
   }
 
@@ -75,6 +78,7 @@ export class GlobalFilterComponent implements OnInit {
     this.secondFilterSelected = name;
     this.globalFilter.name = name;
     this.globalFilter.values = [];
+    // console.log(this.globalFilter.values);
     for(let filter of this.globalFiltersMetadata[this.firstFilterSelected]) {
       if(filter["propertyName"] == this.secondFilterSelected) {
         this.secondFilterDataType = filter["propertyType"];
@@ -94,6 +98,7 @@ export class GlobalFilterComponent implements OnInit {
         // if(this.firstFilterSelected == "Geography")
         //   return this.segmentService.getCountries().subscribe();
         var filters = this.globalFiltersMetadata[this.firstFilterSelected];
+        console.log(filters);
         return filters;
     }
   }

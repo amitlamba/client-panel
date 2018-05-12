@@ -43,10 +43,6 @@ class UserSettingsService {
 
     fun saveEmailServiceProvider(webServiceProviderCredentials: WebServiceProviderCredentials): Long? {
         webServiceProviderCredentials.status = Status.ACTIVE
-        webServiceProviderCredentials.dateModified = LocalDateTime.now()
-        if (webServiceProviderCredentials.id == null)
-            webServiceProviderCredentials.dateCreated = LocalDateTime.now() //FIXME: Date Created should be for the first time only
-
         val serviceProviderCredentials = buildServiceProviderCredentials(webServiceProviderCredentials)
         val saved = serviceProviderCredentialsRepository.save(serviceProviderCredentials)
         return saved.id!!
@@ -66,10 +62,6 @@ class UserSettingsService {
 
     fun saveSmsServiceProvider(webServiceProviderCredentials: WebServiceProviderCredentials): Long? {
         webServiceProviderCredentials.status = Status.ACTIVE
-        webServiceProviderCredentials.dateModified = LocalDateTime.now()
-        if (webServiceProviderCredentials.id == null)
-            webServiceProviderCredentials.dateCreated = LocalDateTime.now() //FIXME: Date Created should be for the first time only
-
         val serviceProviderCredentials = buildServiceProviderCredentials(webServiceProviderCredentials)
         val saved = serviceProviderCredentialsRepository.save(serviceProviderCredentials)
         return saved.id!!
