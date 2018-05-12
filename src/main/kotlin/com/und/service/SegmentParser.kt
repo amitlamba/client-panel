@@ -134,7 +134,7 @@ class SegmentParser {
             return when (propertyFilter.filterType) {
                 PropertyFilterType.eventproperty -> {
 
-                    match(propertyFilter.values, propertyFilter.operator, "\"attributes.${propertyFilter.name}\"", propertyFilter.type, propertyFilter.valueUnit)
+                    match(propertyFilter.values, propertyFilter.operator, "\"attributes.${propertyFilter.name}\"", propertyFilter.type, propertyFilter.valueUnit.name)
                 }
                 PropertyFilterType.genericproperty -> {
                     val values = propertyFilter.values
@@ -190,7 +190,7 @@ class SegmentParser {
 
     private fun parseDateFilter(dateFilters: DateFilter): String {
 
-        return match(dateFilters.values, dateFilters.operator.name, "creationTime", DataType.date, dateFilters.valueUnit)
+        return match(dateFilters.values, dateFilters.operator.name, "creationTime", DataType.date, dateFilters.valueUnit.name)
 
     }
 

@@ -64,7 +64,7 @@
             "name": "Time of day"
           },
           {
-            "values": [],
+            "values": ["Yes"],
             "name": "First Time"
           },
           {
@@ -156,7 +156,7 @@
         ],
         "whereFilter": {
           "operator": "GreaterThan",
-          "values": [],
+          "values": [23],
           "whereFilterName": "Count"
         }
       }

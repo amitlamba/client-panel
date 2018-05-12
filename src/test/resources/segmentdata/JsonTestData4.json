@@ -32,7 +32,7 @@
             "operator": "GreaterThan"
           },
           {
-            "values": [],
+            "values": [10,12,13,14],
             "name": "Time of day"
           }
         ],
@@ -48,7 +48,7 @@
         "name": "App Uninstalled",
         "dateFilter": {
           "operator": "Before",
-          "values": []
+          "values": ["2015-04-04"]
         },
         "propertyFilters": [
           {
@@ -56,15 +56,15 @@
             "name": "First Time"
           },
           {
-            "values": [],
+            "values": [2],
             "name": "Day of week"
           },
           {
-            "values": [],
+            "values": [3],
             "name": "Day of month"
           },
           {
-            "values": [],
+            "values": [10,12,13,14],
             "name": "Time of day"
           }
         ],
@@ -109,7 +109,7 @@
             "operator": "GreaterThan"
           },
           {
-            "values": [],
+            "values": [3],
             "name": "Day of week"
           },
           {
@@ -131,7 +131,7 @@
         ],
         "whereFilter": {
           "operator": "GreaterThan",
-          "values": [],
+          "values": [3],
           "whereFilterName": "Count"
         }
       }

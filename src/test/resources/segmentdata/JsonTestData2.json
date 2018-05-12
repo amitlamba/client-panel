@@ -11,25 +11,25 @@
         "name": "App Uninstalled",
         "dateFilter": {
           "operator": "On",
-          "values": []
+          "values": ["2015-04-04"]
         },
         "propertyFilters": [
           {
-            "values": [],
+            "values": [2],
             "name": "Day of month"
           },
           {
-            "values": [],
+            "values": [2],
             "name": "Day of week"
           },
           {
-            "values": [],
+            "values": [10,11,12,13],
             "name": "Time of day"
           }
         ],
         "whereFilter": {
           "operator": "GreaterThan",
-          "values": [],
+          "values": [2],
           "whereFilterName": "Count"
         }
       }
