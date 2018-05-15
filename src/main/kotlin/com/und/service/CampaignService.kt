@@ -3,18 +3,23 @@ package com.und.service
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.und.common.utils.loggerFor
 import com.und.config.EventStream
+import com.und.model.JobActionStatus
 import com.und.model.JobDescriptor
 import com.und.model.TriggerDescriptor
 import com.und.model.jpa.*
 import com.und.repository.CampaignRepository
 import com.und.security.utils.AuthenticationUtils
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.cloud.stream.annotation.StreamListener
 import org.springframework.messaging.support.MessageBuilder
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
+import java.awt.event.ActionEvent
 import com.und.web.model.Campaign as WebCampaign
 
 
 @Service
+@Transactional
 class CampaignService {
 
 
@@ -180,5 +185,32 @@ class CampaignService {
 
     fun sendToKafka(jobDescriptor: JobDescriptor) = eventStream.scheduleJobSend().send(MessageBuilder.withPayload(jobDescriptor).build())
 
+
+    @StreamListener("scheduleJobAckReceive")
+    @Transactional
+    fun schedulerAcknowledge(jobActionStatus: JobActionStatus){
+        val status = jobActionStatus.status
+        val action = jobActionStatus.jobAction
+        val clientId =     action.clientId.toLong()
+        val campaignId = action.campaignId.toLong()
+        val campignName = action.campaignName
+        val actionPerformed = action.action
+        if(status == JobActionStatus.Status.OK) {
+            //FIXME unite actionperformed and status action
+            campaignRepository.updateScheduleStatus(campaignId, clientId , actionPerformed.name)
+            //campaignRepository.updatestatus
+        }
+        else {
+            if(actionPerformed == JobDescriptor.Action.CREATE && status == JobActionStatus.Status.ERROR) {
+                //FIXME send emails warning alerts etc
+                campaignRepository.updateScheduleStatus(campaignId, clientId , JobDescriptor.Action.FAILED.name)
+                logger.error(" Campaign Schedule couldnt be created")
+            }else if(status == JobActionStatus.Status.ERROR) {
+                logger.error("  Schedule action couldn't be performed")
+                //FIXME send errors
+            }
+        }
+
+    }
 
 }
