@@ -28,7 +28,7 @@
         ],
         "whereFilter": {
           "operator": "GreaterThan",
-          "values": [],
+          "values": [23],
           "whereFilterName": "Count"
         }
       }
@@ -50,7 +50,7 @@
       ],
       "globalFilterType": "UserProperties",
       "name": "User Property Name",
-      "type": "date/string/number",
+      "type": "string",
       "operator": "Contains"
     },
     {
@@ -59,7 +59,7 @@
       ],
       "globalFilterType": "UserProperties",
       "name": "User Property Name",
-      "type": "date/string/number",
+      "type": "string",
       "operator": "Contains"
     },
     {

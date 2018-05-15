@@ -43,25 +43,22 @@ class Event {
 class DateFilter {
     var operator: DateOperator = DateOperator.After
     var values: List<String> = listOf()
-    var valueUnit: String = ""
+    var valueUnit: Unit = Unit.NONE
 }
 
 class PropertyFilter {
     var name: String = ""
-    var type: PropertyType = PropertyType.string
+    var type: DataType = DataType.string
     private var _filterType: PropertyFilterType? = null
     var filterType: PropertyFilterType? = null
         get() {
             if (_filterType == null) {
-                val genericProperties = listOf("First Time", "Time of day",
-                        "Day of the week",
-                        "Day of the month")
-                val UTMProperties = listOf("UTM Source",
-                        "UTM Visited")
-                _filterType = when{
+                val genericProperties = genericProperty.values().map { it.desc }
+                val uTMProperties = utmProperty.values().map { it.desc }
+                _filterType = when {
                     genericProperties.contains(name) -> PropertyFilterType.genericproperty
-                    UTMProperties.contains(name) -> PropertyFilterType.UTM
-                    else ->  PropertyFilterType.eventproperty
+                    uTMProperties.contains(name) -> PropertyFilterType.UTM
+                    else -> PropertyFilterType.eventproperty
                 }
 
             }
@@ -70,14 +67,9 @@ class PropertyFilter {
 
     var operator: String = ""
     var values: List<String> = listOf()
-    var valueUnit: String = ""
+    var valueUnit: Unit = Unit.NONE
 }
 
-enum class PropertyType {
-    string,
-    number,
-    date
-}
 
 enum class PropertyFilterType {
     eventproperty,
@@ -85,10 +77,11 @@ enum class PropertyFilterType {
     UTM
 }
 
+
 class WhereFilter {
     var whereFilterName: WhereFilterName? = null
     var propertyName: String = ""
-    var operator: NumberOperator? = null
+    var operator: NumberOperator = NumberOperator.NONE
     var values: List<Long>? = null
 }
 
@@ -106,7 +99,10 @@ enum class DateOperator {
     WasExactly,
     Today,
     InTheFuture,
-    WillBeExactly
+    WillBeExactly,
+    Exists,
+    DoesNotExist,
+    NONE
 }
 
 enum class NumberOperator {
@@ -116,7 +112,8 @@ enum class NumberOperator {
     LessThan,
     NotEquals,
     Exists,
-    DoesNotExist
+    DoesNotExist,
+    NONE
 }
 
 enum class StringOperator {
@@ -125,16 +122,25 @@ enum class StringOperator {
     Contains,
     DoesNotContain,
     Exists,
-    DoesNotExist
+    DoesNotExist,
+    NONE
+}
+
+enum class Unit {
+    days,
+    week,
+    month,
+    year,
+    NONE
 }
 
 class GlobalFilter {
     var globalFilterType: GlobalFilterType = GlobalFilterType.AppFields
     var name: String = ""
-    var type: String = ""
+    var type: DataType = DataType.string
     var operator: String = ""
-    var values: Array<Any> = arrayOf()
-    var valueUnit: String = ""
+    var values: List<String> = mutableListOf()
+    var valueUnit: Unit = Unit.NONE
 }
 
 enum class GlobalFilterType(val type: String) {
@@ -173,7 +179,7 @@ class RegisteredEvent {
 
 class RegisteredEventProperties {
     var name: String = ""
-    var dataType: String = ""
+    var dataType: DataType = DataType.string
     var regex: String = ""
     var options: Array<Any> = arrayOf()
 }
@@ -182,4 +188,28 @@ class GlobalFilterItem {
     var value: String = ""
     var displayName: String = ""
     var type: String = ""
+}
+
+
+enum class DataType {
+    string,
+    number,
+    date,
+    range,
+    boolean
+}
+
+enum class genericProperty(val desc: String) {
+    TimeOfDay("Time of day"),
+    FirstTime("First Time"),
+    DayOfWeek("Day of week"),
+    DayOfMonth("Day of month");
+
+}
+
+enum class utmProperty(val desc: String) {
+    UTMSource("UTM Source"),
+    UTMVisited("UTM Visited"),
+
+
 }

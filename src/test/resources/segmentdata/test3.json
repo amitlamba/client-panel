@@ -5,7 +5,8 @@
         "name": "Added to cart",
         "dateFilter": {
           "operator": "Before",
-          "values": []
+          "type":"date",
+          "values": ["2018-05-01T10:40:02"]
         },
         "propertyFilters": [
           {
@@ -22,14 +23,16 @@
           "values": [
             200
           ],
-          "whereFilterName": "SumOfValuesOf"
+          "whereFilterName": "SumOfValuesOf",
+          "propertyName": "clientId"
         }
       },
       {
         "name": "Charged",
         "dateFilter": {
           "operator": "Before",
-          "values": []
+          "type":"date",
+          "values": ["2018-05-01T10:40:02"]
         },
         "propertyFilters": [
           {
@@ -46,7 +49,8 @@
           "values": [
             2
           ],
-          "whereFilterName": "Count"
+          "whereFilterName": "Count",
+          "propertyName": "clientId"
         }
       }
     ],
@@ -60,21 +64,22 @@
         "name": "App Uninstalled",
         "dateFilter": {
           "operator": "Before",
-          "values": []
+          "type":"date",
+          "values": ["2018-05-01T10:40:02"]
         },
         "propertyFilters": [
           {
-            "values": [],
+            "values": [11,12,13,14],
             "name": "Time of day"
           },
           {
-            "values": [],
+            "values": [4],
             "name": "Day of week"
           }
         ],
         "whereFilter": {
           "operator": "GreaterThan",
-          "values": [],
+          "values": [23],
           "whereFilterName": "Count"
         }
       },
@@ -82,7 +87,8 @@
         "name": "Added to cart",
         "dateFilter": {
           "operator": "Before",
-          "values": []
+          "type":"date",
+          "values": ["2018-05-01T10:40:02"]
         },
         "propertyFilters": [
           {
@@ -102,12 +108,7 @@
             "type": "number",
             "operator": "Between"
           }
-        ],
-        "whereFilter": {
-          "operator": "GreaterThan",
-          "values": [],
-          "whereFilterName": "Count"
-        }
+        ]
       }
     ],
     "joinCondition": {
@@ -121,7 +122,7 @@
       ],
       "globalFilterType": "UserProperties",
       "name": "User Property Name",
-      "type": "date/string/number",
+      "type": "string",
       "operator": "Contains"
     },
     {
@@ -130,7 +131,7 @@
       ],
       "globalFilterType": "UserProperties",
       "name": "User Property Name",
-      "type": "date/string/number",
+      "type": "string",
       "operator": "Contains"
     },
     {

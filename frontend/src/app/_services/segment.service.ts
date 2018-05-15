@@ -22,20 +22,37 @@ export class SegmentService {
   constructor(private httpClient: HttpClient) {
     // this.editSegment = this.initSegment(new Segment());
   }
-  private createNewSegment(): Segment {
-    var textArray = [
-      'Behaviour',
-      'Live'
-    ];
-    var randomNumber = Math.floor(Math.random()*textArray.length);
 
-    var segment = new Segment();
-    segment.id = Math.floor(Math.random() * 200000) + 1;
-    segment.name = "Segment # "+segment.id;
-    segment.type = textArray[randomNumber];
-    segment.creationDate = "2017-01-01";
-    return segment;
-  }
+  defaultEventProperties: RegisteredEventProperties[] = [
+    {
+      name: "First Time",
+      dataType: "select",
+      regex: "",
+      options: ["Yes"]
+    },
+    {
+      name: "Time of day",
+      dataType: "timerange",
+      regex: "",
+      options: [
+        {hours: ['00', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23']},
+        {minutes: ['00', '05', '10', '15', '20', '25', '30', '35', '40', '45', '50', '55']}
+      ]
+    },
+    {
+      name: "Day of week",
+      dataType: "multiselect",
+      regex: "",
+      options: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+    },
+    {
+      name: "Day of month",
+      dataType: "multiselect",
+      regex: "",
+      options: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31] //Array.from(new Array(31),(val,index)=>index+1) //initializes from 1 to 31 [1..31]
+    }
+  ];
+
   public initSegment(segment: Segment): Segment {
     segment.didEvents = this.initDidEvents(new DidEvents());
     segment.didNotEvents = this.initDidEvents(new DidEvents());
@@ -44,6 +61,7 @@ export class SegmentService {
     segment.type = "Behaviour";
     return segment;
   }
+
   private initDidEvents(didEvents: DidEvents): DidEvents {
     didEvents.events = [];
     return didEvents;
@@ -57,31 +75,25 @@ export class SegmentService {
       );
   }
 
-  getSegments(): Observable<Segment[]> {
-    return this.httpClient.get<Segment[]>(AppSettings.API_ENDPOINT_CLIENT_SEGMENT_LIST).pipe(
-      tap(next => {})
-    );
-  }
+  geographyFilters = {
+    "country": {
+      "id": 10,
+      "name": "India"
+    },
+    "state": {
+      "id": 20,
+      "name": "Haryana"
+    },
+    "city": {
+      "id": 25,
+      "name": "Gurugram"
+    }
+  };
 
   saveSegment(segment: Segment): Observable<Segment> {
     return this.httpClient.post<Segment>(AppSettings.API_ENDPOINT_CLIENT_SEGMENT_SAVE, segment);
   }
 
-  getSampleEvents(): RegisteredEvent[] {
-    var registeredEvents = [];
-    var property1 = this.createRegisteredEventProperty("Event Property");
-    var property2 = this.createRegisteredEventProperty("First Time");
-    var property3 = this.createRegisteredEventProperty("Time of the day");
-    var property4 = this.createRegisteredEventProperty("Day of the week");
-    var property5 = this.createRegisteredEventProperty("Day of the month");
-    var property6 = this.createRegisteredEventProperty("UTM Source");
-    var property7 = this.createRegisteredEventProperty("Session Referrer");
-    var registeredEvent = this.createRegisteredEvent("Added to Cart", [property1, property2, property3, property4, property5]);
-    var registeredEvent2 = this.createRegisteredEvent("UTM Visited", [property1, property2, property3, property4, property5, property6, property7]);
-    registeredEvents.push(registeredEvent);
-    registeredEvents.push(registeredEvent2);
-    return registeredEvents;
-  }
 
   sampleEvents: RegisteredEvent[] = [
     {
@@ -154,32 +166,12 @@ export class SegmentService {
     }
   ];
 
-  defaultEventProperties: RegisteredEventProperties[] = [
-    {
-      name: "First Time",
-      dataType: "select",
-      regex: "",
-      options: ["Yes"]
-    },
-    {
-      name: "Time of day",
-      dataType: "timerange",
-      regex: "",
-      options: []
-    },
-    {
-      name: "Day of week",
-      dataType: "multiselect",
-      regex: "",
-      options: ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]
-    },
-    {
-      name: "Day of month",
-      dataType: "multiselect",
-      regex: "",
-      options: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31] //Array.from(new Array(31),(val,index)=>index+1) //initializes from 1 to 31 [1..31]
-    }
-  ];
+  getSegments(): Observable<Segment[]> {
+    return this.httpClient.get<Segment[]>(AppSettings.API_ENDPOINT_CLIENT_SEGMENT_LIST).pipe(
+      tap(next => {
+      })
+    );
+  }
 
   private createRegisteredEvent(name: string, properties: RegisteredEventProperties[]): RegisteredEvent {
     var registeredEvent = new RegisteredEvent();
@@ -222,12 +214,12 @@ export class SegmentService {
     "UserProperties": [
       {
         "propertyName": "User Property Name",
-        "propertyType": "date/string/number",
+        "propertyType": "string",
         "options": [],
       },
       {
         "propertyName": "User Property Name",
-        "propertyType": "date/string/number",
+        "propertyType": "string",
         "options": [],
       }
     ],
@@ -321,20 +313,20 @@ export class SegmentService {
     ]
   };
 
-  geographyFilters= {
-    "country": {
-      "id": 10,
-      "name": "India"
-    },
-    "state": {
-      "id": 20,
-      "name": "Haryana"
-    },
-    "city": {
-      "id": 25,
-      "name": "Gurugram"
-    }
-  };
+  private createNewSegment(): Segment {
+    var textArray = [
+      'Behaviour',
+      'Live'
+    ];
+    var randomNumber = Math.floor(Math.random() * textArray.length);
+
+    var segment = new Segment();
+    segment.id = Math.floor(Math.random() * 200000) + 1;
+    segment.name = "Segment # " + segment.id;
+    segment.type = textArray[randomNumber];
+    segment.creationDate = "2017-01-01";
+    return segment;
+  }
 
   timePeriod = {
     mins: [5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100, 105, 110, 115, 120, 125, 130, 135, 140, 145, 150, 155, 160, 165, 170, 175, 180, 185, 190, 195, 200, 205, 210, 215, 220, 225, 230, 235, 240, 245, 250, 255, 260, 265, 270, 275, 280, 285, 290, 295, 300, 305, 310, 315, 320, 325, 330, 335, 340, 345, 350, 355, 360, 365, 370, 375, 380, 385, 390, 395, 400, 405, 410, 415, 420, 425, 430, 435, 440, 445, 450, 455, 460, 465, 470, 475, 480, 485, 490, 495, 500, 505, 510, 515, 520, 525, 530, 535, 540, 545, 550, 555, 560, 565, 570, 575, 580, 585, 590, 595, 600],
@@ -469,46 +461,4 @@ export class SegmentService {
     }
   };
 
-  schedule = {
-    "schedule":[
-      {
-        "name":"One Time",
-        "Options":[
-          {
-            "name":"Now/Later",
-            "type":"Date"
-          }
-        ]
-      },
-      {
-        "name":"On Multiple Dates",
-        "Type":"Date Time[]"
-      },
-      {
-        "name":"Recurring",
-        "options":[
-          {
-            "name":"Campaign Start",
-            "type":"Date"
-          },
-          {
-            "name":"Campaign End",
-            "options":[
-              {
-                "name":"Never End"
-              },
-              {
-                "name":"Select Date",
-                "type":"Date"
-              },
-              {
-                "name":"After",
-                "type":"Number"
-              }
-            ]
-          }
-        ]
-      }
-    ]
-  };
 }

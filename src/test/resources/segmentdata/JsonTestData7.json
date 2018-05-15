@@ -5,7 +5,7 @@
         "name": "Added to cart",
         "dateFilter": {
           "operator": "Before",
-          "values": []
+          "values": ["2013-05-05"]
         },
         "propertyFilters": [
           {
@@ -25,7 +25,7 @@
             "name": "First Time"
           },
           {
-            "values": [],
+            "values": [4],
             "name": "Day of month"
           },
           {
@@ -56,19 +56,19 @@
         },
         "propertyFilters": [
           {
-            "values": [],
+            "values": [3],
             "name": "Day of month"
           },
           {
-            "values": [],
+            "values": [11,12,13,14],
             "name": "Time of day"
           },
           {
-            "values": [],
+            "values": ["Yes"],
             "name": "First Time"
           },
           {
-            "values": [],
+            "values": [3],
             "name": "Day of week"
           }
         ],
@@ -92,11 +92,11 @@
         },
         "propertyFilters": [
           {
-            "values": [],
+            "values": [2],
             "name": "Day of week"
           },
           {
-            "values": [],
+            "values": [3],
             "name": "Day of month"
           }
         ],
@@ -156,7 +156,7 @@
         ],
         "whereFilter": {
           "operator": "GreaterThan",
-          "values": [],
+          "values": [23],
           "whereFilterName": "Count"
         }
       }

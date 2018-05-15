@@ -79,75 +79,81 @@
     <div class="card-body">
       <form (ngSubmit)="onSubmit(f)"
             #f="ngForm">
-        <div class="col-12">
-          <label class="card-title h5">Message Type</label>
-          <br>
-          <input class="mr-1"
-                 type="radio"
-                 name="messageType"
-                 value="oneTime"
-                 id="oneTime"
-                 required
-                 [(ngModel)]="scheduleType"
-                 (click)="makeOneTimeDateObject()">
-          <label for="oneTime">One Time</label>
+        <div class="row px-3">
+          <div class="col-12">
+            <label class="card-title h5">Message Type</label>
+            <br>
+            <input class="mr-1"
+                   type="radio"
+                   name="messageType"
+                   value="oneTime"
+                   id="oneTime"
+                   required
+                   [(ngModel)]="scheduleType"
+                   (click)="makeOneTimeDateObject()">
+            <label for="oneTime">One Time</label>
 
-          <input class="ml-2 mr-1"
-                 type="radio"
-                 name="messageType"
-                 value="multipleDates"
-                 id="multipleDates"
-                 required
-                 [(ngModel)]="scheduleType"
-                 (click)="makeMultipleDateObject()">
-          <label for="multipleDates">On Multiple Dates</label>
+            <input class="ml-2 mr-1"
+                   type="radio"
+                   name="messageType"
+                   value="multipleDates"
+                   id="multipleDates"
+                   required
+                   [(ngModel)]="scheduleType"
+                   (click)="makeMultipleDateObject()">
+            <label for="multipleDates">On Multiple Dates</label>
 
-          <input class="ml-2 mr-1"
-                 type="radio"
-                 name="messageType"
-                 value="recurring"
-                 id="recurring"
-                 required
-                 [(ngModel)]="scheduleType"
-                 (click)="makeRecurringObject()">
-          <label for="recurring">Recurring</label>
+            <input class="ml-2 mr-1"
+                   type="radio"
+                   name="messageType"
+                   value="recurring"
+                   id="recurring"
+                   required
+                   [(ngModel)]="scheduleType"
+                   (click)="makeRecurringObject()">
+            <label for="recurring">Recurring</label>
+          </div>
         </div>
-        <div class="col-9 mt-2"
-             *ngIf="scheduleType==='oneTime'">
-          <label class="card-title h5">Campaign start date and time</label>
-          <br>
-          <input class="mr-1"
-                 type="radio"
-                 name="campaignStartTime"
-                 value="Now"
-                 id="now"
-                 required
-                 [(ngModel)]="schedule.oneTime.nowOrLater">
-          <label for="now">Now</label>
-          <input class="mr-1 ml-2"
-                 type="radio"
-                 name="campaignStartTime"
-                 value="Later"
-                 id="later"
-                 required
-                 [(ngModel)]="schedule.oneTime.nowOrLater">
-          <label for="later">Later</label>
-          <app-date-time *ngIf="schedule.oneTime.nowOrLater==='Later'"
-                         [(campaignLaterTime)]="schedule.oneTime.campaignTime"></app-date-time>
+        <div class="row px-3">
+          <div class="col-12 mt-2"
+               *ngIf="scheduleType==='oneTime'">
+            <label class="card-title h5">Campaign start date and time</label>
+            <br>
+            <input class="mr-1"
+                   type="radio"
+                   name="campaignStartTime"
+                   value="Now"
+                   id="now"
+                   required
+                   [(ngModel)]="schedule.oneTime.nowOrLater">
+            <label for="now">Now</label>
+            <input class="mr-1 ml-2"
+                   type="radio"
+                   name="campaignStartTime"
+                   value="Later"
+                   id="later"
+                   required
+                   [(ngModel)]="schedule.oneTime.nowOrLater">
+            <label for="later">Later</label>
+            <app-date-time *ngIf="schedule.oneTime.nowOrLater==='Later'"
+                           [(campaignLaterTime)]="schedule.oneTime.campaignTime"></app-date-time>
 
+          </div>
         </div>
-        <div class="col-9 mt-2"
-             *ngIf="scheduleType==='multipleDates'">
-          <label class="card-title mb-0 h5">Pick Dates</label>
-          <br>
-          <app-date-time [campaignTimesList]="schedule.multipleDates.campaignDateTimeList"></app-date-time>
-          <div #parent></div>
-          <button type="button"
-                  class="btn btn-link py-0 pl-0 mb-2"
-                  (click)="addAnotherDateTime()">
-            <i class="fa fa-plus " aria-hidden="true"></i>
-            Add another date
-          </button>
+        <div class="row px-3">
+          <div class="col-12  mt-2"
+               *ngIf="scheduleType==='multipleDates'">
+            <label class="card-title mb-0 h5">Pick Dates</label>
+            <br>
+            <app-date-time [campaignTimesList]="schedule.multipleDates.campaignDateTimeList"></app-date-time>
+            <div #parent></div>
+            <button type="button"
+                    class="btn btn-link py-0 pl-0 mb-2"
+                    (click)="addAnotherDateTime()">
+              <i class="fa fa-plus " aria-hidden="true"></i>
+              Add another date
+            </button>
+          </div>
         </div>
         <div *ngIf="scheduleType==='recurring'">
           <div class="col-12 mt-3">
@@ -175,7 +181,7 @@
                    value="NeverEnd"
                    [(ngModel)]="schedule.recurring.scheduleEnd.endType"
                    required
-                  (change)="occurencesValueFalse=false;disableSubmit=false;">
+                   (change)="occurencesValueFalse=false;disableSubmit=false;">
             <label for="neverEnd">Never End</label>
             <input class="ml-2 mr-1"
                    type="radio"
@@ -200,11 +206,11 @@
                      name="occurences"
                      class="form-control col-1"
                      [(ngModel)]="schedule.recurring.scheduleEnd.occurrences"
-                    (change)="checkOccurencesValue()">
+                     (change)="checkOccurencesValue()">
               occurences
             </label>
             <div class="text-danger" *ngIf="occurencesValueFalse">
-                <span>Occurences Value should Lie in the range 1-1000.</span>
+              <span>Occurences Value should Lie in the range 1-1000.</span>
             </div>
             <div *ngIf="schedule.recurring.scheduleEnd.endType==='EndsOnDate'"
                  class="input-group col-md-5 col-sm-6 col-xs-6 pl-0 mt-3 mb-2"

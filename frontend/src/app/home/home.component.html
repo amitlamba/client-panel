@@ -1,4 +1,4 @@
-<div>
+<div class="container">
 <!--<div class="col-md-6 col-md-offset-3">-->
   <h1>Home</h1>
   <p>You're logged in with JWT!!</p>
@@ -7,6 +7,9 @@
     <ul>
       <li *ngFor="let user of users">{{user.standardInfo.firstName}} {{user.standardInfo.lastName}}</li>
     </ul>
+  </div>
+  <div class="my-5">
+    <app-new-vs-existing-users-graph></app-new-vs-existing-users-graph>
   </div>
   <div [hidden]="!chart">
     <canvas id="canvas">{{ chart }}</canvas>

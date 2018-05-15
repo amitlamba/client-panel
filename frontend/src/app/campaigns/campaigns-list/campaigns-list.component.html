@@ -43,7 +43,8 @@
         <th scope="row">{{campaignItem.id}}</th>
         <td>{{campaignItem.name.charAt(0).toUpperCase()+ campaignItem.name.slice(1).toLowerCase()}}</td>
         <td>{{campaignItem.campaignType}}</td>
-        <td>15/03/2018</td>
+        <!--<td>15/03/2018</td>-->
+        <td>{{campaignItem.dateCreated | date:'medium'}}</td>
         <td>
           <span *ngIf="campaignItem.schedule.oneTime!==null">One Time</span>
           <span *ngIf="campaignItem.schedule.multipleDates!==null">Multiple Dates</span>

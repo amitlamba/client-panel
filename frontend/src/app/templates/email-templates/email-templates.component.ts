@@ -1,6 +1,7 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, ComponentFactoryResolver, OnInit, ViewChild, ViewContainerRef} from '@angular/core';
 import {EmailTemplate} from "../../_models/email";
 import {TemplatesService} from "../../_services/templates.service";
+import {CreateEmailTemplateFormComponent} from "./create-email-template-form/create-email-template-form.component";
 
 @Component({
   selector: 'app-email-templates',
@@ -11,7 +12,10 @@ export class EmailTemplatesComponent implements OnInit {
 
   emailTemplates = new Array<EmailTemplate>();
 
-  constructor(public templatesService: TemplatesService) {
+  @ViewChild('container', {read: ViewContainerRef}) container: ViewContainerRef;
+  components = [];
+
+  constructor(public templatesService: TemplatesService, private componentFactoryResolver: ComponentFactoryResolver) {
   }
 
   ngOnInit() {
@@ -33,15 +37,35 @@ export class EmailTemplatesComponent implements OnInit {
   }
 
   onEdit(emailTemplate: EmailTemplate) {
+    this.removeComponent();
     console.log(JSON.parse(JSON.stringify(emailTemplate)));
     this.templatesService.emailTemplateForEdit.next(JSON.parse(JSON.stringify(emailTemplate)));
+    this.addComponent();
   }
 
   onCancel() {
     this.templatesService.emailTemplateForEdit.next(new EmailTemplate());
+    this.removeComponent();
   }
 
   onCreateNew() {
+    this.removeComponent();
     this.templatesService.emailTemplateForEdit.next(new EmailTemplate());
+    this.addComponent();
+  }
+
+  addComponent() {
+    // Create component dynamically inside the ng-template
+    const componentFactory = this.componentFactoryResolver.resolveComponentFactory(CreateEmailTemplateFormComponent);
+    const component = this.container.createComponent(componentFactory);
+
+    // Push the component so that we can keep track of which components are created
+    this.components.push(component);
+  }
+
+  removeComponent() {
+    while(this.components.length > 0) {
+      this.components.pop().destroy();
+    }
   }
 }

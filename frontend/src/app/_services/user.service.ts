@@ -19,5 +19,4 @@ export class UserService {
     return this.httpClient.get<EventUser[]>(AppSettings.API_ENDPOINT_CLIENT_CLIENT_USERS_GETLIST);
   }
 
-
 }

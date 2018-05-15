@@ -1,6 +1,6 @@
-import {NgModule} from '@angular/core';
+import {Injectable, NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
-import {FormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 //used to create fake backend
 import {MockBackend} from '@angular/http/testing';
 
@@ -83,6 +83,10 @@ import { AboutUsComponent } from './about-us/about-us.component';
 import { TermsOfServiceComponent } from './terms-of-service/terms-of-service.component';
 import {NgxIntlTelInputModule} from "./ngx-intl-tel-input/src";
 import {ContactUsComponent} from "./contact-us/contact-us.component";
+import { NewVsExistingUsersGraphComponent } from './new-vs-existing-users-graph/new-vs-existing-users-graph.component';
+import {ReCaptchaModule} from "angular2-recaptcha";
+import {TimerangeComponent} from './segment-category/timerange/timerange.component';
+
 
 @NgModule({
   imports: [
@@ -102,7 +106,9 @@ import {ContactUsComponent} from "./contact-us/contact-us.component";
     TimezonePickerModule,
     ClipboardModule,
     BsDropdownModule.forRoot(),
-    NgxIntlTelInputModule
+    NgxIntlTelInputModule,
+    BrowserModule,
+    ReCaptchaModule
   ],
   declarations: [
     AppComponent,
@@ -158,7 +164,9 @@ import {ContactUsComponent} from "./contact-us/contact-us.component";
     DemoFormComponent,
     AboutUsComponent,
     TermsOfServiceComponent,
-    ContactUsComponent
+    ContactUsComponent,
+    NewVsExistingUsersGraphComponent,
+    TimerangeComponent
   ],
   providers: [
     AuthGuard,
@@ -171,7 +179,7 @@ import {ContactUsComponent} from "./contact-us/contact-us.component";
     TemplatesService,
     SettingsService,
     SegmentService,
-    CampaignService
+    CampaignService,
   ],
   entryComponents: [
     DidEventComponent,
@@ -179,7 +187,8 @@ import {ContactUsComponent} from "./contact-us/contact-us.component";
     DateTimeComponent,
     FilterComponent,
     GeographyFilterComponent,
-    GlobalFilterComponent
+    GlobalFilterComponent,
+    CreateEmailTemplateFormComponent
   ],
   bootstrap: [AppComponent]
 })

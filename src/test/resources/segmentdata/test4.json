@@ -37,7 +37,7 @@
         },
         "propertyFilters": [
           {
-            "values": [],
+            "values": [10,12,14,24],
             "name": "Time of day"
           }
         ],

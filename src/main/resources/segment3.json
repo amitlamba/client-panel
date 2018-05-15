@@ -10,7 +10,7 @@
           "name": "Event Name Unique",
           "dateFilter": {
             "operator": "Before/After/On/Between/In the Past/Was Exactly/Today",
-            "values": [],
+            "values": [2],
             "valueUnit": "w/m/d/y"
           },
           "exists": true,
@@ -20,7 +20,7 @@
               "type": "number/string/date",
               "FilterType": "eventproperty/genericproperty/UTM",
               "operator": "Date Operators/string operators/number operators",
-              "values": [],
+              "values": [2],
               "valueUnit": "w/m/d/y"
             },
             {},
@@ -29,12 +29,12 @@
           "whereFilter": {
             "count": {
               "operator": "",
-              "values": []
+              "values": [2]
             },
             "sumOfValuesOf": {
               "propertyName": "",
               "operator": "",
-              "values": []
+              "values": [2]
             }
           }
         },
@@ -53,7 +53,7 @@
           "name": "Event Name Unique",
           "dateFilter": {
             "operator": "Before/After/On/Between/In the Past/Was Exactly/Today",
-            "values": [],
+            "values": [2],
             "valueUnit": "w/m/d/y"
           },
           "exists": true,

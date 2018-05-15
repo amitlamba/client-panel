@@ -33,11 +33,11 @@
             "operator": "GreaterThan"
           },
           {
-            "values": [],
+            "values": [10,12,14,16],
             "name": "Time of day"
           },
           {
-            "values": [],
+            "values": [3],
             "name": "Day of week"
           },
           {
@@ -49,13 +49,13 @@
             "operator": "Equals"
           },
           {
-            "values": [],
+            "values": ["Yes"],
             "name": "First Time"
           }
         ],
         "whereFilter": {
           "operator": "GreaterThan",
-          "values": [],
+          "values": [3],
           "whereFilterName": "Count"
         }
       },
@@ -69,25 +69,25 @@
         },
         "propertyFilters": [
           {
-            "values": [],
+            "values": [10,12,13,14],
             "name": "Time of day"
           },
           {
-            "values": [],
+            "values": [2],
             "name": "Day of week"
           },
           {
-            "values": [],
+            "values": [3],
             "name": "Day of month"
           },
           {
-            "values": [],
+            "values": ["Yes"],
             "name": "First Time"
           }
         ],
         "whereFilter": {
           "operator": "GreaterThan",
-          "values": [],
+          "values": [4],
           "whereFilterName": "Count"
         }
       },
@@ -110,11 +110,11 @@
             "operator": "Equals"
           },
           {
-            "values": [],
+            "values": [2],
             "name": "Day of week"
           },
           {
-            "values": [],
+            "values": ["Card"],
             "name": "Payment Mode",
             "type": "string",
             "operator": "Exists"
@@ -122,7 +122,7 @@
         ],
         "whereFilter": {
           "operator": "GreaterThan",
-          "values": [],
+          "values": [4],
           "whereFilterName": "Count"
         }
       }
@@ -132,7 +132,6 @@
     }
   },
   "globalFilters": [
-    {}
   ],
   "geographyFilters": [],
   "type": "Behaviour"

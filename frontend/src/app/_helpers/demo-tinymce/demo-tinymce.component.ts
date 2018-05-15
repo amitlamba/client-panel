@@ -1,4 +1,7 @@
-import {Component, ElementRef, NgZone, Input, ViewChild, EventEmitter, Output} from '@angular/core';
+import {
+  Component, ElementRef, NgZone, Input, ViewChild, EventEmitter, Output, OnDestroy,
+  AfterViewInit
+} from '@angular/core';
 import {MentionDirective} from "../mention/mention.directive";
 import {UserParams} from "../../_models/user";
 
@@ -17,13 +20,13 @@ declare var tinymce: any;
     <div class="form-group" style="position:relative">
       <div [mention]="items"></div>
       <div>
-        <textarea class="hidden" cols="60" rows="4" id="tmce" [(ngModel)]="htmlContent">{{htmlContent}}
+        <textarea class="hidden" cols="60" rows="4" id="tmce" >{{htmlContent}}
         </textarea>
         <button class="btn btn-primary" (click)="addUnsubscribeLink($event)" type="button">Add Unsubscribe</button>
       </div>
     </div>`
 })
-export class DemoTinymceComponent {
+export class DemoTinymceComponent implements OnDestroy, AfterViewInit{
   @ViewChild('tmce') tmce: ElementRef;
 
   localHtmlContent: string = "Text";
@@ -42,7 +45,12 @@ export class DemoTinymceComponent {
   constructor(private _elementRef: ElementRef, private _zone: NgZone) {
   }
 
+  ngOnDestroy() {
+    tinymce.remove();
+  }
+
   ngAfterViewInit() {
+    console.log(this.htmlContent);
     tinymce.init({
       mode: 'exact',
       height: 100,
@@ -61,6 +69,7 @@ export class DemoTinymceComponent {
   }
 
   tinySetup(ed) {
+    console.log(this.htmlContent);
     let comp = this;
     let mention = this.mention;
     ed.on('keydown', function (e) {
@@ -72,13 +81,14 @@ export class DemoTinymceComponent {
     });
     ed.on('init', (e) => {
       mention.setIframe(ed.iframeElement);
-      this.htmlContent = e.target.innerHTML;
-      e.target.innerHTML = this.htmlContent;
+      // this.htmlContent = e.target.innerHTML;
+      e.target.innerHTML = this.localHtmlContent;
+      console.log(this.localHtmlContent);
     });
     ed.on('keyup', (e) => {
       let frame = <any>window.frames[ed.iframeElement.id];
       this.htmlContent = e.target.innerHTML;
-      // console.log(this.localHtmlContent);
+      console.log(this.localHtmlContent);
     });
 
   }

@@ -1,7 +1,7 @@
 package com.und.service
 
-import com.und.eventapi.repository.EventRepository
-import com.und.eventapi.repository.EventUserRepository
+import com.und.repository.mongo.EventRepository
+import com.und.repository.mongo.EventUserRepository
 import com.und.model.mongo.eventapi.*
 import com.und.security.utils.TenantProvider
 import org.springframework.beans.factory.annotation.Autowired

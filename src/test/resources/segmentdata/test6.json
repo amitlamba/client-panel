@@ -47,7 +47,7 @@
             "name": "First Time"
           },
           {
-            "values": [],
+            "values": [12,14,18,20],
             "name": "Time of day"
           },
           {
@@ -66,6 +66,7 @@
           }
         ],
         "whereFilter": {
+          "propertyName":"clientId",
           "operator": "Equals",
           "values": [
             25
@@ -130,7 +131,7 @@
             "operator": "Contains"
           },
           {
-            "values": [],
+            "values": [16,15,23,20],
             "name": "Time of day"
           }
         ]
@@ -147,7 +148,7 @@
       ],
       "globalFilterType": "UserProperties",
       "name": "User Property Name",
-      "type": "date/string/number",
+      "type": "string",
       "operator": "Contains"
     },
     {
@@ -156,7 +157,7 @@
       ],
       "globalFilterType": "UserProperties",
       "name": "User Property Name",
-      "type": "date/string/number",
+      "type": "string",
       "operator": "Contains"
     },
     {

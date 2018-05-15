@@ -15,7 +15,7 @@ export class NumberComparatorComponent implements OnInit {
   private singleFieldRequiredComparators: string[] = ["Equals", "NotEquals", "GreaterThan", "LessThan"];
   private doubleFieldRequiredComparators: string[] = ["Between"];
   private noFieldRequiredComparators: string[] = ["Exists", "DoesNotExist"];
-  field1Required: boolean = false;
+  field1Required: boolean = true;
   field2Required: boolean = false;
 
   private localOperator: NumberOperator;
@@ -58,6 +58,7 @@ export class NumberComparatorComponent implements OnInit {
   }
 
   dropdownChanged(comparator: string) {
+    console.log(comparator);
     this.operator = NumberOperator[comparator];
     if (this.doubleFieldRequiredComparators.includes(comparator)) {
       this.field1Required = this.field2Required = true;
@@ -67,5 +68,6 @@ export class NumberComparatorComponent implements OnInit {
     } else {
       this.field2Required = this.field1Required = false;
     }
+    this.values = [];
   }
 }
