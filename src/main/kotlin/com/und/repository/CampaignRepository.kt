@@ -18,12 +18,12 @@ interface CampaignRepository : JpaRepository<Campaign, Long> {
 
 
     @Modifying(clearAutomatically = true)
-    @Query("UPDATE campaign c SET c.campaign_status = :status WHERE c.client_idd = :clientId and c.id=:campaignId")
+    @Query("UPDATE campaign c SET c.campaign_status = :status WHERE c.client_id = :clientId and c.id=:campaignId", nativeQuery = true)
     fun updateScheduleStatus(@Param("campaignId") campaignId: Long,
                              @Param("clientId") clientId: Long,
                              @Param("status") status: String)
 
-    @Query("SELECT campaign_status from campaign c  WHERE c.client_idd = :clientId and c.id=:campaignId")
+    @Query("SELECT campaign_status from campaign c  WHERE c.client_id = :clientId and c.id=:campaignId", nativeQuery = true)
     fun retrievecheduleStatus(@Param("campaignId") campaignId: Long,
                               @Param("clientId") clientId: Long): String
 
