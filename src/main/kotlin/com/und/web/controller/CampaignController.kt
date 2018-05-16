@@ -7,6 +7,7 @@ import com.und.web.model.Campaign
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
 import javax.validation.Valid
 
@@ -24,12 +25,14 @@ class CampaignController {
     @Autowired
     lateinit var campaignService: CampaignService
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping(value = ["list/all"])
     fun getCampaigns(@RequestParam(value = "id", required = false) id: Long? = null): List<Campaign> {
         return campaignService.getCampaigns()
     }
 
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping(value = ["/save"])
     fun saveCampaign(@Valid @RequestBody campaign: Campaign): ResponseEntity<Campaign> {
         logger.info("campaign save request inititated ${campaign.name}")
@@ -42,6 +45,7 @@ class CampaignController {
         return ResponseEntity(campaign,HttpStatus.EXPECTATION_FAILED)
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PatchMapping(value = ["/pause/{campaignId}"])
     fun pauseCampaign(@PathVariable campaignId: Long): ResponseEntity<*> {
         val clientId = AuthenticationUtils.clientID
@@ -53,6 +57,7 @@ class CampaignController {
         return ResponseEntity(campaignId,HttpStatus.EXPECTATION_FAILED)
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PatchMapping(value = ["/resume/{campaignId}"])
     fun resumeCampaign(@PathVariable campaignId: Long): ResponseEntity<*> {
         val clientId = AuthenticationUtils.clientID
