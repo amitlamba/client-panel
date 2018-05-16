@@ -72,20 +72,23 @@ import {CronEditorModule} from "./cron-editor/cron-editor.module";
 import {SegmentNlpComponent} from './segment-category/segment-nlp/segment-nlp.component';
 import {DemoTinymceComponent} from "./_helpers/demo-tinymce/demo-tinymce.component";
 import {CampaignService} from "./_services/campaign.service";
-import { AccountSettingsComponent } from './settings/account-settings/account-settings.component';
-import { TimezonePickerModule } from 'ng2-timezone-selector';
-import { EmailListComponent } from './settings/email-list/email-list.component';
-import {ClipboardModule} from "ngx-clipboard";
-import { LandingPageUndComponent } from './landing-page-und/landing-page-und.component';
-import { BsDropdownModule } from  'ngx-bootstrap/dropdown';
-import { DemoFormComponent } from './demo-form/demo-form.component';
-import { AboutUsComponent } from './about-us/about-us.component';
-import { TermsOfServiceComponent } from './terms-of-service/terms-of-service.component';
+import {AccountSettingsComponent} from './settings/account-settings/account-settings.component';
+import {TimezonePickerModule} from 'ng2-timezone-selector';
+import {EmailListComponent} from './settings/email-list/email-list.component';
+import {LandingPageUndComponent} from './landing-page-und/landing-page-und.component';
+import {BsDropdownModule} from 'ngx-bootstrap/dropdown';
+import {DemoFormComponent} from './demo-form/demo-form.component';
+import {AboutUsComponent} from './about-us/about-us.component';
+import {TermsOfServiceComponent} from './terms-of-service/terms-of-service.component';
 import {NgxIntlTelInputModule} from "./ngx-intl-tel-input/src";
 import {ContactUsComponent} from "./contact-us/contact-us.component";
-import { NewVsExistingUsersGraphComponent } from './new-vs-existing-users-graph/new-vs-existing-users-graph.component';
+import {NewVsExistingUsersGraphComponent} from './new-vs-existing-users-graph/new-vs-existing-users-graph.component';
 import {ReCaptchaModule} from "angular2-recaptcha";
 import {TimerangeComponent} from './segment-category/timerange/timerange.component';
+import {ConversionEventsGraphComponent} from './conversion-events-graph/conversion-events-graph.component';
+import {EventsGraphComponent} from './events-graph/events-graph.component';
+import {ChartsModule} from "ng2-charts";
+import {ReportsService} from "./_services/reports.service";
 
 
 @NgModule({
@@ -104,11 +107,11 @@ import {TimerangeComponent} from './segment-category/timerange/timerange.compone
     Select2Module,
     CronEditorModule,
     TimezonePickerModule,
-    ClipboardModule,
     BsDropdownModule.forRoot(),
     NgxIntlTelInputModule,
     BrowserModule,
-    ReCaptchaModule
+    ReCaptchaModule,
+    ChartsModule
   ],
   declarations: [
     AppComponent,
@@ -166,7 +169,9 @@ import {TimerangeComponent} from './segment-category/timerange/timerange.compone
     TermsOfServiceComponent,
     ContactUsComponent,
     NewVsExistingUsersGraphComponent,
-    TimerangeComponent
+    TimerangeComponent,
+    ConversionEventsGraphComponent,
+    EventsGraphComponent
   ],
   providers: [
     AuthGuard,
@@ -180,6 +185,7 @@ import {TimerangeComponent} from './segment-category/timerange/timerange.compone
     SettingsService,
     SegmentService,
     CampaignService,
+    ReportsService
   ],
   entryComponents: [
     DidEventComponent,
