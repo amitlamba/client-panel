@@ -12,6 +12,7 @@ class Campaign {
     var campaignType: CampaignType? = null
     var segmentationID: Long? = null
     var templateID: Long? = null
+    var status: String? = null
     var dateCreated: LocalDateTime? = null
     var dateModified: LocalDateTime? = null
 

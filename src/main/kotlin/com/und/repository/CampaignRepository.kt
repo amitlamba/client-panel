@@ -18,7 +18,7 @@ interface CampaignRepository : JpaRepository<Campaign, Long> {
 
 
     @Modifying(clearAutomatically = true)
-    @Query("UPDATE campaign c SET c.campaign_status = :status WHERE c.client_id = :clientId and c.id=:campaignId", nativeQuery = true)
+    @Query("UPDATE campaign  SET campaign_status = :status, date_modified = now() WHERE client_id = :clientId and id=:campaignId", nativeQuery = true)
     fun updateScheduleStatus(@Param("campaignId") campaignId: Long,
                              @Param("clientId") clientId: Long,
                              @Param("status") status: String)

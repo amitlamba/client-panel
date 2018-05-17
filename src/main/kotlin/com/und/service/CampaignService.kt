@@ -19,7 +19,7 @@ import com.und.web.model.Campaign as WebCampaign
 
 
 @Service
-@Transactional
+
 class CampaignService {
 
 
@@ -35,7 +35,7 @@ class CampaignService {
     private lateinit var eventStream: EventStream
 
     @Autowired
-    private lateinit var objectMapper:ObjectMapper
+    private lateinit var objectMapper: ObjectMapper
 
     fun getCampaigns(): List<WebCampaign> {
         val campaigns = AuthenticationUtils.clientID?.let { campaignRepository.findByClientID(it) }
@@ -45,6 +45,12 @@ class CampaignService {
 
 
     fun save(webCampaign: WebCampaign): WebCampaign {
+        val persistedCampaign = saveCampaign(webCampaign)
+        return if(persistedCampaign!=null) buildWebCampaign(persistedCampaign) else  WebCampaign()
+    }
+
+    @Transactional
+    private fun saveCampaign(webCampaign: com.und.web.model.Campaign): Campaign? {
         val campaign = buildCampaign(webCampaign)
 
         val persistedCampaign = campaignRepository.save(campaign)
@@ -53,7 +59,7 @@ class CampaignService {
         logger.info("sending request to scheduler ${campaign.name}")
         val jobDescriptor = buildJobDescriptor(webCampaign, JobDescriptor.Action.CREATE)
         sendToKafka(jobDescriptor)
-        return buildWebCampaign(persistedCampaign)
+        return persistedCampaign
     }
 
     private fun buildJobDescriptor(campaign: WebCampaign, action: JobDescriptor.Action): JobDescriptor {
@@ -109,7 +115,7 @@ class CampaignService {
             segmentationID = webCampaign.segmentationID
 
 
-            schedule =objectMapper.writeValueAsString(webCampaign.schedule)
+            schedule = objectMapper.writeValueAsString(webCampaign.schedule)
         }
 
         when (webCampaign.campaignType) {
@@ -143,10 +149,11 @@ class CampaignService {
             segmentationID = campaign.segmentationID
             dateCreated = campaign.dateCreated
             dateModified = campaign.dateModified
+            status = campaign.status
 
 
 
-             schedule = objectMapper.readValue(campaign.schedule, Schedule::class.java)
+            schedule = objectMapper.readValue(campaign.schedule, Schedule::class.java)
         }
 
         if (campaign.emailCampaign != null) {
@@ -162,10 +169,12 @@ class CampaignService {
     }
 
     fun pause(campaignId: Long): Long? {
+        val campaign = campaignRepository.findById(campaignId)
         val jobDescriptor = JobDescriptor()
         jobDescriptor.clientId = AuthenticationUtils.clientID.toString()
         jobDescriptor.campaignId = campaignId.toString()
         jobDescriptor.action = JobDescriptor.Action.PAUSE
+        jobDescriptor.campaignName = if (campaign.isPresent) campaign.get().name else ""//set because it cant be null FIXME find some other way around
 
         sendToKafka(jobDescriptor)
         return campaignId
@@ -173,13 +182,7 @@ class CampaignService {
 
 
     fun resume(campaignId: Long): Long? {
-        val jobDescriptor = JobDescriptor()
-        jobDescriptor.clientId = AuthenticationUtils.clientID.toString()
-        jobDescriptor.campaignId = campaignId.toString()
-        jobDescriptor.action = JobDescriptor.Action.RESUME
-
-        sendToKafka(jobDescriptor)
-        return campaignId
+        return pause(campaignId)
     }
 
 
@@ -188,24 +191,23 @@ class CampaignService {
 
     @StreamListener("scheduleJobAckReceive")
     @Transactional
-    fun schedulerAcknowledge(jobActionStatus: JobActionStatus){
+    fun schedulerAcknowledge(jobActionStatus: JobActionStatus) {
         val status = jobActionStatus.status
         val action = jobActionStatus.jobAction
-        val clientId =     action.clientId.toLong()
+        val clientId = action.clientId.toLong()
         val campaignId = action.campaignId.toLong()
         val campignName = action.campaignName
         val actionPerformed = action.action
-        if(status == JobActionStatus.Status.OK) {
+        if (status == JobActionStatus.Status.OK) {
             //FIXME unite actionperformed and status action
-            campaignRepository.updateScheduleStatus(campaignId, clientId , actionPerformed.name)
+            campaignRepository.updateScheduleStatus(campaignId, clientId, actionPerformed.name)
             //campaignRepository.updatestatus
-        }
-        else {
-            if(actionPerformed == JobDescriptor.Action.CREATE && status == JobActionStatus.Status.ERROR) {
+        } else {
+            if (actionPerformed == JobDescriptor.Action.CREATE && status == JobActionStatus.Status.ERROR) {
                 //FIXME send emails warning alerts etc
-                campaignRepository.updateScheduleStatus(campaignId, clientId , JobDescriptor.Action.FAILED.name)
+                campaignRepository.updateScheduleStatus(campaignId, clientId, JobDescriptor.Action.FAILED.name)
                 logger.error(" Campaign Schedule couldnt be created")
-            }else if(status == JobActionStatus.Status.ERROR) {
+            } else if (status == JobActionStatus.Status.ERROR) {
                 logger.error("  Schedule action couldn't be performed")
                 //FIXME send errors
             }
