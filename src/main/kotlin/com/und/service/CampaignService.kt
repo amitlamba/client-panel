@@ -3,6 +3,7 @@ package com.und.service
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.und.common.utils.loggerFor
 import com.und.config.EventStream
+import com.und.model.CampaignStatus
 import com.und.model.JobActionStatus
 import com.und.model.JobDescriptor
 import com.und.model.TriggerDescriptor
@@ -42,7 +43,9 @@ class CampaignService {
     private lateinit var objectMapper: ObjectMapper
 
     fun getCampaigns(): List<WebCampaign> {
-        val campaigns = AuthenticationUtils.clientID?.let { campaignRepository.findByClientID(it) }
+        val campaigns = AuthenticationUtils.clientID?.let {
+            campaignRepository.findByClientID(it)
+        }
 
         return campaigns?.map { buildWebCampaign(it) } ?: listOf()
     }
@@ -181,7 +184,7 @@ class CampaignService {
     }
 
 
-    private fun handleSchedule(campaignId: Long, action:JobDescriptor.Action): Long {
+    private fun handleSchedule(campaignId: Long, action: JobDescriptor.Action): Long {
         val campaign = campaignRepository.findById(campaignId)
         val jobDescriptor = JobDescriptor()
         jobDescriptor.clientId = AuthenticationUtils.clientID.toString()
@@ -206,25 +209,40 @@ class CampaignService {
         val campaignId = action.campaignId.toLong()
         val campignName = action.campaignName
         val actionPerformed = action.action
-        if (status == JobActionStatus.Status.OK) {
-            campaignRepository.updateScheduleStatus(campaignId, clientId, actionPerformed.name)
-        } else if (actionPerformed == JobDescriptor.Action.CREATE) {
-            //FIXME send emails warning alerts etc
-            campaignRepository.updateScheduleStatus(campaignId, clientId, status.name)
-            logger.error(" Campaign Schedule couldn't be created")
-        } else {
-            logger.error("  Schedule action couldn't be performed")
-
+        when {
+            status == JobActionStatus.Status.OK -> {
+                campaignRepository.updateScheduleStatus(campaignId, clientId, actionToCampaignStatus(actionPerformed).name)
+                logger.info(" Campaign Schedule created $campaignId")
+            }
+            actionPerformed == JobDescriptor.Action.CREATE -> {
+                campaignRepository.updateScheduleStatus(campaignId, clientId, CampaignStatus.ERROR.name)
+                logger.error(" Campaign Schedule couldn't be created for $campaignId")
+            }
+            else -> {
+                logger.error("  Schedule action couldn't be performed for $campaignId")
+            }
         }
+
         val auditLog = CampaignAuditLog()
         auditLog.campaignId = campaignId
         auditLog.clientID = clientId
         auditLog.status = status
         auditLog.action = action.action
-        auditLog.message = jobActionStatus.message?:""
+        auditLog.message = jobActionStatus.message
 
         campaignAuditRepository.save(auditLog)
 
+    }
+
+    fun actionToCampaignStatus(action: JobDescriptor.Action): CampaignStatus {
+        return when (action) {
+            JobDescriptor.Action.PAUSE -> CampaignStatus.PAUSED
+            JobDescriptor.Action.RESUME -> CampaignStatus.RESUMED
+            JobDescriptor.Action.DELETE -> CampaignStatus.DELETED
+            JobDescriptor.Action.FAILED -> CampaignStatus.ERROR
+            JobDescriptor.Action.CREATE -> CampaignStatus.CREATED
+            JobDescriptor.Action.NOTHING -> CampaignStatus.ERROR
+        }
     }
 
 }
