@@ -173,20 +173,24 @@ class CampaignService {
     }
 
     fun pause(campaignId: Long): Long? {
+        return handleSchedule(campaignId, JobDescriptor.Action.PAUSE)
+    }
+
+    fun resume(campaignId: Long): Long? {
+        return handleSchedule(campaignId, JobDescriptor.Action.RESUME)
+    }
+
+
+    private fun handleSchedule(campaignId: Long, action:JobDescriptor.Action): Long {
         val campaign = campaignRepository.findById(campaignId)
         val jobDescriptor = JobDescriptor()
         jobDescriptor.clientId = AuthenticationUtils.clientID.toString()
         jobDescriptor.campaignId = campaignId.toString()
-        jobDescriptor.action = JobDescriptor.Action.PAUSE
+        jobDescriptor.action = action
         jobDescriptor.campaignName = if (campaign.isPresent) campaign.get().name else ""//set because it cant be null FIXME find some other way around
 
         sendToKafka(jobDescriptor)
         return campaignId
-    }
-
-
-    fun resume(campaignId: Long): Long? {
-        return pause(campaignId)
     }
 
 
