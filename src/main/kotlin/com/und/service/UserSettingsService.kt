@@ -3,7 +3,6 @@ package com.und.service
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
-import com.und.common.utils.DateUtils
 import com.und.model.Status
 import com.und.model.jpa.ClientSettings
 import com.und.model.jpa.ServiceProviderCredentials
@@ -12,11 +11,10 @@ import com.und.web.model.ServiceProviderCredentials as WebServiceProviderCredent
 import com.und.repository.ServiceProviderCredentialsRepository
 import com.und.web.model.AccountSettings
 import com.und.web.model.EmailAddress
-import org.springframework.beans.BeanUtils
+import com.und.web.model.UnSubscribeLink
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import java.time.LocalDateTime
 
 @Service
 class UserSettingsService {
@@ -142,5 +140,31 @@ class UserSettingsService {
         val eaListType = object : TypeToken<List<EmailAddress>>() {}.type
         var emailAddresses: ArrayList<EmailAddress> = Gson().fromJson(emailAddressesJson, eaListType)
         return emailAddresses
+    }
+
+    fun saveUnSubscribeLink(request: UnSubscribeLink, clientID: Long?) {
+
+        val clientSettings = clientSettingsRepository.findByClientID(clientID!!)
+        if(clientSettings.clientID==null) {
+
+            clientSettings.unSubscribeLink = request.unSubscribeLink
+            clientSettings.clientID = clientID
+            clientSettingsRepository.save(clientSettings)
+        }
+        else
+        {
+            clientSettings.unSubscribeLink = request.unSubscribeLink
+            clientSettingsRepository.save(clientSettings)
+        }
+
+    }
+
+    fun getUnSubscribeLink(clientID: Long?): UnSubscribeLink {
+
+        val clientSettings = clientSettingsRepository.findByClientID(clientID!!)
+        val unSubscribeLinkUrl=clientSettings.unSubscribeLink
+        val unSubscribeLink= UnSubscribeLink()
+        unSubscribeLink.unSubscribeLink=unSubscribeLinkUrl
+        return unSubscribeLink
     }
 }

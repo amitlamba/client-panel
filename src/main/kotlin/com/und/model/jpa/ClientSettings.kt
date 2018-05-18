@@ -38,4 +38,8 @@ class ClientSettings {
     @field:UpdateTimestamp
     @Column(name = "date_modified")
     lateinit var dateModified: LocalDateTime
+
+    @Column(name = "unsubscribe_link")
+    var unSubscribeLink: String? = null
+
 }

@@ -5,10 +5,12 @@ import com.und.service.UserSettingsService
 import com.und.web.model.AccountSettings
 import com.und.web.model.EmailAddress
 import com.und.web.model.ServiceProviderCredentials
+import com.und.web.model.UnSubscribeLink
+import org.apache.kafka.common.errors.InvalidRequestException
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
-import java.time.LocalDate
-import java.util.*
+import javax.servlet.http.HttpServletResponse
+import javax.validation.Valid
 
 @CrossOrigin
 @RestController
@@ -99,4 +101,24 @@ class UserSettingsController {
         val userID = AuthenticationUtils.principal.id
         return userSettingsService.getAccountSettings(clientID, userID)
     }
+
+    @PostMapping(value=["unsubscribe-link/save"])
+    fun saveUnSubscribeLink(@Valid @RequestBody request: UnSubscribeLink) {
+
+        if (request.unSubscribeLink != null) {
+            val clientID = AuthenticationUtils.clientID
+            userSettingsService.saveUnSubscribeLink(request, clientID)
+        }
+        else throw InvalidRequestException("Unsubscribe link is null")
+
+    }
+
+    @GetMapping(value=["unsubscribe-link/get"])
+    fun getUnsubscribeLink(): UnSubscribeLink {
+
+        val clientID = AuthenticationUtils.clientID
+        return userSettingsService.getUnSubscribeLink(clientID)
+    }
+
 }
+
