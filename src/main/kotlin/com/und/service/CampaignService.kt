@@ -7,6 +7,7 @@ import com.und.model.JobActionStatus
 import com.und.model.JobDescriptor
 import com.und.model.TriggerDescriptor
 import com.und.model.jpa.*
+import com.und.repository.CampaignAuditLogRepository
 import com.und.repository.CampaignRepository
 import com.und.security.utils.AuthenticationUtils
 import org.springframework.beans.factory.annotation.Autowired
@@ -32,6 +33,9 @@ class CampaignService {
     private lateinit var campaignRepository: CampaignRepository
 
     @Autowired
+    private lateinit var campaignAuditRepository: CampaignAuditLogRepository
+
+    @Autowired
     private lateinit var eventStream: EventStream
 
     @Autowired
@@ -46,11 +50,11 @@ class CampaignService {
 
     fun save(webCampaign: WebCampaign): WebCampaign {
         val persistedCampaign = saveCampaign(webCampaign)
-        return if(persistedCampaign!=null) buildWebCampaign(persistedCampaign) else  WebCampaign()
+        return if (persistedCampaign != null) buildWebCampaign(persistedCampaign) else WebCampaign()
     }
 
     @Transactional
-    private fun saveCampaign(webCampaign: com.und.web.model.Campaign): Campaign? {
+    protected fun saveCampaign(webCampaign: com.und.web.model.Campaign): Campaign? {
         val campaign = buildCampaign(webCampaign)
 
         val persistedCampaign = campaignRepository.save(campaign)
@@ -199,19 +203,23 @@ class CampaignService {
         val campignName = action.campaignName
         val actionPerformed = action.action
         if (status == JobActionStatus.Status.OK) {
-            //FIXME unite actionperformed and status action
             campaignRepository.updateScheduleStatus(campaignId, clientId, actionPerformed.name)
-            //campaignRepository.updatestatus
+        } else if (actionPerformed == JobDescriptor.Action.CREATE) {
+            //FIXME send emails warning alerts etc
+            campaignRepository.updateScheduleStatus(campaignId, clientId, status.name)
+            logger.error(" Campaign Schedule couldn't be created")
         } else {
-            if (actionPerformed == JobDescriptor.Action.CREATE && status == JobActionStatus.Status.ERROR) {
-                //FIXME send emails warning alerts etc
-                campaignRepository.updateScheduleStatus(campaignId, clientId, JobDescriptor.Action.FAILED.name)
-                logger.error(" Campaign Schedule couldnt be created")
-            } else if (status == JobActionStatus.Status.ERROR) {
-                logger.error("  Schedule action couldn't be performed")
-                //FIXME send errors
-            }
+            logger.error("  Schedule action couldn't be performed")
+
         }
+        val auditLog = CampaignAuditLog()
+        auditLog.campaignId = campaignId
+        auditLog.clientID = clientId
+        auditLog.status = status
+        auditLog.action = action.action
+        auditLog.message = jobActionStatus.message?:""
+
+        campaignAuditRepository.save(auditLog)
 
     }
 
