@@ -24,6 +24,7 @@ class ContactUs {
     @Column(name="message")
     var message: String=""
 
+
 }
 
 

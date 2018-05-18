@@ -22,18 +22,16 @@ class ContactUsController {
     @PostMapping("/save")
     fun saveContactUsDetails(@Valid @RequestBody request: ContactUs, response: HttpServletResponse) {
 
-        if (request.name != "" && request.email != "" && request.message != "" && request.mobileNo != "") {
+        if (request.name != null && request.email != null && request.message != null && request.mobileNo != null) {
+
             contactUsService.save(request)
-            //FIXME INTERNAL SERVER ERROR
-            sendEmail()
+
+            //TODO Send Email ar response
             response.status=HttpServletResponse.SC_OK
         }
         else
             response.status=HttpServletResponse.SC_NOT_ACCEPTABLE
     }
 
-     fun sendEmail() {
-
-    }
 
 }

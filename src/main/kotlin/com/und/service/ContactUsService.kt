@@ -30,10 +30,10 @@ class ContactUsService {
     fun buildContactUs(webContactUs: WebContactUs):ContactUs{
 
         val contactUS=ContactUs()
-        contactUS.name=webContactUs.name
-        contactUS.email=webContactUs.email
-        contactUS.mobileNo=webContactUs.mobileNo
-        contactUS.message=webContactUs.message
+        contactUS.name= webContactUs.name!!
+        contactUS.email= webContactUs.email!!
+        contactUS.mobileNo= webContactUs.mobileNo!!
+        contactUS.message= webContactUs.message!!
 
         return contactUS
     }
