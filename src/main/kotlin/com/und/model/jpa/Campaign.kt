@@ -45,6 +45,10 @@ class Campaign {
     @NotNull
     var schedule: String? = null
 
+    @Column(name = "campaign_status", updatable = false, insertable = false)
+    @NotNull
+    var status: String = "active"
+
 
     @OneToOne(mappedBy = "campaign",
             cascade = arrayOf(CascadeType.ALL),
