@@ -3,18 +3,24 @@ package com.und.service
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.und.common.utils.loggerFor
 import com.und.config.EventStream
+import com.und.model.JobActionStatus
 import com.und.model.JobDescriptor
 import com.und.model.TriggerDescriptor
 import com.und.model.jpa.*
+import com.und.repository.CampaignAuditLogRepository
 import com.und.repository.CampaignRepository
 import com.und.security.utils.AuthenticationUtils
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.cloud.stream.annotation.StreamListener
 import org.springframework.messaging.support.MessageBuilder
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
+import java.awt.event.ActionEvent
 import com.und.web.model.Campaign as WebCampaign
 
 
 @Service
+
 class CampaignService {
 
 
@@ -27,10 +33,13 @@ class CampaignService {
     private lateinit var campaignRepository: CampaignRepository
 
     @Autowired
+    private lateinit var campaignAuditRepository: CampaignAuditLogRepository
+
+    @Autowired
     private lateinit var eventStream: EventStream
 
     @Autowired
-    private lateinit var objectMapper:ObjectMapper
+    private lateinit var objectMapper: ObjectMapper
 
     fun getCampaigns(): List<WebCampaign> {
         val campaigns = AuthenticationUtils.clientID?.let { campaignRepository.findByClientID(it) }
@@ -40,6 +49,12 @@ class CampaignService {
 
 
     fun save(webCampaign: WebCampaign): WebCampaign {
+        val persistedCampaign = saveCampaign(webCampaign)
+        return if (persistedCampaign != null) buildWebCampaign(persistedCampaign) else WebCampaign()
+    }
+
+    @Transactional
+    protected fun saveCampaign(webCampaign: com.und.web.model.Campaign): Campaign? {
         val campaign = buildCampaign(webCampaign)
 
         val persistedCampaign = campaignRepository.save(campaign)
@@ -48,7 +63,7 @@ class CampaignService {
         logger.info("sending request to scheduler ${campaign.name}")
         val jobDescriptor = buildJobDescriptor(webCampaign, JobDescriptor.Action.CREATE)
         sendToKafka(jobDescriptor)
-        return buildWebCampaign(persistedCampaign)
+        return persistedCampaign
     }
 
     private fun buildJobDescriptor(campaign: WebCampaign, action: JobDescriptor.Action): JobDescriptor {
@@ -104,7 +119,7 @@ class CampaignService {
             segmentationID = webCampaign.segmentationID
 
 
-            schedule =objectMapper.writeValueAsString(webCampaign.schedule)
+            schedule = objectMapper.writeValueAsString(webCampaign.schedule)
         }
 
         when (webCampaign.campaignType) {
@@ -138,10 +153,11 @@ class CampaignService {
             segmentationID = campaign.segmentationID
             dateCreated = campaign.dateCreated
             dateModified = campaign.dateModified
+            status = campaign.status
 
 
 
-             schedule = objectMapper.readValue(campaign.schedule, Schedule::class.java)
+            schedule = objectMapper.readValue(campaign.schedule, Schedule::class.java)
         }
 
         if (campaign.emailCampaign != null) {
@@ -157,21 +173,21 @@ class CampaignService {
     }
 
     fun pause(campaignId: Long): Long? {
-        val jobDescriptor = JobDescriptor()
-        jobDescriptor.clientId = AuthenticationUtils.clientID.toString()
-        jobDescriptor.campaignId = campaignId.toString()
-        jobDescriptor.action = JobDescriptor.Action.PAUSE
+        return handleSchedule(campaignId, JobDescriptor.Action.PAUSE)
+    }
 
-        sendToKafka(jobDescriptor)
-        return campaignId
+    fun resume(campaignId: Long): Long? {
+        return handleSchedule(campaignId, JobDescriptor.Action.RESUME)
     }
 
 
-    fun resume(campaignId: Long): Long? {
+    private fun handleSchedule(campaignId: Long, action:JobDescriptor.Action): Long {
+        val campaign = campaignRepository.findById(campaignId)
         val jobDescriptor = JobDescriptor()
         jobDescriptor.clientId = AuthenticationUtils.clientID.toString()
         jobDescriptor.campaignId = campaignId.toString()
-        jobDescriptor.action = JobDescriptor.Action.RESUME
+        jobDescriptor.action = action
+        jobDescriptor.campaignName = if (campaign.isPresent) campaign.get().name else ""//set because it cant be null FIXME find some other way around
 
         sendToKafka(jobDescriptor)
         return campaignId
@@ -180,5 +196,35 @@ class CampaignService {
 
     fun sendToKafka(jobDescriptor: JobDescriptor) = eventStream.scheduleJobSend().send(MessageBuilder.withPayload(jobDescriptor).build())
 
+
+    @StreamListener("scheduleJobAckReceive")
+    @Transactional
+    fun schedulerAcknowledge(jobActionStatus: JobActionStatus) {
+        val status = jobActionStatus.status
+        val action = jobActionStatus.jobAction
+        val clientId = action.clientId.toLong()
+        val campaignId = action.campaignId.toLong()
+        val campignName = action.campaignName
+        val actionPerformed = action.action
+        if (status == JobActionStatus.Status.OK) {
+            campaignRepository.updateScheduleStatus(campaignId, clientId, actionPerformed.name)
+        } else if (actionPerformed == JobDescriptor.Action.CREATE) {
+            //FIXME send emails warning alerts etc
+            campaignRepository.updateScheduleStatus(campaignId, clientId, status.name)
+            logger.error(" Campaign Schedule couldn't be created")
+        } else {
+            logger.error("  Schedule action couldn't be performed")
+
+        }
+        val auditLog = CampaignAuditLog()
+        auditLog.campaignId = campaignId
+        auditLog.clientID = clientId
+        auditLog.status = status
+        auditLog.action = action.action
+        auditLog.message = jobActionStatus.message?:""
+
+        campaignAuditRepository.save(auditLog)
+
+    }
 
 }
