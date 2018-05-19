@@ -20,9 +20,9 @@ import org.springframework.transaction.annotation.Transactional
 class UserSettingsService {
 
     @Autowired
-    lateinit private var serviceProviderCredentialsRepository: ServiceProviderCredentialsRepository
+    private lateinit var serviceProviderCredentialsRepository: ServiceProviderCredentialsRepository
     @Autowired
-    lateinit private var clientSettingsRepository: ClientSettingsRepository
+    private lateinit var clientSettingsRepository: ClientSettingsRepository
 
     private val emailServiceProvider = "Email Service Provider"
     private val smsServiceProvider = "Sms Service Provider"
@@ -111,7 +111,7 @@ class UserSettingsService {
     fun getAccountSettings(clientID: Long?, userID: Long?): AccountSettings {
         val clientSettings = clientSettingsRepository.findByClientID(clientID!!)
         val tokenType = object : TypeToken<Array<String>>() {}.type
-        val accountSettings = AccountSettings(clientSettings.id, Gson().fromJson<Array<String>>(clientSettings.authorizedUrls, tokenType),clientSettings.timezone!!)
+        val accountSettings = AccountSettings(clientSettings!!.id, Gson().fromJson<Array<String>>(clientSettings.authorizedUrls, tokenType), clientSettings.timezone!!)
         return accountSettings
     }
 
@@ -145,16 +145,18 @@ class UserSettingsService {
     fun saveUnSubscribeLink(request: UnSubscribeLink, clientID: Long?) {
 
         val clientSettings = clientSettingsRepository.findByClientID(clientID!!)
-        if(clientSettings.clientID==null) {
+        if (clientSettings == null) {
+
+            val clientSettingsNew = ClientSettings()
+            clientSettingsNew.unSubscribeLink = request.unSubscribeLink
+            clientSettingsNew.clientID = clientID
+            clientSettingsRepository.save(clientSettingsNew)
+
+        } else {
 
             clientSettings.unSubscribeLink = request.unSubscribeLink
-            clientSettings.clientID = clientID
             clientSettingsRepository.save(clientSettings)
-        }
-        else
-        {
-            clientSettings.unSubscribeLink = request.unSubscribeLink
-            clientSettingsRepository.save(clientSettings)
+
         }
 
     }
@@ -162,9 +164,18 @@ class UserSettingsService {
     fun getUnSubscribeLink(clientID: Long?): UnSubscribeLink {
 
         val clientSettings = clientSettingsRepository.findByClientID(clientID!!)
-        val unSubscribeLinkUrl=clientSettings.unSubscribeLink
-        val unSubscribeLink= UnSubscribeLink()
-        unSubscribeLink.unSubscribeLink=unSubscribeLinkUrl
-        return unSubscribeLink
+        if (clientSettings != null) {
+
+            val unSubscribeLinkUrl = clientSettings.unSubscribeLink
+            val unSubscribeLink = UnSubscribeLink()
+            unSubscribeLink.unSubscribeLink = unSubscribeLinkUrl
+            return unSubscribeLink
+        }
+        else{
+
+            val unSubscribeLink = UnSubscribeLink()
+            unSubscribeLink.unSubscribeLink = null
+            return unSubscribeLink
+        }
     }
 }
