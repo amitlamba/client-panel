@@ -30,7 +30,6 @@ class UserSettingsServiceTest {
 
     @Before
     fun setup() {
-        val key = "a".repeat(16)//key of strength 16, it can be 16,24 or 32,
         MockitoAnnotations.initMocks(this)
         ReflectionTestUtils.setField(userSettingsService, "clientSettingsRepository", clientSettingsRepository) // one hour
         ReflectionTestUtils.setField(userSettingsService, "serviceProviderCredentialsRepository", serviceProviderCredentialsRepository) // one hour
