@@ -110,10 +110,15 @@ class UserSettingsController {
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping(value = ["/account-settings/get"])
-    fun getAccountSettings(): AccountSettings {
+    fun getAccountSettings(): AccountSettings? {
         val clientID = AuthenticationUtils.clientID
         val userID = AuthenticationUtils.principal.id
-        return userSettingsService.getAccountSettings(clientID, userID)
+        if (clientID != null) {
+            val optionalSettings = userSettingsService.getAccountSettings(clientID)
+            return if (optionalSettings.isPresent) optionalSettings.get() else null
+
+        }
+        return null
     }
 
     @PostMapping(value = ["unsubscribe-link/save"])

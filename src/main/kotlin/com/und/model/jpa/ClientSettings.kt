@@ -28,7 +28,7 @@ class ClientSettings {
     var authorizedUrls: String? = null
 
     @Column(name = "timezone")
-    var timezone: String? = null
+    var timezone: String = "UTC"
 
     @Transient
     @field:CreationTimestamp

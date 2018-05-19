@@ -1,29 +1,34 @@
 package com.und.service
 
-import org.junit.Ignore
-import org.junit.Test
-import org.junit.runner.RunWith
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.test.context.junit4.SpringRunner
 
-//@Ignore
-@RunWith(SpringRunner::class)
-@SpringBootTest
+import org.junit.Assert.*
+import org.junit.Before
+import org.junit.Test
+import org.mockito.InjectMocks
+import org.mockito.MockitoAnnotations
+import org.springframework.test.util.ReflectionTestUtils
+import org.hamcrest.CoreMatchers.`is` as Is
+
+
 class UnsubscribeServiceTest {
 
-    @Autowired
-    lateinit var unsubscribeService: UnsubscribeService
+    @InjectMocks
+    private lateinit var unsubscribeService: UnsubscribeService
+
+    @Before
+    fun setup() {
+        val key = "a".repeat(16)//key of strength 16, it can be 16,24 or 32,
+        MockitoAnnotations.initMocks(this)
+        ReflectionTestUtils.setField(unsubscribeService, "encryptDecryptKey", key) // one hour
+
+    }
 
     @Test
     fun testUnsubscribeLinks() {
         val dummyUnsubscribeLinkParams = createDummyUnsubscribeLinkParams()
-        println(dummyUnsubscribeLinkParams)
         val unsubscribeLink = unsubscribeService.createUnsubscribeLink(unsubscribeLinkParams = dummyUnsubscribeLinkParams)
-        println(unsubscribeLink)
         val dataFromUnsubscribeLink = unsubscribeService.getDataFromUnsubscribeLink(unsubscribeLink = unsubscribeLink)
-        println(dataFromUnsubscribeLink)
-        assert(dummyUnsubscribeLinkParams.equals(dataFromUnsubscribeLink), {"The object could not be recreated"})
+        assertThat(dummyUnsubscribeLinkParams , Is(dataFromUnsubscribeLink))
     }
 
     private fun createDummyUnsubscribeLinkParams(): UnsubscribeService.UnsubscribeLinkParams {

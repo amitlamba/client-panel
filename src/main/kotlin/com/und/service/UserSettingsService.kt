@@ -15,6 +15,7 @@ import com.und.web.model.UnSubscribeLink
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.util.*
 
 @Service
 class UserSettingsService {
@@ -108,11 +109,14 @@ class UserSettingsService {
         clientSettingsRepository.save(clientSettings)
     }
 
-    fun getAccountSettings(clientID: Long?, userID: Long?): AccountSettings {
-        val clientSettings = clientSettingsRepository.findByClientID(clientID!!)
+    fun getAccountSettings(clientID: Long): Optional<AccountSettings> {
+        val clientSettings = clientSettingsRepository.findByClientID(clientID)
         val tokenType = object : TypeToken<Array<String>>() {}.type
-        val accountSettings = AccountSettings(clientSettings!!.id, Gson().fromJson<Array<String>>(clientSettings.authorizedUrls, tokenType), clientSettings.timezone!!)
-        return accountSettings
+        return if (clientSettings != null) {
+            val setting =
+                    AccountSettings(clientSettings.id, Gson().fromJson<Array<String>>(clientSettings.authorizedUrls, tokenType), clientSettings.timezone)
+            Optional.of(setting)
+        } else Optional.empty()
     }
 
     @Transactional
@@ -134,7 +138,7 @@ class UserSettingsService {
         clientSettingsRepository.saveSenderEmailAddresses(GsonBuilder().create().toJson(emailAddresses), clientID)
     }
 
-    fun getSenderEmailAddresses(clientID: Long): List<EmailAddress> {
+    fun getSenderEmailAddresses(clientID: Long): ArrayList<EmailAddress> {
         var emailAddressesJson: String? = clientSettingsRepository.findSenderEmailAddressesByClientId(clientID)
         if (emailAddressesJson == null) emailAddressesJson = "[]"
         val eaListType = object : TypeToken<List<EmailAddress>>() {}.type
