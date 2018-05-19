@@ -90,7 +90,7 @@ class UserSettingsController {
     @GetMapping(value = ["/senders-email/list"])
     fun getSendersEmailList(): List<EmailAddress> {
         val clientID = AuthenticationUtils.clientID
-        return userSettingsService.getSenderEmailAddresses(clientID!!)
+        return userSettingsService.senderEmailAddresses(clientID!!)
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
