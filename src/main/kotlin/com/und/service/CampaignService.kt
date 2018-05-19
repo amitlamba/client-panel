@@ -212,12 +212,12 @@ class CampaignService {
         when (campaign.status) {
             CampaignStatus.DELETED -> {
                 val error = ValidationError()
-                error.addFieldError("campaignId", "Campaign is delete and  ${campaign.status} cant be performed")
+                error.addFieldError("campaignId", "Campaign is deleted and  ${action.name} cant be performed")
                 throw UndBusinessValidationException(error)
             }
             CampaignStatus.STOPPED -> {
                 val error = ValidationError()
-                error.addFieldError("campaignId", "Campaign is STOPPED and  ${campaign.status} cant be performed")
+                error.addFieldError("campaignId", "Campaign is stopped and  ${action.name}  cant be performed")
                 throw UndBusinessValidationException(error)
             }
             else -> {}

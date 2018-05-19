@@ -26,24 +26,23 @@ class RestErrorHandler {
         protected val logger = loggerFor(RestErrorHandler::class.java)
     }
 
-    @Autowired
-    lateinit var messageSource: MessageSource
 
-    @ExceptionHandler(Exception::class)
+
+/*    @ExceptionHandler(Exception::class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ResponseBody
     fun processOtherError(ex: Exception) {
         logger.debug("Handling INTERNAL SEREVR error")
         logger.error("error occured",ex)
 
-    }
+    }*/
 
     @ExceptionHandler(AccessDeniedException::class, AuthenticationException::class)
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     @ResponseBody
     fun processAuthEroor(ex: Exception) :String{
-        logger.debug("Handling INTERNAL SEREVR error")
-        logger.error("error occured",ex)
+        logger.debug("Handling INTERNAL SERVER error")
+        logger.error("error occurred",ex)
         return "Access Denied!"
 
     }
