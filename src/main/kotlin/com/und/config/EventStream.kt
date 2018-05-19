@@ -14,4 +14,8 @@ interface EventStream {
     @Input("scheduleJobAckReceive")
     fun scheduleJobAck(): SubscribableChannel
 
+    @Output("clientEmailSend")
+    fun clientEmailSend(): MessageChannel
+
+
 }

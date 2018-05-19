@@ -1,15 +1,15 @@
 package com.und.web.controller
 
-import com.und.web.model.ContactUs
 import com.und.service.ContactUsService
+import com.und.web.model.ContactUs
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.mail.javamail.JavaMailSender
-import org.springframework.mail.javamail.JavaMailSenderImpl
+import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RestController
 import javax.validation.Valid
-import org.springframework.mail.javamail.MimeMessageHelper
-import org.springframework.web.bind.annotation.*
-import javax.mail.internet.MimeMessage
-import javax.servlet.http.HttpServletResponse
 
 
 @RestController
@@ -20,17 +20,10 @@ class ContactUsController {
     lateinit var contactUsService: ContactUsService
 
     @PostMapping("/save")
-    fun saveContactUsDetails(@Valid @RequestBody request: ContactUs, response: HttpServletResponse) {
+    fun saveContactUsDetails(@Valid @RequestBody contactInfo: ContactUs): ResponseEntity<Unit> {
+        contactUsService.save(contactInfo)
+        return ResponseEntity(HttpStatus.OK)
 
-        if (request.name != null && request.email != null && request.message != null && request.mobileNo != null) {
-
-            contactUsService.save(request)
-
-            //TODO Send Email ar response
-            response.status=HttpServletResponse.SC_OK
-        }
-        else
-            response.status=HttpServletResponse.SC_NOT_ACCEPTABLE
     }
 
 
