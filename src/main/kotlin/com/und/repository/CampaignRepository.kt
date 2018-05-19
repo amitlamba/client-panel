@@ -11,7 +11,8 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface CampaignRepository : JpaRepository<Campaign, Long> {
-    fun findByClientID(clientID: Long = 1): List<Campaign>
+    fun findByClientID(clientID: Long): List<Campaign>
+    //fun findByClientIDAndCampaignStatus(clientID: Long = 1, status:CampaignStatus): List<Campaign>
     fun findByIdAndClientID(id: Long, clientID: Long): Campaign
     fun findByClientIDAndCampaignType(clientID: Long, campaignType: CampaignType): List<Campaign>
     fun findByIdAndClientIDAndCampaignType(id: Long, clientID: Long, campaignType: CampaignType): Campaign
