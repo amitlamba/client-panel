@@ -116,20 +116,14 @@ class UserSettingsController {
         return userSettingsService.getAccountSettings(clientID, userID)
     }
 
-    @PostMapping(value=["unsubscribe-link/save"])
+    @PostMapping(value = ["unsubscribe-link/save"])
     fun saveUnSubscribeLink(@Valid @RequestBody request: UnSubscribeLink) {
-
-        if (request.unSubscribeLink != null) {
-            val clientID = AuthenticationUtils.clientID
-            userSettingsService.saveUnSubscribeLink(request, clientID)
-        }
-        else throw InvalidRequestException("Unsubscribe link is null")
-
+        val clientID = AuthenticationUtils.clientID
+        userSettingsService.saveUnSubscribeLink(request, clientID)
     }
 
-    @GetMapping(value=["unsubscribe-link/get"])
+    @GetMapping(value = ["unsubscribe-link/get"])
     fun getUnsubscribeLink(): UnSubscribeLink {
-
         val clientID = AuthenticationUtils.clientID
         return userSettingsService.getUnSubscribeLink(clientID)
     }
