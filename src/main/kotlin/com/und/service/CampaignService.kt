@@ -3,6 +3,7 @@ package com.und.service
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.und.common.utils.loggerFor
 import com.und.config.EventStream
+import com.und.exception.UndBusinessValidationException
 import com.und.model.CampaignStatus
 import com.und.model.JobActionStatus
 import com.und.model.JobDescriptor
@@ -11,12 +12,12 @@ import com.und.model.jpa.*
 import com.und.repository.CampaignAuditLogRepository
 import com.und.repository.CampaignRepository
 import com.und.security.utils.AuthenticationUtils
+import com.und.web.model.ValidationError
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.cloud.stream.annotation.StreamListener
 import org.springframework.messaging.support.MessageBuilder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import java.awt.event.ActionEvent
 import com.und.web.model.Campaign as WebCampaign
 
 
@@ -183,14 +184,50 @@ class CampaignService {
         return handleSchedule(campaignId, JobDescriptor.Action.RESUME)
     }
 
+    fun stop(campaignId: Long): Long? {
+        return handleSchedule(campaignId, JobDescriptor.Action.STOP)
+    }
+
+    fun delete(campaignId: Long): Long? {
+        return handleSchedule(campaignId, JobDescriptor.Action.DELETE)
+    }
+
 
     private fun handleSchedule(campaignId: Long, action: JobDescriptor.Action): Long {
-        val campaign = campaignRepository.findById(campaignId)
+        val campaignOption = campaignRepository.findById(campaignId)
+
+        val campaign = if (campaignOption.isPresent) campaignOption.get() else {
+            val error = ValidationError()
+            error.addFieldError("campaignId", "No Campaign With id $campaignId exists")
+            throw UndBusinessValidationException(error)
+        }
+
+        if (campaign.status == actionToCampaignStatus(action)) {
+            val error = ValidationError()
+            error.addFieldError("campaignId", "Campaign  already has status of  ${campaign.status}")
+            throw UndBusinessValidationException(error)
+        }
+
+
+        when (campaign.status) {
+            CampaignStatus.DELETED -> {
+                val error = ValidationError()
+                error.addFieldError("campaignId", "Campaign is delete and  ${campaign.status} cant be performed")
+                throw UndBusinessValidationException(error)
+            }
+            CampaignStatus.STOPPED -> {
+                val error = ValidationError()
+                error.addFieldError("campaignId", "Campaign is STOPPED and  ${campaign.status} cant be performed")
+                throw UndBusinessValidationException(error)
+            }
+            else -> {}
+        }
+
         val jobDescriptor = JobDescriptor()
         jobDescriptor.clientId = AuthenticationUtils.clientID.toString()
         jobDescriptor.campaignId = campaignId.toString()
         jobDescriptor.action = action
-        jobDescriptor.campaignName = if (campaign.isPresent) campaign.get().name else ""//set because it cant be null FIXME find some other way around
+        jobDescriptor.campaignName = campaign.name//set because it cant be null FIXME find some other way around
 
         sendToKafka(jobDescriptor)
         return campaignId
@@ -239,8 +276,8 @@ class CampaignService {
             JobDescriptor.Action.PAUSE -> CampaignStatus.PAUSED
             JobDescriptor.Action.RESUME -> CampaignStatus.RESUMED
             JobDescriptor.Action.DELETE -> CampaignStatus.DELETED
-            JobDescriptor.Action.FAILED -> CampaignStatus.ERROR
             JobDescriptor.Action.CREATE -> CampaignStatus.CREATED
+            JobDescriptor.Action.STOP -> CampaignStatus.STOPPED
             JobDescriptor.Action.NOTHING -> CampaignStatus.ERROR
         }
     }

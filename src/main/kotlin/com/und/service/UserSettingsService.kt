@@ -164,18 +164,13 @@ class UserSettingsService {
     fun getUnSubscribeLink(clientID: Long?): UnSubscribeLink {
 
         val clientSettings = clientSettingsRepository.findByClientID(clientID!!)
-        if (clientSettings != null) {
+        val linkUrl = clientSettings?.unSubscribeLink
 
-            val unSubscribeLinkUrl = clientSettings.unSubscribeLink
+        return linkUrl?.let { link ->
             val unSubscribeLink = UnSubscribeLink()
-            unSubscribeLink.unSubscribeLink = unSubscribeLinkUrl
+            unSubscribeLink.unSubscribeLink = link
             return unSubscribeLink
-        }
-        else{
+        } ?: UnSubscribeLink()
 
-            val unSubscribeLink = UnSubscribeLink()
-            unSubscribeLink.unSubscribeLink = null
-            return unSubscribeLink
-        }
     }
 }

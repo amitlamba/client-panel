@@ -64,6 +64,18 @@ class CampaignController {
         return takeAction(campaignId, campaignService::resume)
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PatchMapping(value = ["/stop/{campaignId}"])
+    fun stopCampaign(@PathVariable campaignId: Long): ResponseEntity<*> {
+        return takeAction(campaignId, campaignService::stop)
+    }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PatchMapping(value = ["/delete/{campaignId}"])
+    fun deleteCampaign(@PathVariable campaignId: Long): ResponseEntity<*> {
+        return takeAction(campaignId, campaignService::delete)
+    }
+
     private fun takeAction(campaignId: Long, perform: (Long) -> Long?): ResponseEntity<out Long?> {
         val clientId = AuthenticationUtils.clientID
         if (clientId != null) {
