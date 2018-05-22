@@ -89,6 +89,7 @@ import {ConversionEventsGraphComponent} from './conversion-events-graph/conversi
 import {EventsGraphComponent} from './events-graph/events-graph.component';
 import {ChartsModule} from "ng2-charts";
 import {ReportsService} from "./_services/reports.service";
+import {RegisterService} from "./_services/register.service";
 
 
 @NgModule({
@@ -185,7 +186,8 @@ import {ReportsService} from "./_services/reports.service";
     SettingsService,
     SegmentService,
     CampaignService,
-    ReportsService
+    ReportsService,
+    RegisterService
   ],
   entryComponents: [
     DidEventComponent,

@@ -13,7 +13,7 @@ export class TimerangeComponent implements OnInit {
   toHours: string;
   fromMinutes: string;
   toMinutes: string;
-
+  toHoursIndex: number;
   constructor() {
   }
 
@@ -24,6 +24,8 @@ export class TimerangeComponent implements OnInit {
   ngOnInit() {
     console.log(this.timeOfTheDayOptions);
     this.setDefaultTimeValues();
+    this.toHoursIndex = this.timeOfTheDayOptions[0].hours.indexOf(this.toHours);
+
   }
 
   setDefaultTimeValues() {
@@ -40,11 +42,12 @@ export class TimerangeComponent implements OnInit {
     console.log("to Hours" + this.toHours);
     console.log("To Minutes" + this.toMinutes);
     let hoursArray: string[] = this.timeOfTheDayOptions[0].hours;
+    console.log(hoursArray);
     if (hoursArray.indexOf(this.fromHours) > hoursArray.indexOf(this.toHours)) {
       alert("Bro! , The value of From time should be less than To Time");
+      console.log(hoursArray[this.toHoursIndex]);
+      this.toHours = hoursArray[this.toHoursIndex];
     }
-    let fromTimeString: string = this.fromHours + ":" + this.fromMinutes;
-    let toTimestring: string = this.toHours + ":" + this.toMinutes;
-    this.values.emit([fromTimeString, toTimestring]);
+    this.values.emit([this.fromHours, this.fromMinutes, this.toHours, this.toMinutes]);
   }
 }

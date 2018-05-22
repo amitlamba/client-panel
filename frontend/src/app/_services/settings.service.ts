@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {AccountSettings, SendersInfo, ServiceProviderCredentials} from "../_models/client";
+import {AccountSettings, SendersInfo, ServiceProviderCredentials, UnSubscribeLink} from "../_models/client";
 import {Campaign} from "../_models/campaign";
 import {Observable} from "rxjs/Observable";
 import {AppSettings} from "../_settings/app-settings";
@@ -32,9 +32,18 @@ export class SettingsService {
   getAccountSettings(): Observable<any> {
     return this.httpClient.get<AccountSettings>(AppSettings.API_ENDPOINT_CLIENT_SETTING_ACCOUNT_SETTINGS_GET);
   }
+
+  saveUnSubscribeLink(unSubscribeLink: UnSubscribeLink): Observable<any> {
+    return this.httpClient.post<UnSubscribeLink>(AppSettings.API_ENDPOINT_CLIENT_SETTING_ACCOUNT_SETTINGS_UNSUBSCRIBE_LINK_SAVE, unSubscribeLink);
+  }
+
+  getUnSubscribeLink(): Observable<any> {
+    return this.httpClient.get<UnSubscribeLink>(AppSettings.API_ENDPOINT_CLIENT_SETTING_ACCOUNT_SETTINGS_UNSUBSCRIBE_LINK_GET);
+  }
+
   // Do Check my Post Call
   refreshToken(): Observable<any> {
-    return this.httpClient.post<null>(AppSettings.API_ENDPOINT_AUTH_SETTING_REFRESHTOKEN +"/false", null);
+    return this.httpClient.post<null>(AppSettings.API_ENDPOINT_AUTH_SETTING_REFRESHTOKEN + "/false", null);
   }
 
   saveSendersInfo(sendersInfo): Observable<any> {

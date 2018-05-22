@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {AmPm, CampaignTime} from "../../../_models/campaign";
+import {AmPm, CampaignDateTime} from "../../../_models/campaign";
 import * as moment from "moment";
 
 @Component({
@@ -10,30 +10,32 @@ import * as moment from "moment";
 export class DateTimeComponent implements OnInit {
   showCloseButton: boolean;
   _ref: any;
-  campaignTime: CampaignTime = new CampaignTime();
+  campaignTime: CampaignDateTime = new CampaignDateTime();
   date = new Date();
   campaignTimeAmpPmList: string[];
 
-  @Input() campaignTimesList:CampaignTime[] = [];
+  @Input() campaignTimesList: CampaignDateTime[] = [];
   localCampaignLaterTime;
-  @Input() get campaignLaterTime(): CampaignTime {
-    return this.localCampaignLaterTime;
-  }
-  set campaignLaterTime(campaignLaterTime: CampaignTime) {
-    this.localCampaignLaterTime = campaignLaterTime;
-    this.campaignLaterTimeChange.emit(this.localCampaignLaterTime);
-  }
-  @Output() campaignLaterTimeChange = new EventEmitter();
-
   // Date Picker Options
   public singlePicker = {
     singleDatePicker: true,
     showDropdowns: true,
     opens: "right",
+    minDate: moment(),
     locale: {
       format: "DD/MM/YYYY"
     }
   };
+  @Output() campaignLaterTimeChange = new EventEmitter();
+
+  @Input() get campaignLaterTime(): CampaignDateTime {
+    return this.localCampaignLaterTime;
+  }
+
+  set campaignLaterTime(campaignLaterTime: CampaignDateTime) {
+    this.localCampaignLaterTime = campaignLaterTime;
+    this.campaignLaterTimeChange.emit(this.localCampaignLaterTime);
+  }
 
   constructor() {
     this.campaignTimeAmpPmList = Object.keys(AmPm);

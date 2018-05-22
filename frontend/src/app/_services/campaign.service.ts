@@ -18,4 +18,20 @@ export class CampaignService {
   getCampaignList(): Observable<Campaign[]> {
     return this.httpClient.get<Campaign[]>(AppSettings.API_ENDPOINT_CLIENT_CAMPAIGN_LIST);
   }
+
+  pauseCampaign(campId): Observable<number> {
+    return this.httpClient.patch<number>(AppSettings.API_ENDPOINT_CLIENT_CAMPAIGN_PAUSE + "/" + campId, "");
+  }
+
+  resumeCampaign(campId): Observable<number> {
+    return this.httpClient.patch<number>(AppSettings.API_ENDPOINT_CLIENT_CAMPAIGN_RESUME + "/" + campId, "");
+  }
+
+  stopCampaign(campId): Observable<number> {
+    return this.httpClient.patch<number>(AppSettings.API_ENDPOINT_CLIENT_CAMPAIGN_STOP + "/" + campId, "");
+  }
+
+  deleteCampaign(campId): Observable<number> {
+    return this.httpClient.patch<number>(AppSettings.API_ENDPOINT_CLIENT_CAMPAIGN_DELETE + "/" + campId, "");
+  }
 }

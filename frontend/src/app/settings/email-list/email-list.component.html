@@ -14,7 +14,7 @@
              name="email"
              placeholder="Email"
              class="form-control col-md-5 mr-auto mt-2"
-            [(ngModel)]="sendersInfo.address"
+             [(ngModel)]="sendersInfo.address"
              [ngClass]="{'border-danger':email.invalid && (email.touched || email.dirty)}"
              #email="ngModel"
              email>
@@ -45,7 +45,10 @@
             <td>{{senderInfo.personal}}</td>
             <td>{{senderInfo.address}}
              <td>
-              <button class="border-0" (click)="deleteSendersInfo(senderInfo)" id="deleteButton"><i class="far fa-trash-alt text-primary"></i></button>
+               <button class="border-0"
+                       (click)="deleteSendersInfo(senderInfo)"
+                       id="deleteButton"><i class="far fa-trash-alt text-primary"></i>
+               </button>
              </td>
           </tr>
         </tbody>

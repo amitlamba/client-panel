@@ -3,7 +3,7 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {SegmentService} from "../../_services/segment.service";
 import {DateTimeComponent} from "./date-time/date-time.component";
 import {
-  Campaign, CampaignTime, CampaignType, Now, Schedule, ScheduleEnd, ScheduleEndType, ScheduleMultipleDates,
+  Campaign, CampaignDateTime, CampaignType, Now, Schedule, ScheduleEnd, ScheduleEndType, ScheduleMultipleDates,
   ScheduleOneTime, ScheduleRecurring,
   ScheduleType
 } from "../../_models/campaign";
@@ -27,10 +27,12 @@ export class SetupCampaignComponent implements OnInit {
   showCloseButton: boolean = false;
   disableSubmit: boolean = false;
   occurencesValueFalse: boolean = false;
-  cronExpression = '4 3 2 1 1/1 ? *'; //FIXME
+  cronExpression = '4 3 2 LW 1/1 ? *'; //FIXME
   isCronDisabled: boolean = false;
-  schedule: Schedule = new Schedule();
-  scheduleType: ScheduleType = ScheduleType.oneTime;
+  // schedule: Schedule = new Schedule();
+  schedule: Schedule;
+  // scheduleType: ScheduleType = ScheduleType.oneTime;
+  scheduleType: ScheduleType;
 
   //Campaign
   smsTemplatesList: SmsTemplate[] = [];
@@ -42,7 +44,7 @@ export class SetupCampaignComponent implements OnInit {
 
   cronOptions: CronOptions = {
     formInputClass: 'form-control cron-editor-input',
-    formSelectClass: 'form-control cron-editor-select',
+    formSelectClass: 'form-control cron-editor-select mx-1',
     formRadioClass: 'cron-editor-radio',
     formCheckboxClass: 'cron-editor-checkbox',
 
@@ -60,11 +62,15 @@ export class SetupCampaignComponent implements OnInit {
     hideSeconds: true
   };
 
-  //Date Picker Options
+  // Date Picker Options
   public singlePicker = {
     singleDatePicker: true,
     showDropdowns: true,
-    opens: "right"
+    opens: "right",
+    minDate: moment(),
+    locale: {
+      format: "DD/MM/YYYY"
+    }
   };
 
   @ViewChild('parent', {read: ViewContainerRef}) container: ViewContainerRef;
@@ -75,13 +81,21 @@ export class SetupCampaignComponent implements OnInit {
               private route: ActivatedRoute,
               private router: Router,
               private campaignService: CampaignService) {
-    this.schedule.oneTime = new ScheduleOneTime();
-    this.schedule.oneTime.nowOrLater = Now.Now;
-    this.schedule.oneTime.campaignTime = new CampaignTime();
-    this.currentPath = this.route.snapshot.url[0].path;
+    // this.scheduleType = ScheduleType.oneTime;
+    // this.schedule.oneTime = new ScheduleOneTime();
+    // this.schedule.oneTime.nowOrLater = Now.Now;
+    // this.schedule.oneTime.campaignTime = new CampaignTime();
+    // this.currentPath = this.route.snapshot.url[0].path;
   }
 
   ngOnInit() {
+    this.schedule = new Schedule();
+    this.scheduleType = ScheduleType.oneTime;
+    this.schedule.oneTime = new ScheduleOneTime();
+    this.schedule.oneTime.nowOrLater = Now.Now;
+    this.schedule.oneTime.campaignDateTime = new CampaignDateTime();
+    this.currentPath = this.route.snapshot.url[0].path;
+
     // Segments List
     this.segmentService.getSegments().subscribe(
       (segments) => {
@@ -118,12 +132,13 @@ export class SetupCampaignComponent implements OnInit {
     }
     this.campaign.schedule = this.schedule;
     this.checkCampaignType();
-    this.campaignService.saveCampaign(this.campaign).subscribe(
-      (campaign) => {
-        this.campaignService.campaigns.push(campaign);
-        this.router.navigate(["/campaigns"]);
-      }
-    );
+    console.log(JSON.stringify(this.campaign));
+    // this.campaignService.saveCampaign(this.campaign).subscribe(
+    //   (campaign) => {
+    //     this.campaignService.campaigns.push(campaign);
+    //     this.router.navigate(["/campaigns"]);
+    //   }
+    // );
   }
 
   checkCampaignType() {
@@ -155,6 +170,7 @@ export class SetupCampaignComponent implements OnInit {
     else {
       this.disableSubmit = true;
     }
+    this.schedule.recurring.scheduleEnd.occurrences = null;
   }
 
   addAnotherDateTime(): void {
@@ -174,7 +190,7 @@ export class SetupCampaignComponent implements OnInit {
       this.schedule = new Schedule();
       this.schedule.oneTime = new ScheduleOneTime();
       this.schedule.oneTime.nowOrLater = Now.Now;
-      this.schedule.oneTime.campaignTime = new CampaignTime();
+      this.schedule.oneTime.campaignDateTime = new CampaignDateTime();
     }
   }
 
@@ -183,7 +199,7 @@ export class SetupCampaignComponent implements OnInit {
       this.scheduleType = ScheduleType.multipleDates;
       this.schedule = new Schedule();
       this.schedule.multipleDates = new ScheduleMultipleDates();
-      this.schedule.multipleDates.campaignDateTimeList = new Array<CampaignTime>();
+      this.schedule.multipleDates.campaignDateTimeList = new Array<CampaignDateTime>();
     }
   }
 
@@ -195,14 +211,21 @@ export class SetupCampaignComponent implements OnInit {
       this.schedule.recurring.scheduleStartDate = moment(Date.now()).format("YYYY-MM-DD");
       this.schedule.recurring.scheduleEnd = new ScheduleEnd();
       this.schedule.recurring.scheduleEnd.endType = ScheduleEndType.NeverEnd;
-      this.schedule.recurring.scheduleEnd.endsOn = moment(Date.now()).format("YYYY-MM-DD");
+      this.schedule.recurring.scheduleEnd.endsOn = null;
       this.schedule.recurring.cronExpression = this.cronExpression;
-      this.schedule.recurring.scheduleEnd.occurrences = 2;
+      this.schedule.recurring.scheduleEnd.occurrences = null;
     }
 
   }
 
   checkOccurencesValue() {
+    // Problem in assigning value
+    this.schedule.recurring.scheduleEnd.occurrences = 2;
+    this.schedule.recurring.scheduleEnd.endsOn = null;
+
+  }
+
+  checkOccurencesValidtation() {
     if (this.schedule.recurring.scheduleEnd.occurrences > 1000 || this.schedule.recurring.scheduleEnd.occurrences < 1) {
       this.occurencesValueFalse = true;
       this.disableSubmit = true;
@@ -211,6 +234,20 @@ export class SetupCampaignComponent implements OnInit {
       this.occurencesValueFalse = false;
       this.disableSubmit = false;
     }
+  }
+
+  neverEndSelected() {
+    this.occurencesValueFalse = false;
+    this.disableSubmit = false;
+    this.schedule.recurring.scheduleEnd.endsOn = null;
+    this.schedule.recurring.scheduleEnd.occurrences = null;
+  }
+
+  endsOnDateSelected() {
+    this.schedule.recurring.scheduleEnd.endsOn = moment(Date.now()).format("YYYY-MM-DD");
+    this.occurencesValueFalse = false;
+    this.disableSubmit = false;
+    this.schedule.recurring.scheduleEnd.occurrences = null;
   }
 
 }

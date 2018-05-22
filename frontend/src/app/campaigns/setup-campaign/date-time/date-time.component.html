@@ -1,20 +1,20 @@
 <div class="row">
-  <div class=" col-md-4 col-sm-6 mt-2 mb-1  pr-0 form-inline">
+  <div class=" col-xl-4 col-md-5 mt-2 mb-1  pr-0 form-inline">
     <div class="input-group"
          daterangepicker
          [options]="singlePicker"
-         (selected)="singleSelect($event)">
+         (selected)="singleSelect($event)" style="width: 180px;">
     <span class="form-control uneditable-input pr-4"
           name="daterange">
     {{ campaignTime.date | date:'dd/M/y' }}
     </span>
       <span class="input-group-btn">
-    <a type="button" class="btn btn-default"><i class="far fa-calendar-alt"></i></a>
-    </span>
+        <a type="button" class="btn btn-default"><i class="far fa-calendar-alt"></i></a>
+      </span>
     </div>
     <p class="ml-4 mt-3" style="font-size: 15px;">at</p>
   </div>
-  <div class="col-md-7 form-inline border-bottom">
+  <div class="col-md-6 form-inline border-bottom">
     <input type="number"
            class="form-control col-3 mr-2"
            min="1"
@@ -22,7 +22,7 @@
            name="hours"
            [(ngModel)]="campaignTime.hours"
            #hours="ngModel"
-           [ngClass]="{'red-border-class':hours.errors && hours.touched}">&#58;
+           [ngClass]="{'border-danger':hours.errors && hours.touched}">&#58;
     <input type="number"
            class="form-control col-3 mx-2"
            min="0"
@@ -34,7 +34,8 @@
       <option name="ampm"
               *ngFor="let AmPm of campaignTimeAmpPmList"
               value="{{AmPm}}"
-              >{{AmPm}}</option>
+      >{{AmPm}}
+      </option>
     </select>
   </div>
   <button type="button"
