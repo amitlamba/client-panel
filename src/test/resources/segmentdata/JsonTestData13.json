@@ -383,7 +383,7 @@
             "name": "Day of month"
           },
           {
-            "values": [],
+            "values": [11,12,13,14],
             "name": "Time of day"
           }
         ]
@@ -423,7 +423,7 @@
             "operator": "Equals"
           },
           {
-            "values": [],
+            "values": [11,12,13,14],
             "name": "Time of day"
           },
           {

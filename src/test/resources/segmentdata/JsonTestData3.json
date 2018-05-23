@@ -5,7 +5,7 @@
         "name": "Charged",
         "dateFilter": {
           "operator": "After",
-          "values": []
+          "values": ["2015-04-04"]
         },
         "propertyFilters": [
           {
@@ -17,23 +17,21 @@
             "operator": "GreaterThan"
           },
           {
-            "values": [],
+            "values": [10,11,12,13],
             "name": "Time of day",
             "operator": "Exists"
           },
           {
-            "values": [],
+            "values": [2],
             "name": "Day of month"
           },
           {
-            "values": [],
+            "values": ["2015-04-04"],
             "name": "Delivery Date",
             "type": "date",
             "operator": "After"
-          },
-          {
-            "values": []
           }
+
         ],
         "whereFilter": {
           "operator": "GreaterThan",
@@ -54,25 +52,25 @@
         "name": "App Uninstalled",
         "dateFilter": {
           "operator": "Before",
-          "values": []
+          "values": ["2015-04-04"]
         },
         "propertyFilters": [
           {
-            "values": [],
+            "values": [10,11,12,13],
             "name": "Time of day"
           },
           {
-            "values": [],
+            "values": [3],
             "name": "Day of week"
           },
           {
-            "values": [],
+            "values": [3],
             "name": "Day of month"
           }
         ],
         "whereFilter": {
           "operator": "GreaterThan",
-          "values": [],
+          "values": [4],
           "whereFilterName": "Count"
         }
       }
@@ -93,7 +91,7 @@
     {
       "globalFilterType": "Technographics",
       "name": "OS",
-      "values": [],
+      "values": [5],
       "operator": "Exists"
     },
     {
@@ -107,7 +105,7 @@
     {
       "globalFilterType": "AppFields",
       "name": "OS Version",
-      "values": [],
+      "values": [1],
       "operator": "DoesNotExist"
     }
   ],

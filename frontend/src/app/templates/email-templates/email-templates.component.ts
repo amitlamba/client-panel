@@ -37,7 +37,7 @@ export class EmailTemplatesComponent implements OnInit {
   }
 
   onEdit(emailTemplate: EmailTemplate) {
-    this.components.pop() && this.components.pop().removeComponent();
+    this.removeComponent();
     console.log(JSON.parse(JSON.stringify(emailTemplate)));
     this.templatesService.emailTemplateForEdit.next(JSON.parse(JSON.stringify(emailTemplate)));
     this.addComponent();
@@ -49,7 +49,7 @@ export class EmailTemplatesComponent implements OnInit {
   }
 
   onCreateNew() {
-    this.components.pop() && this.components.pop().removeComponent();
+    this.removeComponent();
     this.templatesService.emailTemplateForEdit.next(new EmailTemplate());
     this.addComponent();
   }
@@ -64,6 +64,8 @@ export class EmailTemplatesComponent implements OnInit {
   }
 
   removeComponent() {
-    this.components.pop().destroy();
+    while(this.components.length > 0) {
+      this.components.pop().destroy();
+    }
   }
 }

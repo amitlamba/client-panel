@@ -115,6 +115,15 @@ class SegmentParserCriteriaTest {
 
     }
 
+    @Test
+    fun testSegmentParser12() {
+
+        val testData = readFileText("$testDataBase/JsonTestData12.json")
+        val segment = mapper.readValue(testData, Segment::class.java)
+        val parsedResponse = segmentParser.segmentQueries(segment)
+        MatcherAssert.assertThat(2, Is(2))
+
+    }
 
     @Test
     fun testSegmentParser7() {

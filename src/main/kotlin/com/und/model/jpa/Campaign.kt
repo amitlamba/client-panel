@@ -1,6 +1,7 @@
 package com.und.model.jpa
 
 
+import com.und.model.CampaignStatus
 import org.hibernate.annotations.CreationTimestamp
 import org.hibernate.annotations.UpdateTimestamp
 import java.time.LocalDate
@@ -45,6 +46,10 @@ class Campaign {
     @NotNull
     var schedule: String? = null
 
+    @Column(name = "campaign_status", updatable = false, insertable = false)
+    @Enumerated(EnumType.STRING)
+    @NotNull
+    var status: CampaignStatus = CampaignStatus.DELETED
 
     @OneToOne(mappedBy = "campaign",
             cascade = arrayOf(CascadeType.ALL),

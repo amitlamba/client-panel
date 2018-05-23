@@ -69,7 +69,7 @@
         ],
         "whereFilter": {
           "operator": "GreaterThan",
-          "values": [],
+          "values": [2],
           "whereFilterName": "Count"
         }
       }

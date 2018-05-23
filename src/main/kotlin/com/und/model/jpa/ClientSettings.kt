@@ -28,7 +28,7 @@ class ClientSettings {
     var authorizedUrls: String? = null
 
     @Column(name = "timezone")
-    var timezone: String? = null
+    var timezone: String = "UTC"
 
     @Transient
     @field:CreationTimestamp
@@ -38,4 +38,8 @@ class ClientSettings {
     @field:UpdateTimestamp
     @Column(name = "date_modified")
     lateinit var dateModified: LocalDateTime
+
+    @Column(name = "unsubscribe_link")
+    var unSubscribeLink: String? = null
+
 }

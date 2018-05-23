@@ -2,9 +2,7 @@ package com.und.service
 
 import com.und.common.utils.decrypt
 import com.und.common.utils.encrypt
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
-import org.springframework.util.StringUtils
 
 @Service
 class UnsubscribeService {
@@ -15,17 +13,20 @@ class UnsubscribeService {
 
 
     //@Value("\${encryption-decryption.key.unsubscribe}")
-    lateinit private var encryptDecryptKey: String
+    private lateinit var encryptDecryptKey: String
 
     fun createUnsubscribeLink(unsubscribeLinkParams: UnsubscribeLinkParams): String {
-        val eString = encrypt(unsubscribeLinkParams.emailAddress + separator + unsubscribeLinkParams.clientID
-                + separator + unsubscribeLinkParams.userID, key = encryptDecryptKey)
-        return eString!!
+        val linkData = unsubscribeLinkParams.let {
+            param -> listOf(param.emailAddress, param.clientID, param.userID)
+        }
+        linkData.filterNotNull().joinToString(separator)
+        val subscribeLinkString = linkData.joinToString(separator)
+        return  encrypt(subscribeLinkString, key = encryptDecryptKey)
     }
 
     fun getDataFromUnsubscribeLink(unsubscribeLink: String): UnsubscribeLinkParams {
         val dString = decrypt(stringToDecrypt = unsubscribeLink, key = encryptDecryptKey)
-        val arr = dString!!.split(separator)
+        val arr = dString.split(separator)
         return UnsubscribeLinkParams(arr[0], arr[1].toInt(), arr[2])
     }
 }

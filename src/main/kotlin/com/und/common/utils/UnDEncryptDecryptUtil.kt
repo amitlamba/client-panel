@@ -9,7 +9,7 @@ private val aes = "AES"
 private var keyDefault = "BaO1TXt5B0R92Yys" // 128 bit key
 
 
-fun encrypt(stringToEncrypt: String, key: String? = null): String? {
+fun encrypt(stringToEncrypt: String, key: String? = null): String {
     val keyVal = key ?: keyDefault
     val aesKey = SecretKeySpec(keyVal.toByteArray(), aes)
     val cipher = Cipher.getInstance(aes)
@@ -18,7 +18,7 @@ fun encrypt(stringToEncrypt: String, key: String? = null): String? {
     return String(Base64.getEncoder().encode(encryptedByteArray))
 }
 
-fun decrypt(stringToDecrypt: String, key: String? = null): String? {
+fun decrypt(stringToDecrypt: String, key: String? = null): String {
     val keyVal = key ?: keyDefault
     val aesKey = SecretKeySpec(keyVal.toByteArray(), aes)
     val cipher = Cipher.getInstance(aes)
