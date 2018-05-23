@@ -1,15 +1,19 @@
 package com.und.web.controller.ErrorHandler
 
+import com.fasterxml.jackson.databind.exc.InvalidFormatException
 import com.und.common.utils.loggerFor
+import com.und.eventapi.restExceptionHandler.ErrorList
 import com.und.exception.UndBusinessValidationException
 import com.und.web.model.ValidationError
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.MessageSource
-import org.springframework.context.i18n.LocaleContextHolder
 import org.springframework.http.HttpStatus
-import org.springframework.validation.FieldError
+import org.springframework.http.converter.HttpMessageNotReadableException
 import org.springframework.web.bind.MethodArgumentNotValidException
-import org.springframework.web.bind.annotation.*
+import org.springframework.web.bind.annotation.ExceptionHandler
+import org.springframework.web.bind.annotation.ResponseBody
+import org.springframework.web.bind.annotation.ResponseStatus
+import org.springframework.web.bind.annotation.RestControllerAdvice
 import java.lang.Exception
 import javax.naming.AuthenticationException
 
@@ -22,52 +26,73 @@ class RestErrorHandler {
         protected val logger = loggerFor(RestErrorHandler::class.java)
     }
 
-    @Autowired
-    lateinit var messageSource: MessageSource
 
-    @ExceptionHandler(Exception::class)
+
+/*    @ExceptionHandler(Exception::class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ResponseBody
     fun processOtherError(ex: Exception) {
         logger.debug("Handling INTERNAL SEREVR error")
         logger.error("error occured",ex)
 
-    }
+    }*/
 
     @ExceptionHandler(AccessDeniedException::class, AuthenticationException::class)
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     @ResponseBody
     fun processAuthEroor(ex: Exception) :String{
-        logger.debug("Handling INTERNAL SEREVR error")
-        logger.error("error occured",ex)
+        logger.debug("Handling INTERNAL SERVER error")
+        logger.error("error occurred",ex)
         return "Access Denied!"
 
     }
 
+
+    @ExceptionHandler(InvalidFormatException::class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ResponseBody
+    fun handleInvalidFormatException(ex: Exception) :Error{
+        val error=Error("InvalidFormatException")
+        return error
+    }
+
+    @ExceptionHandler(HttpMessageNotReadableException::class)
+    @ResponseStatus(HttpStatus.NOT_ACCEPTABLE)
+    @ResponseBody
+    fun handleHttpMessageNotReadableException(ex: HttpMessageNotReadableException) :Error{
+        val error=Error("HttpMessageNotReadableException")
+        return error
+    }
     @ExceptionHandler(UndBusinessValidationException::class)
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ResponseStatus(HttpStatus.NOT_ACCEPTABLE)
     @ResponseBody
     fun businessValidationError(ex: UndBusinessValidationException) : ValidationError {
-        logger.debug("Handling INTERNAL SEREVR error")
-        logger.error("error occured",ex)
+        logger.debug("Handling INTERNAL SERVER ERROR")
+        logger.error("error occurred",ex)
         return ex.error
 
     }
 
 
     @ExceptionHandler(MethodArgumentNotValidException::class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ResponseBody
-    fun processValidationError(ex: MethodArgumentNotValidException): ValidationError {
-        logger.debug("Handling form validation error")
+    @ResponseStatus(HttpStatus.NOT_ACCEPTABLE)
+    fun handleFieldErrors(ex: MethodArgumentNotValidException): ErrorList {
 
+        var errorList: List<com.und.eventapi.restExceptionHandler.FieldError> = listOf()
         val result = ex.bindingResult
         val fieldErrors = result.fieldErrors
-
-        return processFieldErrors(fieldErrors)
+        fieldErrors
+                .filter { it != null && it.defaultMessage != null }
+                .forEach {
+                    errorList = listOf(
+                            com.und.eventapi.restExceptionHandler.FieldError(field = it.field,
+                                    message = it.defaultMessage)
+                    )
+                }
+        return ErrorList(errorList)
     }
 
-    private fun processFieldErrors(fieldErrors: List<FieldError>): ValidationError {
+/*    private fun processFieldErrors(fieldErrors: List<FieldError>): ValidationError {
         val dto = ValidationError()
         for (fieldError in fieldErrors) {
             val localizedErrorMessage = resolveLocalizedErrorMessage(fieldError)
@@ -92,5 +117,5 @@ class RestErrorHandler {
         }
 
         return localizedErrorMessage
-    }
+    }*/
 }

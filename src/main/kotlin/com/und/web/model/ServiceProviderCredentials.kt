@@ -10,5 +10,5 @@ class ServiceProviderCredentials {
     lateinit var serviceProviderType: String
     lateinit var serviceProvider: String
     lateinit var status: Status
-    var credentialsMap: HashMap<String, String> = HashMap<String, String>()
+    var credentialsMap: HashMap<String, String> = HashMap()
 }

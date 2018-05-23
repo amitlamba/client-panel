@@ -1,9 +1,6 @@
 package com.und.service
 
-import com.google.gson.Gson
-import com.google.gson.GsonBuilder
-import com.google.gson.reflect.TypeToken
-import com.und.common.utils.DateUtils
+import com.fasterxml.jackson.databind.ObjectMapper
 import com.und.model.Status
 import com.und.model.jpa.ClientSettings
 import com.und.model.jpa.ServiceProviderCredentials
@@ -12,22 +9,37 @@ import com.und.web.model.ServiceProviderCredentials as WebServiceProviderCredent
 import com.und.repository.ServiceProviderCredentialsRepository
 import com.und.web.model.AccountSettings
 import com.und.web.model.EmailAddress
-import org.springframework.beans.BeanUtils
+import com.und.web.model.UnSubscribeLink
+
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import java.time.LocalDateTime
+import java.util.*
+import javax.annotation.PostConstruct
+import com.fasterxml.jackson.module.kotlin.*
 
 @Service
 class UserSettingsService {
 
     @Autowired
-    lateinit private var serviceProviderCredentialsRepository: ServiceProviderCredentialsRepository
+    private lateinit var serviceProviderCredentialsRepository: ServiceProviderCredentialsRepository
+
     @Autowired
-    lateinit private var clientSettingsRepository: ClientSettingsRepository
+    private lateinit var clientSettingsRepository: ClientSettingsRepository
+
+    @Autowired
+    private lateinit var objectMapper: ObjectMapper
+
+    private var emptyArrayJson: String = "[]"
+
 
     private val emailServiceProvider = "Email Service Provider"
     private val smsServiceProvider = "Sms Service Provider"
+
+    @PostConstruct
+    fun setUp() {
+        emptyArrayJson = objectMapper.writeValueAsString(emptyArray<String>())//"[]"//objectMapper.
+    }
 
     fun getEmailServiceProvider(clientID: Long): List<WebServiceProviderCredentials> {
         val spCredsList = serviceProviderCredentialsRepository.findAllByClientIDAndServiceProviderType(clientID, emailServiceProvider)
@@ -80,7 +92,7 @@ class UserSettingsService {
             spCreds.serviceProvider = webServiceProviderCredentials.serviceProvider
             spCreds.serviceProviderType = webServiceProviderCredentials.serviceProviderType
             spCreds.status = webServiceProviderCredentials.status
-            spCreds.credentialsMap = GsonBuilder().create().toJson(webServiceProviderCredentials.credentialsMap)
+            spCreds.credentialsMap = objectMapper.writeValueAsString(webServiceProviderCredentials.credentialsMap)
         }
         return spCreds
     }
@@ -95,52 +107,91 @@ class UserSettingsService {
             wspCreds.serviceProvider = serviceProviderCredentials.serviceProvider
             wspCreds.serviceProviderType = serviceProviderCredentials.serviceProviderType
             wspCreds.status = serviceProviderCredentials.status
-            wspCreds.credentialsMap = Gson().fromJson<HashMap<String, String>>(serviceProviderCredentials.credentialsMap, HashMap<String, String>().javaClass)
+            wspCreds.credentialsMap = objectMapper.readValue(serviceProviderCredentials.credentialsMap)
         }
         return wspCreds
     }
 
     fun saveAccountSettings(accountSettings: AccountSettings, clientID: Long?, userID: Long?) {
         //FIXME: Validate Timezone and Email Addresses
-        var clientSettings = ClientSettings()
+        val clientSettings = ClientSettings()
         clientSettings.id = accountSettings.id
         clientSettings.clientID = clientID
-        clientSettings.authorizedUrls = GsonBuilder().create().toJson(accountSettings.urls)
+        clientSettings.authorizedUrls = objectMapper.writeValueAsString(accountSettings.urls)
         clientSettings.timezone = accountSettings.timezone
         clientSettingsRepository.save(clientSettings)
     }
 
-    fun getAccountSettings(clientID: Long?, userID: Long?): AccountSettings {
-        val clientSettings = clientSettingsRepository.findByClientID(clientID!!)
-        val tokenType = object : TypeToken<Array<String>>() {}.type
-        val accountSettings = AccountSettings(clientSettings.id, Gson().fromJson<Array<String>>(clientSettings.authorizedUrls, tokenType),clientSettings.timezone!!)
-        return accountSettings
+    fun getAccountSettings(clientID: Long): Optional<AccountSettings> {
+        val clientSettings = clientSettingsRepository.findByClientID(clientID)
+
+        return if (clientSettings != null) {
+            val setting =
+                    AccountSettings(clientSettings.id, objectMapper.readValue(clientSettings.authorizedUrls
+                            ?: emptyArrayJson), clientSettings.timezone)
+            Optional.of(setting)
+        } else Optional.empty()
     }
 
     @Transactional
     fun addSenderEmailAddress(emailAddress: EmailAddress, clientID: Long) {
-        var emailAddressesJson: String? = clientSettingsRepository.findSenderEmailAddressesByClientId(clientID)
-        if (emailAddressesJson == null) emailAddressesJson = "[]"
-        var emailAddresses: ArrayList<EmailAddress> = Gson().fromJson<ArrayList<EmailAddress>>(emailAddressesJson, ArrayList<EmailAddress>().javaClass)
+        val emailAddresses = getSenderEmailAddresses(clientID)
         emailAddresses.add(emailAddress)
-        clientSettingsRepository.saveSenderEmailAddresses(GsonBuilder().create().toJson(emailAddresses), clientID)
+        clientSettingsRepository.saveSenderEmailAddresses(objectMapper.writeValueAsString(emailAddresses), clientID)
     }
 
     @Transactional
     fun removeSenderEmailAddress(emailAddress: EmailAddress, clientID: Long) {
-        var emailAddressesJson: String? = clientSettingsRepository.findSenderEmailAddressesByClientId(clientID)
-        if (emailAddressesJson == null) emailAddressesJson = "[]"
-        val eaListType = object : TypeToken<List<EmailAddress>>() {}.type
-        var emailAddresses: ArrayList<EmailAddress> = Gson().fromJson(emailAddressesJson, eaListType)
-        emailAddresses.removeIf { emailAddress.address.equals(it.address) && emailAddress.personal.equals(it.personal) }
-        clientSettingsRepository.saveSenderEmailAddresses(GsonBuilder().create().toJson(emailAddresses), clientID)
+        val emailAddresses = getSenderEmailAddresses(clientID)
+        emailAddresses.removeIf {
+            emailAddress.address == it.address && emailAddress.personal == it.personal
+        }
+        clientSettingsRepository.saveSenderEmailAddresses(objectMapper.writeValueAsString(emailAddresses), clientID)
     }
 
-    fun getSenderEmailAddresses(clientID: Long): List<EmailAddress> {
-        var emailAddressesJson: String? = clientSettingsRepository.findSenderEmailAddressesByClientId(clientID)
-        if (emailAddressesJson == null) emailAddressesJson = "[]"
-        val eaListType = object : TypeToken<List<EmailAddress>>() {}.type
-        var emailAddresses: ArrayList<EmailAddress> = Gson().fromJson(emailAddressesJson, eaListType)
-        return emailAddresses
+
+    fun senderEmailAddresses(clientID: Long): ArrayList<EmailAddress> {
+        return getSenderEmailAddresses(clientID)
     }
+
+
+    fun saveUnSubscribeLink(request: UnSubscribeLink, clientID: Long?) {
+
+        val clientSettings = clientSettingsRepository.findByClientID(clientID!!)
+        if (clientSettings == null) {
+
+            val clientSettingsNew = ClientSettings()
+            clientSettingsNew.unSubscribeLink = request.unSubscribeLink
+            clientSettingsNew.clientID = clientID
+            clientSettingsRepository.save(clientSettingsNew)
+
+        } else {
+
+            clientSettings.unSubscribeLink = request.unSubscribeLink
+            clientSettingsRepository.save(clientSettings)
+
+        }
+
+    }
+
+    fun getUnSubscribeLink(clientID: Long?): UnSubscribeLink {
+
+        val clientSettings = clientSettingsRepository.findByClientID(clientID!!)
+        val linkUrl = clientSettings?.unSubscribeLink
+
+        return linkUrl?.let { link ->
+            val unSubscribeLink = UnSubscribeLink()
+            unSubscribeLink.unSubscribeLink = link
+            return unSubscribeLink
+        } ?: UnSubscribeLink()
+
+    }
+
+    private fun getSenderEmailAddresses(clientID: Long): ArrayList<EmailAddress> {
+        val emailAddressesJson: String = clientSettingsRepository.findSenderEmailAddressesByClientId(clientID)
+                ?: emptyArrayJson
+
+        return objectMapper.readValue(emailAddressesJson)
+    }
+
 }

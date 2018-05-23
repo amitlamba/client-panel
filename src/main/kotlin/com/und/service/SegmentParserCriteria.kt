@@ -1,7 +1,10 @@
 package com.und.service
 
 import com.und.common.utils.DateUtils
+import com.und.common.utils.loggerFor
 import com.und.web.model.*
+import com.und.web.model.Unit
+import org.slf4j.Logger
 import org.springframework.data.mongodb.core.aggregation.Aggregation
 import org.springframework.data.mongodb.core.aggregation.GroupOperation
 import org.springframework.data.mongodb.core.aggregation.MatchOperation
@@ -21,28 +24,47 @@ import java.time.LocalDateTime
  */
 class SegmentParserCriteria {
 
+    companion object {
+        val logger:Logger = loggerFor(SegmentParserCriteria::class.java)
+    }
+
     private val dateUtils = DateUtils()
 
+    enum class Field(val fName: String = "") {
+        eventName("name"),
+        creationTime,
+        clientId,
+        userId,
+        hour,
+        minute,
+        weekday,
+        monthday,
+        month,
+        year,
+        count,
+        sumof
+
+    }
 
     fun segmentQueries(segment: Segment): SegmentQuery {
 
         //did
         val did = segment.didEvents
         val didq =
-                did?.let { Pair(parseEvents(it.events, false), it.joinCondition.conditionType) }
+                did?.let { Pair(parseEvents(it.events, true), it.joinCondition.conditionType) }
                         ?: Pair(emptyList(), ConditionType.AllOf)
 
 
         //and not
         val didnot = segment.didNotEvents
-        val didnotq = didnot?.let { Pair(parseEvents(it.events, false), it.joinCondition.conditionType) }
+        val didnotq = didnot?.let { Pair(parseEvents(it.events, false), ConditionType.AnyOf) }
                 ?: Pair(emptyList(), ConditionType.AnyOf)
 
 
         val gFilters = segment.globalFilters
         val matches = filterGlobalQ(gFilters)
         println("pair matches started")
-        if(matches!= null) {
+        if (matches != null) {
             println(Aggregation.newAggregation(matches.first).toString())
             println(Aggregation.newAggregation(matches.second).toString())
         }
@@ -61,9 +83,9 @@ class SegmentParserCriteria {
             val whereCond = if (did) it.whereFilter?.let { whereFilterParse(it) } else null
             val matches = mutableListOf<Criteria>()
             matches.addAll(parsePropertyFilters(it))
-            matches.plus(Criteria.where("name").`is`(it.name))
+            matches.plus(Criteria.where(Field.eventName.fName).`is`(it.name))
             matches.plus(parseDateFilter(it.dateFilter))
-            var fields = Aggregation.fields("userId", "creationTime", "clientId")
+            var fields = Aggregation.fields(Field.userId.name, Field.creationTime.name, Field.clientId.name)
             matches.forEach { criteria ->
                 val name = criteria.key
                 if (name != null) {
@@ -71,12 +93,12 @@ class SegmentParserCriteria {
                 }
             }
             val project = Aggregation.project(fields)
-                    .and("creationTime").extractMonth().`as`("month")
-                    .and("creationTime").extractDayOfMonth().`as`("monthday")
-                    .and("creationTime").extractDayOfWeek().`as`("weekday")
-                    .and("creationTime").extractHour().`as`("hour")
-                    .and("creationTime").extractMinute().`as`("minute")
-                    .and("creationTime").extractYear().`as`("year")
+                    .and(Field.creationTime.name).extractMonth().`as`(Field.month.name)
+                    .and(Field.creationTime.name).extractDayOfMonth().`as`(Field.monthday.name)
+                    .and(Field.creationTime.name).extractDayOfWeek().`as`(Field.weekday.name)
+                    .and(Field.creationTime.name).extractHour().`as`(Field.hour.name)
+                    .and(Field.creationTime.name).extractMinute().`as`(Field.minute.name)
+                    .and(Field.creationTime.name).extractYear().`as`(Field.year.name)
 
 
             val matchOps = Aggregation.match(Criteria().andOperator(*matches.toTypedArray()))
@@ -86,7 +108,7 @@ class SegmentParserCriteria {
                 val matchOnGroup = whereCond.second
                 Aggregation.newAggregation(project, matchOps, group, matchOnGroup)
             } else {
-                val group = Aggregation.group(Aggregation.fields().and("userId", "userId"))
+                val group = Aggregation.group(Aggregation.fields().and(Field.userId.name, Field.userId.name))
                 Aggregation.newAggregation(project, matchOps, group)
             }
 
@@ -101,33 +123,27 @@ class SegmentParserCriteria {
     private fun eventPropertyQuery(eventProperties: List<PropertyFilter>): Criteria {
         fun parseProperty(propertyFilter: PropertyFilter): Criteria {
             return when (propertyFilter.filterType) {
-                PropertyFilterType.eventproperty -> {
-
-                    match(propertyFilter.values, propertyFilter.operator, "attributes.${propertyFilter.name}", propertyFilter.type, propertyFilter.valueUnit)
-                }
                 PropertyFilterType.genericproperty -> {
                     val values = propertyFilter.values
                     when (propertyFilter.name) {
-                        "Time of day" -> {
+                        genericProperty.TimeOfDay.desc -> {
                             val (startHour, startMinute, endHour, endMinute) = values
                             Criteria().orOperator(
-                                    Criteria("hour").gte(startHour).lte(endHour),
-                                    Criteria().andOperator(Criteria("hour").`is`(startHour), Criteria("minute").gt(startMinute)),
-                                    Criteria().andOperator(Criteria("hour").`is`(endHour), Criteria("minute").lt(endMinute))
+                                    Criteria(Field.hour.name).gte(startHour).lte(endHour),
+                                    Criteria().andOperator(Criteria(Field.hour.name).`is`(startHour), Criteria(Field.minute.name).gt(startMinute)),
+                                    Criteria().andOperator(Criteria(Field.hour.name).`is`(endHour), Criteria(Field.minute.name).lt(endMinute))
                             )
-
-
                         }
-                        "First Time" -> {
+                        genericProperty.FirstTime.desc -> {
                             //FIXME how to do this?
                             "{count of event == 1}"
                             Criteria()
                         }
-                        "Day of Week" -> {
-                            Criteria.where("weekday").`in`(values)
+                        genericProperty.DayOfWeek.desc -> {
+                            Criteria.where(Field.weekday.name).`in`(values)
                         }
-                        "Day Of Month" -> {
-                            Criteria.where("month").`in`(values)
+                        genericProperty.DayOfMonth.desc -> {
+                            Criteria.where(Field.month.name).`in`(values)
                         }
                         else -> throw Exception("{Invalid generic Property ${propertyFilter.name}}")
                     }
@@ -135,10 +151,14 @@ class SegmentParserCriteria {
                 PropertyFilterType.UTM -> {
                     //FIXME UTM are like generic property only but have special behaviour
                     when (propertyFilter.name) {
-                        "UTM Source" -> Criteria()//listOf("attributes.${propertyFilter.name}", propertyFilter.operator, propertyFilter.values).joinToString(space)
-                        "UTM Visited" -> Criteria()//listOf("attributes.${propertyFilter.name}", propertyFilter.operator, propertyFilter.values).joinToString(space)
+                        utmProperty.UTMSource.desc -> Criteria()//listOf("attributes.${propertyFilter.name}", propertyFilter.operator, propertyFilter.values).joinToString(space)
+                        utmProperty.UTMVisited.desc -> Criteria()//listOf("attributes.${propertyFilter.name}", propertyFilter.operator, propertyFilter.values).joinToString(space)
                         else -> throw Exception("Invalid UTM Property ${propertyFilter.name}")
                     }
+                }
+                PropertyFilterType.eventproperty -> {
+
+                    match(propertyFilter.values, propertyFilter.operator, "attributes.${propertyFilter.name}", propertyFilter.type, propertyFilter.valueUnit)
                 }
                 else -> {
                     throw Exception("type of filter can be eventptoperty, genericproperty or UTM but is null")
@@ -155,29 +175,23 @@ class SegmentParserCriteria {
 
     }
 
-    private fun parseDateFilter(dateFilters: DateFilter): Criteria {
-
-        return match(dateFilters.values, dateFilters.operator.name, "creationTime", DataType.date, dateFilters.valueUnit)
-
-    }
+    private fun parseDateFilter(dateFilters: DateFilter): Criteria = match(dateFilters.values, dateFilters.operator.name, Field.creationTime.name, DataType.date, dateFilters.valueUnit)
 
 
     private fun whereFilterParse(whereFilter: WhereFilter): Pair<GroupOperation, MatchOperation> {
         val values = whereFilter.values
         return if (values != null) {
-            return when (whereFilter.whereFilterName) {
+             when (whereFilter.whereFilterName) {
                 WhereFilterName.Count -> {
 
-                    val group = Aggregation.group(Aggregation.fields().and("userId", "userId")).count().`as`("count")
-                    val match = matchNumber(values.map { it.toString() }, whereFilter.operator?.name
-                            ?: "Equals", "count")
+                    val group = Aggregation.group(Aggregation.fields().and(Field.userId.name, Field.userId.name)).count().`as`(Field.count.name)
+                    val match = matchNumber(values.map { it.toString() }, whereFilter.operator, Field.count.name)
                     Pair(group, Aggregation.match(match))
                 }
                 WhereFilterName.SumOfValuesOf -> {
 
-                    val group = Aggregation.group(Aggregation.fields().and("userId", "userId")).sum(whereFilter.propertyName).`as`("sumof")
-                    val match = matchNumber(values.map { it.toString() }, whereFilter.operator?.name
-                            ?: "Equals", "sumof")
+                    val group = Aggregation.group(Aggregation.fields().and(Field.userId.name, Field.userId.name)).sum(whereFilter.propertyName).`as`(Field.sumof.name)
+                    val match = matchNumber(values.map { it.toString() }, whereFilter.operator, Field.sumof.name)
 
                     Pair(group, Aggregation.match(match))
                 }
@@ -189,69 +203,71 @@ class SegmentParserCriteria {
     }
 
 
-    private fun match(values: List<String>, operator: String, fieldName: String, type: DataType, unit: String): Criteria {
+    private fun match(values: List<String>, operator: String, fieldName: String, type: DataType, unit: Unit): Criteria {
+        logger.debug("type : $type, operator: $operator and fieldname : $fieldName")
         return when (type) {
-            DataType.string -> matchString(values = values, operator = operator, fieldName = fieldName)
-            DataType.number -> matchNumber(valuesString = values, operator = operator, fieldName = fieldName)
-            DataType.date -> matchDate(values = values, operator = operator, fieldName = fieldName, unit = unit)
-            else -> Criteria()
+            DataType.string -> matchString(values, StringOperator.valueOf(operator), fieldName)
+            DataType.number -> matchNumber(values, NumberOperator.valueOf(operator), fieldName)
+            DataType.date ->  matchDate(values, DateOperator.valueOf(operator), unit, fieldName)
+            DataType.range -> Criteria()
+            DataType.boolean -> Criteria()
 
         }
 
     }
 
-    private fun matchString(values: List<String>, operator: String, fieldName: String): Criteria {
+    private fun matchString(values: List<String>, operator: StringOperator, fieldName: String): Criteria {
         return when (operator) {
-            "Equals" -> {
+            StringOperator.Equals -> {
                 Criteria.where(fieldName).`is`(values.first())
             }
 
-            "NotEquals" -> {
+            StringOperator.NotEquals -> {
                 Criteria.where(fieldName).ne(values.first())
             }
-            "Contains" -> {
+            StringOperator.Contains -> {
                 Criteria.where(fieldName).`in`(values)
             }
-            "DoesNotContain" -> {
+            StringOperator.DoesNotContain -> {
                 Criteria.where(fieldName).nin(values)
             }
 
-            "Exits" -> {
+            StringOperator.Exists -> {
                 Criteria.where(fieldName).exists(true)
             }
-            "DoesNotExist" -> {
+            StringOperator.DoesNotExist -> {
                 Criteria.where(fieldName).exists(false)
             }
-
             else -> Criteria()
+
         }
 
     }
 
 
-    private fun matchNumber(valuesString: List<String>, operator: String, fieldName: String): Criteria {
+    private fun matchNumber(valuesString: List<String>, operator: NumberOperator, fieldName: String): Criteria {
         val values = valuesString.map { it.toLong() }
         return when (operator) {
-            "Equals" -> {
+            NumberOperator.Equals -> {
                 Criteria.where(fieldName).`is`(values.first())
             }
-            "Between" -> {
+            NumberOperator.Between -> {
                 Criteria.where(fieldName).gt(values.first()).lt(values.last())
             }
-            "GreaterThan" -> {
+            NumberOperator.GreaterThan -> {
                 Criteria.where(fieldName).gt(values.first())
             }
-            "LessThan" -> {
+            NumberOperator.LessThan -> {
                 Criteria.where(fieldName).gt(values.first())
             }
-            "NotEquals" -> {
+            NumberOperator.NotEquals -> {
                 Criteria.where(fieldName).ne(values.first())
             }
 
-            "Exits" -> {
+            NumberOperator.Exists -> {
                 Criteria.where(fieldName).exists(true)
             }
-            "DoesNotExist" -> {
+            NumberOperator.DoesNotExist -> {
                 Criteria.where(fieldName).exists(false)
             }
             else -> Criteria()
@@ -259,29 +275,29 @@ class SegmentParserCriteria {
 
     }
 
-    private fun matchDate(values: List<String>, operator: String, unit: String, fieldName: String): Criteria {
+    private fun matchDate(values: List<String>, operator: DateOperator, unit: Unit, fieldName: String): Criteria {
 
         return when (operator) {
 
-            "Before" -> {
+            DateOperator.Before -> {
                 val date = dateUtils.parseToDate(values.first())
                 Criteria.where(fieldName).lt(date)
             }
-            "After" -> {
+            DateOperator.After -> {
                 val date = dateUtils.parseToDate(values.first())
                 Criteria.where(fieldName).gt(date)
             }
-            "On" -> {
+            DateOperator.On -> {
                 val date = dateUtils.parseToDate(values.first())
                 Criteria.where(fieldName).`is`(date)
             }
-            "Between" -> {
+            DateOperator.Between -> {
 
                 val startDate = dateUtils.parseToDate(values.first())
                 val endDate = dateUtils.parseToDate(values.last())
                 Criteria.where(fieldName).lte(startDate).gte(endDate)
             }
-            "InThePast" -> {
+            DateOperator.InThePast -> {
 
                 val startDate = minus(LocalDateTime.now(), unit, values.first().toLong())
                 val endDate = minus(LocalDateTime.now(), unit, values.last().toLong())
@@ -289,53 +305,52 @@ class SegmentParserCriteria {
                 Criteria.where(fieldName).lte(startDate).gte(endDate)
 
             }
-            "WasExactly" -> {
+            DateOperator.WasExactly -> {
                 val date = LocalDateTime.now().minusDays(values.first().toLong())
                 Criteria.where(fieldName).`is`(date)
             }
-            "Today" -> {
+            DateOperator.Today -> {
                 Criteria.where(fieldName).`is`(LocalDateTime.now())
             }
-            "InTheFuture" -> {
+            DateOperator.InTheFuture -> {
 
                 val startDate = plus(LocalDateTime.now(), unit, values.first().toLong())
                 val endDate = plus(LocalDateTime.now(), unit, values.last().toLong())
 
                 Criteria.where(fieldName).lte(startDate).gte(endDate)
             }
-            "WillBeExactly" -> {
+            DateOperator.WillBeExactly -> {
                 val date = LocalDateTime.now().plusDays(values.first().toLong())
                 Criteria.where(fieldName).`is`(date)
             }
-            "Exits" -> {
+            DateOperator.Exists -> {
                 Criteria.where(fieldName).exists(true)
             }
-            "DoesNotExist" -> {
+            DateOperator.DoesNotExist -> {
                 Criteria.where(fieldName).exists(false)
             }
             else -> Criteria()
 
-
         }
 
     }
 
-    private fun plus(date: LocalDateTime, unit: String, value: Long): LocalDateTime {
+    private fun plus(date: LocalDateTime, unit: Unit, value: Long): LocalDateTime {
         return when (unit) {
-            "day" -> date.minusDays(value)
-            "week" -> date.minusWeeks(value)
-            "month" -> date.minusMonths(value)
-            "year" -> date.minusYears(value)
+            Unit.days -> date.minusDays(value)
+            Unit.week -> date.minusWeeks(value)
+            Unit.month -> date.minusMonths(value)
+            Unit.year -> date.minusYears(value)
             else -> date
         }
     }
 
-    private fun minus(date: LocalDateTime, unit: String, value: Long): LocalDateTime {
+    private fun minus(date: LocalDateTime, unit: Unit, value: Long): LocalDateTime {
         return when (unit) {
-            "day" -> date.plusDays(value)
-            "week" -> date.plusWeeks(value)
-            "month" -> date.plusMonths(value)
-            "year" -> date.plusYears(value)
+            Unit.days -> date.plusDays(value)
+            Unit.week -> date.plusWeeks(value)
+            Unit.month -> date.plusMonths(value)
+            Unit.year -> date.plusYears(value)
             else -> date
         }
     }
@@ -347,7 +362,7 @@ class SegmentParserCriteria {
             val unit = filter.valueUnit
             val values = filter.values
             val operator = filter.operator
-            return match(values , operator, fieldName, type,unit )
+            return match(values, operator, fieldName, type, unit)
         }
 
         fun parse(filters: Map<String, List<GlobalFilter>>): Criteria {

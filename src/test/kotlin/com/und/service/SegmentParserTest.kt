@@ -16,8 +16,7 @@ import org.springframework.test.context.junit4.SpringRunner
 import org.springframework.util.ResourceUtils
 import org.hamcrest.CoreMatchers.`is` as Is
 
-@RunWith(SpringRunner::class)
-@SpringBootTest
+
 class SegmentParserTest {
 
 
@@ -25,8 +24,7 @@ class SegmentParserTest {
 
     var testDataBase = "segmentdata"
 
-    @Autowired
-    lateinit var segmentServiceImpl: SegmentServiceImpl
+
 
     @Before
     fun setup() {
@@ -97,6 +95,15 @@ class SegmentParserTest {
 
     }
 
+    @Test
+    fun testSegmentParser12() {
+
+        val testData = readFileText("$testDataBase/JsonTestData12.json")
+        val segment = mapper.readValue(testData, Segment::class.java)
+        val parsedResponse = SegmentParser().segmentQueries(segment)
+        MatcherAssert.assertThat(2, Is(2))
+
+    }
 
     @Test
     fun testSegmentParser7() {
