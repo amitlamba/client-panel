@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {SegmentService} from "../../../_services/segment.service";
 import {DidEvents, Geography, GlobalFilter, Segment} from "../../../_models/segment";
 import {Router} from "@angular/router";
@@ -11,7 +11,7 @@ import {Router} from "@angular/router";
 export class CreateNewSegmentComponent implements OnInit {
 
   newSegment: Segment;
-
+  @ViewChild('segmentForm') segmentForm;
   constructor(private segmentService: SegmentService, private router: Router) {
     this.newSegment = new Segment();
     // this.newSegment.didEvents = new DidEvents();
@@ -28,11 +28,12 @@ export class CreateNewSegmentComponent implements OnInit {
 
   save() {
     console.log(this.newSegment);
-    // this.segmentService.saveSegment(this.newSegment).subscribe(
-    //   (segment) => {
-    //     this.segmentService.segments.push(segment);
-    //     this.router.navigate(['segment/segments']);
-    //   }
-    // )
+    this.segmentForm.reset();
+    this.segmentService.saveSegment(this.newSegment).subscribe(
+      (segment) => {
+        this.segmentService.segments.push(segment);
+        this.router.navigate(['segment/segments']);
+      }
+    )
   }
 }

@@ -101,7 +101,6 @@ export class DateComparatorComponent implements OnInit {
     singleDatePicker: true,
     showDropdowns: true,
     startDate: moment(),
-    minDate: moment(),
     opens: "right",
     locale: {
       format: "YYYY-MM-DD"

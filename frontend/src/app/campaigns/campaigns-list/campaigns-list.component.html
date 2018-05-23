@@ -44,7 +44,7 @@
       </tr>
       </thead>
       <tbody>
-      <tr *ngFor="let campaignItem of campaigns">
+      <tr *ngFor="let campaignItem of campaigns;">
         <th scope="row">{{campaignItem.id}}</th>
         <td>{{campaignItem.name.charAt(0).toUpperCase()+ campaignItem.name.slice(1).toLowerCase()}}</td>
         <td>{{campaignItem.campaignType}}</td>
