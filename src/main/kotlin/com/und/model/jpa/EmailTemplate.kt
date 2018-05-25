@@ -1,6 +1,8 @@
 package com.und.model.jpa
 
 import com.und.model.MessageType
+import org.hibernate.annotations.Cascade
+import org.hibernate.annotations.CascadeType
 import org.hibernate.annotations.CreationTimestamp
 import org.hibernate.annotations.UpdateTimestamp
 import java.time.LocalDateTime
@@ -31,18 +33,20 @@ class EmailTemplate {
     @NotNull
     lateinit var name: String
 
-    @Column(name = "email_template_body")
-    @NotNull
-    lateinit var emailTemplateBody: String
+    @OneToOne(fetch = FetchType.LAZY )
+    @JoinColumn(name="email_template_body")
+    @Cascade(CascadeType.ALL)
+    var emailTemplateBody: Template? = null
 
-    @Column(name = "email_template_subject")
-    lateinit var emailTemplateSubject: String
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="email_template_subject")
+    @Cascade(CascadeType.ALL)
+    var emailTemplateSubject: Template? = null
 
     @Column(name = "parent_id")
     @Null
     var parentID: Long? = null
 
-    //@Email
     @Column(name = "from_user")
     @NotNull
     lateinit var from: String

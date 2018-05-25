@@ -49,7 +49,7 @@ class Campaign {
     @Column(name = "campaign_status", updatable = false, insertable = false)
     @Enumerated(EnumType.STRING)
     @NotNull
-    var status: CampaignStatus = CampaignStatus.DELETED
+    var status: CampaignStatus = CampaignStatus.CREATED
 
     @OneToOne(mappedBy = "campaign",
             cascade = arrayOf(CascadeType.ALL),

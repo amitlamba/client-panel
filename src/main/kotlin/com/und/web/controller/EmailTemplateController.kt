@@ -1,9 +1,8 @@
 package com.und.web.controller
 
 import com.und.common.utils.loggerFor
-import com.und.model.jpa.EmailTemplate
-import com.und.security.utils.AuthenticationUtils
 import com.und.service.EmailTemplateService
+import com.und.web.model.EmailTemplate
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
@@ -22,7 +21,7 @@ class EmailTemplateController {
     private lateinit var emailTemplateService: EmailTemplateService
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @GetMapping(value =[ "/default-templates"])
+    @GetMapping(value = ["/default-templates"])
     fun getDefaultEmailTemplates(): List<EmailTemplate> {
         logger.debug("Inside getDefaultEmailTemplates method")
         return emailTemplateService.getDefaultEmailTemplates()
@@ -31,14 +30,13 @@ class EmailTemplateController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping(value = ["/templates"])
     fun getClientEmailTemplates(@RequestParam(value = "id", required = false) id: Long? = null): List<EmailTemplate> {
-        return emailTemplateService.getClientEmailTemplates(AuthenticationUtils.clientID!!, id)//TODO - Insert a valid clientID
+        return emailTemplateService.getClientEmailTemplates(id)
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping(value = ["/save-template"])
     fun saveEmailTemplate(@RequestBody emailTemplate: EmailTemplate): Long {
-        emailTemplate.clientID=AuthenticationUtils.clientID
-        emailTemplate.appuserID=AuthenticationUtils.principal.id
+
         return emailTemplateService.saveEmailTemplate(emailTemplate)
     }
 

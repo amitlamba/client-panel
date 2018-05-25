@@ -109,6 +109,7 @@ dependencies {
     compile("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${kotlinVersion}")
     compile('com.fasterxml.jackson.datatype:jackson-datatype-jsr310')
     compile group: 'com.fasterxml.jackson.module', name: 'jackson-module-kotlin', version: '2.9.4.1'
+    compile group: 'ch.rasc', name: 'bsoncodec', version: '1.0.1'
 
     compile("com.und:auth-client:0.4.0-SNAPSHOT")
     compile group: 'commons-io', name: 'commons-io', version: '2.6'

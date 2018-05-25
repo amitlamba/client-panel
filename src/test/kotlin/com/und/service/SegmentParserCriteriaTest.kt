@@ -18,8 +18,8 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import org.hamcrest.CoreMatchers.`is` as Is
 
-//@RunWith(SpringRunner::class)
-//@SpringBootTest
+@RunWith(SpringRunner::class)
+@SpringBootTest
 class SegmentParserCriteriaTest {
 
 
@@ -83,7 +83,7 @@ class SegmentParserCriteriaTest {
         SegmentParserCriteria().segmentQueries(segment).didq.first.forEach {
             println(it.toString())
         }
-        //segmentServiceImpl.segmentUsers(37,2)
+        val users = segmentServiceImpl.segmentUsers(37,2)
         MatcherAssert.assertThat(2, Is(2))
     }
 

@@ -20,7 +20,6 @@ import org.mockito.MockitoAnnotations
 import org.springframework.test.util.ReflectionTestUtils
 import org.hamcrest.CoreMatchers.`is` as Is
 
-//FIXME these tests are tesing nothing
 class UserSettingsServiceTest {
 
     val clientID = 5L
@@ -54,7 +53,6 @@ class UserSettingsServiceTest {
     fun testSaveAccountSettings() {
         val accountSettings = AccountSettings(urls = arrayOf("http://userndot.com"), timezone = "Asia/Kolkata")
         userSettingsService.saveAccountSettings(accountSettings = accountSettings, clientID = clientID, userID = userID)
-        //whenever((clientSettingsRepository).save<ClientSettings>(any())).thenReturn(ClientSettings())
         verify(clientSettingsRepository, times(1)).save<ClientSettings>(any())
     }
 
@@ -64,6 +62,14 @@ class UserSettingsServiceTest {
 
         verify(clientSettingsRepository, times(1)).findByClientID(clientID)
         assertThat(accountSettings.isPresent, Is(true))
+    }
+
+    @Test
+    fun testgetAccountSettingsEmpty() {
+        val accountSettings = userSettingsService.getAccountSettings(9L)
+
+        verify(clientSettingsRepository, times(1)).findByClientID(9L)
+        assertThat(accountSettings.isPresent, Is(false))
     }
 
     @Test

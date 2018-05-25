@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Example
 import org.springframework.data.domain.ExampleMatcher
 import org.springframework.stereotype.Service
+import java.time.LocalDateTime
 import javax.mail.internet.InternetAddress
 import com.und.web.model.ContactUs as WebContactUs
 
@@ -29,16 +30,18 @@ class ContactUsService {
     private lateinit var emailService: EmailService
 
     fun save(webContactUs: WebContactUs) {
-        val contactUsExist = contactUsRepository.findByEmail(webContactUs.email)
+        val date = LocalDateTime.now().minusHours(24)
+        val contactUsExist = contactUsRepository
+                .findByEmailAndDateCreated(webContactUs.email, date)
         if (!contactUsExist.isPresent) {
             val contactUs = buildContactUs(webContactUs)
             val persistedContactUs = contactUsRepository.save(contactUs)
             webContactUs.id = persistedContactUs.id
             sendContactUsEmail(contactUs)
-        } else {
+        } else  {
             val error = ValidationError()
-            error.addFieldError("email",  "Email is already registered for contact")
-           throw UndBusinessValidationException(error)
+            error.addFieldError("email", "Email is already registered for contact")
+            throw UndBusinessValidationException(error)
         }
     }
 

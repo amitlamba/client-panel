@@ -2,6 +2,7 @@ package com.und.web.controller
 
 import com.und.model.mongo.CommonMetadata
 import com.und.model.mongo.EventMetadata
+import com.und.model.mongo.eventapi.EventUser
 import com.und.service.EventMetadataService
 import com.und.service.SegmentService
 import com.und.web.model.Segment
@@ -48,6 +49,14 @@ class SegmentController {
         val allSegment = segmentService.allSegment()
         return ResponseEntity( allSegment, HttpStatus.OK)
     }
+
+    @GetMapping(value = ["/users/{segmentId}"])
+    fun segmentUsers(@PathVariable("segmentId") segmentId :Long): List<EventUser> {
+        val clientId = 2L
+        val asegmentUsers = segmentService.segmentUsers(segmentId, clientId)
+        return  asegmentUsers
+    }
+
 
 
 }

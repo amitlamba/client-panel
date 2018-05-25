@@ -141,6 +141,7 @@ class CampaignService {
                 smscampaign.templateId = webCampaign.templateID
                 campaign.smsCampaign = smscampaign
             }
+            else -> {}
         }
 
         return campaign

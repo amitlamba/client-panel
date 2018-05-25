@@ -83,8 +83,8 @@ class SegmentParserCriteria {
             val whereCond = if (did) it.whereFilter?.let { whereFilterParse(it) } else null
             val matches = mutableListOf<Criteria>()
             matches.addAll(parsePropertyFilters(it))
-            matches.plus(Criteria.where(Field.eventName.fName).`is`(it.name))
-            matches.plus(parseDateFilter(it.dateFilter))
+            matches.add(Criteria.where(Field.eventName.fName).`is`(it.name))
+            matches.add(parseDateFilter(it.dateFilter))
             var fields = Aggregation.fields(Field.userId.name, Field.creationTime.name, Field.clientId.name)
             matches.forEach { criteria ->
                 val name = criteria.key
