@@ -18,8 +18,8 @@ class EmailTemplate {
 
     var parentID: Long? = null
 
-/*    @NotNull
-    var from: String? = "hello" */
+    @NotNull
+    lateinit var from: String
 
 
     @NotNull

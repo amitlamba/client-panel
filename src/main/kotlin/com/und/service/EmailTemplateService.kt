@@ -65,7 +65,7 @@ class EmailTemplateService {
         webTemplate.name = emailTemplate.name
         webTemplate.emailTemplateBody = emailTemplate.emailTemplateBody?.template ?: ""
         webTemplate.emailTemplateSubject = emailTemplate.emailTemplateSubject?.template ?: ""
-        //from = emailTemplate.from
+        webTemplate.from = emailTemplate.from
         webTemplate.messageType = emailTemplate.messageType
         webTemplate.parentID = emailTemplate.parentID
         webTemplate.tags = emailTemplate.tags
@@ -81,7 +81,7 @@ class EmailTemplateService {
         emailTemplate.id = webTemplate.id
         emailTemplate.parentID = webTemplate.parentID
         emailTemplate.name = webTemplate.name
-        emailTemplate.from = "sps@sps.com"
+        emailTemplate.from = webTemplate.from
         emailTemplate.messageType = webTemplate.messageType
         emailTemplate.tags = webTemplate.tags
 
