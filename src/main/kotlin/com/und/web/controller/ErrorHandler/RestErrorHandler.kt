@@ -5,6 +5,7 @@ import com.und.common.utils.loggerFor
 import com.und.eventapi.restExceptionHandler.ErrorList
 import com.und.exception.UndBusinessValidationException
 import com.und.web.model.ValidationError
+import org.hibernate.JDBCException
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.MessageSource
 import org.springframework.http.HttpStatus
@@ -27,22 +28,22 @@ class RestErrorHandler {
     }
 
 
-
-/*    @ExceptionHandler(Exception::class)
+    @ExceptionHandler(JDBCException::class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ResponseBody
-    fun processOtherError(ex: Exception) {
+    fun processOtherError(ex: Exception): String {
         logger.debug("Handling INTERNAL SEREVR error")
-        logger.error("error occured",ex)
+        logger.error("error occured", ex)
+        return "Something Wrong happened Try after some time!"
 
-    }*/
+    }
 
     @ExceptionHandler(AccessDeniedException::class, AuthenticationException::class)
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     @ResponseBody
-    fun processAuthEroor(ex: Exception) :String{
+    fun processAuthEroor(ex: Exception): String {
         logger.debug("Handling INTERNAL SERVER error")
-        logger.error("error occurred",ex)
+        logger.error("error occurred", ex)
         return "Access Denied!"
 
     }
@@ -51,24 +52,28 @@ class RestErrorHandler {
     @ExceptionHandler(InvalidFormatException::class)
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     @ResponseBody
-    fun handleInvalidFormatException(ex: Exception) :Error{
-        val error=Error("InvalidFormatException")
-        return error
+    fun handleInvalidFormatException(ex: Exception): String {
+        logger.debug("Handling INTERNAL SEREVR error")
+        logger.error("error occured", ex)
+        return "Invalid access token"
+
     }
 
     @ExceptionHandler(HttpMessageNotReadableException::class)
     @ResponseStatus(HttpStatus.NOT_ACCEPTABLE)
     @ResponseBody
-    fun handleHttpMessageNotReadableException(ex: HttpMessageNotReadableException) :Error{
-        val error=Error("HttpMessageNotReadableException")
-        return error
+    fun handleHttpMessageNotReadableException(ex: HttpMessageNotReadableException): String {
+        logger.debug("Handling INTERNAL SEREVR error")
+        logger.error("error occured", ex)
+        return "Invalid data sent"
     }
+
     @ExceptionHandler(UndBusinessValidationException::class)
     @ResponseStatus(HttpStatus.NOT_ACCEPTABLE)
     @ResponseBody
-    fun businessValidationError(ex: UndBusinessValidationException) : ValidationError {
+    fun businessValidationError(ex: UndBusinessValidationException): ValidationError {
         logger.debug("Handling INTERNAL SERVER ERROR")
-        logger.error("error occurred",ex)
+        logger.error("error occurred", ex)
         return ex.error
 
     }

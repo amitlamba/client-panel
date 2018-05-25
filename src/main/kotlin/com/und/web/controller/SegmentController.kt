@@ -51,6 +51,7 @@ class SegmentController {
     }
 
     @GetMapping(value = ["/users/{segmentId}"])
+    @PreAuthorize("hasRole('ROLE_UND_SERVICE')")
     fun segmentUsers(@PathVariable("segmentId") segmentId :Long): List<EventUser> {
         val clientId = 2L
         val asegmentUsers = segmentService.segmentUsers(segmentId, clientId)
