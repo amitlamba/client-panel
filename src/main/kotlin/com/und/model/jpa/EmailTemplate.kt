@@ -1,5 +1,6 @@
 package com.und.model.jpa
 
+import com.und.model.EditorSelected
 import com.und.model.MessageType
 import org.hibernate.annotations.Cascade
 import org.hibernate.annotations.CascadeType
@@ -69,12 +70,7 @@ class EmailTemplate {
 
     @Enumerated(EnumType.STRING)
     @Column(name="editor_selected")
-    var editorSelected:EditorSelected?=null
-
-    enum class EditorSelected {
-        tinymceEditor,
-        textareaEditor,
-    }
+    var editorSelected: EditorSelected?=null
 
 //    @Column(name = "status")
 //    @NotNull

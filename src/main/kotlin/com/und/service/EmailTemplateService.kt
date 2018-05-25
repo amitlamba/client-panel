@@ -69,7 +69,7 @@ class EmailTemplateService {
         webTemplate.messageType = emailTemplate.messageType
         webTemplate.parentID = emailTemplate.parentID
         webTemplate.tags = emailTemplate.tags
-
+        webTemplate.editorSelected=emailTemplate.editorSelected
         return webTemplate
 
     }
@@ -84,6 +84,8 @@ class EmailTemplateService {
         emailTemplate.from = webTemplate.from
         emailTemplate.messageType = webTemplate.messageType
         emailTemplate.tags = webTemplate.tags
+        emailTemplate.editorSelected=webTemplate.editorSelected
+
 
 
         emailTemplate.emailTemplateSubject = buildTemplate(

@@ -1,5 +1,6 @@
 package com.und.web.model
 
+import com.und.model.EditorSelected
 import com.und.model.MessageType
 import javax.validation.constraints.NotNull
 
@@ -27,5 +28,6 @@ class EmailTemplate {
 
     var tags: String? = null
 
+    var editorSelected: EditorSelected? = null
 }
 
