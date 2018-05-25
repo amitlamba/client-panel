@@ -67,6 +67,15 @@ class EmailTemplate {
     @Column(name = "date_modified")
     lateinit var dateModified: LocalDateTime
 
+    @Enumerated(EnumType.STRING)
+    @Column(name="editor_selected")
+    var editorSelected:EditorSelected?=null
+
+    enum class EditorSelected {
+        tinymceEditor,
+        textareaEditor,
+    }
+
 //    @Column(name = "status")
 //    @NotNull
 //    @Enumerated(EnumType.STRING)
