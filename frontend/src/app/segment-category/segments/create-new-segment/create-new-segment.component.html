@@ -17,17 +17,38 @@
           </button>
         </div>
         <div class="modal-body">
-          <form>
+          <form #segmentForm="ngForm">
             <div class="form-group">
               <label for="segmentName">Segment Name</label>
-              <input type="text" class="form-control" id="segmentName" aria-describedby="segmentNameHelp" placeholder="Enter Segment Name" name="segmentName" [(ngModel)]="newSegment.name">
+              <input type="text"
+                     class="form-control"
+                     id="segmentName"
+                     aria-describedby="segmentNameHelp"
+                     placeholder="Enter Segment Name"
+                     name="segmentName" [(ngModel)]="newSegment.name"
+                     required
+                     [ngClass]="{'border-danger':segmentName.errors && (segmentName.touched || segmentName.dirty )}"
+                     #segmentName="ngModel">
+              <div class="alert-alert-danger" *ngIf="segmentName.errors && (segmentName.touched || segmentName.dirty )">
+                Name is Required.
+              </div>
               <small id="segmentNameHelp" class="form-text text-muted">We'll use this name to identify segments.</small>
             </div>
           </form>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#segmentNameModal" (click)="save()">Save Segment</button>
+          <button type="button"
+                  class="btn btn-secondary"
+                  data-dismiss="modal"
+                  (click)="segmentForm.reset();">Close
+          </button>
+          <button [disabled]="segmentForm.invalid"
+                  type="button"
+                  class="btn btn-primary"
+                  data-toggle="modal"
+                  data-target="#segmentNameModal"
+                  (click)="save()">Save Segment
+          </button>
         </div>
       </div>
     </div>

@@ -36,6 +36,9 @@ export class AppSettings {
   public static API_ENDPOINT_CLIENT_SETTING_SENDERS_EMAIL_DELETE = AppSettings.API_ENDPOINT_CLIENT_SETTING + "/senders-email/delete";
   public static API_ENDPOINT_CLIENT_SETTING_ACCOUNT_SETTINGS_SAVE = AppSettings.API_ENDPOINT_CLIENT_SETTING + "/account-settings/save";
   public static API_ENDPOINT_CLIENT_SETTING_ACCOUNT_SETTINGS_GET = AppSettings.API_ENDPOINT_CLIENT_SETTING + "/account-settings/get";
+  public static API_ENDPOINT_CLIENT_SETTING_ACCOUNT_SETTINGS_UNSUBSCRIBE_LINK_SAVE = AppSettings.API_ENDPOINT_CLIENT_SETTING + "/unsubscribe-link/save";
+  public static API_ENDPOINT_CLIENT_SETTING_ACCOUNT_SETTINGS_UNSUBSCRIBE_LINK_GET = AppSettings.API_ENDPOINT_CLIENT_SETTING + "/unsubscribe-link/get";
+
 
   public static API_ENDPOINT_CLIENT_SEGMENT = AppSettings.API_ENDPOINT_CLIENT + "/segment";
   public static API_ENDPOINT_CLIENT_SEGMENT_METADATA = AppSettings.API_ENDPOINT_CLIENT_SEGMENT + "/metadata";
@@ -46,6 +49,11 @@ export class AppSettings {
   public static API_ENDPOINT_CLIENT_CAMPAIGN = AppSettings.API_ENDPOINT_CLIENT + "/campaign";
   public static API_ENDPOINT_CLIENT_CAMPAIGN_SAVE = AppSettings.API_ENDPOINT_CLIENT_CAMPAIGN + "/save";
   public static API_ENDPOINT_CLIENT_CAMPAIGN_LIST = AppSettings.API_ENDPOINT_CLIENT_CAMPAIGN + "/list/all";
+  public static API_ENDPOINT_CLIENT_CAMPAIGN_PAUSE = AppSettings.API_ENDPOINT_CLIENT_CAMPAIGN + "/pause";
+  public static API_ENDPOINT_CLIENT_CAMPAIGN_RESUME = AppSettings.API_ENDPOINT_CLIENT_CAMPAIGN + "/resume";
+  public static API_ENDPOINT_CLIENT_CAMPAIGN_STOP = AppSettings.API_ENDPOINT_CLIENT_CAMPAIGN + "/stop";
+  public static API_ENDPOINT_CLIENT_CAMPAIGN_DELETE = AppSettings.API_ENDPOINT_CLIENT_CAMPAIGN + "/delete";
+
 
 
   public static API_ENDPOINT_CLIENT_LOCATION = AppSettings.API_ENDPOINT_CLIENT + "/location";
@@ -70,6 +78,9 @@ export class AppSettings {
   public static API_ENDPOINT_AUTH_SETTING_USERDETAILS = AppSettings.API_ENDPOINT_AUTH_SETTING + "/userDetails";
   public static API_ENDPOINT_AUTH_SETTING_UPDATEUSERDETAILS = AppSettings.API_ENDPOINT_AUTH_SETTING + "/updateUserDetails";
   public static API_ENDPOINT_AUTH_SETTING_REFRESHTOKEN = AppSettings.API_ENDPOINT_AUTH_SETTING + "/refreshToken";
+
+  public static API_ENDPOINT_CONTACT_US_SAVE = AppSettings.API_ENDPOINT_CLIENT + "/contactUs/save";
+
 }
 
 export class UserField {

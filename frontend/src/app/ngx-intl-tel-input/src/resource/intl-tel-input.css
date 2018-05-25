@@ -11,6 +11,12 @@
  *
  *     // import the scss file after the overrides
  */
+/*Custom CSS*/
+.intl-tel-input.allow-dropdown {
+  width: 100%;
+}
+
+
 .intl-tel-input {
     position: relative;
     display: inline-block; }

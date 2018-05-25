@@ -1,6 +1,6 @@
 <div class="container">
 <!--<div class="col-md-6 col-md-offset-3">-->
-  <h1>Home</h1>
+  <h1>Reports</h1>
   <p>You're logged in with JWT!!</p>
   <div>
     Users from secure api end point:
@@ -11,7 +11,11 @@
   <div class="my-5">
     <app-new-vs-existing-users-graph></app-new-vs-existing-users-graph>
   </div>
-  <div [hidden]="!chart">
-    <canvas id="canvas">{{ chart }}</canvas>
+  <div class="my-5">
+    <app-events-graph></app-events-graph>
+  </div>
+  <div class="my-5">
+    <app-conversion-events-graph></app-conversion-events-graph>
   </div>
 </div>
+

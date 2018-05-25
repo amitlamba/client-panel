@@ -80,6 +80,7 @@ export class ServiceprovidersComponent implements OnInit {
   onSave(form: FormData) {
     if (this.form.valid) {
       if (this.serviceProviderCredentials.serviceProviderType === 'Email Service Provider') {
+        console.log(JSON.stringify(this.serviceProviderCredentials));
         this.settingsService.saveServiceProviderCredentialEmail(this.serviceProviderCredentials).subscribe(
           (serviceProviderCredentials) => {
             this.settingsService.serviceProvidersList.push(serviceProviderCredentials);

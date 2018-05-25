@@ -389,7 +389,7 @@ export class CronGenComponent implements OnInit, OnChanges {
       seconds: this.getRange(0, 59),
       hours: this.getRange(1, 23),
       monthDays: this.getRange(1, 31),
-      monthDaysWithLasts: ["1W", ...[...this.getRange(1, 31).map(String)], "LW", "L"],
+      monthDaysWithLasts: ["1W", "LW", "L", ...[...this.getRange(1, 31).map(String)]],
       hourTypes: ["AM", "PM"]
     };
   }

@@ -7,6 +7,8 @@ export class Campaign {
   campaignType: CampaignType;
   segmentationID: number;
   templateID: number;
+  status: CampaignStatus;
+  dateCreated: string;
   // createdOn: Date;
   // clientID: number;
   // appuserID: number;
@@ -17,6 +19,13 @@ export class Campaign {
   // smsCampaign: SmsCampaign;
 }
 
+export enum CampaignStatus {
+  PAUSED,
+  RESUMED,
+  CREATED,
+  ERROR,
+  DELETED
+}
 export enum DeliveryStatus {
   NOT_SCHEDULED,
   SCHEDULED,
@@ -46,11 +55,11 @@ export class Schedule {
 
 export class ScheduleOneTime {
   nowOrLater: Now;
-  campaignTime: CampaignTime;
+  campaignDateTime: CampaignDateTime;
 }
 
 export class ScheduleMultipleDates {
-  campaignDateTimeList: CampaignTime[];
+  campaignDateTimeList: CampaignDateTime[];
 }
 
 export class ScheduleRecurring {
@@ -78,7 +87,7 @@ export enum ScheduleType {
   recurring = "recurring"
 }
 
-export class CampaignTime {
+export class CampaignDateTime {
   date: string;
   hours: number;
   minutes: number;

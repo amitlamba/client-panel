@@ -1,6 +1,7 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {AccountSettings} from "../../_models/client";
+import {AccountSettings, UnSubscribeLink} from "../../_models/client";
 import {SettingsService} from "../../_services/settings.service";
+
 
 @Component({
   selector: 'app-account-settings',
@@ -10,17 +11,16 @@ import {SettingsService} from "../../_services/settings.service";
 export class AccountSettingsComponent implements OnInit {
   showCodeBlock: boolean = false;
   accountSettings: AccountSettings = new AccountSettings();
+  unSubscribeLink: UnSubscribeLink = new UnSubscribeLink();
   protocol: string = 'https://';
   websiteURL: string;
+  unsubscribeLink: string;
   protocolsArray: string[] = ['http://', 'https://'];
-  codeSnippet:string;
-  tokenValue:string;
+  codeSnippet: string;
+  tokenValue: string;
+
   // ng2-timezone-picker is used from https://samuelnygaard.github.io/ng2-timezone-selector/docs/
   placeholderString = 'Select timezone';
-
-  changeTimezone(timezone) {
-    this.accountSettings.timezone = timezone;
-  }
 
   constructor(private settingsService: SettingsService) {
   }
@@ -48,12 +48,12 @@ export class AccountSettingsComponent implements OnInit {
         }
       );
     this.settingsService.refreshToken().subscribe(
-      (response)=> {
+      (response) => {
         console.log(response.data.value.token);
         this.tokenValue = response.data.value.token;
         this.codeSnippet = "var _und = _und || {event: [], profile: [], account: [], onUserLogin: [], notifications: []};\n" +
           "    // replace with the UND_ACCOUNT_ID with the actual ACCOUNT ID value from your Dashboard -> Settings page\n" +
-          "    _und.account.push({\"id\":"+ this.tokenValue+"});\n" +
+          "    _und.account.push({\"id\":" + this.tokenValue + "});\n" +
           "    (function () {\n" +
           "        var dsft = document.createElement('script');\n" +
           "        dsft.type = 'text/javascript';\n" +
@@ -65,6 +65,13 @@ export class AccountSettingsComponent implements OnInit {
           "    })();"
       }
     );
+    this.settingsService.getUnSubscribeLink()
+      .subscribe(
+        (unSubscribeLink) => {
+          console.log(unSubscribeLink);
+          this.unSubscribeLink = unSubscribeLink;
+        }
+      )
   }
 
 
@@ -77,5 +84,19 @@ export class AccountSettingsComponent implements OnInit {
           this.accountSettings.urls = [];
         }
       );
+  }
+
+  changeTimezone(timezone) {
+    this.accountSettings.timezone = timezone;
+  }
+
+  addUnSubscribeLink() {
+    console.log(this.unSubscribeLink);
+    this.settingsService.saveUnSubscribeLink(this.unSubscribeLink)
+      .subscribe(
+        (response) => {
+          console.log(response);
+        }
+      )
   }
 }

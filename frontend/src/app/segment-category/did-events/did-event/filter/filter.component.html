@@ -1,7 +1,7 @@
 <div class="form-inline ml-3 mt-1 mb-2">
   <div class="form-group">
     <select class="form-control"
-            (change)="filterFirstDropdown($event.target.value)">
+            (change)="filterFirstDropdown($event.target.value)" style="width:145px;margin-right: -8px;">
       <option value="" disabled>--Select--</option>
       <option *ngFor="let prop of eventProperties" [value]="prop.name">{{prop.name}}</option>
       <option *ngFor="let prop of defaultProperties" [value]="prop.name">{{prop.name}}</option>
@@ -17,7 +17,8 @@
   </div>
   <div class="form-group col-3 my-0 pr-0" *ngIf="selectedProperty && selectedProperty.dataType=='date'">
     <app-date-comparator [(operator)]="localPropertyFilter.operator" [(values)]="localPropertyFilter.values"
-                         [(valueUnit)]="localPropertyFilter.valueUnit"></app-date-comparator>
+                         [(valueUnit)]="localPropertyFilter.valueUnit" class="row d-flex flex-row"
+                         style="width: 500px;"></app-date-comparator>
   </div>
   <div *ngIf="selectedProperty && selectedProperty.dataType=='timerange'" class="ml-3">
     <app-timerange [options]="selectedProperty.options"

@@ -46,7 +46,14 @@ export class AccountSettings {
   timezone: string;
 }
 
+export class UnSubscribeLink {
+  unSubscribeLink: string;
+}
 export class SendersInfo {
   personal: string;
   address: string;
+}
+
+class UnsubscribeLink {
+  unsubscribeLink: string;
 }
