@@ -47,10 +47,16 @@ class EmailTemplateService {
 
     fun saveEmailTemplate(webEmailTemplate: WebEmailTemplate): Long {
         val emailTemplate = buildEmailTemplate(webEmailTemplate)
-        //emailTemplate.emailTemplateSubject = templateRepository.save(emailTemplate.emailTemplateSubject)
-        //emailTemplate.emailTemplateBody = templateRepository.save(emailTemplate.emailTemplateBody)
+        //val templateSubject = emailTemplate.emailTemplateSubject
+        //val templateBody = emailTemplate.emailTemplateBody
+        //emailTemplate.emailTemplateSubject = null
+       // emailTemplate.emailTemplateBody = null
+
         //emailTemplate.status = Status.ACTIVE
         val persistedemailTemplate = emailTemplateRepository.save(emailTemplate)
+        //templateSubject.
+        //emailTemplate.emailTemplateSubject = templateRepository.save(emailTemplate.emailTemplateSubject)
+        //emailTemplate.emailTemplateBody = templateRepository.save(emailTemplate.emailTemplateBody)
 
         return persistedemailTemplate.id ?: -1
     }
