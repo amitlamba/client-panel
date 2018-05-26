@@ -141,7 +141,8 @@ class CampaignService {
                 smscampaign.templateId = webCampaign.templateID
                 campaign.smsCampaign = smscampaign
             }
-            else -> {}
+            else -> {
+            }
         }
 
         return campaign
@@ -210,18 +211,19 @@ class CampaignService {
         }
 
 
-        when (campaign.status) {
-            CampaignStatus.DELETED -> {
+        when {
+            campaign.status == CampaignStatus.DELETED -> {
                 val error = ValidationError()
                 error.addFieldError("campaignId", "Campaign is deleted and  ${action.name} cant be performed")
                 throw UndBusinessValidationException(error)
             }
-            CampaignStatus.STOPPED -> {
+            campaign.status == CampaignStatus.STOPPED && action != JobDescriptor.Action.DELETE -> {
                 val error = ValidationError()
                 error.addFieldError("campaignId", "Campaign is stopped and  ${action.name}  cant be performed")
                 throw UndBusinessValidationException(error)
             }
-            else -> {}
+            else -> {
+            }
         }
 
         val jobDescriptor = JobDescriptor()
