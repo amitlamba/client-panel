@@ -2,7 +2,7 @@ package com.und.service
 
 import com.und.model.jpa.SmsTemplate
 import com.und.model.Status
-import com.und.repository.SmsTemplateRepository
+import com.und.repository.jpa.SmsTemplateRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 

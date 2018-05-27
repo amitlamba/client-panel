@@ -1,5 +1,0 @@
-ALTER TABLE segment ADD COLUMN type VARCHAR(100) NOT NULL;
-
-ALTER TABLE segment ADD COLUMN conversion_event VARCHAR(256) NOT NULL;
-
-ALTER TABLE  segment ALTER COLUMN  data TYPE text;

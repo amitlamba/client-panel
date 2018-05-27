@@ -1,6 +1,0 @@
-ALTER TABLE segment ALTER COLUMN status DROP NOT NULL;
-ALTER TABLE campaign  ADD COLUMN name VARCHAR(256) NOT NULL;
-ALTER TABLE campaign  DROP COLUMN frequency_type;
-ALTER TABLE campaign ALTER COLUMN campaign_status DROP NOT NULL;
-
-

@@ -1,1 +1,0 @@
-alter TABLE  client add COLUMN address text;

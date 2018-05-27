@@ -1,1 +1,0 @@
-ALTER TABLE email_template ADD COLUMN editor_selected character varying ;

@@ -1,4 +1,4 @@
-package com.und.eventapi.repository
+package com.und.repository.jpa
 
 import com.und.model.jpa.Segment
 import org.springframework.data.jpa.repository.JpaRepository

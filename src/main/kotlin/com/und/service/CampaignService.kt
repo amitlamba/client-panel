@@ -9,8 +9,8 @@ import com.und.model.JobActionStatus
 import com.und.model.JobDescriptor
 import com.und.model.TriggerDescriptor
 import com.und.model.jpa.*
-import com.und.repository.CampaignAuditLogRepository
-import com.und.repository.CampaignRepository
+import com.und.repository.jpa.CampaignAuditLogRepository
+import com.und.repository.jpa.CampaignRepository
 import com.und.security.utils.AuthenticationUtils
 import com.und.web.model.ValidationError
 import org.springframework.beans.factory.annotation.Autowired

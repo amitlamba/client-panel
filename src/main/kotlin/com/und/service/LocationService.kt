@@ -3,9 +3,9 @@ package com.und.service
 import com.und.model.jpa.Cities
 import com.und.model.jpa.Countries
 import com.und.model.jpa.States
-import com.und.repository.CitiesRepository
-import com.und.repository.CountriesRepository
-import com.und.repository.StatesRepository
+import com.und.repository.jpa.CitiesRepository
+import com.und.repository.jpa.CountriesRepository
+import com.und.repository.jpa.StatesRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 

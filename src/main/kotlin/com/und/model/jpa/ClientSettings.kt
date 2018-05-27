@@ -20,9 +20,9 @@ class ClientSettings {
     @NotNull
     var clientID: Long? = null
 
-    @Transient
-    @Column(name = "sender_email_addresses")
-    var senderEmailAddresses: String? = null
+/*    @Transient
+    @OneToMany(mappedBy = "clientSetting", cascade = [CascadeType.ALL], orphanRemoval = true)
+    private var senderEmailAddresses = mutableSetOf<ClientSettingsEmail>()*/
 
     @Column(name = "authorized_urls")
     var authorizedUrls: String? = null
@@ -41,5 +41,18 @@ class ClientSettings {
 
     @Column(name = "unsubscribe_link")
     var unSubscribeLink: String? = null
+
+
+/*    fun addSenderEmailAddresses(email:ClientSettingsEmail){
+            senderEmailAddresses.add(email)
+            email.clientSetting = this
+
+    }
+
+    fun removeenderEmailAddresses(email:ClientSettingsEmail){
+            senderEmailAddresses.remove(email)
+            email.clientSetting = null
+
+    }*/
 
 }

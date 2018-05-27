@@ -4,7 +4,7 @@ import com.und.common.utils.loggerFor
 import com.und.exception.UndBusinessValidationException
 import com.und.model.Email
 import com.und.model.jpa.ContactUs
-import com.und.repository.ContactUsRepository
+import com.und.repository.jpa.ContactUsRepository
 import com.und.web.model.Response
 import com.und.web.model.ValidationError
 import org.springframework.beans.factory.annotation.Autowired

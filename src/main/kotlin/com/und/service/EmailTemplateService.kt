@@ -1,11 +1,13 @@
 package com.und.service
 
+import com.und.exception.UndBusinessValidationException
 import com.und.model.jpa.EmailTemplate
 import com.und.model.jpa.Template
 import com.und.web.model.EmailTemplate as WebEmailTemplate
-import com.und.repository.EmailTemplateRepository
-import com.und.repository.TemplateRepository
+import com.und.repository.jpa.EmailTemplateRepository
+import com.und.repository.jpa.TemplateRepository
 import com.und.security.utils.AuthenticationUtils
+import com.und.web.model.ValidationError
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
@@ -46,18 +48,18 @@ class EmailTemplateService {
     }
 
     fun saveEmailTemplate(webEmailTemplate: WebEmailTemplate): Long {
+        val clientId = AuthenticationUtils.clientID
+        if (clientId != null) {
+            val nameExists = emailTemplateRepository.existsByNameAndClientID(webEmailTemplate.name, clientId)
+            if (nameExists) {
+                val error = ValidationError()
+                error.addFieldError("name", "Template with name : ${webEmailTemplate.name} already exists")
+                throw UndBusinessValidationException(error)
+            }
+        }
         val emailTemplate = buildEmailTemplate(webEmailTemplate)
-        //val templateSubject = emailTemplate.emailTemplateSubject
-        //val templateBody = emailTemplate.emailTemplateBody
-        //emailTemplate.emailTemplateSubject = null
-       // emailTemplate.emailTemplateBody = null
 
-        //emailTemplate.status = Status.ACTIVE
         val persistedemailTemplate = emailTemplateRepository.save(emailTemplate)
-        //templateSubject.
-        //emailTemplate.emailTemplateSubject = templateRepository.save(emailTemplate.emailTemplateSubject)
-        //emailTemplate.emailTemplateBody = templateRepository.save(emailTemplate.emailTemplateBody)
-
         return persistedemailTemplate.id ?: -1
     }
 
@@ -75,7 +77,7 @@ class EmailTemplateService {
         webTemplate.messageType = emailTemplate.messageType
         webTemplate.parentID = emailTemplate.parentID
         webTemplate.tags = emailTemplate.tags
-        webTemplate.editorSelected=emailTemplate.editorSelected
+        webTemplate.editorSelected = emailTemplate.editorSelected
         return webTemplate
 
     }
@@ -90,7 +92,7 @@ class EmailTemplateService {
         emailTemplate.from = webTemplate.from
         emailTemplate.messageType = webTemplate.messageType
         emailTemplate.tags = webTemplate.tags
-        emailTemplate.editorSelected=webTemplate.editorSelected
+        emailTemplate.editorSelected = webTemplate.editorSelected
 
 
 

@@ -1,4 +1,4 @@
-package com.und.repository
+package com.und.repository.jpa
 
 import com.und.model.CampaignStatus
 import com.und.model.jpa.Campaign

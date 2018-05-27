@@ -4,9 +4,9 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.und.model.Status
 import com.und.model.jpa.ClientSettings
 import com.und.model.jpa.ServiceProviderCredentials
-import com.und.repository.ClientSettingsRepository
+import com.und.repository.jpa.ClientSettingsRepository
 import com.und.web.model.ServiceProviderCredentials as WebServiceProviderCredentials
-import com.und.repository.ServiceProviderCredentialsRepository
+import com.und.repository.jpa.ServiceProviderCredentialsRepository
 import com.und.web.model.AccountSettings
 import com.und.web.model.EmailAddress
 import com.und.web.model.UnSubscribeLink
@@ -17,6 +17,10 @@ import org.springframework.transaction.annotation.Transactional
 import java.util.*
 import javax.annotation.PostConstruct
 import com.fasterxml.jackson.module.kotlin.*
+import com.und.exception.UndBusinessValidationException
+import com.und.model.jpa.ClientSettingsEmail
+import com.und.repository.jpa.ClientSettingsEmailRepository
+import com.und.web.model.ValidationError
 
 @Service
 class UserSettingsService {
@@ -26,6 +30,9 @@ class UserSettingsService {
 
     @Autowired
     private lateinit var clientSettingsRepository: ClientSettingsRepository
+
+    @Autowired
+    private lateinit var clientSettingsEmailRepository: ClientSettingsEmailRepository
 
     @Autowired
     private lateinit var objectMapper: ObjectMapper
@@ -135,24 +142,44 @@ class UserSettingsService {
 
     @Transactional
     fun addSenderEmailAddress(emailAddress: EmailAddress, clientID: Long) {
-        val emailAddresses = getSenderEmailAddresses(clientID)
-        emailAddresses.add(emailAddress)
-        clientSettingsRepository.saveSenderEmailAddresses(objectMapper.writeValueAsString(emailAddresses), clientID)
+        val emailExists = emailExists(emailAddress, clientID)
+        if (emailExists) {
+            val error = ValidationError()
+            error.addFieldError("email", "Email : $emailAddress.personal already exist")
+            throw UndBusinessValidationException(error)
+        } else {
+            val clientSettingEmail = ClientSettingsEmail()
+            clientSettingEmail.email = emailAddress.address
+            clientSettingEmail.address = emailAddress.personal
+            clientSettingEmail.verified = false
+            clientSettingEmail.clientId = clientID
+            clientSettingsEmailRepository.save(clientSettingEmail)
+
+        }
+
     }
 
     @Transactional
     fun removeSenderEmailAddress(emailAddress: EmailAddress, clientID: Long) {
-        val emailAddresses = getSenderEmailAddresses(clientID)
-        emailAddresses.removeIf {
-            emailAddress.address == it.address && emailAddress.personal == it.personal
+
+        val emailExists = emailExists(emailAddress, clientID)
+        if (emailExists) {
+            val email = clientSettingsEmailRepository.findByEmailAndClientIdAndDeleted(emailAddress.address, clientID, false)
+            email?.deleted = true
+            clientSettingsEmailRepository.save(email)
+
+        } else {
+            val error = ValidationError()
+            error.addFieldError("email", "Email : $emailAddress.personal doesn't exist")
+            throw UndBusinessValidationException(error)
         }
-        clientSettingsRepository.saveSenderEmailAddresses(objectMapper.writeValueAsString(emailAddresses), clientID)
+
     }
 
+    private fun emailExists(emailAddress: EmailAddress, clientID: Long) =
+            clientSettingsEmailRepository.existsByEmailAndClientIdAndDeleted(emailAddress.address, clientID, false)
 
-    fun senderEmailAddresses(clientID: Long): ArrayList<EmailAddress> {
-        return getSenderEmailAddresses(clientID)
-    }
+
 
 
     fun saveUnSubscribeLink(request: UnSubscribeLink, clientID: Long?) {
@@ -187,11 +214,12 @@ class UserSettingsService {
 
     }
 
-    private fun getSenderEmailAddresses(clientID: Long): ArrayList<EmailAddress> {
-        val emailAddressesJson: String = clientSettingsRepository.findSenderEmailAddressesByClientId(clientID)
-                ?: emptyArrayJson
+     fun getSenderEmailAddresses(clientID: Long): List<EmailAddress> {
+        val emailAddresses = clientSettingsEmailRepository.findByClientIdAndDeleted(clientID, false)
+        return emailAddresses?.let {
+            it.map { address -> EmailAddress(address.email ?: "", address.address ?: "") }
+        } ?: emptyList()
 
-        return objectMapper.readValue(emailAddressesJson)
     }
 
 }

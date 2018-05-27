@@ -1,9 +1,9 @@
 package com.und.service
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.und.eventapi.repository.SegmentRepository
 import com.und.model.jpa.Segment
 import com.und.model.mongo.eventapi.EventUser
+import com.und.repository.jpa.SegmentRepository
 import com.und.repository.mongo.EventRepository
 import com.und.repository.mongo.EventUserRepository
 import com.und.security.utils.AuthenticationUtils

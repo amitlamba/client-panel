@@ -7,8 +7,8 @@ import com.nhaarman.mockito_kotlin.times
 import com.nhaarman.mockito_kotlin.verify
 import com.nhaarman.mockito_kotlin.whenever
 import com.und.model.jpa.ClientSettings
-import com.und.repository.ClientSettingsRepository
-import com.und.repository.ServiceProviderCredentialsRepository
+import com.und.repository.jpa.ClientSettingsRepository
+import com.und.repository.jpa.ServiceProviderCredentialsRepository
 import com.und.web.model.AccountSettings
 import com.und.web.model.EmailAddress
 import org.junit.Assert.assertThat

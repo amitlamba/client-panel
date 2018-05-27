@@ -79,6 +79,8 @@ class UserSettingsController {
         return userSettingsService.saveSmsServiceProvider(serviceProviderCredentials)
     }
 
+
+
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping(value = ["/senders-email/add"])
     fun addSendersEmail(@RequestBody email: EmailAddress) {
@@ -90,7 +92,7 @@ class UserSettingsController {
     @GetMapping(value = ["/senders-email/list"])
     fun getSendersEmailList(): List<EmailAddress> {
         val clientID = AuthenticationUtils.clientID
-        return userSettingsService.senderEmailAddresses(clientID!!)
+        return userSettingsService.getSenderEmailAddresses(clientID!!)
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -120,6 +122,8 @@ class UserSettingsController {
         }
         return null
     }
+
+
 
     @PostMapping(value = ["unsubscribe-link/save"])
     fun saveUnSubscribeLink(@Valid @RequestBody request: UnSubscribeLink) {
